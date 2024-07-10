@@ -18,7 +18,7 @@ Fruggy es una aplicación móvil que permite a los usuarios comparar precios de 
 
 <h3>Beneficios:</h3>
 
-<b>Ahorro de dinero:<b> Fruggy ayuda a los usuarios a ahorrar dinero en sus compras de comestibles al comparar precios entre diferentes supermercados.
+<b>Ahorro de dinero:</b> Fruggy ayuda a los usuarios a ahorrar dinero en sus compras de comestibles al comparar precios entre diferentes supermercados.
 
 <b>Comodidad:</b> La aplicación es fácil de usar y permite a los usuarios comparar precios desde la comodidad de su teléfono móvil.
 
