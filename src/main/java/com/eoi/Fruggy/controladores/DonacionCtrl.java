@@ -19,27 +19,31 @@ public class DonacionCtrl {
 
     @GetMapping("/donaciones")
     public String listarDonaciones(Model model) {
-        List<Donacion> listaDonaciones = donacionesSrvc.listaDonaciones();
+        List<Donacion> listaDonaciones = donacionesSrvc.buscarEntidades();
         model.addAttribute("donaciones", listaDonaciones);
         return "donaciones";
     }
 
     @GetMapping("/donaciones/{id}")
     public String mostrarDonacion(@PathVariable int id, Model model) {
-        Optional<Donacion> donacion = donacionesSrvc.porIdDonaciones(id);
+        Optional<Donacion> donacion = donacionesSrvc.encuentraPorId(id);
         model.addAttribute("donacion", donacion);
         return "redirect:/donaciones";
     }
 
     @PostMapping("/donaciones")
     public String crearDonacion(@RequestBody Donacion donacion, Model model) {
-        donacionesSrvc.guardarDonaciones(donacion);
+        try {
+            donacionesSrvc.guardar(donacion);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/donacions";
     }
 
     @DeleteMapping("/donaciones/{id}")
     public String eliminarDonacion(@PathVariable int id, Model model) {
-        donacionesSrvc.eliminarDonaciones(id);
+        donacionesSrvc.eliminarPorId(id);
         return "redirect:/donaciones";
     }
 }

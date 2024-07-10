@@ -20,14 +20,14 @@ public class SupermercadoCtrl {
 
     @GetMapping("/supermercados")
     public String listarSupermercados(Model model) {
-        List<Supermercado> listaSupermercados = supermercadosSrvc.listaSupermercados();
+        List<Supermercado> listaSupermercados = supermercadosSrvc.buscarEntidades();
         model.addAttribute("supermercados", listaSupermercados);
         return "supermercados";
     }
 
     @GetMapping("/supermercados/{id}")
     public String mostrarSupermercado(@PathVariable int id, Model model) {
-        Optional<Supermercado> supermercado = supermercadosSrvc.porIdSupermercado(id);
+        Optional<Supermercado> supermercado = supermercadosSrvc.encuentraPorId(id);
         model.addAttribute("supermercado", supermercado);
         return "redirect:/supermercados";
     }
@@ -35,14 +35,18 @@ public class SupermercadoCtrl {
     @PostMapping("/supermercados")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearSupermercado(@RequestBody Supermercado supermercado, Model model) {
-        supermercadosSrvc.guardarSupermercado(supermercado);
+        try {
+            supermercadosSrvc.guardar(supermercado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/supermercados";
     }
 
     @DeleteMapping("/supermercados/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarSupermercado(@PathVariable int id, Model model) {
-        supermercadosSrvc.eliminarSupermercado(id);
+        supermercadosSrvc.eliminarPorId(id);
         return "redirect:/supermercados";
     }
 

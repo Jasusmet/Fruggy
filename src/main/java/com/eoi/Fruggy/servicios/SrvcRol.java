@@ -1,14 +1,15 @@
 package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Rol;
+import com.eoi.Fruggy.repositorios.RepoRol;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface SrvcRol {
-
-    List<Rol> listaRole();
-    Optional<Rol> porIdRole(int id);
-    void guardarRole(Rol rol);
-    void eliminarRole(int id);
+@Service
+public class SrvcRol extends AbstractBusinessSrvc {
+    protected SrvcRol(RepoRol repoRol) {
+        super(repoRol);
+    }
 }

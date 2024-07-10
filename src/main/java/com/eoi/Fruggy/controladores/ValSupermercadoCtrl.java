@@ -19,28 +19,32 @@ public class ValSupermercadoCtrl {
 
     @GetMapping("/valsupermercados")
     public String listarValSupermercados(Model model) {
-        List<ValSupermercado> listaValSupermercados = valsupermercadosSrvc.listaValSupermercados();
+        List<ValSupermercado> listaValSupermercados = valsupermercadosSrvc.buscarEntidades();
         model.addAttribute("valsupermercados", listaValSupermercados);
         return "valsupermercados";
     }
 
     @GetMapping("/valsupermercados/{id}")
     public String mostrarValsupermercado(@PathVariable int id, Model model) {
-        Optional<ValSupermercado> valsupermercado = valsupermercadosSrvc.porIdValoracionSupermercado(id);
+        Optional<ValSupermercado> valsupermercado = valsupermercadosSrvc.encuentraPorId(id);
         model.addAttribute("valsupermercado", valsupermercado);
         return "redirect:/valsupermercados";
     }
 
     @PostMapping("/valsupermercados")
     public String crearValsupermercado(@RequestBody ValSupermercado valsupermercado, Model model) {
-        valsupermercadosSrvc.guardarValoracionSupermercado(valsupermercado);
+        try {
+            valsupermercadosSrvc.guardar(valsupermercado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/valsupermercados";
     }
 
     @DeleteMapping("/valsupermercados/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarValsupermercado(@PathVariable int id, Model model) {
-        valsupermercadosSrvc.eliminarValoracionSupermercado(id);
+        valsupermercadosSrvc.eliminarPorId(id);
         return "redirect:/valsupermercados";
     }
 }
