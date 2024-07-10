@@ -21,7 +21,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    UsuarioDetailsSrvc usuarioDetailsSrvc;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,7 +33,8 @@ public class SecurityConfig {
         http.csrf(csrf->csrf.disable())
                 .authorizeRequests(authorize->{
                     authorize.requestMatchers("api/v1**").permitAll();
-                    authorize.anyRequest().authenticated();
+                    //authorize.anyRequest().authenticated();
+                    authorize.anyRequest().permitAll();
                 }).headers(header->header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .httpBasic(Customizer.withDefaults());
         return http.build();
