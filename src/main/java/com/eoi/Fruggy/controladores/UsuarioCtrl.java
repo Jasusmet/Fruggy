@@ -3,6 +3,7 @@ package com.eoi.Fruggy.controladores;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,40 +19,44 @@ public class UsuarioCtrl {
 
     // Este parámetro sirve para mostrar una lista de los usuarios
     @GetMapping("/usuarios")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String listarUsuarios(Model model) {
-        List<Usuario> listaUsuarios = usuariosSrvc.listaUsuarios();
+        List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
         model.addAttribute("usuarios", listaUsuarios);
         return "usuarios";
     }
 
     // Este parámetro sirve para mostrar un usuario buscándolo por su id
     @GetMapping("/usuarios/{id}")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String mostrarUsuario(@PathVariable int id, Model model) {
-        Optional<Usuario> usuario = usuariosSrvc.porIdUsuario(id);
+        Optional<Usuario> usuario = usuariosSrvc.encuentraPorId(id);
         model.addAttribute("usuario", usuario);
         return "redirect:/usuarios";
     }
 
     // Este parámetro sirve para crear un nuevo usuario
     @PostMapping("/usuarios")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearUsuario(@RequestBody Usuario usuario, Model model) {
-        usuariosSrvc.guardarUsuario(usuario);
+        try {
+            usuariosSrvc.guardar(usuario);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/usuarios";
     }
 
     // Este parámetro sirve para eliminar un usuario
     @DeleteMapping("/usuarios/{id}")
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarUsuario(@PathVariable int id, Model model) {
-        usuariosSrvc.eliminarUsuario(id);
+        usuariosSrvc.eliminarPorId(id);
         return "redirect:/usuarios";
     }
 
     // Este parámetro te redirige a la pantalla de administrador
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/usuarios/admin")
     public String admin() {
         return "admin";

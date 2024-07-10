@@ -19,28 +19,32 @@ public class ValProductoCtrl {
 
     @GetMapping("/valproductos")
     public String listarValProductos(Model model) {
-        List<ValProducto> listaValProductos = valproductosSrvc.listaValProductos();
+        List<ValProducto> listaValProductos = valproductosSrvc.buscarEntidades();
         model.addAttribute("valproductos", listaValProductos);
         return "valproductos";
     }
 
     @GetMapping("/valproductos/{id}")
     public String mostrarValproducto(@PathVariable int id, Model model) {
-        Optional<ValProducto> valproducto = valproductosSrvc.porIdTValoracionProducto(id);
+        Optional<ValProducto> valproducto = valproductosSrvc.encuentraPorId(id);
         model.addAttribute("valproducto", valproducto);
         return "redirect:/valproductos";
     }
 
     @PostMapping("/valproductos")
     public String crearValproducto(@RequestBody ValProducto valproducto, Model model) {
-        valproductosSrvc.guardarValoracionProducto(valproducto);
+        try {
+            valproductosSrvc.guardar(valproducto);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/valproductos";
     }
 
     @DeleteMapping("/valproductos/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarValproducto(@PathVariable int id, Model model) {
-        valproductosSrvc.eliminarValoracionProducto(id);
+        valproductosSrvc.eliminarPorId(id);
         return "redirect:/valproductos";
     }
 }

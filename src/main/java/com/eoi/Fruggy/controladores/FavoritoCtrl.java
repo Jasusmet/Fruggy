@@ -19,27 +19,31 @@ public class FavoritoCtrl {
 
     @GetMapping("/favoritos")
     public String listarFavoritos(Model model) {
-        List<Favorito> listaFavoritos = favoritosSrvc.listaFavoritos();
+        List<Favorito> listaFavoritos = favoritosSrvc.buscarEntidades();
         model.addAttribute("favoritos", listaFavoritos);
         return "favorito";
     }
 
     @GetMapping("/favoritos/{id}")
     public String mostrarFavorito(@PathVariable int id, Model model) {
-        Optional<Favorito> favorito = favoritosSrvc.porIdFavorito(id);
+        Optional<Favorito> favorito = favoritosSrvc.encuentraPorId(id);
         model.addAttribute("favorito", favorito);
         return "redirect:/favoritos";
     }
 
     @PostMapping("/favoritos")
     public String crearFavorito(@RequestBody Favorito favorito, Model model) {
-        favoritosSrvc.guardarFavorito(favorito);
+        try {
+            favoritosSrvc.guardar(favorito);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/favoritos";
     }
 
     @DeleteMapping("/favoritos/{id}")
     public String eliminarFavorito(@PathVariable int id, Model model) {
-        favoritosSrvc.eliminarFavorito(id);
+        favoritosSrvc.eliminarPorId(id);
         return "redirect:/favoritos";
     }
 }

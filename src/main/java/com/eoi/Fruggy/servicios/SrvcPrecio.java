@@ -1,17 +1,15 @@
 package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Precio;
+import com.eoi.Fruggy.repositorios.RepoPrecio;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface SrvcPrecio {
-
-    List<Precio> listaPrecios();
-
-    Optional<Precio> porIdPrecio(int id);
-
-    void guardarPrecio(Precio precio);
-
-    void eliminarPrecio(int id);
+@Service
+public class SrvcPrecio extends AbstractBusinessSrvc {
+    protected SrvcPrecio(RepoPrecio repoPrecio) {
+        super(repoPrecio);
+    }
 }

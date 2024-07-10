@@ -1,9 +1,12 @@
 package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Genero;
+import com.eoi.Fruggy.repositorios.RepoGenero;
+import org.springframework.stereotype.Service;
 
-public interface SrvcGenero {
-
-    void guardarGenero(Genero genero);
-    void eliminarGenero(int id);
+@Service
+public class SrvcGenero extends AbstractBusinessSrvc {
+    protected SrvcGenero(RepoGenero repoGenero) {
+        super(repoGenero);
+    }
 }

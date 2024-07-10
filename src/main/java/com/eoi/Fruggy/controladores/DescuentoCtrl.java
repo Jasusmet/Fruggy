@@ -20,14 +20,14 @@ public class DescuentoCtrl {
 
     @GetMapping("/descuentos")
     public String listarDescuentos(Model model) {
-        List<Descuento> listaDescuentos = descuentosSrvc.listaDescuentos();
+        List<Descuento> listaDescuentos = descuentosSrvc.buscarEntidades();
         model.addAttribute("descuentos", listaDescuentos);
         return "descuentos";
     }
 
     @GetMapping("/descuentos/{id}")
     public String mostrarDescuento(@PathVariable int id, Model model) {
-        Optional<Descuento> descuento = descuentosSrvc.porIdDescuento(id);
+        Optional<Descuento> descuento = descuentosSrvc.encuentraPorId(id);
         model.addAttribute("descuento", descuento);
         return "redirect:/descuentos";
     }
@@ -35,14 +35,18 @@ public class DescuentoCtrl {
     @PostMapping("/descuentos")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearDescuento(@RequestBody Descuento descuento, Model model) {
-        descuentosSrvc.guardarDescuento(descuento);
+        try {
+            descuentosSrvc.guardar(descuento);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/descuentos";
     }
 
     @DeleteMapping("/descuentos/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarDescuento(@PathVariable int id, Model model) {
-        descuentosSrvc.eliminarDescuento(id);
+        descuentosSrvc.eliminarPorId(id);
         return "redirect:/descuentos";
     }
 }

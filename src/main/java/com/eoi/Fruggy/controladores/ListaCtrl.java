@@ -19,27 +19,31 @@ public class ListaCtrl {
 
     @GetMapping("/listas")
     public String listarListas(Model model) {
-        List<Lista> listaListas = listasSrvc.listaListas();
+        List<Lista> listaListas = listasSrvc.buscarEntidades();
         model.addAttribute("listas", listaListas);
         return "listas";
     }
 
     @GetMapping("/listas/{id}")
     public String mostrarLista(@PathVariable int id, Model model) {
-        Optional<Lista> lista = listasSrvc.porIdLista(id);
+        Optional<Lista> lista = listasSrvc.encuentraPorId(id);
         model.addAttribute("lista", lista);
         return "redirect:/listas";
     }
 
     @PostMapping("/listas")
     public String crearLista(@RequestBody Lista lista, Model model) {
-        listasSrvc.guardarLista(lista);
+        try {
+            listasSrvc.guardar(lista);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/listas";
     }
 
     @DeleteMapping("/listas/{id}")
     public String eliminarLista(@PathVariable int id, Model model) {
-        listasSrvc.eliminarLista(id);
+        listasSrvc.eliminarPorId(id);
         return "redirect:/listas";
     }
 }

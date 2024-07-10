@@ -19,27 +19,31 @@ public class CestaCtrl {
 
     @GetMapping("/cesta")
     public String listarCestas(Model model) {
-        List<Cesta> listaCestas = cestasSrvc.listaCestas();
+        List<Cesta> listaCestas = cestasSrvc.buscarEntidades();
         model.addAttribute("cestas", listaCestas);
         return "cesta";
     }
 
     @GetMapping("/cesta/{id}")
     public String mostrarCesta(@PathVariable int id, Model model) {
-        Optional<Cesta> cesta = cestasSrvc.porIdCesta(id);
+        Optional<Cesta> cesta = cestasSrvc.encuentraPorId(id);
         model.addAttribute("cesta", cesta);
         return "redirect:/cesta";
     }
 
     @PostMapping("/cesta")
     public String crearCesta(@RequestBody Cesta cesta, Model model) {
-        cestasSrvc.guardarCesta(cesta);
+        try {
+            cestasSrvc.guardar(cesta);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/cesta";
     }
 
     @DeleteMapping("/cesta/{id}")
     public String eliminarCesta(@PathVariable int id, Model model) {
-        cestasSrvc.eliminarCesta(id);
+        cestasSrvc.eliminarPorId(id);
         return "redirect:/cesta";
     }
 

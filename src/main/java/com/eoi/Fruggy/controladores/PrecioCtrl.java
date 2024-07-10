@@ -20,14 +20,14 @@ public class PrecioCtrl {
 
     @GetMapping("/precios")
     public String listarPrecios(Model model) {
-        List<Precio> listaPrecios = preciosSrvc.listaPrecios();
+        List<Precio> listaPrecios = preciosSrvc.buscarEntidades();
         model.addAttribute("precios", listaPrecios);
         return "precios";
     }
 
     @GetMapping("/precios/{id}")
     public String mostrarPrecio(@PathVariable Integer id, Model model) {
-        Optional<Precio> precio = preciosSrvc.porIdPrecio(id);
+        Optional<Precio> precio = preciosSrvc.encuentraPorId(id);
         model.addAttribute("precio", precio);
         return "redirect:/precios";
     }
@@ -35,14 +35,18 @@ public class PrecioCtrl {
     @PostMapping("/precios")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearPrecio(@RequestBody Precio precio, Model model) {
-        preciosSrvc.guardarPrecio(precio);
+        try {
+            preciosSrvc.guardar(precio);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/precios";
     }
 
     @DeleteMapping("/precios/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarPrecio(@PathVariable Integer id, Model model) {
-        preciosSrvc.eliminarPrecio(id);
+        preciosSrvc.eliminarPorId(id);
         return "redirect:/precios";
     }
 }
