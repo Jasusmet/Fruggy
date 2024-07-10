@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/login/login.css" type="text/css">
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://use.fontawesome.com/releases/v5.7.2/css/all.css' rel='stylesheet'>
+</head>
+
+<body>
+<form class="form" action="/login.php" method="post">
+    <div class="logo">
+        <a href="/">
+            <img src="img/logo.png" alt="Fruggy" width="200" height="200"/>
+        </a>
+    </div>
+
+    <h2>Inicio de sesión</h2>
+
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit">Iniciar sesión</button>
+
+    <div class="enlaces">
+        <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
+        <a href="/crear-cuenta">Registrarse</a>
+    </div>
+</form>
+
+</body>
+
+</html>
