@@ -38,8 +38,6 @@ Fruggy se puede monetizar de varias maneras, como por ejemplo:
 
 <b>Suscripciones:</b> Los usuarios pueden pagar una suscripción mensual o anual para acceder a funciones premium, como la posibilidad de comparar precios de un mayor número de supermercados o de recibir notificaciones personalizadas.
 
-<b>Comisiones:</b> La aplicación puede cobrar una comisión a los supermercados por cada venta generada a través de la aplicación.
-
 <h3>Conclusión:</h3>
 
 Fruggy es una aplicación móvil innovadora que tiene el potencial de ayudar a los consumidores a ahorrar dinero en sus compras de comestibles. La aplicación es fácil de usar, ofrece una valiosa información y tiene un gran mercado objetivo. Con un modelo de negocio sólido, Fruggy tiene el potencial de convertirse en una empresa exitosa.
