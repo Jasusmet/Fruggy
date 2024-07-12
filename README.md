@@ -43,3 +43,11 @@ Fruggy se puede monetizar de varias maneras, como por ejemplo:
 <h3>Conclusión:</h3>
 
 Fruggy es una aplicación móvil innovadora que tiene el potencial de ayudar a los consumidores a ahorrar dinero en sus compras de comestibles. La aplicación es fácil de usar, ofrece una valiosa información y tiene un gran mercado objetivo. Con un modelo de negocio sólido, Fruggy tiene el potencial de convertirse en una empresa exitosa.
+
+# INSTALACIÓN
+
+Para proceder a la instalación y ejecución de la aplicación, debemos seguir los siguientes pasos
+
+    - Instalar Docker
+    - Ejecutar el comando que hay en el archivo 'docker-run.txt' para crear el contenedor de base de datos del proyecto
+    - Arrancar el proyecto con el perfil "desarrollo" activado
