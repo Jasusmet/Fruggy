@@ -1,4 +1,4 @@
-<h1>Fruggy</h1>
+# Fruggy
 
 Fruggy es una aplicación móvil que permite a los usuarios comparar precios de productos entre diferentes supermercados de forma rápida y sencilla. La aplicación tiene como objetivo ayudar a los consumidores a ahorrar dinero en sus compras diarias de comestibles.
 
