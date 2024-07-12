@@ -50,9 +50,11 @@ Para proceder a la instalación y ejecución de la aplicación, debemos seguir l
 
     - Instalar Docker
     - Ejecutar el comando que hay en el archivo 'docker-run.txt' para crear el contenedor de base de datos del proyecto
-    - Arrancar el proyecto con el perfil "desarrollo" activado
-    - Entrar a http://localhost:8080/ con un navegador
 
 <img src="src/main/resources/static/img/desarrollo.png">
 
+# EJECUCIÓN
+
+    - Arrancar el proyecto en el perfil de ejecución "desarrollo" activada
+    - Entrar a http://localhost:8080/ con un navegador 
  
