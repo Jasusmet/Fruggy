@@ -57,7 +57,7 @@ public class UsuarioCtrl {
 
     // Este parámetro te redirige a la pantalla de administrador
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/usuarios/admin")
+    @GetMapping("/admin")
     public String admin() {
         return "admin";
     }
@@ -65,6 +65,11 @@ public class UsuarioCtrl {
     @GetMapping("/usuarios/perfil")
     public String Perfil() {
         return "perfil";
+    }
+
+    @GetMapping("/iniciar-sesion")
+    public String IniciarSesion() {
+        return "iniciar-sesion";
     }
 
     @GetMapping("/crear-usuario")

@@ -14,8 +14,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "usuarios")
 
+@Table(name = "usuarios")
 public class Usuario implements Serializable {
 
     @Id

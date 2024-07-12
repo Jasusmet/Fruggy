@@ -47,7 +47,7 @@ public class CestaCtrl {
         return "redirect:/cesta";
     }
 
-    @GetMapping("/cesta/cesta-detalles")
+    @GetMapping("/cesta/detalles")
     public String CestaDetallesCtrl() {
         return "cesta-detalles";
     }
