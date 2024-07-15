@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class FruggyApplication {
-
-
 	public static void main(String[] args) {
 //		Usuario usuario = new Usuario();
 //		usuario.getDonaciones();
