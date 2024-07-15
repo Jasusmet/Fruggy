@@ -23,7 +23,7 @@ public class Rol implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
+    @Column(name = "rol_nombre")
     private String rolNombre;
 
     @ManyToMany(mappedBy = "roles")
