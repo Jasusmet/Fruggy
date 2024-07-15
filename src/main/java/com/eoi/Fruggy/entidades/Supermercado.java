@@ -44,5 +44,7 @@ public class Supermercado implements Serializable {
     @OneToMany(mappedBy = "valoracionSupermercadoSupermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ValSupermercado> supermercadosValoracionesSupermercados;
 
+    @OneToMany(mappedBy = "supermercadoUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Usuario> supermercadosUsuarios;
 
 }

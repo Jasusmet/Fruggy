@@ -352,10 +352,6 @@ precarga de la pagina, se puede cambiar color o poner imagen,etc*/
 	cursor: pointer;
 }
 
-.header__top__right__language:hover {
-	opacity: 0.9;
-}
-
 .header__top__right__language:hover ul {
 	top: 23px;
 	opacity: 2;

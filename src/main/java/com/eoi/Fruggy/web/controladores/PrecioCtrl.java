@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.controladores;
+package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.Precio;
 import com.eoi.Fruggy.entidades.Precio;

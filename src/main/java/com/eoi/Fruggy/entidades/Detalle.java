@@ -23,8 +23,8 @@ public class Detalle implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column (name ="email",length = 50)
-    private String email;
+    @Column (name ="nombreUsuario",length = 50)
+    private String nombreUsuario;
 
     @Column (name ="nombre",length = 255)
     private String nombre;

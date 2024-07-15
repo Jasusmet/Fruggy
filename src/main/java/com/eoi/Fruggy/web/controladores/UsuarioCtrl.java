@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.controladores;
+package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
@@ -36,13 +36,14 @@ public class UsuarioCtrl {
     }
 
     // Este parámetro sirve para crear un nuevo usuario
-    @PostMapping("/usuarios")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/usuarios/sign-up")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public String crearUsuario(@RequestBody Usuario usuario, Model model) {
         try {
             usuariosSrvc.guardar(usuario);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            model.addAttribute("error", "Error al crear usuario: " + e.getMessage());
+            return "error"; // añadir una pagina de error.html
         }
         return "redirect:/usuarios";
     }
@@ -68,12 +69,13 @@ public class UsuarioCtrl {
     }
 
     @GetMapping("/crear-usuario")
-    public String CrearUsuario() {
+    public String crearUsuarioForm(Model model) {
+        model.addAttribute("usuario", new Usuario());
         return "crear-usuario";
     }
 
     @GetMapping("/recuperar-contraseña")
-    public String RecuperarContraseña() {
+    public String recuperarContraseña() {
         return "recuperar-contraseña";
     }
 
