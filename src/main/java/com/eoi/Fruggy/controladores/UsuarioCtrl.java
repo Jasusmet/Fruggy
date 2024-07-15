@@ -82,4 +82,8 @@ public class UsuarioCtrl {
         return "recuperar-contraseña";
     }
 
+    @GetMapping("/login")
+    public String Login() {
+        return "login";
+    }
 }

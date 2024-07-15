@@ -14,8 +14,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Table(name = "usuarios")
+
 public class Usuario implements Serializable {
 
     @Id
@@ -23,8 +23,8 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column (name ="nombreUsuario",length = 50)
-    private String nombreUsuario;
+    @Column (name ="email",length = 50)
+    private String email;
 
     @Column (name ="password",length = 250)
     private String password;
@@ -48,4 +48,7 @@ public class Usuario implements Serializable {
     @OneToOne(mappedBy = "cestaUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cesta cestaUsuarios; // No se usa Set <> con OneToOne
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "supermercado_id", foreignKey =  @ForeignKey(name = "fk_supermercado_usuario"))
+    private Supermercado supermercadoUsuario;
 }
