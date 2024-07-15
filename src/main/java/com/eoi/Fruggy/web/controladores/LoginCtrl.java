@@ -15,13 +15,12 @@ import java.util.Optional;
 @Controller
 public class LoginCtrl {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RepoUsuario repoUsuario;
 
-    public LoginCtrl(RepoUsuario repoUsuario) {
+    public LoginCtrl(RepoUsuario repoUsuario, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.repoUsuario = repoUsuario;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @GetMapping("/login")
@@ -39,7 +38,7 @@ public class LoginCtrl {
             Usuario usuario = optionalUsuario.get();
             model.addAttribute("usuario", usuario);
             model.addAttribute("msg", "Usuario encontrado");
-            return "/";
+            return "/login";
         }else{
             model.addAttribute("msg", "Usuario no encontrado");
         }

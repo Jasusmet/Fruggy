@@ -32,7 +32,7 @@ public class CestaTest {
     @Test
     public void testCesta() throws Exception {
         Usuario usuario = new Usuario();
-        usuario.setNombreUsuario("Mihai");
+        usuario.setEmail("usuario1@gmail.com");
         usuario = repoUsuarios.save(usuario);
 
         // Buscamos producto!

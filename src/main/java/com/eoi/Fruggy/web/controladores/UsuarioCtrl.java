@@ -19,7 +19,7 @@ public class UsuarioCtrl {
 
     // Este parámetro sirve para mostrar una lista de los usuarios
     @GetMapping("/usuarios")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String listarUsuarios(Model model) {
         List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
         model.addAttribute("usuarios", listaUsuarios);
@@ -28,7 +28,7 @@ public class UsuarioCtrl {
 
     // Este parámetro sirve para mostrar un usuario buscándolo por su id
     @GetMapping("/usuarios/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String mostrarUsuario(@PathVariable int id, Model model) {
         Optional<Usuario> usuario = usuariosSrvc.encuentraPorId(id);
         model.addAttribute("usuario", usuario);
@@ -37,7 +37,7 @@ public class UsuarioCtrl {
 
     // Este parámetro sirve para crear un nuevo usuario
     @PostMapping("/usuarios/sign-up")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
     public String crearUsuario(@RequestBody Usuario usuario, Model model) {
         try {
             usuariosSrvc.guardar(usuario);
@@ -50,14 +50,14 @@ public class UsuarioCtrl {
 
     // Este parámetro sirve para eliminar un usuario
     @DeleteMapping("/usuarios/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String eliminarUsuario(@PathVariable int id, Model model) {
         usuariosSrvc.eliminarPorId(id);
         return "redirect:/usuarios";
     }
 
     // Este parámetro te redirige a la pantalla de administrador
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/usuarios/admin")
     public String admin() {
         return "admin";

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{page.title}">Productos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/css/styleFruggy.css.css" rel="stylesheet">
+</head>
+<body>
+<section class="login " th:fragment="login">
+    <div class="container">
+        <form action="/login" method="POST">
+            <label for="username">password</label>
+            <input id="username" type="text" name="username" for="username" class="form-control">
+            <label for="password">password</label>
+            <input id="password"  type="password" name="password"  class="form-control">
+             <input type="submit">
+        </form>
+
+    </div>
+</section>
+</body>
+</html>

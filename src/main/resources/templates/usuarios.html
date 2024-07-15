@@ -42,8 +42,8 @@
                         </thead>
                         <tbody>
                         <tr th:each="usuario : ${usuarios}">
-                            <td th:text="${usuario.nombreUsuario}"></td>
                             <td th:text="${usuario.email}"></td>
+                            <tr>
                         </tr>
                         </tbody>
                     </table>
