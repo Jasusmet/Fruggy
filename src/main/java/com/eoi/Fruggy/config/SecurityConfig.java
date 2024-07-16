@@ -47,7 +47,7 @@ public class SecurityConfig {
         // Inicio de sesión personalizada
         http.formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/")
                 .permitAll()
         );
 

@@ -31,7 +31,7 @@ public class DetalleTest {
 
 
         Detalle detalle = new Detalle();
-        detalle.setEmail("mihai@ejemplo.com");
+        detalle.setNombreUsuario("nombreusuario1");
         detalle.setNombre("Mihai");
         detalle.setApellido("Livadaru");
         detalle.setPathImagen("/images/mihai.jpg");
@@ -43,7 +43,7 @@ public class DetalleTest {
 
 
         assertNotNull(detalleRecuperado.get().getId());
-        assertEquals("mihai@ejemplo.com", detalleRecuperado.get().getEmail());
+        assertEquals("nombreusuario1", detalleRecuperado.get().getNombreUsuario());
         assertEquals("Mihai", detalleRecuperado.get().getNombre());
         assertEquals("Livadaru", detalleRecuperado.get().getApellido());
         assertEquals("/images/mihai.jpg", detalleRecuperado.get().getPathImagen());
