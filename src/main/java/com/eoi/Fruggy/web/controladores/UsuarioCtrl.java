@@ -67,11 +67,6 @@ public class UsuarioCtrl {
         return "perfil";
     }
 
-    @GetMapping("/iniciar-sesion")
-    public String IniciarSesion() {
-        return "iniciar-sesion";
-    }
-
     @GetMapping("/crear-usuario")
     public String CrearUsuario() {
         return "crear-usuario";
@@ -80,10 +75,5 @@ public class UsuarioCtrl {
     @GetMapping("/recuperar-contraseña")
     public String RecuperarContraseña() {
         return "recuperar-contraseña";
-    }
-
-    @GetMapping("/login")
-    public String Login() {
-        return "login";
     }
 }

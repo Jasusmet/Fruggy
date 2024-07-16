@@ -22,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
 @EnableMethodSecurity
-        // Activa la seguridad basada en anotaciones a nivel de método, permitiendo el uso de anotaciones como @PreAuthorize, @Secured, y @RolesAllowed.
+        // Activa la seguridad basada en anotaciones a nivel de método, permitiendo el uso de anotaciones como @PreAuthorize, @Secured y @RolesAllowed.
         (prePostEnabled = true,
         securedEnabled = true,
         jsr250Enabled = true)
@@ -44,7 +44,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        // Inicio de sesión personalizada
+        // Inicio de sesión personalizado
         http.formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
         );
 
-        // Autorización de Solicitudes
+        // Autorización de solicitudes
         http.authorizeHttpRequests()
                 .requestMatchers("/js/**").permitAll()
                 .requestMatchers("/img/**").permitAll()
@@ -67,7 +67,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/**").permitAll()
                 .anyRequest().authenticated()
 
-                // Página de Acceso Denegado
+                // Página de acceso denegado
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/accessDenied")
@@ -80,7 +80,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    //  Para autenticar a los usuarios.
+    //  Para autenticar a los usuarios
     private AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);

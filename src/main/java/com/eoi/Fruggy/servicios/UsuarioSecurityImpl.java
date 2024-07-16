@@ -1,6 +1,5 @@
 package com.eoi.Fruggy.servicios;
 
-
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoDetalle;
@@ -49,4 +48,3 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getPassword(), grantedAuthorities);
     }
 }
-
