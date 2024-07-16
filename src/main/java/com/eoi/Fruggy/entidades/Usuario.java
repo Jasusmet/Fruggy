@@ -25,6 +25,7 @@ public class Usuario implements Serializable {
 
     @Column (name ="email",length = 50)
     private String email;
+    private boolean active;
 
     @Column (name ="password",length = 250)
     private String password;
@@ -32,7 +33,10 @@ public class Usuario implements Serializable {
     @Column (name ="telefono",length = 30)
     private String telefono;
 
-    @OneToMany(mappedBy = "usuarioRol", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuarioRol",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id"))
     private Set<Rol> roles;
 
     @OneToMany(mappedBy = "usuarioDireccion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -51,4 +55,5 @@ public class Usuario implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "supermercado_id", foreignKey =  @ForeignKey(name = "fk_supermercado_usuario"))
     private Supermercado supermercadoUsuario;
+
 }

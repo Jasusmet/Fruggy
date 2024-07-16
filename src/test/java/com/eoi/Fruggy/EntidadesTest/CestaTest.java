@@ -35,7 +35,7 @@ public class CestaTest {
         usuario.setNombreUsuario("Mihai");
         usuario = repoUsuarios.save(usuario);
 
-        // Buscamos producto!
+        // Buscamos producto
         Optional<Producto> producto = repoProducto.findProductoByNombreProductoAndMarca("Leche", "Puleva");
         if (producto.isPresent()) {
             Producto p = producto.get();
