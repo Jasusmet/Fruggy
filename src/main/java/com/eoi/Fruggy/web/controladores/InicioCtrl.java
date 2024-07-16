@@ -10,5 +10,4 @@ public class InicioCtrl {
     public String Inicio() {
         return "inicio";
     }
-
 }

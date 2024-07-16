@@ -20,14 +20,15 @@ public class UsuarioTest {
     @Test
     public void testGuardarUsuario() {
         Usuario usuario = new Usuario();
-        usuario.setNombreUsuario("TestUser");
+        usuario.setEmail("mihai@gmail.com");
+        usuario.setActive(true);
         usuario.setPassword("TestPassword");
         usuario.setTelefono("1234567890");
         repoUsuarios.save(usuario);
 
         Optional<Usuario> usuarioRecuperado = repoUsuarios.findById((int) usuario.getId());
         assertTrue(usuarioRecuperado.isPresent());
-        assertEquals("TestUser", usuarioRecuperado.get().getNombreUsuario());
+        assertEquals("TestUser", usuarioRecuperado.get().getUsername());
         assertEquals("TestPassword", usuarioRecuperado.get().getPassword());
         assertEquals("1234567890", usuarioRecuperado.get().getTelefono());
     }

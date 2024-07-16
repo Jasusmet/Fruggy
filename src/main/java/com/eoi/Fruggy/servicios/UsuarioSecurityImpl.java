@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service("usuarioSecurityImpl")
+@Service
 public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Autowired
