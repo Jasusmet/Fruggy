@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{page.title}">Productos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/static/css/styleFruggy.css" rel="stylesheet">
+</head>
+<body>
+<!-- Product Spad Section Begin -->
+<section class="product spad" th:fragment="product-spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-5">
+                <div class="sidebar">
+                    <div class="sidebar__item">
+                        <h5 th:text="#{search.subcategories}">Buscar por Subcategorías</h5>
+                        <ul>
+                            <li><a href="Categorias/Categoría_aperitivos.html" th:text="#{category.cheese}">Queso</a>
+                            </li>
+                            <li><a href="Categorias/Categoria_bazar_casa.html" th:text="#{category.yogurt}">Yogur</a>
+                            </li>
+                            <li><a href="Categorias/Categoria_bébes_niños.html"
+                                   th:text="#{category.cookies}">Galletas</a></li>
+                            <li><a href="Categorias/Categoria_bebidas.html" th:text="#{category.prepared.meals}">Platos
+                                Preparados</a></li>
+                            <li><a href="Categorias/Categoría_cafe_infusiones.html"
+                                   th:text="#{category.coffee}">Café</a></li>
+                            <li><a href="Categorias/Categoría_chocolate_dulce.html" th:text="#{category.soft.drink}">Refresco</a>
+                            </li>
+                            <button onclick="myFunction()" id="mas__subcategorias" th:text="#{category.chocolates}">
+                                Mostrar más
+                            </button>
+                            <span id="more">
+                                    <li><a href="../Categoria_conservas,_aceite%20_condimentos.html"
+                                           th:text="#{category.chocolates}">Chocolates</a></li>
+                                    <li><a href="Categorias/Categoria_dieteticos.html" th:text="#{category.cereals}">Cereales</a></li>
+                                    <li><a href="Categorias/Categoria_drogueria.html"
+                                           th:text="#{category.milk}">Leche</a></li>
+                                    <li><a href="Categorias/Categoría_frescos_charcutería.html"
+                                           th:text="#{category.air.fresheners}">Ambientadores</a></li>
+                                    <li><a href="Categorias/Categoría_lacteos_huevos.html"
+                                           th:text="#{category.cologne}">Colonia</a></li>
+                                    <li><a href="Categorias/Categoría_lacteos_huevos.html" th:text="#{category.juice}">Zumo</a></li>
+                                    <li><a href="Categorias/Categoría_ocio_cultura.html"
+                                           th:text="#{category.fish.canned}">Conservas Pescado</a></li>
+                                    <li><a href="Categorias/Categoría_panadería_bollería_pastelería.html"
+                                           th:text="#{category.sweet.preserves}">Conservas Dulces</a></li>
+                                    <li><a href="Categorias/Categoría_pasta_arroz_legumbres.html"
+                                           th:text="#{category.snacks}">Snacks</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html" th:text="#{category.tea}">Infusiones</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html" th:text="#{category.oil}">Aceite</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.water}">Agua</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.diapers}">Pañales</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.insecticides}">Insecticidas</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.potato.chips}">Patatas Fritas</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.rice}">Arroz</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.energy.drink}">Bebida Energética</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.cocoa}">Cacao</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.vinegar}">Vinagre</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.shake}">Batido</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.pate}">Paté</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.bonbon}">Bombones</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.sports_drinks}">Bebida Isotónica</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.butter}">Mantequilla</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.sports.products}">Productos para Deportistas</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.cream}">Nata</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.wipes}">Toallitas</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.trash.bags}">Bolsas de Basura</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.eggs}">Huevos</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.margarine}">Margarina</a></li>
+                                    <li><a href="../Categoría_permueria_%20parafarmacia.html"
+                                           th:text="#{category.horchata}">Horchata</a></li>
+
+                                </span>
+                        </ul>
+                    </div>
+                    <div class="sidebar__item">
+                        <h4 th:text="#{price}">Precio</h4>
+                        <div class="price-range-wrap">
+                            <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                 data-min="10" data-max="540">
+                                <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                                <span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default"></span>
+                            </div>
+                            <div class="range-slider">
+                                <div class="price-input">
+                                    <input type="text" id="minamount">
+                                    <input type="text" id="maxamount">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar__item sidebar__item__color--option">
+                        <h4 th:text="#{supermarket}">Supermercado</h4>
+                        <div class="sidebar__item__color sidebar__item__color--blue">
+                            <label for="blue" th:text="#{supermarket.carrefour}">
+                                Carrefour
+                                <input type="radio" id="blue" name="supermarket" value="Carrefour"
+                                       onclick="filterBySupermarket()">
+                            </label>
+                        </div>
+                        <div class="sidebar__item__color sidebar__item__color--green">
+                            <label for="green" th:text="#{supermarket.mercadona.hacendado}">
+                                Hacendado
+                                <input type="radio" id="green" name="supermarket" value="Hacendado"
+                                       onclick="filterBySupermarket()">
+                            </label>
+                        </div>
+                        <div class="sidebar__item__color sidebar__item__color--red">
+                            <label for="red" th:text="#{supermarket.dia}">
+                                Día
+                                <input type="radio" id="red" name="supermarket" value="Día"
+                                       onclick="filterBySupermarket()">
+                            </label>
+                        </div>
+                        <div class="sidebar__item__color sidebar__item__color--white">
+                            <label for="white" th:text="#{supermarket.lidl}">
+                                Lidl
+                                <input type="radio" id="white" name="supermarket" value="Lidl"
+                                       onclick="filterBySupermarket()">
+                            </label>
+                        </div>
+                        <div class="sidebar__item__color sidebar__item__color--yellow">
+                            <label for="yellow" th:text="#{supermarket.supeco}">
+                                Supeco
+                                <input type="radio" id="yellow" name="supermarket" value="Supeco"
+                                       onclick="filterBySupermarket()">
+                            </label>
+                        </div>
+                        <div class="sidebar__item__color sidebar__item__color--olivegreen">
+                            <label for="olivegreen" th:text="#{supermarket.hipercor}">
+                                Hipercor
+                                <input type="radio" id="olivegreen" name="supermarket" value="Hipercor"
+                                       onclick="filterBySupermarket()">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7">
+                <button id="hide" th:text="#{hide.discounts}">Ocultar descuentos</button>
+                <button id="show" th:text="#{show.discounts}">Mostrar descuentos</button>
+                <div class="product__discount">
+                    <div class="section-title product__discount__title">
+                        <h2 th:text="#{flash.discounts}">Descuentos flash</h2>
+                    </div>
+                    <div class="row">
+                        <div class="product__discount__slider owl-carousel">
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                         data-setbg="img/product/discount/pd-1.jpg">
+                                        <div class="product__discount__percent"
+                                             th:text="#{product.discount.item.percent-20}">-20%
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span th:text="#{product.discount.item.dried_fruit}">Fruta Seca</span>
+                                        <h5><a href="#" th:text="#{product.discount.item.snacks}">Aperitivos</a></h5>
+                                        <h7 th:text="#{supermarket.hipercor}">Hipercor</h7>
+                                        <div class="product__item__price" th:text="#{product.discount.item.old_price2}">
+                                            2,00€
+                                            <span th:text="#{product.discount.item.old_price2.5}">2,50</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                         data-setbg="img/product/discount/pd-2.jpg">
+                                        <div class="product__discount__percent"
+                                             th:text="#{product.discount.item.percent-30}">-30%
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span th:text="#{category.fruits.canarias.bananas}">Platanos Canarias</span>
+                                        <h5><a href="#" th:text="#{category.fruits}">Frutas</a></h5>
+                                        <h7 th:text="#{supermarket.mercandona}">Mercadona</h7>
+                                        <div class="product__item__price" th:text="#{product.discount.item.price3}">
+                                            3,00€ <span>$3,90</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                         data-setbg="img/product/discount/pd-3.jpg">
+                                        <div class="product__discount__percent"
+                                             th:text="#{product.discount.item.percent-12}">-12%
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span th:text="#{category.fruits.juice}">Zumo de Frutas</span>
+                                        <h5><a href="#" th:text="#{category.drinks}">Bebidas </a></h5>
+                                        <h7 th:text="#{supermarket.dia}">Día</h7>
+                                        <div class="product__item__price" th:text="#{product.discount.item.price1.2}">
+                                            1,20€
+                                            <span th:text="#{prod}">1,34€</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                         data-setbg="img/product/discount/pd-4.jpg">
+                                        <div class="product__discount__percent"
+                                             th:text="#{product.discount.item.percent-22}">-22%
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span th:text="#{category.fruits.mango}">Mango</span>
+                                        <h5><a href="#" th:text="#{category.fruits}">Frutas </a></h5>
+                                        <h7 th:text="#{supermarket.carrefour}">Carrefour</h7>
+                                        <div class="product__item__price"
+                                             th:text="#{product.discount.item.old_price2.4}">2,40€
+                                            <span th:text="#{product.discount.item.old_price2.92}">2,92€</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                         data-setbg="img/product/discount/pd-5.jpg">
+                                        <div class="product__discount__percent"
+                                             th:text="#{product.discount.item.percent-33}">-33%
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span th:text="#{category.meat.hamburguer.ecological}">Hamburguesa Ecológica </span>
+                                        <h5><a href="#" th:text="#{category.meat}">Carnes</a></h5>
+                                        <h7 th:text="#{supermarket.lidl}">Lidl</h7>
+                                        <div class="product__item__price" th:text="#{product.discount.item.old_price4}">
+                                            4,00€
+                                            <span th:text="#{product.discount.item.old_price5.32}">5,32€</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="product__discount__item">
+                                    <div class="product__discount__item__pic set-bg"
+                                         data-setbg="img/product/discount/pd-6.jpg">
+                                        <div class="product__discount__percent"
+                                             th:text="#{product.discount.item.percent-10}">-10%
+                                        </div>
+                                        <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__discount__item__text">
+                                        <span th:text="#{category.eggs.egg.white}">Clara de Huevos</span>
+                                        <h5><a href="#" th:text="#{category.eggs}">Huevos</a></h5>
+                                        <h7 th:text="#{supermarket.carrefour}">Carrefour</h7>
+                                        <div class="product__item__price" th:text="#{product.discount.item.price1.1}">
+                                            1,10€
+                                            <span th:text="#{product.discount.item.price1.21}">1,21€</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+</section>
+
+</body>
+
+</html>
