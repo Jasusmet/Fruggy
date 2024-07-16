@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+// API para comprobar la funcionalidad de las listas de usuarios, así como si se encuentran disponibles o no
+
 @RestController
 @RequestMapping("/api/usuarios")
-public class APIUsuariosController {
+public class APIUsuariosCtrl {
 
     @Autowired
     RepoUsuario repoUsuario;

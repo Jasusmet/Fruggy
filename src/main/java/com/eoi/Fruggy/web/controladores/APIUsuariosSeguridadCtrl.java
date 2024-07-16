@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
-public class AppUsuariosSeguridadController {
+public class APIUsuariosSeguridadCtrl {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -24,7 +24,7 @@ public class AppUsuariosSeguridadController {
     private final RepoUsuario repoUsuario;
     private final RepoRol repoRol;
 
-    public AppUsuariosSeguridadController(RepoUsuario repoUsuario, RepoRol repoRol) {
+    public APIUsuariosSeguridadCtrl(RepoUsuario repoUsuario, RepoRol repoRol) {
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
     }
