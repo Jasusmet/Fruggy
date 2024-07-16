@@ -7,6 +7,7 @@ import com.eoi.Fruggy.repositorios.RepoDetalle;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
+@Service("usuarioSecurityImpl")
 public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Autowired
@@ -39,9 +40,15 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
        Usuario usuario = repoUsuario.findByEmail(username);
-        return usuario;
+       if (usuario==null){
+           throw new UsernameNotFoundException("Usuario no encontrado"+ username);
+       }
+       Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+       for (Rol rol: usuario.getRoles()){
+           grantedAuthorities.add(new SimpleGrantedAuthority(rol.getRolNombre()));
+       }
+        return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getPassword(), grantedAuthorities);
     }
 }
 
