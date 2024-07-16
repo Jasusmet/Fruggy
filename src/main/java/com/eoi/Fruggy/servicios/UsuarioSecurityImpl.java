@@ -25,7 +25,7 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
     private RepoUsuario repoUsuario;
 
     @Autowired
-    private RepoDetalle repoDetalle; // ¿Como implementariamos los detalles de cada usuario?
+    private RepoDetalle repoDetalle; // ¿Cómo implementariamos los detalles de cada usuario?
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -38,9 +38,15 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         Usuario usuario = repoUsuario.findByEmail(username);
-        return usuario;
+        if (usuario==null){
+            throw new UsernameNotFoundException("Usuario no encontrado"+ username);
+        }
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        for (Rol rol: usuario.getRoles()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(rol.getRolNombre()));
+        }
+        return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getPassword(), grantedAuthorities);
     }
 }
 
