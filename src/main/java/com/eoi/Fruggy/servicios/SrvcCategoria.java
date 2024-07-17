@@ -4,7 +4,7 @@ import com.eoi.Fruggy.repositorios.RepoCategoria;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SrvcCategoria extends AbstractBusinessSrvc {
+public class SrvcCategoria extends AbstractSrvc {
     protected SrvcCategoria(RepoCategoria repoCategoria) {
         super(repoCategoria);
     }

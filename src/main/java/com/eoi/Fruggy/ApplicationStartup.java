@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.config;
+package com.eoi.Fruggy;
 
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;

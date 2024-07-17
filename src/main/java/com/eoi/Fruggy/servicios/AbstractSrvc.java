@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.*;
 
 
-public abstract class AbstractBusinessSrvc<E, ID, REPO extends JpaRepository<E, ID>> {
+public abstract class AbstractSrvc<E, ID, REPO extends JpaRepository<E, ID>> {
 
     private final REPO repo;
 
-    protected AbstractBusinessSrvc(REPO repo) {
+    protected AbstractSrvc(REPO repo) {
         this.repo = repo;
     }
 
