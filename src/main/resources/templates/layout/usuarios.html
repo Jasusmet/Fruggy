@@ -63,6 +63,9 @@
                         <a th:href="@{/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{user.list.edit}">Editar</a>
                     </td>
                     <td>
+                        <a th:href="@{/detalles/{id}(id=${usuario.id})}" class="btn btn-info" th:text="#{user.list.details}">Detalles</a>
+                    </td>
+                    <td>
                         <form th:action="@{/eliminar/{id}(id=${usuario.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
                             <input type="submit" class="btn btn-danger" th:value="#{user.list.delete}"/>
                         </form>

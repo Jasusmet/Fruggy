@@ -1,5 +1,6 @@
 package com.eoi.Fruggy.config;
 
+import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoRol;
@@ -63,21 +64,28 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
      */
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
+
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
         usuario.setEmail("usuario1@gmail.com");
         usuario.setActive(true);
         usuario.setPassword(bCryptPasswordEncoder.encode("usuario123"));
 
+
         Rol rol = new Rol();
-        rol.setId(1L);
         rol.setRolNombre("admin");
         Set<Rol> rols = new HashSet<>();
         rols.add(rol);
         usuario.setRoles(rols);
 
-       // rol.setUsuariosRol();
-        //repoRol.save(rol);
+        // datos Detalles
+        Detalle detalle = new Detalle();
+        detalle.setNombreUsuario("mihai1");
+        detalle.setEdad(21);
+        detalle.setApellido("Livadaru");
+
+        usuario.setDetalle(detalle);
+
+
         repoUsuario.save(usuario);
     }
 

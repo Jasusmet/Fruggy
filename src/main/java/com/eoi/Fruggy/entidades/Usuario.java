@@ -52,9 +52,9 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuarioDonacion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Donacion> usuarioDonaciones;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "detalles_id", foreignKey = @ForeignKey(name = "fk_usuario_detalles"))
-    private Detalle detallesUsuario;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "detalle_id", referencedColumnName = "id")
+    private Detalle detalle; // Relación con Detalle hay que hcerlo One to one para que tenga el mismo id detalla que usuario / preguntar profesores
 
     @OneToOne(mappedBy = "cestaUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cesta cestaUsuarios; // No se usa Set <> con OneToOne

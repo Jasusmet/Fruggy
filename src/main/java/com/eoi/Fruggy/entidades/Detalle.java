@@ -38,8 +38,8 @@ public class Detalle implements Serializable {
     @Column (name ="edad")
     private Integer edad;
 
-    @OneToMany(mappedBy = "detallesUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Usuario> detalleUsuarios;
+    @OneToOne(mappedBy = "detalle") // se ha cambiado la relacion de Many to One to ONE TO ONE
+    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "genero_id", foreignKey = @ForeignKey(name = "fk_detalles_genero"))
