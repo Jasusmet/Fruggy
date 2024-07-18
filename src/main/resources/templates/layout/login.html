@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
+<head></head>
+<body>
+<form class="form" th:action="@{/login}" method="post">
+    <div class="logo">
+        <a href="/">
+            <img src="img/logo.png" alt="Fruggy" width="200" height="200"/>
+        </a>
+    </div>
+    <h2 th:text="#{login.heading}">Inicio de sesión</h2>
+
+    <!-- Error message section -->
+    <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
+
+    <label for="username" th:text="#{login.email}">Correo electrónico:</label>
+    <input type="email" id="username" name="username" required>
+
+    <label for="password" th:text="#{login.password}">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
+
+    <div class="enlaces">
+        <a href="/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
+        <a href="/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
+    </div>
+</form>
+
+<!-- Language switcher -->
+<form th:action="@{/change-language}" method="post">
+    <button type="submit" name="lang" value="en" th:text="#{english}">English</button>
+    <button type="submit" name="lang" value="es" th:text="#{spanish}">Español</button>
+</form>
+</body>
+</html>

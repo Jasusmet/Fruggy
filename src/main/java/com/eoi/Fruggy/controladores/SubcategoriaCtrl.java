@@ -17,7 +17,7 @@ public class SubcategoriaCtrl {
 
     @GetMapping("/subcategorias")
     public String listarSubcategorias(Model model) {
-        List<Subcategoria> listaSubcategorias = subcategoriasSrvc.listaSubcategorias();
+        List<Subcategoria> listaSubcategorias = subcategoriasSrvc.buscarEntidades();
         model.addAttribute("subcategorias", listaSubcategorias);
         return "subcategorias";
     }

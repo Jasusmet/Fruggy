@@ -1,16 +1,11 @@
 package com.eoi.Fruggy.servicios;
 
-import com.eoi.Fruggy.entidades.Donacion;
+import com.eoi.Fruggy.repositorios.RepoDonacion;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface SrvcDonacion {
-    List<Donacion> listaDonaciones();
-
-    Optional<Donacion> porIdDonaciones(int id);
-
-    void guardarDonaciones(Donacion donacion);
-
-    void eliminarDonaciones(int id);
+@Service
+public class SrvcDonacion extends AbstractSrvc {
+    protected SrvcDonacion(RepoDonacion repoDonacion) {
+        super(repoDonacion);
+    }
 }

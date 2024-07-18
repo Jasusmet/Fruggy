@@ -1,17 +1,11 @@
 package com.eoi.Fruggy.servicios;
 
-import com.eoi.Fruggy.entidades.Producto;
+import com.eoi.Fruggy.repositorios.RepoProducto;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface SrvcProducto {
-
-    List<Producto> listaProductos();
-
-    Optional<Producto> porIdProductos(int id);
-
-    void guardarProductos(Producto producto);
-
-    void eliminarProductos(int id);
+@Service
+public class SrvcProducto extends AbstractSrvc {
+    protected SrvcProducto(RepoProducto repoProducto) {
+        super(repoProducto);
+    }
 }

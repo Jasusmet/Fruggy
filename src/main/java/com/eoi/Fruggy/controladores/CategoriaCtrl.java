@@ -1,8 +1,6 @@
 package com.eoi.Fruggy.controladores;
 
 import com.eoi.Fruggy.entidades.Categoria;
-import com.eoi.Fruggy.entidades.Categoria;
-import com.eoi.Fruggy.entidades.Subcategoria;
 import com.eoi.Fruggy.servicios.SrvcCategoria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class CategoriaCtrl {
@@ -21,7 +18,7 @@ public class CategoriaCtrl {
 
     @GetMapping("/categorias")
     public String listarCategorias(Model model) {
-        List<Categoria> listaCategorias = categoriasSrvc.listaCategorias();
+        List<Categoria> listaCategorias = categoriasSrvc.buscarEntidades();
         model.addAttribute("categorias", listaCategorias);
         return "categorias";
     }
@@ -29,14 +26,18 @@ public class CategoriaCtrl {
     @PostMapping("/categorias")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearCategoria(@RequestBody Categoria categoria, Model model) {
-        categoriasSrvc.guardarCategoria(categoria);
+        try {
+            categoriasSrvc.guardar(categoria);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/categorias";
     }
 
     @DeleteMapping("/categorias/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarCategoria(@PathVariable int id, Model model) {
-        categoriasSrvc.eliminarCategoria(id);
+        categoriasSrvc.eliminarPorId(id);
         return "redirect:/categorias";
     }
 

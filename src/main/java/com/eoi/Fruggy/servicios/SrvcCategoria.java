@@ -1,17 +1,11 @@
 package com.eoi.Fruggy.servicios;
 
-import com.eoi.Fruggy.entidades.Categoria;
+import com.eoi.Fruggy.repositorios.RepoCategoria;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface SrvcCategoria {
-
-    List<Categoria> listaCategorias();
-
-    Optional<Categoria> porIdCategoria(int id);
-
-    void guardarCategoria(Categoria categoria);
-
-    void eliminarCategoria(int id);
+@Service
+public class SrvcCategoria extends AbstractSrvc {
+    protected SrvcCategoria(RepoCategoria repoCategoria) {
+        super(repoCategoria);
+    }
 }

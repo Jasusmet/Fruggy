@@ -1,7 +1,6 @@
 package com.eoi.Fruggy.controladores;
 
 import com.eoi.Fruggy.entidades.Usuario;
-import com.eoi.Fruggy.repositorios.RepoUsuario;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("api/v1/usuarios")
 public class UsuarioCtrl {
 
     @Autowired
@@ -23,7 +21,7 @@ public class UsuarioCtrl {
     @GetMapping("/usuarios")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String listarUsuarios(Model model) {
-        List<Usuario> listaUsuarios = usuariosSrvc.listaUsuarios();
+        List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
         model.addAttribute("usuarios", listaUsuarios);
         return "usuarios";
     }
@@ -32,7 +30,7 @@ public class UsuarioCtrl {
     @GetMapping("/usuarios/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String mostrarUsuario(@PathVariable int id, Model model) {
-        Optional<Usuario> usuario = usuariosSrvc.porIdUsuario(id);
+        Optional<Usuario> usuario = usuariosSrvc.encuentraPorId(id);
         model.addAttribute("usuario", usuario);
         return "redirect:/usuarios";
     }
@@ -41,7 +39,11 @@ public class UsuarioCtrl {
     @PostMapping("/usuarios")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearUsuario(@RequestBody Usuario usuario, Model model) {
-        usuariosSrvc.guardarUsuario(usuario);
+        try {
+            usuariosSrvc.guardar(usuario);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/usuarios";
     }
 
@@ -49,13 +51,13 @@ public class UsuarioCtrl {
     @DeleteMapping("/usuarios/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarUsuario(@PathVariable int id, Model model) {
-        usuariosSrvc.eliminarUsuario(id);
+        usuariosSrvc.eliminarPorId(id);
         return "redirect:/usuarios";
     }
 
     // Este parámetro te redirige a la pantalla de administrador
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/usuarios/admin")
+    @GetMapping("/admin")
     public String admin() {
         return "admin";
     }
@@ -74,5 +76,4 @@ public class UsuarioCtrl {
     public String RecuperarContraseña() {
         return "recuperar-contraseña";
     }
-
 }

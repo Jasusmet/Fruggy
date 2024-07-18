@@ -1,17 +1,11 @@
 package com.eoi.Fruggy.servicios;
 
-import com.eoi.Fruggy.entidades.Supermercado;
+import com.eoi.Fruggy.repositorios.RepoSupermercado;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface SrvcSupermercado {
-
-    List<Supermercado> listaSupermercados();
-
-    Optional<Supermercado> porIdSupermercado(int id);
-
-    void guardarSupermercado(Supermercado supermercado);
-
-    void eliminarSupermercado(int id);
+@Service
+public class SrvcSupermercado extends AbstractSrvc {
+    protected SrvcSupermercado(RepoSupermercado repoSupermercado) {
+        super(repoSupermercado);
+    }
 }

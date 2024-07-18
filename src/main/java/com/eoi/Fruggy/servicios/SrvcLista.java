@@ -1,15 +1,11 @@
 package com.eoi.Fruggy.servicios;
 
-import com.eoi.Fruggy.entidades.Lista;
+import com.eoi.Fruggy.repositorios.RepoLista;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface SrvcLista {
-
-    List<Lista> listaListas();
-    Optional<Lista> porIdLista(int id);
-    void guardarLista(Lista lista);
-    void eliminarLista(int id);
-
+@Service
+public class SrvcLista extends AbstractSrvc {
+    protected SrvcLista(RepoLista repoLista) {
+        super(repoLista);
+    }
 }

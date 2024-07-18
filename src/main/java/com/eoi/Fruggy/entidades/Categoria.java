@@ -14,8 +14,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "categorias")
 
+@Table(name = "categorias")
 public class Categoria implements Serializable {
 
     @Id
@@ -28,6 +28,4 @@ public class Categoria implements Serializable {
 
     @OneToMany(mappedBy = "subcategoriaCategoria", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Subcategoria> categoriasSubcategoria;
-
-
 }
