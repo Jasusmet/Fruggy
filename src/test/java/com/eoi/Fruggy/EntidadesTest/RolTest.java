@@ -7,31 +7,37 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class RolTest {
-        @Autowired
-        private RepoRol repoRol;
+    @Autowired
+    private RepoRol repoRol;
 
-        @Test
-        public void testCreateAndSaveRol() {
-            Rol rol = new Rol();
-            rol.setRolNombre("Admin");
+    @Test
+    public void testCreateAndSaveRol() {
+        Rol rol = new Rol();
+        rol.setRolNombre("Admin");
 
-            Rol guardarRol = repoRol.save(rol);
+        Rol guardarRol = repoRol.save(rol);
 
-            assertEquals("Admin", guardarRol.getRolNombre());
-            assertNull(guardarRol.getUsuarioRol());
+        assertEquals("Admin", guardarRol.getRolNombre());
 
-            Usuario usuario = new Usuario();
-            guardarRol.setUsuarioRol(usuario);
+        assertNull(guardarRol.getUsuariosRol());
 
-            repoRol.save(guardarRol);
+        Usuario usuario = new Usuario();
+        Set<Usuario> usuarios = new HashSet<>();
+        usuarios.add(usuario);
+        guardarRol.setUsuariosRol(usuarios);
 
-            Rol rolguardado = repoRol.findById((int) guardarRol.getId()).get();
+        repoRol.save(guardarRol);
 
-            assertEquals("Admin", rolguardado.getRolNombre());
-            assertNotNull(rolguardado.getUsuarioRol());
-        }
+        Rol rolguardado = repoRol.findById((int) guardarRol.getId()).get();
+
+        assertEquals("Admin", rolguardado.getRolNombre());
+        assertNotNull(rolguardado.getUsuariosRol());
     }
+}

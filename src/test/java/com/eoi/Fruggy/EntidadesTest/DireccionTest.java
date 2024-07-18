@@ -25,7 +25,7 @@ public class DireccionTest {
     @Test
     public void direccionTest() {
         Usuario usuario = new Usuario();
-        usuario.setNombreUsuario("Mihai");
+        usuario.setEmail("usuario1@email.com");
         usuario = repoUsuarios.save(usuario);
 
         Direccion direccion = new Direccion();

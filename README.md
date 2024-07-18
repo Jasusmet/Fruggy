@@ -1,4 +1,4 @@
-<h1>Fruggy</h1>
+# Fruggy
 
 Fruggy es una aplicación móvil que permite a los usuarios comparar precios de productos entre diferentes supermercados de forma rápida y sencilla. La aplicación tiene como objetivo ayudar a los consumidores a ahorrar dinero en sus compras diarias de comestibles.
 
@@ -38,8 +38,21 @@ Fruggy se puede monetizar de varias maneras, como por ejemplo:
 
 <b>Suscripciones:</b> Los usuarios pueden pagar una suscripción mensual o anual para acceder a funciones premium, como la posibilidad de comparar precios de un mayor número de supermercados o de recibir notificaciones personalizadas.
 
-<b>Comisiones:</b> La aplicación puede cobrar una comisión a los supermercados por cada venta generada a través de la aplicación.
-
 <h3>Conclusión:</h3>
 
 Fruggy es una aplicación móvil innovadora que tiene el potencial de ayudar a los consumidores a ahorrar dinero en sus compras de comestibles. La aplicación es fácil de usar, ofrece una valiosa información y tiene un gran mercado objetivo. Con un modelo de negocio sólido, Fruggy tiene el potencial de convertirse en una empresa exitosa.
+
+# INSTALACIÓN
+
+Para proceder a la instalación y ejecución de la aplicación, debemos seguir los siguientes pasos
+
+    - Instalar Docker
+    - Ejecutar el comando que hay en el archivo 'docker-run.txt' para crear el contenedor de base de datos del proyecto
+
+<img src="src/main/resources/static/img/desarrollo.png">
+
+# EJECUCIÓN
+
+    - Arrancar el proyecto en el perfil de ejecución "desarrollo" activada
+    - Entrar a http://localhost:8080/ con un navegador 
+ 

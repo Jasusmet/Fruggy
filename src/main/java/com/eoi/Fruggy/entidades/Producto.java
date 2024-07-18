@@ -23,10 +23,10 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column (name ="nombreProducto",length = 255)
+    @Column (name ="nombreProducto",length = 45)
     private String nombreProducto;
 
-    @Column (name ="marca",length = 255)
+    @Column (name ="marca",length = 45)
     private String marca;
 
     @Column (name ="imagenPath",length = 255)
