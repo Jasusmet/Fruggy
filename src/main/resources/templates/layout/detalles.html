@@ -6,13 +6,6 @@
 <body>
 <h1>Detalles del Usuario</h1>
 <div class="container" th:fragment="detalles">
-    <!-- Botones de idioma -->
-    <div class="text-end mb-3">
-        <form th:action="@{/change-language}" method="post">
-            <button type="submit" name="lang" value="en" class="btn btn-secondary">English</button>
-            <button type="submit" name="lang" value="es" class="btn btn-secondary">Español</button>
-        </form>
-    </div>
     <form th:action="@{/detalles/{id}(id=${detalle.id})}" method="post" enctype="multipart/form-data">
         <div>
             <label for="nombreUsuario">Nombre de Usuario:</label>

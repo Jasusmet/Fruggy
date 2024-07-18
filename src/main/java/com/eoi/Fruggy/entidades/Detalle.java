@@ -41,6 +41,10 @@ public class Detalle implements Serializable {
     @OneToOne(mappedBy = "detalle") // se ha cambiado la relacion de Many to One to ONE TO ONE
     private Usuario usuario;
 
+
+    @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Imagen imagen;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "genero_id", foreignKey = @ForeignKey(name = "fk_detalles_genero"))
     private Genero detallesGenero;

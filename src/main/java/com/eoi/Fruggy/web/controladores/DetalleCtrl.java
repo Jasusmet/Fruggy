@@ -71,6 +71,18 @@ public class DetalleCtrl {
             return "error";
         }
     }
+
+    @GetMapping("/detalles-actualizados/{id}")
+    public String verDetallesActualizados(@PathVariable("id") Long id, Model model) {
+        Optional<Detalle> detalleActualizado = detallesSrvc.encuentraPorId(id);
+        if (detalleActualizado.isPresent()) {
+            model.addAttribute("detalle", detalleActualizado.get());
+            return "detalles-actualizados";
+        } else {
+            model.addAttribute("error", "Detalle no encontrado");
+            return "error";
+        }
+    }
     // Método para guardar la imagen desde una URL
     private void saveImage(String imageUrl) throws IOException {
         // Validar la URL de la imagen (opcional)

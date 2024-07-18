@@ -24,9 +24,16 @@ public class Imagen {
     @Column(name = "ruta", nullable = false)
     private String ruta;
 
+    @Column(name = "pathImagen", length = 500)
+    private String pathImagen;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "detalle_id", unique = true)
+    private Detalle detalle;
 
     @ManyToOne
     @JoinColumn(name = "supermercado_id")
