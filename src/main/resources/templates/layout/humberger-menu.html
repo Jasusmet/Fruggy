@@ -14,13 +14,13 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper" th:fragment="humbergerMenu">
     <div class="humberger__menu__logo">
-        <!-- logo empresa-->
-        <a href="#"><img src="../img/logo.png" alt=""></a>
+        <!-- Logo empresa-->
+        <a href="/"><img src="../img/logo.png" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
         <ul>
-            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-            <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+            <li><a href="/favoritos"><i class="fa fa-heart"></i> <span>1</span></a></li>
+            <li><a href="/cesta"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
         </ul>
         <div class="header__cart__price" th:text="#{cart.items}">artículo: <span>150.00€</span></div>
     </div>
@@ -35,23 +35,22 @@
             </ul>
         </div>
         <div class="header__top__right__auth">
-            <a href="#"><i class="fa fa-user"></i> <span th:text="#{login}">Acceso</span></a>
+            <a href="/login"><i class="fa fa-user"></i> <span th:text="#{login}">Iniciar sesión</span></a>
         </div>
     </div>
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
-            <li class="active"><a href="../index.html" th:text="#{home}">Inicio</a></li>
-            <li><a href="./shop-grid.html" th:text="#{products}">Productos</a></li>
-            <li><a href="#">Páginas</a>
+            <li><a href="/productos" th:text="#{products}">Productos</a></li>
+            <li><a href="/supermercados" th:text="#{supermarket}">Supermercados</a>
                 <ul class="header__menu__dropdown">
-                    <li><a href="../shop-details.html" th:text="#{shop.details}">Shop Details</a></li>
-                    <li><a href="../shoping-cart.html" th:text="#{shopping.cart}">Shopping Cart</a></li>
-                    <li><a href="../checkout.html" th:text="#{checkout}">Check Out</a></li>
-                    <li><a href="../blog-details.html" th:text="#{blog.details}">Blog Details</a></li>
+                    <li><a href="#" th:text="#{supermarket.carrefour}">Carrefour</a></li>
+                    <li><a href="#" th:text="#{supermarket.mercadona}">Mercadona</a></li>
+                    <li><a href="#" th:text="#{supermarket.dia}">Día</a></li>
+                    <li><a href="#" th:text="#{supermarket.lidl}">Lidl</a></li>
+                    <li><a href="#" th:text="#{supermarket.supeco}">Supeco</a></li>
+                    <li><a href="#" th:text="#{supermarket.hipercor}">Hipercor</a></li>
                 </ul>
             </li>
-            <li><a href="../blog.html" th:text="#{blog}">Blog</a></li>
-            <li><a href="../contact.html" th:text="#{contact}">Contacto</a></li>
         </ul>
     </nav>
     <div id="mobile-menu-wrap"></div>
@@ -63,8 +62,8 @@
     </div>
     <div class="humberger__menu__contact">
         <ul>
-            <!-- AÑADIR vinculo a correo*** -->
-            <li><i class="fa fa-envelope"></i> <span th:text="#{contact.email}">mostrarproductos@mihai.com</span></li>
+            <!-- Añadir vinculo a correo -->
+            <li><i class="fa fa-envelope"></i> <span th:text="#{contact.email}">fruggy@gmail.com</span></li>
         </ul>
     </div>
 </div>
