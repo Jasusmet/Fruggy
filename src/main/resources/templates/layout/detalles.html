@@ -34,8 +34,15 @@
             </select>
         </div>
         <div>
-            <label for="pathImagen">URL de la Imagen:</label>
-            <input type="text" id="pathImagen" name="pathImagen" th:value="${detalle.pathImagen}">
+            <label for="file">Imagen:</label>
+            <input type="file" id="file" name="file" />
+        </div>
+        <div>
+            <label for="rol">Rol:</label>
+            <select id="rol" name="rol">
+                <option value="ROLE_USER">Usuario</option>
+                <option value="ROLE_ADMIN">Administrador</option>
+            </select>
         </div>
         <button type="submit">Guardar</button>
     </form>

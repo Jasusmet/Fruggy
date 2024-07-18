@@ -5,17 +5,30 @@
     <title>Detalles Actualizados</title>
 </head>
 <body>
-<h1>Detalles Actualizados</h1>
-<div class="container" th:fragment="detalles-actualizados"></div>
-<div>
-    <img th:src="${detalle.pathImagen}" alt="Imagen de perfil" style="max-width: 200px; max-height: 200px;">
-</div>
-<div>
-    <p>Nombre de Usuario: <span th:text="${detalle.nombreUsuario}"></span></p>
-    <p>Nombre: <span th:text="${detalle.nombre}"></span></p>
-    <p>Apellido: <span th:text="${detalle.apellido}"></span></p>
-    <p>Edad: <span th:text="${detalle.edad}"></span></p>
-    <p>Género: <span th:text="${detalle.detallesGenero.descripcion}"></span></p>
+<h1>Detalles Actualizados del Usuario</h1>
+<div class="container" th:fragment="detalles-actualizados">
+    <div th:if="${detalle}">
+        <p>Nombre de Usuario: <span th:text="${detalle.nombreUsuario}"></span></p>
+        <p>Nombre: <span th:text="${detalle.nombre}"></span></p>
+        <p>Apellido: <span th:text="${detalle.apellido}"></span></p>
+        <p>Edad: <span th:text="${detalle.edad}"></span></p>
+        <p>Género:
+            <span th:if="${detalle.detallesGenero}" th:text="${detalle.detallesGenero.descripcion}"></span>
+            <span th:unless="${detalle.detallesGenero}">Sin género especificado</span>
+        </p>
+        <p>Roles:
+            <span th:each="rol : ${detalle.roles}" th:text="${rol.rolNombre}"></span>
+        </p>
+        <p>Imagen:
+            <img th:src="${detalle.pathImagen}" alt="Imagen del Usuario">
+        </p>
+    </div>
+    <div th:if="${error}">
+        <p th:text="${error}" style="color: red;"></p>
+    </div>
+    <div th:if="${mensaje}">
+        <p th:text="${mensaje}" style="color: green;"></p>
+    </div>
 </div>
 </body>
 </html>

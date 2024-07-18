@@ -35,7 +35,7 @@ public class RolTest {
 
         repoRol.save(guardarRol);
 
-        Rol rolguardado = repoRol.findById((int) guardarRol.getId()).get();
+        Rol rolguardado = repoRol.findById((long) guardarRol.getId()).get();
 
         assertEquals("Admin", rolguardado.getRolNombre());
         assertNotNull(rolguardado.getUsuariosRol());

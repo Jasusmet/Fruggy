@@ -49,6 +49,7 @@
                     <th th:text="#{user.list.active}">Activo</th>
                     <th th:text="#{user.list.password}">Contraseña</th>
                     <th th:text="#{user.list.phone}">Teléfono</th>
+                    <th th:text="#{user.list.roles}">Roles</th>
                     <th th:text="#{user.list.edit}">Editar</th>
                     <th th:text="#{user.list.delete}">Eliminar</th>
                 </tr>
@@ -59,6 +60,11 @@
                     <td th:text="${usuario.active}">Activo</td>
                     <td th:text="${usuario.password}">Contraseña</td>
                     <td th:text="${usuario.telefono}">Teléfono</td>
+                    <td>
+                        <ul>
+                            <li th:each="rol : ${usuario.roles}" th:text="${rol.rolNombre}"></li>
+                        </ul>
+                    </td>
                     <td>
                         <a th:href="@{/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{user.list.edit}">Editar</a>
                     </td>

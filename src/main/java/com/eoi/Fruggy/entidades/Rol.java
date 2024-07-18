@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,5 +29,4 @@ public class Rol implements Serializable {
 
     @ManyToMany(mappedBy = "roles")
     private Set<Usuario> usuariosRol;
-
 }
