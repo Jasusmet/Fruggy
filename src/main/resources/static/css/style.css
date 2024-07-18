@@ -1,26 +1,3 @@
-/*------------------------------------------------------------------
-[Table of contents]
-
-1.  Template default CSS
-	1.1	Variables
-	1.2	Mixins
-	1.3	Flexbox
-	1.4	Reset
-2.  Helper Css
-3.  Header Section
-4.  Hero Section
-5.  Service Section
-6.  Categories Section
-7.  Featured Section
-8.  Latest Product Section
-9.  Contact
-10.  Footer Style
--------------------------------------------------------------------*/
-
-/*----------------------------------------*/
-/* Template default CSS
-/*----------------------------------------*/
-
 html,
 body {
     height: 100%;
@@ -425,6 +402,10 @@ ol {
     display: inline-block;
     font-size: 14px;
     color: #1c1c1c;
+}
+
+.header__top__right__auth a:hover {
+    color: #7fad39;
 }
 
 .header__top__right__auth a i {
