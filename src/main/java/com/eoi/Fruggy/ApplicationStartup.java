@@ -83,8 +83,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         rols.add(rol);
         usuario.setRoles(rols);
 
-        //rol.setUsuariosRol();
-        //repoRol.save(rol);
         repoUsuario.save(usuario);
     }
 
