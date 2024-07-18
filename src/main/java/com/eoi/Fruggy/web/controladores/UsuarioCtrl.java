@@ -22,7 +22,7 @@ public class UsuarioCtrl {
     private SrvcUsuario usuariosSrvc;
 
     @GetMapping("/usuarios")
-  @PreAuthorize("hasRole('ROLE_ADMIN')") //lo quito porque me lleva a la pagina de inicio, hay que ver como poner que cada url te lleva a la pagina que deseas mientras hacer el log in
+    //  @PreAuthorize("hasRole('ROLE_ADMIN')") //lo quito porque me lleva a la pagina de inicio, hay que ver como poner que cada url te lleva a la pagina que deseas mientras hacer el log in
     public String usuarios(Model model) {
         List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
         model.addAttribute("usuarios", listaUsuarios);

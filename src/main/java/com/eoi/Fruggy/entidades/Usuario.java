@@ -62,6 +62,9 @@ public class Usuario implements Serializable, UserDetails {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "supermercado_id", foreignKey = @ForeignKey(name = "fk_supermercado_usuario"))
     private Supermercado supermercadoUsuario;
+    // Relación con Imagen
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Imagen> imagenes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

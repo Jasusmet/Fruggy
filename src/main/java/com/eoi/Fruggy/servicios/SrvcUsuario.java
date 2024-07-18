@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SrvcUsuario extends AbstractBusinessSrvc {
+public class SrvcUsuario extends AbstractSrvc {
 
     private final RepoUsuario repoUsuario;
     private final PasswordEncoder passwordEncoder;

@@ -29,9 +29,6 @@ public class Producto implements Serializable {
     @Column (name ="marca",length = 45)
     private String marca;
 
-    @Column (name ="imagenPath",length = 255)
-    private String imagenPath;
-
     @Column (name ="descripcion",length = 255)
     private String descripcion;
 
@@ -44,5 +41,7 @@ public class Producto implements Serializable {
     @OneToOne(mappedBy = "subcategoriaProducto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Subcategoria productoSubcategorias;
 
-
+    // Relación con Imagen
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Imagen> imagenes;
 }

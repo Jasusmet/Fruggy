@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalles Actualizados</title>
+</head>
+<body>
+<h1>Detalles del Usuario Actualizados</h1>
+
+<div class="container" th:fragment="detalles-actualizados">
+    <!-- Botones de idioma -->
+    <div class="text-end mb-3">
+        <form th:action="@{/change-language}" method="post">
+            <button type="submit" name="lang" value="en" class="btn btn-secondary">English</button>
+            <button type="submit" name="lang" value="es" class="btn btn-secondary">Español</button>
+        </form>
+    </div>
+    <div>
+        <img th:src="${detalle.pathImagen}" alt="Imagen de perfil" style="max-width: 200px; max-height: 200px;">
+    </div>
+    <div>
+        <p>Nombre de Usuario: <span th:text="${detalle.nombreUsuario}"></span></p>
+        <p>Nombre: <span th:text="${detalle.nombre}"></span></p>
+        <p>Apellido: <span th:text="${detalle.apellido}"></span></p>
+        <p>Edad: <span th:text="${detalle.edad}"></span></p>
+        <p>Género: <span th:text="${detalle.detallesGenero.descripcion}"></span></p>
+    </div>
+</div>
+
+</body>
+</html>

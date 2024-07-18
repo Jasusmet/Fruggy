@@ -1,21 +1,18 @@
 package com.eoi.Fruggy;
 
+import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoRol;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-
 import org.springframework.context.ApplicationListener;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-
 
 /**
  * Clase que se ejecuta al iniciar la aplicación. Implementa {@link ApplicationListener}
@@ -34,7 +31,6 @@ import java.util.Set;
  * predeterminado al inicio de la aplicación.
  * </p>
  */
-
 @Component
 public class ApplicationStartup implements ApplicationListener<ApplicationReadyEvent> {
 
@@ -49,7 +45,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
      *
      * @param repoUsuario el repositorio de usuarios que se utilizará para guardar los datos del usuario.
      */
-
     public ApplicationStartup(RepoUsuario repoUsuario, RepoRol repoRol) {
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
@@ -67,24 +62,30 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
      *
      * @param event el evento que indica que la aplicación está lista.
      */
-
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
+
         Usuario usuario = new Usuario();
-        usuario.setId(1L);
         usuario.setEmail("usuario1@gmail.com");
         usuario.setActive(true);
         usuario.setPassword(bCryptPasswordEncoder.encode("usuario123"));
 
+
         Rol rol = new Rol();
-        rol.setId(1L);
         rol.setRolNombre("admin");
         Set<Rol> rols = new HashSet<>();
         rols.add(rol);
         usuario.setRoles(rols);
 
-        //rol.setUsuariosRol();
-        //repoRol.save(rol);
+        // datos Detalles
+        Detalle detalle = new Detalle();
+        detalle.setNombreUsuario("mihai1");
+        detalle.setEdad(21);
+        detalle.setApellido("Livadaru");
+
+        usuario.setDetalle(detalle);
+
+
         repoUsuario.save(usuario);
     }
 
