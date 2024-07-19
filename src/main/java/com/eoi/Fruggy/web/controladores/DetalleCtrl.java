@@ -37,8 +37,6 @@ public class DetalleCtrl {
         if (detalle.isPresent()) {
             model.addAttribute("detalle", detalle.get());
             model.addAttribute("generos", generoSrvc.buscarEntidades());
-            model.addAttribute("roles", rolSrvc.buscarEntidades());
-            model.addAttribute("usuarios", usuarioSrvc.buscarEntidades());
             return "detalles";
         } else {
             model.addAttribute("error", "Detalle no encontrado");
@@ -49,7 +47,8 @@ public class DetalleCtrl {
     @PostMapping("/detalles/{id}")
     public String guardarDetalle(@PathVariable("id") Long id,
                                  @ModelAttribute Detalle detalleActualizado,
-                                 @RequestParam("file") MultipartFile file,
+                                 @RequestParam(value = "file", required = false) MultipartFile file, // para no tener que subir la imagen
+                                 @RequestParam("generoId") Long generoId,
                                  Model model) throws Exception {
         Optional<Detalle> detalleOptional = detallesSrvc.encuentraPorId(id);
         if (detalleOptional.isPresent()) {
@@ -59,7 +58,21 @@ public class DetalleCtrl {
             existente.setNombre(detalleActualizado.getNombre());
             existente.setApellido(detalleActualizado.getApellido());
             existente.setEdad(detalleActualizado.getEdad());
-            existente.setDetallesGenero(detalleActualizado.getDetallesGenero());
+
+            // Manejo del género
+            if (generoId != null) {
+                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(generoId);
+                if (generoOptional.isPresent()) {
+                    Genero genero = generoOptional.get();
+                    existente.setDetallesGenero(genero);
+                } else {
+                    model.addAttribute("error", "Género no encontrado");
+                    return "error";
+                }
+            } else {
+                model.addAttribute("error", "Género no especificado");
+                return "error";
+            }
 
             // Manejo de la imagen
             if (!file.isEmpty()) {

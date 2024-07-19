@@ -20,7 +20,10 @@
                     <span th:unless="${detalle.detallesGenero}">Sin género especificado</span>
                 </p>
                 <p><strong>Imagen:</strong>
-                    <img th:src="@{${detalle.pathImagen}}" alt="Imagen del Usuario" class="img-fluid" style="max-width: 200px;">
+                    <span th:if="${detalle.imagen}">
+                        <img th:src="@{${detalle.imagen.pathImagen}}" alt="Imagen del Usuario" class="img-fluid" style="max-width: 200px;">
+                    </span>
+                    <span th:unless="${detalle.imagen}">No hay imagen disponible</span>
                 </p>
             </div>
         </div>
@@ -31,7 +34,9 @@
     <div th:if="${mensaje}" class="alert alert-success mt-3">
         <p th:text="${mensaje}"></p>
     </div>
-    <a class="btn btn-secondary mt-3" th:href="@{/detalles/{id}(id=${detalle.id})}">Regresar</a>
+    <a class="btn btn-secondary mt-3" th:href="@{/detalles/{id}(id=${detalle.id})}">Atras</a>
+    <a class="btn btn-primary mt-3" th:href="@{/usuarios}">Regresar a Usuarios</a>
+
 </div>
 </body>
 </html>

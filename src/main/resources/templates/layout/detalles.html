@@ -11,7 +11,8 @@
     <h1>Editar Detalle</h1>
     <a class="btn btn-secondary" th:href="@{/detalles/{id}(id=${detalle.id})}">Regresar</a>
     <br><br>
-    <form th:action="@{/detalles/{id}(id=${detalle.id})}" method="post" th:object="${detalle}" enctype="multipart/form-data">
+    <form th:action="@{/detalles/{id}(id=${detalle.id})}" method="post" th:object="${detalle}"
+          enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="mb-3">
@@ -31,9 +32,12 @@
             <input type="number" th:field="*{edad}" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="detallesGenero.id" class="form-label">Género</label>
-            <select th:field="*{detallesGenero.id}" class="form-select">
-                <option th:each="genero : ${generos}" th:value="${genero.id}" th:text="${genero.nombre}">Género</option>
+            <label for="genero" class="form-label">Género</label>
+            <select id="genero" name="generoId" class="form-select" required>
+                <option th:each="genero : ${generos}"
+                        th:value="${genero.id}"
+                        th:text="${genero.descripcion}">
+                </option>
             </select>
         </div>
 
