@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -23,10 +24,13 @@ public class Rol implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "rol_nombre")
+    @Column(name = "rol_nombre", unique = true, nullable = false)
     private String rolNombre;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<Usuario> usuariosRol;
+    private Set<Usuario> usuarios = new HashSet<>();
 
+    public Rol(String rolNombre) {
+        this.rolNombre = rolNombre;
+    }
 }
