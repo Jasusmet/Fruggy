@@ -18,7 +18,7 @@ public class APIUsuario {
     private SrvcUsuario usuarioSrvc;
 
     @PostMapping("/crear")
-    public Usuario crearUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String telefono, @RequestParam Set<String> roles) {
+    public Usuario crearUsuario(@RequestParam String email, @RequestParam String password, @RequestParam String telefono, @RequestParam Set<String> roles) throws Exception {
         Usuario usuario = new Usuario();
         usuario.setEmail(email);
         usuario.setPassword(password);

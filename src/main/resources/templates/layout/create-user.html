@@ -4,13 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="#{page.title}">Creación de Usuario</title>
-    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
     <link href="/static/css/styleFruggy.css" rel="stylesheet">
 </head>
 <body>
-<!-- User Creation Section Begin -->
 <section class="user-creation spad" th:fragment="create-user">
     <div class="container">
         <div class="row">
@@ -19,23 +16,42 @@
                     <h2>Crear Usuario</h2>
                 </div>
                 <div class="user__creation__form">
-                    <form th:action="@{/guardar}" method="post">
+                    <form th:action="@{/guardar}" method="post" th:object="${usuario}">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6">
-                                <input type="text" th:field="*{email}" placeholder="Correo Electrónico" required>
+                            <!-- Campo de Email -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{email}" class="form-control" placeholder="Correo Electrónico" required>
                             </div>
-                            <div class="col-lg-6 col-md-6">
-                                <input type="password" th:field="*{password}" placeholder="Contraseña" required>
+
+                            <!-- Campo de Contraseña -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="password" th:field="*{password}" class="form-control" placeholder="Contraseña" required>
                             </div>
-                            <!-- Otros campos para el usuario y detalles -->
-                            <div class="col-lg-6 col-md-6">
-                                <select class="form-control" th:field="*{roles}" required>
+
+                            <!-- Checkbox Activo -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" th:field="*{active}" class="form-check-input">
+                                    <label class="form-check-label">Activo</label>
+                                </div>
+                            </div>
+
+                            <!-- Campo de Teléfono -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono" required>
+                            </div>
+
+                            <!-- Selección de Roles -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <select class="form-control" th:field="*{roles}" multiple>
                                     <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.rolNombre}">Rol</option>
                                 </select>
                             </div>
+
+                            <!-- Botones -->
                             <div class="col-lg-12">
-                                <button type="submit" class="site-btn">Crear Cuenta</button>
-                                <button type="reset" class="site-btn">Restablecer</button>
+                                <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+                                <button type="reset" class="btn btn-secondary">Restablecer</button>
                             </div>
                         </div>
                     </form>
@@ -47,9 +63,6 @@
         </div>
     </div>
 </section>
-<!-- User Creation Section End -->
-
-<!-- Js Plugins -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="../static/js/main.js"></script>

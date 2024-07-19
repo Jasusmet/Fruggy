@@ -29,4 +29,8 @@ public class Rol implements Serializable {
 
     @ManyToMany(mappedBy = "roles")
     private Set<Usuario> usuarios = new HashSet<>();
+
+    public Rol(String rolNombre) {
+        this.rolNombre = rolNombre;
+    }
 }

@@ -41,9 +41,11 @@ public class Usuario implements Serializable, UserDetails {
     private String telefono;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "usuarioRol",
+    @JoinTable(
+            name = "usuario_rol",
             joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "rol_id"))
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
     private Set<Rol> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "usuarioDireccion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

@@ -26,10 +26,8 @@ public class UsuarioCtrl {
     private SrvcRol srvcRol;
 
     @GetMapping("/usuarios")
-    //  @PreAuthorize("hasRole('ROLE_ADMIN')") //lo quito porque me lleva a la pagina de inicio, hay que ver como poner que cada url te lleva a la pagina que deseas mientras hacer el log in
     public String usuarios(Model model) {
         List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
-        // Cargar los roles de cada usuario
         listaUsuarios.forEach(usuario -> {
             Set<Rol> rolesUsuario = usuariosSrvc.obtenerRolesPorUsuario(usuario.getId());
             usuario.setRoles(rolesUsuario);
@@ -39,29 +37,35 @@ public class UsuarioCtrl {
     }
 
     @GetMapping("/agregar")
-    public String agregar(Usuario usuario, Detalle detalle, Model model) {
+    public String agregar(Usuario usuario, Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("detalle", new Detalle());
-        // Obtener la lista de roles y añadir al modelo
         List<Rol> roles = srvcRol.buscarEntidades();
+        // para comprobar
+        System.out.println("Roles enviados a la vista: " + roles.size());
         model.addAttribute("roles", roles);
-        return "modificar";
+        return "create-user";
     }
 
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute Usuario usuario,
-                          @RequestParam(value = "rolesSeleccionados", required = false) List<Long> rolesSeleccionados,
+                          @RequestParam(value = "roles", required = false) List<Long> rolesSeleccionados,
                           Model model) throws Exception {
-        // Obtener roles seleccionados y asignar al usuario
-        Set<String> roles = new HashSet<>();
+        System.out.println("Roles seleccionados: " + rolesSeleccionados);
+        Set<Rol> roles = new HashSet<>();
         if (rolesSeleccionados != null) {
             for (Long roleId : rolesSeleccionados) {
                 Optional<Rol> rolOpt = srvcRol.encuentraPorId(roleId);
-                rolOpt.ifPresent(rol -> roles.add(rol.getRolNombre()));
+                if (rolOpt.isPresent()) {
+                    roles.add(rolOpt.get());
+                } else {
+                    System.out.println("Rol con ID " + roleId + " no encontrado.");
+                }
             }
         }
-        // Guardar el usuario y asegurarse de que se persistan los roles seleccionados
-        usuariosSrvc.guardar(usuario, roles);
+        System.out.println("Roles asignados al usuario: " + roles);
+        usuario.setRoles(roles);
+        usuariosSrvc.guardar(usuario);
         return "redirect:/usuarios";
     }
 
@@ -69,14 +73,23 @@ public class UsuarioCtrl {
     public String asignarRol(@RequestParam("usuarioId") Long usuarioId, @RequestParam("rolId") Long rolId) throws Exception {
         Optional<Usuario> usuarioOpt = usuariosSrvc.encuentraPorId(usuarioId);
         Optional<Rol> rolOpt = srvcRol.encuentraPorId(rolId);
+        if (usuarioOpt.isPresent() && rolOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            Rol rol = rolOpt.get();
+            srvcRol.asignarRolAUsuario(usuario, rol);
+        }
+        return "redirect:/usuarios";
+    }
+
+    @PostMapping("/quitar-rol")
+    public String quitarRol(@RequestParam("usuarioId") Long usuarioId, @RequestParam("rolId") Long rolId) throws Exception {
+        Optional<Usuario> usuarioOpt = usuariosSrvc.encuentraPorId(usuarioId);
+        Optional<Rol> rolOpt = srvcRol.encuentraPorId(rolId);
 
         if (usuarioOpt.isPresent() && rolOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             Rol rol = rolOpt.get();
-            usuario.getRoles().add(rol);
-            Set<String> roles = new HashSet<>();
-            roles.add(rol.getRolNombre());
-            usuariosSrvc.guardar(usuario, roles);
+            srvcRol.quitarRol(usuario, rol);
         }
         return "redirect:/usuarios";
     }

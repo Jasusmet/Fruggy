@@ -23,7 +23,7 @@
         </div>
         <div class="mb-3">
             <label for="password" class="form-label">Contraseña</label>
-            <input type="password" th:field="*{password}" class="form-control" required>
+            <input type="password" th:field="*{password}" class="form-control">
         </div>
         <div class="mb-3">
             <label for="telefono" class="form-label">Teléfono</label>
@@ -35,7 +35,7 @@
             <label>Roles:</label>
             <div th:each="rol : ${roles}">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" th:id="${'rol-' + rol.id}" th:name="rolesSeleccionados" th:value="${rol.id}">
+                    <input class="form-check-input" type="checkbox" th:id="${'rol-' + rol.id}" th:name="rolesSeleccionados" th:value="${rol.id}" th:checked="${usuario.roles.contains(rol)}">
                     <label class="form-check-label" th:for="${'rol-' + rol.id}" th:text="${rol.rolNombre}">Rol</label>
                 </div>
             </div>

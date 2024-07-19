@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class SrvcUsuario extends AbstractSrvc {
+public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
 
     private final RepoUsuario repoUsuario;
     private final RepoRol repoRol;
@@ -32,45 +32,34 @@ public class SrvcUsuario extends AbstractSrvc {
     }
 
     public Optional<Usuario> encuentraPorId(long id) {
-        return repoUsuario.findById((int) id);
+        return repoUsuario.findById((long) id);
     }
 
-    public void guardar(Usuario usuario, Set<String> roles) {
-        // Encriptar la contraseña antes de asignarla al usuario
+    @Override
+    public Usuario guardar(Usuario usuario) throws Exception {
         if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
-        // Asignar roles al usuario antes de guardar
-        Set<Rol> usuarioRoles = new HashSet<>();
-        if (roles == null || roles.isEmpty()) {
-            // Si no se especifican roles, asignar el rol de usuario por defecto
-            Rol userRole = repoRol.findByRolNombre("ROLE_USER");
-            if (userRole != null) {
-                usuarioRoles.add(userRole);
-            }
-        } else {
-            for (String rolNombre : roles) {
-                Rol rol = repoRol.findByRolNombre(rolNombre);
-                if (rol != null) {
-                    usuarioRoles.add(rol);
-                }
+        return super.guardar(usuario);
+    }
+    public Usuario guardar(Usuario usuario, Set<String> roles) throws Exception {
+        Set<Rol> rolesSet = new HashSet<>();
+        for (String rolNombre : roles) {
+            Rol rol = repoRol.findByRolNombre(rolNombre);
+            if (rol != null) {
+                rolesSet.add(rol);
             }
         }
-        usuario.setRoles(usuarioRoles);
-        // Guardar los detalles del usuario si existen
-        if (usuario.getDetalle() != null) {
-            usuario.getDetalle().setUsuario(usuario); // Asegurar la relación bidireccional
-        }
-        repoUsuario.save(usuario); // Guardar usuario junto con roles y detalles
+        usuario.setRoles(rolesSet);
+        return guardar(usuario);
+    }
+    public Set<Rol> obtenerRolesPorUsuario(Long usuarioId) {
+        Optional<Usuario> usuario = encuentraPorId(usuarioId);
+        return usuario.map(Usuario::getRoles).orElse(new HashSet<>());
     }
 
     public void eliminarPorId(long id) {
-        repoUsuario.deleteById((int) id);
-    }
-
-    public Set<Rol> obtenerRolesPorUsuario(Long usuarioId) {
-        Optional<Usuario> usuarioOpt = repoUsuario.findById(Math.toIntExact(usuarioId));
-        return usuarioOpt.map(Usuario::getRoles).orElse(Collections.emptySet());
+        repoUsuario.deleteById((long) id);
     }
 
 }
