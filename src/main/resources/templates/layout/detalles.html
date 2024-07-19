@@ -31,20 +31,15 @@
             <input type="number" th:field="*{edad}" class="form-control" required>
         </div>
         <div class="mb-3">
-            <label for="genero" class="form-label">Género</label>
+            <label for="detallesGenero.id" class="form-label">Género</label>
             <select th:field="*{detallesGenero.id}" class="form-select">
                 <option th:each="genero : ${generos}" th:value="${genero.id}" th:text="${genero.nombre}">Género</option>
             </select>
         </div>
-        <div class="mb-3">
-            <label for="usuarioId" class="form-label">Usuario</label>
-            <select th:field="*{usuario.id}" class="form-select">
-                <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.email}">Usuario</option>
-            </select>
-        </div>
+
         <div class="mb-3">
             <label for="file" class="form-label">Imagen</label>
-            <input type="file" th:field="*{file}" class="form-control">
+            <input type="file" name="file" class="form-control">
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>

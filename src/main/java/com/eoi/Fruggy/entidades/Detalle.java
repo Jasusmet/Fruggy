@@ -21,7 +21,7 @@ import java.util.Set;
 public class Detalle implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name ="detalles_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
@@ -40,8 +40,7 @@ public class Detalle implements Serializable {
     @Column (name ="edad")
     private Integer edad;
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
+    @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Usuario usuario;
 
     @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

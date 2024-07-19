@@ -39,7 +39,7 @@ public class DetalleTest {
         //detalle.setDetalleGenero(genero);
 
         Detalle detalleGuardado = repoDetalle.save(detalle);
-        Optional <Detalle> detalleRecuperado= repoDetalle.findById((int) detalleGuardado.getId());
+        Optional <Detalle> detalleRecuperado= repoDetalle.findById((long) detalleGuardado.getId());
 
 
         assertNotNull(detalleRecuperado.get().getId());

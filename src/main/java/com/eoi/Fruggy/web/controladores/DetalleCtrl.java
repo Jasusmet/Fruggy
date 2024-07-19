@@ -1,9 +1,6 @@
 package com.eoi.Fruggy.web.controladores;
 
-import com.eoi.Fruggy.entidades.Detalle;
-import com.eoi.Fruggy.entidades.Genero;
-import com.eoi.Fruggy.entidades.Rol;
-import com.eoi.Fruggy.entidades.Usuario;
+import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +49,7 @@ public class DetalleCtrl {
     @PostMapping("/detalles/{id}")
     public String guardarDetalle(@PathVariable("id") Long id,
                                  @ModelAttribute Detalle detalleActualizado,
-                                 @RequestParam("rol") String rol,
                                  @RequestParam("file") MultipartFile file,
-                                 @RequestParam("usuarioId") Long usuarioId,
                                  Model model) throws Exception {
         Optional<Detalle> detalleOptional = detallesSrvc.encuentraPorId(id);
         if (detalleOptional.isPresent()) {
@@ -65,20 +60,8 @@ public class DetalleCtrl {
             existente.setApellido(detalleActualizado.getApellido());
             existente.setEdad(detalleActualizado.getEdad());
             existente.setDetallesGenero(detalleActualizado.getDetallesGenero());
-            // Establecer el usuario asociado
-            if (usuarioId != null) {
-                Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(usuarioId);
-                if (usuarioOptional.isPresent()) {
-                    Usuario usuario = usuarioOptional.get();
-                    existente.setUsuario(usuario);
-                    usuario.setDetalle(existente); // Mantener la relación bidireccional
-                    usuarioSrvc.guardar(usuario); // Guardar el usuario actualizado
-                } else {
-                    model.addAttribute("error", "Usuario no encontrado");
-                    return "error";
-                }
-            }
-            // Manejo img
+
+            // Manejo de la imagen
             if (!file.isEmpty()) {
                 try {
                     // Guardar la imagen en el servidor
@@ -90,13 +73,27 @@ public class DetalleCtrl {
                     String fileName = file.getOriginalFilename();
                     File targetFile = new File(directoryPath + File.separator + fileName);
                     file.transferTo(targetFile);
-                    // Asignar la ruta de la imagen a la entidad
-                    existente.setPathImagen(directoryPath + "/" + fileName);
+
+                    // Crear o actualizar la entidad Imagen
+                    Imagen imagen = existente.getImagen();
+                    if (imagen == null) {
+                        imagen = new Imagen();
+                        imagen.setDetalle(existente);
+                    }
+                    imagen.setNombreArchivo(fileName);
+                    imagen.setRuta(directoryPath);
+                    imagen.setPathImagen("/images/" + fileName); // URL relativa para acceder a la imagen
+
+                    // Guardar la imagen y establecer la relación bidireccional
+                    imagenSrvc.guardar(imagen);
+                    existente.setImagen(imagen);
+
                 } catch (IOException e) {
                     model.addAttribute("error", "Error al guardar la imagen: " + e.getMessage());
                     return "error";
                 }
             }
+
             // Guardar el detalle actualizado
             try {
                 detallesSrvc.guardar(existente);
@@ -117,9 +114,7 @@ public class DetalleCtrl {
     public String verDetallesActualizados(@PathVariable("id") Long id, Model model) {
         Optional<Detalle> detalleActualizado = detallesSrvc.encuentraPorId(id);
         if (detalleActualizado.isPresent()) {
-            Detalle detalle = detalleActualizado.get();
-            System.out.println("Detalle encontrado: " + detalle.getNombreUsuario()); // depuración
-            model.addAttribute("detalle", detalle);
+            model.addAttribute("detalle", detalleActualizado.get());
             return "detalles-actualizados";
         } else {
             model.addAttribute("error", "Detalle no encontrado");
