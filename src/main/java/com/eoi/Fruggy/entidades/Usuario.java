@@ -40,11 +40,11 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name = "telefono", length = 30)
     private String telefono;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "usuarioRol",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "rol_id"))
-    private Set<Rol> roles;
+    private Set<Rol> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "usuarioDireccion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Direccion> usuarioDirecciones;
@@ -52,9 +52,8 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuarioDonacion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Donacion> usuarioDonaciones;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detalle_id", referencedColumnName = "id")
-    private Detalle detalle; // Relación con Detalle hay que hcerlo One to one para que tenga el mismo id detalla que usuario / preguntar profesores
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
+    private Detalle detalle;
 
     @OneToOne(mappedBy = "cestaUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cesta cestaUsuarios; // No se usa Set <> con OneToOne

@@ -29,11 +29,6 @@ public class ImagenCtrl {
             Imagen imagen = new Imagen();
             imagen.setNombreArchivo(file.getOriginalFilename());
             imagen.setRuta(ruta);
-            // Asignar la imagen al usuario, supermercado o producto
-            // imagen.setUsuario(usuario);
-            // imagen.setSupermercado(supermercado);
-            // imagen.setProducto(producto);
-
             try {
                 repoImagen.save(imagen);
                 model.addAttribute("mensaje", "Imagen subida correctamente");

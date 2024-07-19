@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Detalles</title>
+    <title>Detalles del Usuario</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <h1>Detalles del Usuario</h1>
@@ -9,27 +10,27 @@
     <form th:action="@{/detalles/{id}(id=${detalle.id})}" method="post" enctype="multipart/form-data">
         <div>
             <label for="nombreUsuario">Nombre de Usuario:</label>
-            <input type="text" id="nombreUsuario" name="nombreUsuario" th:value="${detalle.nombreUsuario}">
+            <input type="text" id="nombreUsuario" name="nombreUsuario" th:value="${detalle.nombreUsuario}" required />
         </div>
         <div>
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" th:value="${detalle.nombre}">
+            <input type="text" id="nombre" name="nombre" th:value="${detalle.nombre}" required />
         </div>
         <div>
             <label for="apellido">Apellido:</label>
-            <input type="text" id="apellido" name="apellido" th:value="${detalle.apellido}">
+            <input type="text" id="apellido" name="apellido" th:value="${detalle.apellido}" required />
         </div>
         <div>
             <label for="edad">Edad:</label>
-            <input type="number" id="edad" name="edad" th:value="${detalle.edad}">
+            <input type="number" id="edad" name="edad" th:value="${detalle.edad}" required />
         </div>
         <div>
             <label for="detallesGenero">Género:</label>
-            <select id="detallesGenero" name="detallesGenero">
+            <select id="detallesGenero" name="detallesGenero" required>
                 <option th:each="genero : ${generos}"
                         th:value="${genero.id}"
                         th:text="${genero.descripcion}"
-                        th:selected="${genero.id} == ${detalle.detallesGenero.id}">
+                        th:selected="${genero.id} == ${detalle.detallesGenero?.id}">
                 </option>
             </select>
         </div>
@@ -40,17 +41,27 @@
         <div>
             <label for="rol">Rol:</label>
             <select id="rol" name="rol">
-                <option value="ROLE_USER">Usuario</option>
-                <option value="ROLE_ADMIN">Administrador</option>
+                <option value="ROLE_USER" th:selected="${detalle.usuario?.roles?.contains('ROLE_USER')}">Usuario</option>
+                <option value="ROLE_ADMIN" th:selected="${detalle.usuario?.roles?.contains('ROLE_ADMIN')}">Administrador</option>
+            </select>
+        </div>
+        <div>
+            <label for="usuarioId">Usuario:</label>
+            <select id="usuarioId" name="usuarioId">
+                <option th:each="usuario : ${usuarios}"
+                        th:value="${usuario.id}"
+                        th:text="${usuario.email}"
+                        th:selected="${usuario.id} == ${detalle.usuario?.id}">
+                </option>
             </select>
         </div>
         <button type="submit">Guardar</button>
     </form>
-    <div th:if="${error}">
-        <p th:text="${error}" style="color: red;"></p>
+    <div th:if="${error}" class="error">
+        <p th:text="${error}"></p>
     </div>
-    <div th:if="${mensaje}">
-        <p th:text="${mensaje}" style="color: green;"></p>
+    <div th:if="${mensaje}" class="mensaje">
+        <p th:text="${mensaje}"></p>
     </div>
 </div>
 </body>

@@ -7,17 +7,14 @@ import com.eoi.Fruggy.servicios.SrvcRol;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+
 
 @Controller
 @Slf4j
@@ -32,6 +29,11 @@ public class UsuarioCtrl {
     //  @PreAuthorize("hasRole('ROLE_ADMIN')") //lo quito porque me lleva a la pagina de inicio, hay que ver como poner que cada url te lleva a la pagina que deseas mientras hacer el log in
     public String usuarios(Model model) {
         List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
+        // Cargar los roles de cada usuario
+        listaUsuarios.forEach(usuario -> {
+            Set<Rol> rolesUsuario = usuariosSrvc.obtenerRolesPorUsuario(usuario.getId());
+            usuario.setRoles(rolesUsuario);
+        });
         model.addAttribute("usuarios", listaUsuarios);
         return "usuarios";
     }
@@ -50,25 +52,21 @@ public class UsuarioCtrl {
     public String guardar(@ModelAttribute Usuario usuario,
                           @RequestParam(value = "rolesSeleccionados", required = false) List<Long> rolesSeleccionados,
                           Model model) throws Exception {
-        Detalle detalle = new Detalle();
-        detalle.setNombreUsuario(usuario.getEmail());
-        usuario.setDetalle(detalle);
-
         // Obtener roles seleccionados y asignar al usuario
-        if (usuario.getRoles() == null) {
-            usuario.setRoles(new HashSet<>());
+        Set<String> roles = new HashSet<>();
+        if (rolesSeleccionados != null) {
+            for (Long roleId : rolesSeleccionados) {
+                Optional<Rol> rolOpt = srvcRol.encuentraPorId(roleId);
+                rolOpt.ifPresent(rol -> roles.add(rol.getRolNombre()));
+            }
         }
-        for (Long roleId : rolesSeleccionados) {
-            Optional<Rol> rolOpt = srvcRol.encuentraPorId(roleId);
-            rolOpt.ifPresent(rol -> usuario.getRoles().add(rol));
-        }
-
-        usuariosSrvc.guardar(usuario);
+        // Guardar el usuario y asegurarse de que se persistan los roles seleccionados
+        usuariosSrvc.guardar(usuario, roles);
         return "redirect:/usuarios";
     }
 
     @PostMapping("/asignar-rol")
-    public String asignarRol(@RequestParam("usuarioId") Long usuarioId, @RequestParam("rolId") Long rolId) {
+    public String asignarRol(@RequestParam("usuarioId") Long usuarioId, @RequestParam("rolId") Long rolId) throws Exception {
         Optional<Usuario> usuarioOpt = usuariosSrvc.encuentraPorId(usuarioId);
         Optional<Rol> rolOpt = srvcRol.encuentraPorId(rolId);
 
@@ -76,11 +74,12 @@ public class UsuarioCtrl {
             Usuario usuario = usuarioOpt.get();
             Rol rol = rolOpt.get();
             usuario.getRoles().add(rol);
-            usuariosSrvc.guardar(usuario);
+            Set<String> roles = new HashSet<>();
+            roles.add(rol.getRolNombre());
+            usuariosSrvc.guardar(usuario, roles);
         }
         return "redirect:/usuarios";
     }
-
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") long id, Model model) {

@@ -40,9 +40,9 @@ public class Detalle implements Serializable {
     @Column (name ="edad")
     private Integer edad;
 
-    @OneToOne(mappedBy = "detalle") // se ha cambiado la relacion de Many to One to ONE TO ONE
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
-
 
     @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Imagen imagen;

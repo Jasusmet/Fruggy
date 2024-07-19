@@ -3,10 +3,8 @@ package com.eoi.Fruggy.web.controladores;
 import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Genero;
 import com.eoi.Fruggy.entidades.Rol;
-import com.eoi.Fruggy.servicios.SrvcDetalle;
-import com.eoi.Fruggy.servicios.SrvcGenero;
-import com.eoi.Fruggy.servicios.SrvcImagen;
-import com.eoi.Fruggy.servicios.SrvcRol;
+import com.eoi.Fruggy.entidades.Usuario;
+import com.eoi.Fruggy.servicios.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,20 +31,21 @@ public class DetalleCtrl {
     private SrvcImagen imagenSrvc;
     @Autowired
     private SrvcRol rolSrvc;
+    @Autowired
+    private SrvcUsuario usuarioSrvc;
 
     @GetMapping("/detalles/{id}")
     public String verDetalle(@PathVariable("id") Long id, Model model) {
         Optional<Detalle> detalle = detallesSrvc.encuentraPorId(id);
         if (detalle.isPresent()) {
-            List<Genero> generos = generoSrvc.buscarEntidades();
-            List<Rol> roles = rolSrvc.buscarEntidades();
             model.addAttribute("detalle", detalle.get());
-            model.addAttribute("generos", generos);
-            model.addAttribute("roles", roles);
+            model.addAttribute("generos", generoSrvc.buscarEntidades());
+            model.addAttribute("roles", rolSrvc.buscarEntidades());
+            model.addAttribute("usuarios", usuarioSrvc.buscarEntidades());
             return "detalles";
         } else {
             model.addAttribute("error", "Detalle no encontrado");
-            return "error"; // Editar `error.html`
+            return "error"; // Debes tener un template de error llamado `error.html`
         }
     }
 
@@ -55,25 +54,31 @@ public class DetalleCtrl {
                                  @ModelAttribute Detalle detalleActualizado,
                                  @RequestParam("rol") String rol,
                                  @RequestParam("file") MultipartFile file,
-                                 Model model) {
+                                 @RequestParam("usuarioId") Long usuarioId,
+                                 Model model) throws Exception {
         Optional<Detalle> detalleOptional = detallesSrvc.encuentraPorId(id);
         if (detalleOptional.isPresent()) {
             Detalle existente = detalleOptional.get();
-
+            // Establecer los valores actualizados
             existente.setNombreUsuario(detalleActualizado.getNombreUsuario());
             existente.setNombre(detalleActualizado.getNombre());
             existente.setApellido(detalleActualizado.getApellido());
             existente.setEdad(detalleActualizado.getEdad());
             existente.setDetallesGenero(detalleActualizado.getDetallesGenero());
-
-            Set<Rol> roles = new HashSet<>();
-            if (rol.equals("ROLE_USER")) {
-                roles.add(rolSrvc.getRepo().findByRolNombre("ROLE_USER"));
-            } else if (rol.equals("ROLE_ADMIN")) {
-                roles.add(rolSrvc.getRepo().findByRolNombre("ROLE_ADMIN"));
+            // Establecer el usuario asociado
+            if (usuarioId != null) {
+                Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(usuarioId);
+                if (usuarioOptional.isPresent()) {
+                    Usuario usuario = usuarioOptional.get();
+                    existente.setUsuario(usuario);
+                    usuario.setDetalle(existente); // Mantener la relación bidireccional
+                    usuarioSrvc.guardar(usuario); // Guardar el usuario actualizado
+                } else {
+                    model.addAttribute("error", "Usuario no encontrado");
+                    return "error";
+                }
             }
-            existente.setId(id);
-
+            // Manejo del archivo
             if (!file.isEmpty()) {
                 try {
                     // Guardar la imagen en el servidor
@@ -85,7 +90,6 @@ public class DetalleCtrl {
                     String fileName = file.getOriginalFilename();
                     File targetFile = new File(directoryPath + File.separator + fileName);
                     file.transferTo(targetFile);
-
                     // Asignar la ruta de la imagen a la entidad
                     existente.setPathImagen(directoryPath + "/" + fileName);
                 } catch (IOException e) {
@@ -93,7 +97,7 @@ public class DetalleCtrl {
                     return "error";
                 }
             }
-
+            // Guardar el detalle actualizado
             try {
                 detallesSrvc.guardar(existente);
                 model.addAttribute("detalle", existente);
