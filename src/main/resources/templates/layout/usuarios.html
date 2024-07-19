@@ -28,20 +28,12 @@
 </head>
 <body>
 
-<div class="container">
-    <!-- Botones de idioma -->
-    <div class="text-end mb-3">
-        <form th:action="@{/change-language}" method="post">
-            <button type="submit" name="lang" value="en" class="btn btn-secondary">English</button>
-            <button type="submit" name="lang" value="es" class="btn btn-secondary">Español</button>
-        </form>
-    </div>
-
+<div class="container" th:fragment="usuarios">
     <div th:fragment="usuarios">
         <h1 th:text="#{user.list.header}">Lista Usuarios</h1>
         <a class="btn btn-primary" th:href="@{/agregar}" th:text="#{user.list.create}">Crear Usuario</a>
 
-        <div th:if="${usuarios != null and !usuarios.isEmpty()}">
+        <div th:if="${usuarios != null and not #lists.isEmpty(usuarios)}">
             <table class="table table-striped mt-3">
                 <thead>
                 <tr>
@@ -49,6 +41,7 @@
                     <th th:text="#{user.list.active}">Activo</th>
                     <th th:text="#{user.list.password}">Contraseña</th>
                     <th th:text="#{user.list.phone}">Teléfono</th>
+                    <th th:text="#{user.list.roles}">Roles</th>
                     <th th:text="#{user.list.edit}">Editar</th>
                     <th th:text="#{user.list.delete}">Eliminar</th>
                 </tr>
@@ -56,9 +49,14 @@
                 <tbody>
                 <tr th:each="usuario : ${usuarios}">
                     <td th:text="${usuario.email}">Email</td>
-                    <td th:text="${usuario.active}">Activo</td>
+                    <td th:text="${usuario.active} ? 'Activo' : 'Inactivo'">Activo</td>
                     <td th:text="${usuario.password}">Contraseña</td>
                     <td th:text="${usuario.telefono}">Teléfono</td>
+                    <td>
+                        <ul>
+                            <li th:each="rol : ${usuario.roles}" th:text="${rol.rolNombre}">Rol</li>
+                        </ul>
+                    </td>
                     <td>
                         <a th:href="@{/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{user.list.edit}">Editar</a>
                     </td>
@@ -74,7 +72,7 @@
                 </tbody>
             </table>
         </div>
-        <div th:if="${usuarios == null or usuarios.isEmpty()}">
+        <div th:if="${usuarios == null or #lists.isEmpty(usuarios)}">
             <p th:text="#{user.list.empty}">La lista de usuarios está vacía</p>
         </div>
     </div>

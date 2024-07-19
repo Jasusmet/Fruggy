@@ -1,21 +1,20 @@
 package com.eoi.Fruggy;
 
+import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
+import com.eoi.Fruggy.repositorios.RepoDetalle;
 import com.eoi.Fruggy.repositorios.RepoRol;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
-
 import org.springframework.context.ApplicationListener;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-
 
 /**
  * Clase que se ejecuta al iniciar la aplicación. Implementa {@link ApplicationListener}
@@ -34,7 +33,6 @@ import java.util.Set;
  * predeterminado al inicio de la aplicación.
  * </p>
  */
-
 @Component
 public class ApplicationStartup implements ApplicationListener<ApplicationReadyEvent> {
 
@@ -43,16 +41,17 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
 
     private final RepoUsuario repoUsuario;
     private final RepoRol repoRol;
+    private final RepoDetalle repoDetalle;
 
     /**
      * Constructor de la clase que recibe un {@link RepoUsuario} para interactuar con la base de datos.
      *
      * @param repoUsuario el repositorio de usuarios que se utilizará para guardar los datos del usuario.
      */
-
-    public ApplicationStartup(RepoUsuario repoUsuario, RepoRol repoRol) {
+    public ApplicationStartup(RepoUsuario repoUsuario, RepoRol repoRol, RepoDetalle repoDetalle) {
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
+        this.repoDetalle = repoDetalle;
     }
 
     /**
@@ -67,7 +66,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
      *
      * @param event el evento que indica que la aplicación está lista.
      */
-
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
         Usuario usuario = new Usuario();
@@ -82,8 +80,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         Set<Rol> rols = new HashSet<>();
         rols.add(rol);
         usuario.setRoles(rols);
-
         repoUsuario.save(usuario);
     }
-
 }

@@ -28,7 +28,7 @@ public class Usuario implements Serializable, UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "email", length = 250)
     private String email;
@@ -40,11 +40,13 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name = "telefono", length = 30)
     private String telefono;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "usuarioRol",
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "usuario_rol",
             joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "rol_id"))
-    private Set<Rol> roles;
+            inverseJoinColumns = @JoinColumn(name = "rol_id")
+    )
+    private Set<Rol> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "usuarioDireccion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Direccion> usuarioDirecciones;
@@ -52,9 +54,8 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuarioDonacion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Donacion> usuarioDonaciones;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detalle_id", referencedColumnName = "id")
-    private Detalle detalle; // Relación con Detalle hay que hcerlo One to one para que tenga el mismo id detalla que usuario / preguntar profesores
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
+    private Detalle detalle;
 
     @OneToOne(mappedBy = "cestaUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cesta cestaUsuarios; // No se usa Set <> con OneToOne
@@ -62,6 +63,9 @@ public class Usuario implements Serializable, UserDetails {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "supermercado_id", foreignKey = @ForeignKey(name = "fk_supermercado_usuario"))
     private Supermercado supermercadoUsuario;
+    // Relación con Imagen
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Imagen> imagenes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

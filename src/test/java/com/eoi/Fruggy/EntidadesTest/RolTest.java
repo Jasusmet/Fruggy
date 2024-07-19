@@ -26,18 +26,18 @@ public class RolTest {
 
         assertEquals("Admin", guardarRol.getRolNombre());
 
-        assertNull(guardarRol.getUsuariosRol());
+        assertNull(guardarRol.getUsuarios());
 
         Usuario usuario = new Usuario();
         Set<Usuario> usuarios = new HashSet<>();
         usuarios.add(usuario);
-        guardarRol.setUsuariosRol(usuarios);
+        guardarRol.setUsuarios(usuarios);
 
         repoRol.save(guardarRol);
 
-        Rol rolguardado = repoRol.findById((int) guardarRol.getId()).get();
+        Rol rolguardado = repoRol.findById((long) guardarRol.getId()).get();
 
         assertEquals("Admin", rolguardado.getRolNombre());
-        assertNotNull(rolguardado.getUsuariosRol());
+        assertNotNull(rolguardado.getUsuarios());
     }
 }

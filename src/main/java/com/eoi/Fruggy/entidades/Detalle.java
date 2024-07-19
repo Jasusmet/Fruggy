@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,10 +40,15 @@ public class Detalle implements Serializable {
     @Column (name ="edad")
     private Integer edad;
 
-    @OneToOne(mappedBy = "detalle") // se ha cambiado la relacion de Many to One to ONE TO ONE
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+
+    @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Imagen imagen;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "genero_id", foreignKey = @ForeignKey(name = "fk_detalles_genero"))
     private Genero detallesGenero;
+
 }
