@@ -45,7 +45,7 @@ public class DetalleCtrl {
             return "detalles";
         } else {
             model.addAttribute("error", "Detalle no encontrado");
-            return "error"; // Debes tener un template de error llamado `error.html`
+            return "error";
         }
     }
 
@@ -78,7 +78,7 @@ public class DetalleCtrl {
                     return "error";
                 }
             }
-            // Manejo del archivo
+            // Manejo img
             if (!file.isEmpty()) {
                 try {
                     // Guardar la imagen en el servidor

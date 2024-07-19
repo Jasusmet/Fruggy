@@ -32,13 +32,17 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
     }
 
     public Optional<Usuario> encuentraPorId(long id) {
-        return repoUsuario.findById((long) id);
+        return repoUsuario.findById((Long) id);
     }
 
     @Override
     public Usuario guardar(Usuario usuario) throws Exception {
         if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        }
+        // Actualizar los roles si están presentes
+        if (usuario.getRoles() != null) {
+            usuario.setRoles(new HashSet<>(usuario.getRoles()));
         }
         return super.guardar(usuario);
     }

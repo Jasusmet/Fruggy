@@ -28,7 +28,7 @@ public class Usuario implements Serializable, UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "email", length = 250)
     private String email;

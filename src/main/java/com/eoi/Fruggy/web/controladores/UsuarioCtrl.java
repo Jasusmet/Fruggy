@@ -3,6 +3,7 @@ package com.eoi.Fruggy.web.controladores;
 import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
+import com.eoi.Fruggy.servicios.SrvcDetalle;
 import com.eoi.Fruggy.servicios.SrvcRol;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ public class UsuarioCtrl {
     private SrvcUsuario usuariosSrvc;
     @Autowired
     private SrvcRol srvcRol;
+    @Autowired
+    private SrvcDetalle detalleSrvc;
 
     @GetMapping("/usuarios")
     public String usuarios(Model model) {
@@ -48,10 +51,14 @@ public class UsuarioCtrl {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Usuario usuario,
+    public String guardar(@ModelAttribute Usuario usuario, Detalle detalle,
                           @RequestParam(value = "roles", required = false) List<Long> rolesSeleccionados,
                           Model model) throws Exception {
+
+        // Imprimir roles seleccionados para depuración
         System.out.println("Roles seleccionados: " + rolesSeleccionados);
+
+        // Convertir IDs de roles seleccionados en objetos Rol
         Set<Rol> roles = new HashSet<>();
         if (rolesSeleccionados != null) {
             for (Long roleId : rolesSeleccionados) {
@@ -63,9 +70,27 @@ public class UsuarioCtrl {
                 }
             }
         }
+
+        // Imprimir roles asignados al usuario para depuración
         System.out.println("Roles asignados al usuario: " + roles);
+
+        // Asignar roles al usuario
         usuario.setRoles(roles);
+
+        // Asignar detalle al usuario
+        usuario.setDetalle(detalle);
+
+        // Guardar o actualizar usuario
         usuariosSrvc.guardar(usuario);
+
+        // Guardar o actualizar detalle
+        detalleSrvc.guardar(detalle);
+
+        // Guardar roles actualizados (esto asegura que el nombre del rol se actualice si ha cambiado)
+        for (Rol rol : roles) {
+            srvcRol.actualizarRol(rol);
+        }
+
         return "redirect:/usuarios";
     }
 
