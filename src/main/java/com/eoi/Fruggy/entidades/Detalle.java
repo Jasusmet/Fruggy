@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,8 +25,8 @@ public class Detalle implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column (name ="email",length = 50)
-    private String email;
+    @Column (name ="nombreUsuario",length = 50)
+    private String nombreUsuario;
 
     @Column (name ="nombre",length = 255)
     private String nombre;
@@ -38,10 +40,15 @@ public class Detalle implements Serializable {
     @Column (name ="edad")
     private Integer edad;
 
-    @OneToMany(mappedBy = "detallesUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Usuario> detalleUsuarios;
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Imagen imagen;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "genero_id", foreignKey = @ForeignKey(name = "fk_detalles_genero"))
     private Genero detallesGenero;
+
 }

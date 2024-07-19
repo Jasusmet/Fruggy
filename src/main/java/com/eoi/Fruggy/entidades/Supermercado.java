@@ -29,7 +29,7 @@ public class Supermercado implements Serializable {
     @Column (name ="url",length = 255)
     private String url;
 
-    @Column (name ="imagenPath",length = 255)
+    @Column(name = "imagen_path", length = 500)
     private String imagenPath;
 
     @Column (name ="horario",length = 255)
@@ -44,5 +44,11 @@ public class Supermercado implements Serializable {
     @OneToMany(mappedBy = "valoracionSupermercadoSupermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ValSupermercado> supermercadosValoracionesSupermercados;
 
+    @OneToMany(mappedBy = "supermercadoUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Usuario> supermercadosUsuarios;
+
+    // Relación con Imagen
+    @OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Imagen> imagenes;
 
 }
