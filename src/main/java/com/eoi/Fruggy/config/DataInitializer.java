@@ -8,7 +8,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
+
 
 @Component
 public class DataInitializer {
@@ -19,13 +19,13 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        // Inicializar roles
+        //  roles
         if (repoRol.count() == 0) {
             repoRol.save(new Rol("admin"));
             repoRol.save(new Rol("user"));
         }
 
-        // Inicializar géneros
+        //  géneros
         if (repoGenero.count() == 0) {
             repoGenero.save(new Genero("Masculino"));
             repoGenero.save(new Genero("Femenino"));
