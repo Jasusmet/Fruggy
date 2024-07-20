@@ -21,7 +21,7 @@ public class Producto implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id; // hay que cambiar en todas las entidades a Long sustituyendo a  long
 
     @Column (name ="nombreProducto",length = 45)
     private String nombreProducto;

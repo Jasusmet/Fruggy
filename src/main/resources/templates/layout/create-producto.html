@@ -13,6 +13,7 @@
     <a class="btn btn-primary mb-3" th:href="@{/productos}" th:text="#{product.create.back}">Volver a la lista</a>
 
     <form th:action="@{/producto/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:if="${producto.id != null}" th:name="id" th:value="${producto.id}"/>
         <div class="mb-3">
             <label for="nombreProducto" class="form-label" th:text="#{product.create.nombre}">Nombre del Producto</label>
             <input type="text" class="form-control" id="nombreProducto" th:field="*{nombreProducto}" required>
@@ -37,7 +38,9 @@
             <label for="file" class="form-label">Imagen</label>
             <input type="file" name="file" class="form-control">
         </div>
-        <button type="submit" class="btn btn-success" th:text="#{product.create.save}">Guardar Producto</button>
+        <button type="submit" class="btn btn-primary">
+            <span th:text="${producto.id != null ? 'Actualizar Producto' : 'Guardar Producto'}">Guardar Producto</span>
+        </button>
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
