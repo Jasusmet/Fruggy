@@ -27,9 +27,8 @@ public class Subcategoria implements Serializable {
     @Column (name ="tipo")
     private String tipo;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "productos_id", foreignKey = @ForeignKey(name = "fk_subcategoria_productos"))
-    private Producto subcategoriaProducto;
+    @OneToMany(mappedBy = "subcategoria", fetch = FetchType.LAZY)
+    private Set<Producto> productos;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_subcategoria"))

@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductoCtrl {
@@ -84,7 +85,6 @@ public class ProductoCtrl {
                 return "create-productos";
             }
         } else {
-            // No se proporciona imagen, entonces asegúrate de que `producto.imagen` se maneje como `null`
             producto.setImagen(null);
         }
 
@@ -114,11 +114,22 @@ public class ProductoCtrl {
         productosSrvc.guardar(producto);
         return "redirect:/admin/productos";
     }
+    @GetMapping("/producto/editar/{id}")
+    public String editarProducto(@PathVariable("id") long id, Model model) {
+        Optional<Producto> producto = productosSrvc.getRepo().findById(id);
+        if (producto.isPresent()) {
+            model.addAttribute("producto", producto.get());
+            return "create-productos";
+        } else {
+            model.addAttribute("error", "Producto no encontrado");
+            return "error";
+        }
+    }
 
     @PostMapping("/producto/eliminar/{id}")
     public String eliminarProducto(@PathVariable int id) throws Exception {
         productosSrvc.eliminarPorId(id);
-        return "redirect:/productos";
+        return "redirect:/admin/productos";
     }
 
 }
