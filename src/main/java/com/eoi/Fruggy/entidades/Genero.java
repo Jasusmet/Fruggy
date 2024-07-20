@@ -28,6 +28,9 @@ public class Genero implements Serializable {
     private String descripcion;
 
     @OneToMany(mappedBy = "detallesGenero", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Detalle> detallesGenero;
+    private Set<Detalle> detallesGenero = new HashSet<>();
 
+    public Genero(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
