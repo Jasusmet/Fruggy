@@ -48,12 +48,6 @@ public class Usuario implements Serializable, UserDetails {
     )
     private Set<Rol> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "usuarioDireccion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Direccion> usuarioDirecciones;
-
-    @OneToMany(mappedBy = "usuarioDonacion", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Donacion> usuarioDonaciones;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "detalle_id", referencedColumnName = "detalles_id")
     private Detalle detalle;

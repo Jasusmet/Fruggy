@@ -1,8 +1,6 @@
 package com.eoi.Fruggy.EntidadesTest;
 
-import com.eoi.Fruggy.entidades.Direccion;
 import com.eoi.Fruggy.entidades.Usuario;
-import com.eoi.Fruggy.repositorios.RepoDireccion;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

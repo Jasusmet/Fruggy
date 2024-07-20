@@ -31,6 +31,7 @@ public class DetalleCtrl {
     @Autowired
     private SrvcUsuario usuarioSrvc;
 
+
     @GetMapping("/detalles/{id}")
     public String verDetalle(@PathVariable("id") Long id, Model model) {
         Optional<Detalle> detalle = detallesSrvc.encuentraPorId(id);
@@ -47,7 +48,7 @@ public class DetalleCtrl {
     @PostMapping("/detalles/{id}")
     public String guardarDetalle(@PathVariable("id") Long id,
                                  @ModelAttribute Detalle detalleActualizado,
-                                 @RequestParam(value = "file", required = false) MultipartFile file, // para no tener que subir la imagen
+                                 @RequestParam(value = "file", required = false) MultipartFile file,
                                  @RequestParam("generoId") Long generoId,
                                  Model model) throws Exception {
         Optional<Detalle> detalleOptional = detallesSrvc.encuentraPorId(id);
@@ -58,24 +59,24 @@ public class DetalleCtrl {
             existente.setNombre(detalleActualizado.getNombre());
             existente.setApellido(detalleActualizado.getApellido());
             existente.setEdad(detalleActualizado.getEdad());
-
-            // Manejo del género
-            if (generoId != null) {
-                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(generoId);
-                if (generoOptional.isPresent()) {
-                    Genero genero = generoOptional.get();
-                    existente.setDetallesGenero(genero);
-                } else {
-                    model.addAttribute("error", "Género no encontrado");
-                    return "error";
-                }
+            existente.setDetallesGenero(detalleActualizado.getDetallesGenero());
+            // Establecer el género
+            Optional<Genero> genero = generoSrvc.getRepo().findById(generoId);
+            if (genero.isPresent()) {
+                existente.setDetallesGenero(genero.get());
             } else {
-                model.addAttribute("error", "Género no especificado");
+                model.addAttribute("error", "Género no encontrado");
                 return "error";
             }
 
+            // Campos de dirección
+            existente.setCalle(detalleActualizado.getCalle());
+            existente.setMunicipio(detalleActualizado.getMunicipio());
+            existente.setPais(detalleActualizado.getPais());
+            existente.setCodigopostal(detalleActualizado.getCodigopostal());
+
             // Manejo de la imagen
-            if (!file.isEmpty()) {
+            if (file != null && !file.isEmpty()) {
                 try {
                     // Guardar la imagen en el servidor
                     String directoryPath = "D:\\img";

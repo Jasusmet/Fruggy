@@ -20,10 +20,19 @@
                     <span th:unless="${detalle.detallesGenero}">Sin género especificado</span>
                 </p>
                 <p><strong>Imagen:</strong>
-                    <span th:if="${detalle.imagen}">
+                    <span th:if="${detalle.imagen != null}">
                         <img th:src="@{${detalle.imagen.pathImagen}}" alt="Imagen del Usuario" class="img-fluid" style="max-width: 200px;">
                     </span>
-                    <span th:unless="${detalle.imagen}">No hay imagen disponible</span>
+                    <span th:unless="${detalle.imagen != null}">No hay imagen disponible</span>
+                </p>
+                <p><strong>Dirección:</strong>
+                    <span th:if="${detalle.calle != null}">
+                        <p><strong>Calle:</strong> <span th:text="${detalle.calle}"></span></p>
+                        <p><strong>Municipio:</strong> <span th:text="${detalle.municipio}"></span></p>
+                        <p><strong>País:</strong> <span th:text="${detalle.pais}"></span></p>
+                        <p><strong>Código Postal:</strong> <span th:text="${detalle.codigopostal}"></span></p>
+                    </span>
+                    <span th:unless="${detalle.calle != null}">No hay dirección disponible</span>
                 </p>
             </div>
         </div>
@@ -34,9 +43,8 @@
     <div th:if="${mensaje}" class="alert alert-success mt-3">
         <p th:text="${mensaje}"></p>
     </div>
-    <a class="btn btn-secondary mt-3" th:href="@{/detalles/{id}(id=${detalle.id})}">Atras</a>
-    <a class="btn btn-primary mt-3" th:href="@{/usuarios}">Regresar a Usuarios</a>
-
+    <a class="btn btn-secondary mt-3" th:href="@{/detalles/{id}(id=${detalle.id})}">Regresar</a>
+    <a class="btn btn-secondary mt-3" th:href="@{/usuarios}">Regresar a Usuarios</a>
 </div>
 </body>
 </html>
