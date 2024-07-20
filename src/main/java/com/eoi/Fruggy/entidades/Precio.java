@@ -33,6 +33,9 @@ public class Precio implements Serializable {
     @Column (name ="activo" , nullable = false )
     private Boolean activo;
 
+    @Column(name = "valor")
+    private Double valor;
+
     @OneToMany(mappedBy = "preciosCesta", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Cesta> cestaPrecios;
 
@@ -53,4 +56,8 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "descuentosPrecios", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Descuento> preciosDescuentos;
 
+    // Método para obtener el valor del precio
+    public String getPrecio() {
+        return (valor != null) ? String.format("%.2f", valor) : "No disponible";
+    }
 }

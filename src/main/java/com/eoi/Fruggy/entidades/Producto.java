@@ -35,13 +35,21 @@ public class Producto implements Serializable {
     @Column (name ="activo", nullable = true)
     private Boolean activo;
 
+    @Column(name = "pathImagen", length = 500)
+    private String pathImagen;
+
     @OneToOne(mappedBy = "precioProductos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Precio productoPrecios;
 
     @OneToOne(mappedBy = "subcategoriaProducto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Subcategoria productoSubcategorias;
 
-    // Relación con Imagen
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Imagen> imagenes;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "imagen_id", referencedColumnName = "id")
+    private Imagen imagen;
+
+    public String getPrecio() {
+        return (productoPrecios != null) ? productoPrecios.getPrecio() : "No disponible";
+    }
 }
+
