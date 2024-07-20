@@ -80,17 +80,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         Set<Rol> rols = new HashSet<>();
         rols.add(rol);
         usuario.setRoles(rols);
-
-        // Crear el detalle y asociar el usuario
-        Detalle detalle = new Detalle();
-        detalle.setNombreUsuario("mihai1");
-        detalle.setEdad(21);
-        detalle.setApellido("Livadaru");
-
-        // Asociar el detalle con el usuario
-        detalle.setUsuario(usuario);
-        usuario.setDetalle(detalle);
-
         repoUsuario.save(usuario);
     }
 }

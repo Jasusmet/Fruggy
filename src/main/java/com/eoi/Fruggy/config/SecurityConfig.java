@@ -36,13 +36,13 @@ public class SecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // inicio de sesión personalizada
+        // Inicio de sesión personalizada
         http.formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .permitAll()
         );
-        //cierre de sesión
+        // Cierre de sesión
         http.logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
@@ -57,12 +57,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/**").permitAll()
                 .anyRequest().authenticated()
 
-                //Página de Acceso Denegado
+                // Página de Acceso Denegado
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/accessDenied")
 
-                //Desactivación de CSRF y CORS
+                // Desactivación de CSRF y CORS
                 .and()
                 .csrf().disable()
                 .cors().disable()
@@ -71,7 +71,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    //  para autenticar a los usuarios.
+    // Para autenticar a los usuarios.
     private AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
