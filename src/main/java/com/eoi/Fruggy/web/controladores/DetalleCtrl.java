@@ -108,7 +108,7 @@ public class DetalleCtrl {
                 }
             }
 
-            // Guardar el detalle actualizado
+            // Guardar el detalle
             try {
                 detallesSrvc.guardar(existente);
                 model.addAttribute("detalle", existente);
@@ -123,7 +123,6 @@ public class DetalleCtrl {
             return "error";
         }
     }
-
     @GetMapping("/detalles-actualizados/{id}")
     public String verDetallesActualizados(@PathVariable("id") Long id, Model model) {
         Optional<Detalle> detalleActualizado = detallesSrvc.encuentraPorId(id);
