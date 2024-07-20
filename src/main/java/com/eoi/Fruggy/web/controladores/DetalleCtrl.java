@@ -68,7 +68,6 @@ public class DetalleCtrl {
                 model.addAttribute("error", "Género no encontrado");
                 return "error";
             }
-
             // Campos de dirección
             existente.setCalle(detalleActualizado.getCalle());
             existente.setMunicipio(detalleActualizado.getMunicipio());
