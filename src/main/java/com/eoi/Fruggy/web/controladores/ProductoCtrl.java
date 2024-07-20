@@ -8,7 +8,6 @@ import com.eoi.Fruggy.servicios.SrvcPrecio;
 import com.eoi.Fruggy.servicios.SrvcProducto;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ProductoCtrl {
@@ -33,8 +31,8 @@ public class ProductoCtrl {
     @GetMapping("/admin/productos")
     public String adminListarProductos(Model model) {
         List<Producto> listaProductosAdmin = productosSrvc.getRepo().findAll();
-        model.addAttribute("listaProductos", listaProductosAdmin);
-        return "productosAdminListar";
+        model.addAttribute("listaProductosAdmin", listaProductosAdmin);
+        return "adminProductos";
     }
 
 
@@ -93,7 +91,8 @@ public class ProductoCtrl {
         // Crear o actualizar el precio
         Precio nuevoPrecio = new Precio();
         nuevoPrecio.setValor(precio);
-        nuevoPrecio.setActivo(true); // Asegúrate de establecer otros campos si es necesario
+        nuevoPrecio.setActivo(true);
+        // Asegúrate de establecer otros campos si es necesario
         preciosSrvc.guardar(nuevoPrecio);
 
         // Asociar el precio con el producto
@@ -106,14 +105,14 @@ public class ProductoCtrl {
         System.out.println("Producto guardado: " + producto);
         System.out.println("Precio asociado: " + producto.getProductoPrecios());
 
-        return "redirect:/productos";
+        return "redirect:/admin/productos";
     }
 
 
     @PostMapping("/producto/actualizar")
     public String actualizarProducto(@ModelAttribute Producto producto) throws Exception {
         productosSrvc.guardar(producto);
-        return "redirect:/productos";
+        return "redirect:/admin/productos";
     }
 
     @PostMapping("/producto/eliminar/{id}")
