@@ -38,7 +38,8 @@ public class Producto implements Serializable {
     @Column(name = "pathImagen", length = 500)
     private String pathImagen;
 
-    @OneToOne(mappedBy = "precioProductos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "precio_id")
     private Precio productoPrecios;
 
     @OneToOne(mappedBy = "subcategoriaProducto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

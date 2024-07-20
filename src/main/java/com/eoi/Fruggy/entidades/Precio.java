@@ -42,8 +42,7 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "precioFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Favorito> preciosFavoritos;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "productos_id", foreignKey = @ForeignKey(name = "fk_precios_productos"))
+    @OneToOne(mappedBy = "productoPrecios", fetch = FetchType.LAZY)
     private Producto precioProductos;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

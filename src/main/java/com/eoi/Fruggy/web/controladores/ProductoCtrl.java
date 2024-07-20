@@ -30,6 +30,14 @@ public class ProductoCtrl {
     @Autowired
     private SrvcImagen imagenSrvc;
 
+    @GetMapping("/admin/productos")
+    public String adminListarProductos(Model model) {
+        List<Producto> listaProductosAdmin = productosSrvc.getRepo().findAll();
+        model.addAttribute("listaProductos", listaProductosAdmin);
+        return "productosAdminListar";
+    }
+
+
     @GetMapping("/productos")
     public String producto(Model model) {
         List<Producto> listaProductos = productosSrvc.getRepo().findAll();
@@ -49,45 +57,56 @@ public class ProductoCtrl {
                                   @RequestParam(value = "file", required = false) MultipartFile file,
                                   @RequestParam("precio") Double precio,
                                   Model model) throws Exception {
-        try {
-            // Manejo de la imagen
-            if (file != null && !file.isEmpty()) {
+        // Manejo de la imagen
+        if (file != null && !file.isEmpty()) {
+            try {
+                // Guardar la imagen en el servidor
                 String directoryPath = "D:\\img";
                 File directory = new File(directoryPath);
                 if (!directory.exists()) {
-                    directory.mkdirs();
+                    directory.mkdirs(); // Crear directorios si no existen
                 }
                 String fileName = file.getOriginalFilename();
                 File targetFile = new File(directoryPath + File.separator + fileName);
                 file.transferTo(targetFile);
 
+                // Crear o actualizar la entidad Imagen
                 Imagen imagen = new Imagen();
                 imagen.setNombreArchivo(fileName);
                 imagen.setRuta(directoryPath);
-                imagen.setPathImagen("/images/" + fileName);
+                imagen.setPathImagen("/images/" + fileName); // URL relativa para acceder a la imagen
 
+                // Guardar la imagen
                 imagenSrvc.guardar(imagen);
-                producto.setImagen(imagen);
-            } else {
-                producto.setImagen(null);
+                producto.setImagen(imagen); // Asociar la imagen al producto
+            } catch (Exception e) {
+                // Manejar excepción si ocurre algún error
+                e.printStackTrace();
+                model.addAttribute("error", "Error al guardar la imagen.");
+                return "create-productos";
             }
-
-            // Crear o actualizar el precio
-            Precio nuevoPrecio = new Precio();
-            nuevoPrecio.setValor(precio);
-            nuevoPrecio.setActivo(true); // Ajusta esto según tu lógica
-            preciosSrvc.guardar(nuevoPrecio);
-
-            producto.setProductoPrecios(nuevoPrecio);
-
-            productosSrvc.guardar(producto);
-
-            return "redirect:/productos";
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("error", "Error al guardar el producto.");
-            return "create-productos";
+        } else {
+            // No se proporciona imagen, entonces asegúrate de que `producto.imagen` se maneje como `null`
+            producto.setImagen(null);
         }
+
+        // Crear o actualizar el precio
+        Precio nuevoPrecio = new Precio();
+        nuevoPrecio.setValor(precio);
+        nuevoPrecio.setActivo(true); // Asegúrate de establecer otros campos si es necesario
+        preciosSrvc.guardar(nuevoPrecio);
+
+        // Asociar el precio con el producto
+        producto.setProductoPrecios(nuevoPrecio);
+
+        // Guardar el producto en la base de datos
+        productosSrvc.guardar(producto);
+
+        // Mensajes de depuración
+        System.out.println("Producto guardado: " + producto);
+        System.out.println("Precio asociado: " + producto.getProductoPrecios());
+
+        return "redirect:/productos";
     }
 
 
