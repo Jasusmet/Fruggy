@@ -11,7 +11,8 @@
     <h1>Editar Detalle</h1>
     <a class="btn btn-secondary" th:href="@{/detalles/{id}(id=${detalle.id})}">Regresar</a>
     <br><br>
-    <form th:action="@{/detalles/{id}(id=${detalle.id})}" method="post" th:object="${detalle}" enctype="multipart/form-data">
+    <form th:action="@{/detalles/{id}(id=${detalle.id})}" method="post" th:object="${detalle}"
+          enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="mb-3">
@@ -32,23 +33,38 @@
         </div>
         <div class="mb-3">
             <label for="genero" class="form-label">Género</label>
-            <select th:field="*{detallesGenero.id}" class="form-select">
-                <option th:each="genero : ${generos}" th:value="${genero.id}" th:text="${genero.nombre}">Género</option>
+            <select id="genero" name="generoId" class="form-select" required>
+                <option th:each="genero : ${generos}"
+                        th:value="${genero.id}"
+                        th:text="${genero.descripcion}">
+                </option>
             </select>
         </div>
-        <div class="mb-3">
-            <label for="usuarioId" class="form-label">Usuario</label>
-            <select th:field="*{usuario.id}" class="form-select">
-                <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.email}">Usuario</option>
-            </select>
-        </div>
+
         <div class="mb-3">
             <label for="file" class="form-label">Imagen</label>
-            <input type="file" th:field="*{file}" class="form-control">
+            <input type="file" name="file" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="calle" class="form-label">Calle</label>
+            <input type="text" id="calle" name="calle" class="form-control" th:value="${detalle.calle}" required>
+        </div>
+        <div class="mb-3">
+            <label for="municipio" class="form-label">Municipio</label>
+            <input type="text" id="municipio" name="municipio" class="form-control" th:value="${detalle.municipio}" required>
+        </div>
+        <div class="mb-3">
+            <label for="pais" class="form-label">País</label>
+            <input type="text" id="pais" name="pais" class="form-control" th:value="${detalle.pais}" required>
+        </div>
+        <div class="mb-3">
+            <label for="codigopostal" class="form-label">Código Postal</label>
+            <input type="number" id="codigopostal" name="codigopostal" class="form-control" th:value="${detalle.codigopostal}" required>
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
+    <a class="btn btn-primary mt-3" th:href="@{/usuarios}">Regresar a Usuarios</a>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
