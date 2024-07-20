@@ -33,7 +33,6 @@ public class ProductoCtrl {
     }
 
     @PostMapping("/productos")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String crearProducto(@RequestBody Producto producto, Model model) {
         try {
             productosSrvc.guardar(producto);
