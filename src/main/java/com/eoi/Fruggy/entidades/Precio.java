@@ -33,14 +33,16 @@ public class Precio implements Serializable {
     @Column (name ="activo" , nullable = false )
     private Boolean activo;
 
+    @Column(name = "valor")
+    private Double valor;
+
     @OneToMany(mappedBy = "preciosCesta", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Cesta> cestaPrecios;
 
     @OneToMany(mappedBy = "precioFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Favorito> preciosFavoritos;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "productos_id", foreignKey = @ForeignKey(name = "fk_precios_productos"))
+    @OneToOne(mappedBy = "productoPrecios", fetch = FetchType.LAZY)
     private Producto precioProductos;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -53,4 +55,8 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "descuentosPrecios", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Descuento> preciosDescuentos;
 
+    // Método para obtener el valor del precio
+    public String getPrecio() {
+        return (valor != null) ? String.format("%.2f", valor) : "No disponible";
+    }
 }
