@@ -37,7 +37,7 @@ public class CategoriaCtrl {
     @DeleteMapping("/categorias/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarCategoria(@PathVariable int id, Model model) {
-        categoriasSrvc.eliminarPorId(id);
+        categoriasSrvc.eliminarPorId((long) id);
         return "redirect:/categorias";
     }
 

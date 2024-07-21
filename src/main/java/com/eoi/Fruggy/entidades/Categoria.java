@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -21,11 +23,19 @@ public class Categoria implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "tipo", length = 255)
     private String tipo;
 
-    @OneToMany(mappedBy = "subcategoriaCategoria", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Subcategoria> categoriasSubcategoria;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_subcategoria"))
+    private Categoria subcategoriaCategoria;
+
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    private Set<Producto> productos;
+
+    public Categoria(String categorias) {
+        this.tipo = categorias;
+    }
 }

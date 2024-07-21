@@ -8,6 +8,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -22,17 +24,20 @@ public class Subcategoria implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @Column (name ="tipo")
+    @Column (name ="tipo", length = 255)
     private String tipo;
 
     @OneToMany(mappedBy = "subcategoria", fetch = FetchType.LAZY)
     private Set<Producto> productos;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_subcategoria"))
-    private Categoria subcategoriaCategoria;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // Cambiado a MERGE
+    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_categoria"))
+    private Categoria categoria;
 
-
+    public Subcategoria(String tipo, Categoria categoria) {
+        this.tipo = tipo;
+        this.categoria = categoria;
+    }
 }

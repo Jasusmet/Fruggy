@@ -6,6 +6,7 @@
     <title>Crear Producto</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/styleFruggy.css" rel="stylesheet">
+    <script src="/static/js/select-category-subcategory.js" defer></script>
 </head>
 <body>
 <div class="container mt-4" th:fragment="create-producto">
@@ -15,7 +16,8 @@
     <form th:action="@{/producto/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
         <input type="hidden" th:if="${producto.id != null}" th:name="id" th:value="${producto.id}"/>
         <div class="mb-3">
-            <label for="nombreProducto" class="form-label" th:text="#{product.create.nombre}">Nombre del Producto</label>
+            <label for="nombreProducto" class="form-label" th:text="#{product.create.nombre}">Nombre del
+                Producto</label>
             <input type="text" class="form-control" id="nombreProducto" th:field="*{nombreProducto}" required>
         </div>
         <div class="mb-3">
@@ -32,7 +34,21 @@
         </div>
         <div class="mb-3">
             <label for="precio" class="form-label" th:text="#{product.create.precio}">Precio</label>
-            <input type="number" step="0.01" class="form-control" id="precio" name="precio" required>
+            <input type="number" step="0.01" class="form-control" id="precio" th:field="*{precio}" required>
+        </div>
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select class="form-control" id="categoria" name="categoria.id">
+                <option value="">Selecciona una categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                        th:text="${categoria.tipo}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="subcategoria" class="form-label">Subcategoría</label>
+            <select class="form-control" id="subcategoria" name="subcategoria.id">
+                <option value="">Selecciona una subcategoría</option>
+            </select>
         </div>
         <div class="mb-3">
             <label for="file" class="form-label">Imagen</label>
@@ -43,7 +59,11 @@
         </button>
     </form>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+
+<script>
+    // Inyecta los datos en el JavaScript
+    const categorias = /*[[${categorias}]]*/ [];
+    const subcategorias = /*[[${subcategorias}]]*/ {};
+</script>
 </body>
 </html>

@@ -46,6 +46,10 @@ public class Producto implements Serializable {
     @JoinColumn(name = "subcategoria_id", foreignKey = @ForeignKey(name = "fk_producto_subcategoria"))
     private Subcategoria subcategoria;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_producto_categoria"))
+    private Categoria categoria;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "imagen_id", referencedColumnName = "id")
     private Imagen imagen;
