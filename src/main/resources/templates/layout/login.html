@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
-<head></head>
+<head>
+    <link rel="stylesheet" href="/css/login/login.css">
+</head>
 <body>
 <form class="form" th:action="@{/login}" method="post">
-    <h2 th:text="#{login.heading}">Inicio de sesión</h2>
+    <h2 th:text="#{login.heading}">Iniciar sesión</h2>
 
     <!-- Error message section -->
     <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
