@@ -15,12 +15,11 @@ import java.util.Optional;
 @Controller
 public class LoginCtrl {
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RepoUsuario repoUsuario;
 
-    public LoginCtrl(RepoUsuario repoUsuario) {
+    public LoginCtrl(BCryptPasswordEncoder bCryptPasswordEncoder, RepoUsuario repoUsuario) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.repoUsuario = repoUsuario;
     }
 
