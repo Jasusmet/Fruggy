@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 public class DireccionTest {
 
+
     @Autowired
     private RepoDireccion repoDireccion;
     @Autowired
