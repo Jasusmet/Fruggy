@@ -23,7 +23,7 @@ public class Subcategoria implements Serializable {
 
     @Id
     @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column (name ="tipo", length = 255)
@@ -32,8 +32,8 @@ public class Subcategoria implements Serializable {
     @OneToMany(mappedBy = "subcategoria", fetch = FetchType.LAZY)
     private Set<Producto> productos;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // Cambiado a MERGE
-    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_categoria"))
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
     public Subcategoria(String tipo, Categoria categoria) {

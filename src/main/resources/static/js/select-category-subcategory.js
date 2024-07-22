@@ -1,27 +1,25 @@
-function updateSubcategorias() {
-    const categoriaId = parseInt(categoriaSelect.value, 10);
-    console.log(`categoriaId: ${categoriaId}`); // Verifica el valor del ID
+document.addEventListener('DOMContentLoaded', function () {
+    let categoriaSelect = document.getElementById('categoria');
+    let subcategoriaSelect = document.getElementById('subcategoria');
 
-    // Limpiar el selector de subcategorías
-    subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
+    let subcategoriasPorCategoria =  {};
+    console.log('Subcategorías por Categoría:', JSON.stringify(subcategoriasPorCategoria, null, 2));
 
-    if (categoriaId) {
-        fetch(`/api/subcategorias?categoriaId=${categoriaId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Subcategorías:', data);
-                data.forEach(subcategoria => {
-                    const option = document.createElement('option');
-                    option.value = subcategoria.id;
-                    option.textContent = subcategoria.tipo;
-                    subcategoriaSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error fetching subcategorias:', error));
-    }
-}
+
+    categoriaSelect.addEventListener('change', function () {
+        let categoriaId = this.value;
+        let subcategorias = subcategoriasPorCategoria[categoriaId] || [
+        ];
+
+        // Limpia las subcategorías actuales
+        subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
+
+        // Añade nuevas subcategorías
+        subcategorias.forEach(subcategoria => {
+            let option = document.createElement('option');
+            option.value = subcategoria.id;
+            option.textContent = subcategoria.tipo;
+            subcategoriaSelect.appendChild(option);
+        });
+    });
+});

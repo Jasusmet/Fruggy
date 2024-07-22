@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class SrvcSubcategoria extends AbstractSrvc<Subcategoria, Long, RepoSubcategoria> {
@@ -21,6 +23,10 @@ public class SrvcSubcategoria extends AbstractSrvc<Subcategoria, Long, RepoSubca
 
     public List<Subcategoria> buscarPorCategoriaId(Long categoriaId) {
         return repoSubcategoria.findByCategoriaId(categoriaId);
+    }
+    public Map<Long, List<Subcategoria>> buscarEntidadesAgrupadasPorCategoria() {
+        List<Subcategoria> subcategorias = repoSubcategoria.findAll();
+        return subcategorias.stream().collect(Collectors.groupingBy(subcategoria -> subcategoria.getCategoria().getId()));
     }
 
 }

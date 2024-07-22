@@ -1,7 +1,13 @@
 package com.eoi.Fruggy.web.controladores;
 
+import com.eoi.Fruggy.DTO.SubcategoriaDTO;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductoCtrl {
@@ -26,13 +32,16 @@ public class ProductoCtrl {
     @Autowired
     private SrvcSubcategoria subcategoriasSrvc;
 
+
+
     @GetMapping("/admin/productos")
-    public String adminListarProductos(Model model) {
-        List<Producto> listaProductosAdmin = productosSrvc.getRepo().findAll();
-        model.addAttribute("listaProductosAdmin", listaProductosAdmin);
+    public String adminListarProductos(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "10") int size,
+                                       Model model) {
+        Page<Producto> paginaProductos = (Page<Producto>) productosSrvc.obtenerProductosPaginados(page, size);
+        model.addAttribute("paginaProductos", paginaProductos);
         return "adminProductos";
     }
-
 
     @GetMapping("/productos")
     public String producto(Model model) {
@@ -43,14 +52,33 @@ public class ProductoCtrl {
     }
 
     @GetMapping("/producto/agregar")
-    public String agregarProducto(Model model) {
+    public String agregarProducto(Model model) throws JsonProcessingException {
         List<Categoria> categorias = categoriasSrvc.buscarEntidades();
         List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
+
+        // Crear un mapa de ID de categoría a lista de DTOs de subcategorías
+        Map<Long, List<SubcategoriaDTO>> subcategoriasMap = subcategorias.stream()
+                .collect(Collectors.groupingBy(
+                        subcategoria -> subcategoria.getCategoria().getId(),
+                        Collectors.mapping(
+                                subcategoria -> new SubcategoriaDTO(subcategoria.getId(), subcategoria.getTipo()),
+                                Collectors.toList()
+                        )
+                ));
+
+        // Convertir el mapa a JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String subcategoriasJson = objectMapper.writeValueAsString(subcategoriasMap);
+        System.out.println("Subcategorías JSON: " + subcategoriasJson);
+
+
         model.addAttribute("categorias", categorias);
+        model.addAttribute("subcategoriasMap", subcategoriasJson);
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("producto", new Producto());
         return "create-productos";
     }
+
 
     @PostMapping("/producto/guardar")
     public String guardarProducto(@ModelAttribute Producto producto,

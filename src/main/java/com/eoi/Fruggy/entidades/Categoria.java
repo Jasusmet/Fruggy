@@ -22,15 +22,14 @@ public class Categoria implements Serializable {
 
     @Id
     @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "tipo", length = 255)
     private String tipo;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_subcategoria"))
-    private Categoria subcategoriaCategoria;
+    @OneToMany(mappedBy = "categoria")
+    private List<Subcategoria> subcategorias;
 
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
     private Set<Producto> productos;
