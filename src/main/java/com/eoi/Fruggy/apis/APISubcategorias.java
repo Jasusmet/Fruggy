@@ -22,11 +22,13 @@ public class APISubcategorias { // necesitamos este api para JS
     private SrvcSubcategoria srvcSubcategoria;
 
     @GetMapping("/subcategorias")
-    public ResponseEntity<List<Subcategoria>> getSubcategorias(@RequestParam("categoriaId") Long categoriaId) {
+    public ResponseEntity<List<Subcategoria>> getSubcategorias(@RequestParam(value = "categoriaId", required = false) Long categoriaId) {
+        List<Subcategoria> subcategorias;
         if (categoriaId == null) {
-            return ResponseEntity.badRequest().body(null);
+            subcategorias = srvcSubcategoria.getRepo().findAll();
+        }else{
+            subcategorias = srvcSubcategoria.buscarPorCategoriaId(categoriaId);
         }
-        List<Subcategoria> subcategorias = srvcSubcategoria.buscarPorCategoriaId(categoriaId);
         return ResponseEntity.ok(subcategorias);
     }
 }
