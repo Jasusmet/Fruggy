@@ -47,7 +47,7 @@ public class UsuarioCtrl {
         // para comprobar
         System.out.println("Roles enviados a la vista: " + roles.size());
         model.addAttribute("roles", roles);
-        return "create-user";
+        return "crear-usuario";
     }
 
     @PostMapping("/guardar")
