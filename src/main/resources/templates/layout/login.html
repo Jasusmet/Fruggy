@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
-<head></head>
+<head>
+    <link rel="stylesheet" href="/css/login/login.css">
+</head>
 <body>
 <form class="form" th:action="@{/login}" method="post">
 
@@ -21,7 +23,7 @@
     <label for="password" th:text="#{login.password}">Contraseña:</label>
     <input type="password" id="password" name="password" required>
 
-    <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
+    <button type="submit" th:text="#{login.submit}">Siguiente</button>
 
     <div class="enlaces">
         <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
@@ -34,5 +36,6 @@
     <button type="submit" name="lang" value="en" th:text="#{english}">English</button>
     <button type="submit" name="lang" value="es" th:text="#{spanish}">Español</button>
 </form>
+
 </body>
 </html>
