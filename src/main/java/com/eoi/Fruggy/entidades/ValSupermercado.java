@@ -28,7 +28,7 @@ public class ValSupermercado implements Serializable {
     @Column(name = "nota")
     private Double nota;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "supermercados_id", foreignKey = @ForeignKey(name = "fk_valoracionesSupermercados_supermercados"))
+    @ManyToOne
+    @JoinColumn(name = "supermercado_id")
     private Supermercado valoracionSupermercadoSupermercado;
 }

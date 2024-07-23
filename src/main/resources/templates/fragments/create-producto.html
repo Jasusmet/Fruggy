@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="#{product.create.title}">Crear Producto</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/css/styleFruggy.css" rel="stylesheet">
+    <link href="/css/styleFruggy.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/static/js/select-category-subcategory.js" defer></script>
+    <script src="/js/select-category-subcategory.js" defer></script>
 
 </head>
 <body>
 <div class="container mt-4" th:fragment="create-producto">
     <h1 th:text="#{product.create.header}">Crear Producto</h1>
-    <a class="btn btn-primary mb-3" th:href="@{/productos}" th:text="#{product.create.back}">Volver a la lista</a>
+    <a class="btn btn-primary mb-3" th:href="@{/productos/admin}" th:text="#{product.create.back}">Volver a la lista</a>
 
-    <form th:action="@{/producto/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
-        <input type="hidden" th:if="${producto.id != null}" th:name="id" th:value="${producto.id}"/>
+    <form th:action="@{/productos/admin/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${producto.id}" />
 
         <div class="mb-3">
             <label for="nombreProducto" class="form-label" th:text="#{product.create.nombre}">Nombre del Producto</label>

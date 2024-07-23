@@ -55,9 +55,10 @@ public class Usuario implements Serializable, UserDetails {
     @OneToOne(mappedBy = "cestaUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Cesta cestaUsuarios; // No se usa Set <> con OneToOne
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "supermercado_id", foreignKey = @ForeignKey(name = "fk_supermercado_usuario"))
+    @ManyToOne
+    @JoinColumn(name = "supermercado_id")
     private Supermercado supermercadoUsuario;
+
     // Relación con Imagen
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Imagen> imagenes;

@@ -38,7 +38,7 @@ public class Producto implements Serializable {
     @Column(name = "pathImagen", length = 500)
     private String pathImagen;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "precio_id")
     private Precio productoPrecios;
 
@@ -50,7 +50,7 @@ public class Producto implements Serializable {
     @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_producto_categoria"))
     private Categoria categoria;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "imagen_id", referencedColumnName = "id")
     private Imagen imagen;
 

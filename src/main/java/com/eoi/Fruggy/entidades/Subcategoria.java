@@ -1,6 +1,7 @@
 package com.eoi.Fruggy.entidades;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Subcategoria implements Serializable {
     @OneToMany(mappedBy = "subcategoria", fetch = FetchType.LAZY)
     private Set<Producto> productos;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;

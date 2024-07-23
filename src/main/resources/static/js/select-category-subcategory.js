@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         // Define the API URL
-        const apiUrl = '/api/subcategorias?categoriaId='+categoriaId;
+        const apiUrl = '/api/subcategorias?categoriaId=' + categoriaId;
         // Make a GET request
         fetch(apiUrl)
             .then(response => {
@@ -31,18 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     option.value = subcategoria.id;
                     option.textContent = subcategoria.tipo;
                     subcategoriaSelect.appendChild(option);
-
                 });
 
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-
-
-
     });
-
 });
 
 

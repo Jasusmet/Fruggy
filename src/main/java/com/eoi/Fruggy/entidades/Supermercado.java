@@ -38,8 +38,8 @@ public class Supermercado implements Serializable {
     @Column (name ="direccion", length = 255)
     private String direccion;
 
-    @OneToOne(mappedBy = "precioSupermercados", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Precio supermercadoPrecios;
+    @OneToMany(mappedBy = "precioSupermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Precio> supermercadoPrecios;
 
     @OneToMany(mappedBy = "valoracionSupermercadoSupermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ValSupermercado> supermercadosValoracionesSupermercados;
