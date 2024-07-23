@@ -13,13 +13,13 @@
 <body>
 
 <!--  humberger menu  -->
-<div th:replace="~{layout/humberger-menu :: humbergerMenu}"></div>
+<div th:replace="~{fragments/humberger-menu :: humbergerMenu}"></div>
 <!--  header  -->
-<div th:replace="~{layout/header-productos :: header}"></div>
+<div th:replace="~{fragments/header-productos :: header}"></div>
 <div class="container">
-    <div th:replace="~{layout/detalles-actualizados :: detalles-actualizados}"></div>
+    <div th:replace="~{fragments/detalles-actualizados :: detalles-actualizados}"></div>
 </div>
 <!-- Footer Section  -->
-<div th:replace="~{layout/footer-products :: footer}"></div>
+<div th:replace="~{fragments/footer-products :: footer}"></div>
 </body>
 </html>

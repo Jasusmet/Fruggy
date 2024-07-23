@@ -1,5 +1,7 @@
 package com.eoi.Fruggy.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +10,8 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -21,19 +25,22 @@ public class Subcategoria implements Serializable {
 
     @Id
     @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column (name ="tipo")
+    @Column (name ="tipo", length = 255)
     private String tipo;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "productos_id", foreignKey = @ForeignKey(name = "fk_subcategoria_productos"))
-    private Producto subcategoriaProducto;
+    @OneToMany(mappedBy = "subcategoria", fetch = FetchType.LAZY)
+    private Set<Producto> productos;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_subcategoria_subcategoria"))
-    private Categoria subcategoriaCategoria;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
 
-
+    public Subcategoria(String tipo, Categoria categoria) {
+        this.tipo = tipo;
+        this.categoria = categoria;
+    }
 }

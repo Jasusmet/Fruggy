@@ -9,18 +9,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link th:href="@{/css/styleFruggy.css}" type="text/css" rel="stylesheet">
 
+    <script src="/static/js/select-category-subcategory.js" defer></script>
+
+
     <title>Mi Aplicación</title>
 </head>
 <body>
 <!--  humberger menu  -->
-<div th:replace="~{layout/humberger-menu :: humbergerMenu}"></div>
+<div th:replace="~{fragments/humberger-menu :: humbergerMenu}"></div>
 <!--  header  -->
-<div th:replace="~{layout/header-productos :: header}"></div>
+<div th:replace="~{fragments/header-productos :: header}"></div>
 <div class="container">
-    <div th:replace="~{layout/create-producto :: create-producto}"></div>
+    <div th:replace="~{fragments/create-producto :: create-producto}"></div>
 </div>
 <!-- Footer Section  -->
-<div th:replace="~{layout/footer-products :: footer}"></div>
+<div th:replace="~{fragments/footer-products :: footer}"></div>
 
 
 <!-- Optional JavaScript -->

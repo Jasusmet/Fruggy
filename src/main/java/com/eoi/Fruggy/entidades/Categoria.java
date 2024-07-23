@@ -1,5 +1,6 @@
 package com.eoi.Fruggy.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -20,12 +23,20 @@ public class Categoria implements Serializable {
 
     @Id
     @Column(name ="id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "tipo", length = 255)
     private String tipo;
 
-    @OneToMany(mappedBy = "subcategoriaCategoria", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Subcategoria> categoriasSubcategoria;
+    @JsonBackReference
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    private List<Subcategoria> subcategorias;
+
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
+    private Set<Producto> productos;
+
+    public Categoria(String categorias) {
+        this.tipo = categorias;
+    }
 }

@@ -21,7 +21,7 @@ public class Producto implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id; // hay que cambiar en todas las entidades a Long sustituyendo a  long
 
     @Column (name ="nombreProducto",length = 45)
     private String nombreProducto;
@@ -38,14 +38,19 @@ public class Producto implements Serializable {
     @Column(name = "pathImagen", length = 500)
     private String pathImagen;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "precio_id")
     private Precio productoPrecios;
 
-    @OneToOne(mappedBy = "subcategoriaProducto", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Subcategoria productoSubcategorias;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subcategoria_id", foreignKey = @ForeignKey(name = "fk_producto_subcategoria"))
+    private Subcategoria subcategoria;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_producto_categoria"))
+    private Categoria categoria;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "imagen_id", referencedColumnName = "id")
     private Imagen imagen;
 

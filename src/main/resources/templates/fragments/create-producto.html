@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{product.create.title}">Crear Producto</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styleFruggy.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/select-category-subcategory.js" defer></script>
+
+</head>
+<body>
+<div class="container mt-4" th:fragment="create-producto">
+    <h1 th:text="#{product.create.header}">Crear Producto</h1>
+    <a class="btn btn-primary mb-3" th:href="@{/productos/admin}" th:text="#{product.create.back}">Volver a la lista</a>
+
+    <form th:action="@{/productos/admin/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${producto.id}" />
+
+        <div class="mb-3">
+            <label for="nombreProducto" class="form-label" th:text="#{product.create.nombre}">Nombre del Producto</label>
+            <input type="text" class="form-control" id="nombreProducto" th:field="*{nombreProducto}" required aria-required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="marca" class="form-label" th:text="#{product.create.marca}">Marca</label>
+            <input type="text" class="form-control" id="marca" th:field="*{marca}" required aria-required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="descripcion" class="form-label" th:text="#{product.create.descripcion}">Descripción</label>
+            <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3" required aria-required="true"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="activo" class="form-check-label" th:text="#{product.create.activo}">Activo</label>
+            <input type="checkbox" class="form-check-input" id="activo" th:field="*{activo}" aria-checked="false">
+        </div>
+
+        <div class="mb-3">
+            <label for="precio" class="form-label" th:text="#{product.create.precio}">Precio</label>
+            <input type="number" step="0.01" class="form-control" id="precio" th:field="*{precio}" required aria-required="true">
+        </div>
+
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select class="form-control" id="categoria" name="categoria.id"  required aria-required="true">
+                <option value="">Selecciona una categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.tipo}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="subcategoria" class="form-label">Subcategoría</label>
+            <select class="form-control" id="subcategoria" name="subcategoria.id" aria-required="true">
+                <option value="">Selecciona una subcategoría</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="file" class="form-label">Imagen</label>
+            <input type="file" name="file" class="form-control" accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            <span th:text="${producto.id != null ? 'Actualizar Producto' : 'Guardar Producto'}">Guardar Producto</span>
+        </button>
+    </form>
+</div>
+</body>
+</html>

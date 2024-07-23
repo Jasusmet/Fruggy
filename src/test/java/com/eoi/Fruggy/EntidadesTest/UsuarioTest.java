@@ -26,7 +26,7 @@ public class UsuarioTest {
         usuario.setTelefono("1234567890");
         repoUsuarios.save(usuario);
 
-        Optional<Usuario> usuarioRecuperado = repoUsuarios.findById((int) usuario.getId());
+        Optional<Usuario> usuarioRecuperado = repoUsuarios.findById((Long) usuario.getId());
         assertTrue(usuarioRecuperado.isPresent());
         assertEquals("TestUser", usuarioRecuperado.get().getUsername());
         assertEquals("TestPassword", usuarioRecuperado.get().getPassword());
