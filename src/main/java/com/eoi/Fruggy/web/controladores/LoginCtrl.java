@@ -40,9 +40,26 @@ public class LoginCtrl {
             model.addAttribute("usuario", usuario);
             model.addAttribute("msg", "Usuario encontrado");
             return "/";
-        }else{
+        } else {
             model.addAttribute("msg", "Usuario no encontrado");
         }
         return "redirect:/login?error=true";
-        }
     }
+
+    @GetMapping("/login/crear-usuario")
+    public String showCrearUsuarioForm(Model model, @RequestParam(value = "error", required = false) String error) {
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
+        return "crear-usuario";
+    }
+
+    @GetMapping("/login/recuperar-contraseña")
+    public String showRecuperarContraseñaForm(Model model, @RequestParam(value = "error", required = false) String error) {
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
+        return "recuperar-contraseña";
+    }
+
+}

@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
-<head></head>
+<head>
+</head>
 <body>
-<form class="form" th:action="@{/login}" method="post">
-    <h2 th:text="#{login.heading}">Inicio de sesión</h2>
+<div class="box">
+    <span class="borderLine"></span>
+    <form class="form" th:action="@{/login}" method="post">
+        <h2 th:text="#{login.heading}">Iniciar sesión</h2>
+        <div class="inputBox">
+            <input type="text" th:text="#{login.email}" required="required">
+            <span>Email</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="password" th:text="#{login.password}" required="required">
+            <span>Contraseña</span>
+            <i></i>
+        </div>
+        <div class="links">
+            <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Has olvidado tu contraseña?</a>
+            <a href="/login/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
+        </div>
+        <input type="submit" th:text="#{login.submit}" value="Siguiente">
+    </form>
+</div>
 
-    <!-- Error message section -->
-    <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
+<!-- Error message section -->
+<div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
 
-    <label for="username" th:text="#{login.email}">Correo electrónico:</label>
-    <input type="email" id="username" name="username" required>
-
-    <label for="password" th:text="#{login.password}">Contraseña:</label>
-    <input type="password" id="password" name="password" required>
-
-    <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
-
-    <div class="enlaces">
-        <a href="/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
-        <a href="/crear-cuenta" th:text="#{login.signUp}">Registrarse</a>
-    </div>
-</form>
-
-<!-- Language switcher -->
-<form th:action="@{/change-language}" method="post">
-    <button type="submit" name="lang" value="en" th:text="#{english}">English</button>
-    <button type="submit" name="lang" value="es" th:text="#{spanish}">Español</button>
-</form>
 </body>
 </html>

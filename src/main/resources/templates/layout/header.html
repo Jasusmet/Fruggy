@@ -9,7 +9,7 @@
     <title th:text="#{header.title}">Usuarios</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styleusers.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <!-- Header Section Begin -->
@@ -20,7 +20,7 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                            <li><i class="fa fa-envelope"></i> fruggy@gmail.com</li>
                         </ul>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="login.html"><i class="fa fa-user"></i> <span th:text="#{header.login}">Login</span></a>
+                            <a href="/login"><i class="fa fa-user"></i> <span th:text="#{login}">Iniciar sesión</span></a>
                         </div>
                     </div>
                 </div>
@@ -58,9 +58,17 @@
             <div class="col-lg-9">
                 <nav class="header__menu">
                     <ul>
-                        <li><a href="/admin.html" th:text="#{menu.home}">Inicio</a></li>
-                        <li><a href="/usuarios.html" th:text="#{menu.users}">Usuarios</a></li>
-                        <li><a href="/productos.html" th:text="#{menu.products}">Productos</a></li>
+                        <li><a href="/productos" th:text="#{products}">Productos</a></li>
+                        <li><a href="/supermercados" th:text="#{supermarket}">Supermercados</a>
+                            <ul class="header__menu__dropdown">
+                                <li><a href="#" th:text="#{supermarket.carrefour}">Carrefour</a></li>
+                                <li><a href="#" th:text="#{supermarket.mercadona}">Mercadona</a></li>
+                                <li><a href="#" th:text="#{supermarket.dia}">Día</a></li>
+                                <li><a href="#" th:text="#{supermarket.lidl}">Lidl</a></li>
+                                <li><a href="#" th:text="#{supermarket.supeco}">Supeco</a></li>
+                                <li><a href="#" th:text="#{supermarket.hipercor}">Hipercor</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>

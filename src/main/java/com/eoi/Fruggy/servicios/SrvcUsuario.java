@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
+
 public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
 
     private final RepoUsuario repoUsuario;
