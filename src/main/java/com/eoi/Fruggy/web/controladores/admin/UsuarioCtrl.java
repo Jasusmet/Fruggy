@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.web.controladores;
+package com.eoi.Fruggy.web.controladores.admin;
 
 import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;
@@ -19,6 +19,7 @@ import java.util.Set;
 
 @Controller
 @Slf4j
+@RequestMapping("/admin/usuarios")
 public class UsuarioCtrl {
 
     @Autowired
@@ -28,7 +29,7 @@ public class UsuarioCtrl {
     @Autowired
     private SrvcDetalle detalleSrvc;
 
-    @GetMapping("/usuarios")
+    @GetMapping
     public String usuarios(Model model) {
         List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
         listaUsuarios.forEach(usuario -> {
@@ -36,7 +37,7 @@ public class UsuarioCtrl {
             usuario.setRoles(rolesUsuario);
         });
         model.addAttribute("usuarios", listaUsuarios);
-        return "usuarios";
+        return "admin/usuarios";
     }
 
     @GetMapping("/agregar")
