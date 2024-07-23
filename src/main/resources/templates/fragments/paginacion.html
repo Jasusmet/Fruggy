@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Paginación</title>
+</head>
+<body>
+<div>
+    <ul class="pagination" th:fragment="paginacion">
+        <li class="page-item" th:if="${pagina.hasPrevious()}">
+            <a class="page-link"
+               th:href="@{'/productos/admin?page=' + ${pagina.number - 1} + '&size=' + ${pagina.size}}">Anterior</a>
+        </li>
+        <li class="page-item disabled">
+            <span class="page-link" th:text="${pagina.number + 1}"></span>
+        </li>
+        <li class="page-item" th:if="${pagina.hasNext()}">
+            <a class="page-link"
+               th:href="@{'/productos/admin?page=' + ${pagina.number + 1} + '&size=' + ${pagina.size}}">Siguiente</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="table table-striped mt-3" th:fragment="tablaAdminProductos">
+    <thead>
+    <tr>
+        <th th:text="#{admin.product.id}">ID</th>
+        <th th:text="#{admin.product.name}">Nombre</th>
+        <th th:text="#{admin.product.description}">Descripción</th>
+        <th th:text="#{admin.product.price}">Precio</th>
+        <th th:text="#{admin.product.category}">Categoría</th>
+        <th th:text="#{admin.product.subcategory}">Subcategoría</th>
+        <th th:text="#{admin.product.active}">Activo</th>
+        <th th:text="#{admin.product.edit}">Editar</th>
+        <th th:text="#{admin.product.delete}">Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="producto : ${paginaProductos.content}">
+        <td th:text="${producto.id}">ID</td>
+        <td th:text="${producto.nombreProducto}">Nombre</td>
+        <td th:text="${producto.descripcion}">Descripción</td>
+        <td th:text="${producto.productoPrecios.valor}">Precio</td>
+        <td th:text="${producto.categoria.tipo}">Categoría</td>
+        <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
+        <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
+        <td>
+            <a th:href="@{'/productos/admin/editar/' + ${producto.id}}" class="btn btn-warning" th:text="#{admin.product.edit}">Editar</a>
+        </td>
+        <td>
+            <form th:action="@{'/productos/admin/eliminar/' + ${producto.id}}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                <input type="submit" class="btn btn-danger" th:value="#{admin.product.delete}"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
