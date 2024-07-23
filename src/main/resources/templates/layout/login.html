@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
-<head>
-</head>
+<head></head>
 <body>
-<div class="box">
-    <span class="borderLine"></span>
-    <form class="form" th:action="@{/login}" method="post">
-        <h2 th:text="#{login.heading}">Iniciar sesión</h2>
-        <div class="inputBox">
-            <input type="text" th:text="#{login.email}" required="required">
-            <span>Email</span>
-            <i></i>
-        </div>
-        <div class="inputBox">
-            <input type="password" th:text="#{login.password}" required="required">
-            <span>Contraseña</span>
-            <i></i>
-        </div>
-        <div class="links">
-            <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Has olvidado tu contraseña?</a>
-            <a href="/login/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
-        </div>
-        <input type="submit" th:text="#{login.submit}" value="Siguiente">
-    </form>
-</div>
+<form class="form" th:action="@{/login}" method="post">
 
-<!-- Error message section -->
-<div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
+    <div class="logo">
+        <a href="/">
+            <img src="img/logo.png" alt="Fruggy" width="200" height="200"/>
+        </a>
+    </div>
 
+    <h2 th:text="#{login.heading}">Inicio de sesión</h2>
+    
+    <label for="username" th:text="#{login.email}">Correo electrónico:</label>
+    <input type="email" id="username" name="username" required>
+
+    <label for="password" th:text="#{login.password}">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
+
+    <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
+
+    <div class="enlaces">
+        <a href="/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
+        <a href="/crear-cuenta" th:text="#{login.signUp}">Registrarse</a>
+    </div>
+
+    <!-- Error message section -->
+    <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
+</form>
 </body>
 </html>
