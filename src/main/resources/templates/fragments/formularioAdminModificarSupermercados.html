@@ -22,6 +22,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="imagenPath" class="form-label">Ruta de la Imagen</label>
+            <input type="text" th:field="*{imagenPath}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
             <label for="horario" class="form-label">Horario</label>
             <input type="text" th:field="*{horario}" class="form-control" required>
         </div>
@@ -46,10 +51,7 @@
             <input type="number" th:field="*{codigopostal}" class="form-control" required>
         </div>
 
-        <div class="mb-3">
-            <label for="imagenPath" class="form-label">Ruta de la Imagen</label>
-            <input type="text" th:field="*{imagenPath}" class="form-control" required>
-        </div>
+
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>

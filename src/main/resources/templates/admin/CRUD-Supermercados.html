@@ -9,7 +9,7 @@
 <body>
 
 <div class="container mt-4" layout:fragment="content">
-    <h1 th:text="#{admin.supermarket.list}">Lista de Supermercados</h1>
+    <h1 th:text="#{supermarket.list.header}">Lista de Supermercados</h1>
     <a class="btn btn-primary" th:href="@{/admin/supermercados/agregar}" th:text="#{supermarket.list.create}">Añadir Supermercado</a>
     <div class="container">
         <div th:replace="~{fragments/tablaAdminSupermercados :: tablaAdminSupermercados}"></div>
