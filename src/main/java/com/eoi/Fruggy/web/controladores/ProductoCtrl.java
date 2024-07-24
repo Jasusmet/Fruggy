@@ -25,13 +25,15 @@ public class ProductoCtrl {
     private final SrvcImagen imagenSrvc;
     private final SrvcCategoria categoriasSrvc;
     private final SrvcSubcategoria subcategoriasSrvc;
+    private final SrvcValProducto valProductosSrvc;
 
-    public ProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcCategoria categoriasSrvc, SrvcSubcategoria subcategoriasSrvc) {
+    public ProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcCategoria categoriasSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcValProducto valProductosSrvc) {
         this.productosSrvc = productosSrvc;
         this.preciosSrvc = preciosSrvc;
         this.imagenSrvc = imagenSrvc;
         this.categoriasSrvc = categoriasSrvc;
         this.subcategoriasSrvc = subcategoriasSrvc;
+        this.valProductosSrvc = valProductosSrvc;
     }
 
     @RequestMapping
@@ -39,7 +41,7 @@ public class ProductoCtrl {
         List<Producto> listaProductos = productosSrvc.getRepo().findAll();
         System.out.println("Lista de productos: " + listaProductos); // Verifica que la lista no esté vacía
         model.addAttribute("listaProducto", listaProductos);
-        return "nuevos-CRUD-Productos.html";
+        return "";
     }
 
 }

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Supermercado</title>
+</head>
+<body>
+<div class="container mt-4" th:fragment="formularioAdminModificarSupermercado">
+    <a class="btn btn-secondary" th:href="@{/admin/supermercados}">Regresar</a>
+    <br><br>
+    <form th:action="@{/admin/supermercados/actualizar}" method="post" th:object="${supermercado}">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="nombreSuper" class="form-label">Nombre del Supermercado</label>
+            <input type="text" th:field="*{nombreSuper}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="url" class="form-label">URL</label>
+            <input type="url" th:field="*{url}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="horario" class="form-label">Horario</label>
+            <input type="text" th:field="*{horario}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="calle" class="form-label">Calle</label>
+            <input type="text" th:field="*{calle}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="municipio" class="form-label">Municipio</label>
+            <input type="text" th:field="*{municipio}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="pais" class="form-label">País</label>
+            <input type="text" th:field="*{pais}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="codigopostal" class="form-label">Código Postal</label>
+            <input type="number" th:field="*{codigopostal}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagenPath" class="form-label">Ruta de la Imagen</label>
+            <input type="text" th:field="*{imagenPath}" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+</body>
+</html>

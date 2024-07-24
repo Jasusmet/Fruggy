@@ -26,13 +26,15 @@ public class ADMINProductoCtrl {
     private final SrvcImagen imagenSrvc;
     private final SrvcCategoria categoriasSrvc;
     private final SrvcSubcategoria subcategoriasSrvc;
+    private final SrvcValSupermercado valSupermercadoSrvc;
 
-    public ADMINProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcCategoria categoriasSrvc, SrvcSubcategoria subcategoriasSrvc) {
+    public ADMINProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcCategoria categoriasSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcValSupermercado valSupermercadoSrvc) {
         this.productosSrvc = productosSrvc;
         this.preciosSrvc = preciosSrvc;
         this.imagenSrvc = imagenSrvc;
         this.categoriasSrvc = categoriasSrvc;
         this.subcategoriasSrvc = subcategoriasSrvc;
+        this.valSupermercadoSrvc = valSupermercadoSrvc;
     }
 
 

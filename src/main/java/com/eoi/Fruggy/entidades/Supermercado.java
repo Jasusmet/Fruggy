@@ -35,8 +35,15 @@ public class Supermercado implements Serializable {
     @Column (name ="horario",length = 255)
     private String horario;
 
-    @Column (name ="direccion", length = 255)
-    private String direccion;
+    // Campos de dirección
+    @Column(name = "calle", length = 250)
+    private String calle;
+    @Column(name = "municipio", length = 250)
+    private String municipio;
+    @Column(name = "pais", length = 250)
+    private String pais;
+    @Column(name = "codigoPostal")
+    private Integer codigopostal;
 
     @OneToMany(mappedBy = "precioSupermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Precio> supermercadoPrecios;
