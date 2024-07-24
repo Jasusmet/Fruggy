@@ -11,7 +11,7 @@ header.header {
 }
 
 .header__top__left {
-    padding: 10px ;
+    padding: 10px;
 }
 
 .header__top__left ul li {
@@ -21,8 +21,6 @@ header.header {
 
     position: relative;
 }
-
-
 
 .header__top__right {
     text-align: right;
@@ -152,8 +150,6 @@ header.header {
 
 .header__menu {
     padding: 50px 0;
-
-
 }
 
 .header__menu ul li {

@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<!-- Header Section Begin -->
-<header class="header">
+<header th:fragment="header">
     <div class="header__top">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6 col-md-6">
                     <div class="header__top__left">
                         <ul>
                             <li><i class="fa fa-envelope"></i> fruggy@gmail.com</li>
                         </ul>
                     </div>
-                </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="header__top__right">
                         <div class="header__top__right__social">
@@ -30,7 +27,7 @@
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="../layout/login.html"><i class="fa fa-user"></i> <span th:text="#{header.login}">Login</span></a>
+                            <a href="/login"><i class="fa fa-user"></i> <span th:text="#{header.login}">Login</span></a>
                         </div>
                     </div>
                 </div>
@@ -41,7 +38,7 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="/static"><img src="/img/logo.png" height="120px" width="100px" alt=""></a>
+                    <a href="/"><img src="/img/logo.png" height="120px" width="100px" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-9">
@@ -67,7 +64,5 @@
         </div>
     </div>
 </header>
-<!-- Header Section End -->
-
 </body>
 </html>

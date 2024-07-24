@@ -1,10 +1,10 @@
+@import "preloader.css";
 @import "header.css";
 @import "footer.css";
 @import "sidebar.css";
 @import "categories.css";
 @import "hero.css";
 @import "featured.css";
-
 @import "mediaQueries.css";
 
 html, body {
@@ -58,8 +58,6 @@ a:hover, a:focus {
 .humberger__open {
     display: none;
 }
-
-
 
 /*---------------------
   Latest Product
@@ -164,14 +162,14 @@ a:hover, a:focus {
 
 .breadcrumb__text h2 {
     font-size: 46px;
-    color: #ffffff;
+    color: #fff;
     font-weight: 700;
 }
 
 .breadcrumb__option a {
     display: inline-block;
     font-size: 16px;
-    color: #ffffff;
+    color: #fff;
     font-weight: 700;
     margin-right: 20px;
     position: relative;
@@ -183,14 +181,14 @@ a:hover, a:focus {
     top: 13px;
     height: 1px;
     width: 10px;
-    background: #ffffff;
+    background: #fff;
     content: "";
 }
 
 .breadcrumb__option span {
     display: inline-block;
     font-size: 16px;
-    color: #ffffff;
+    color: #fff;
 }
 
 .price-range-wrap .range-slider {
