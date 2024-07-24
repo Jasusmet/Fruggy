@@ -5,7 +5,6 @@ import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,13 +40,13 @@ public class ADMINProductoCtrl {
     public String adminListarProductos(@RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        Model model) {
-        Page<Producto> paginaProductos = (Page<Producto>) productosSrvc.obtenerProductosPaginados(page, size);
-        model.addAttribute("paginaProductos", paginaProductos);
-        return "admin/productos";
+        Page<Producto> pagina = (Page<Producto>) productosSrvc.obtenerProductosPaginados(page, size);
+        model.addAttribute("paginaProductos", pagina);
+        return "admin/CRUD-Productos"; // Lo he llamado asi, porque desde esta vista se pueden hacer todas las funciones CRUD como admin de productos.
     }
 
 
-    @GetMapping("/producto/agregar")
+    @GetMapping("/agregar")
     public String agregarProducto(Model model) throws JsonProcessingException {
         List<Categoria> categorias = categoriasSrvc.buscarEntidades();
         List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
@@ -72,19 +71,19 @@ public class ADMINProductoCtrl {
         model.addAttribute("subcategoriasMap", subcategoriasJson);
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("producto", new Producto());
-        return "create-productos";
+        return "admin/crear-producto";
     }
 
 
-    @PostMapping("/producto/guardar")
+    @PostMapping("/guardar")
     public String guardarProducto(@ModelAttribute Producto producto,
                                   @RequestParam(value = "file", required = false) MultipartFile file,
                                   @RequestParam("precio") Double precio,
                                   @RequestParam("categoria.id") Long categoriaId,
                                   @RequestParam(value = "subcategoria.id", required = false) Long subcategoriaId,
                                   Model model) throws Exception {
+        // Actualización de un producto existente
         if (producto.getId() != null) {
-            // Actualización de un producto existente
             Optional<Producto> productoExistente = productosSrvc.encuentraPorId(producto.getId());
             if (productoExistente.isPresent()) {
                 Producto productoActualizado = productoExistente.get();
@@ -110,18 +109,23 @@ public class ADMINProductoCtrl {
                     imagenSrvc.guardar(imagen);
                     productoActualizado.setImagen(imagen);
                 }
-
+                // Actualizar precio
+                Precio nuevoActualizado = productoActualizado.getProductoPrecios();
+                if (nuevoActualizado == null) {
+                    nuevoActualizado = new Precio();
+                    nuevoActualizado.setActivo(true);
+                }
                 Precio nuevoPrecio = productoActualizado.getProductoPrecios();
                 nuevoPrecio.setValor(precio);
                 preciosSrvc.guardar(nuevoPrecio);
                 productoActualizado.setProductoPrecios(nuevoPrecio);
 
-                // Asociar la categoría y la subcategoría
+                // Actualizar la categoría y la subcategoría
                 Categoria categoria = categoriasSrvc.encuentraPorId(categoriaId).orElse(null);
                 Subcategoria subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId).orElse(null);
-                producto.setCategoria(categoria);
-                producto.setSubcategoria(subcategoria);
-
+                productoActualizado.setCategoria(categoria);
+                productoActualizado.setSubcategoria(subcategoria);
+                //Guardar producto actualizado
                 productosSrvc.guardar(productoActualizado);
 
             } else {
@@ -152,37 +156,60 @@ public class ADMINProductoCtrl {
             nuevoPrecio.setValor(precio);
             nuevoPrecio.setActivo(true);
             preciosSrvc.guardar(nuevoPrecio);
-
             producto.setProductoPrecios(nuevoPrecio);
-            // Asociar la categoría y la subcategoría
+
+            // Asocia la categoría y subcategoría
             Categoria categoria = categoriasSrvc.encuentraPorId(categoriaId).orElse(null);
             Subcategoria subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId).orElse(null);
             producto.setCategoria(categoria);
             producto.setSubcategoria(subcategoria);
+            // Guarda el nuevo producto
             productosSrvc.guardar(producto);
         }
-
         return "redirect:/admin/productos";
     }
 
-    @GetMapping("/producto/editar/{id}")
-    public String editarProducto(@PathVariable("id") long id, Model model) {
+    @GetMapping("/editar/{id}")
+    public String editarProducto(@PathVariable("id") long id, Model model) throws JsonProcessingException {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
         if (producto.isPresent()) {
-            model.addAttribute("producto", producto.get());
-            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
-            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
-            return "create-productos";
+            Producto productoEditado = producto.get();
+
+            // Cargar todas las categorías y subcategorías
+            List<Categoria> categorias = categoriasSrvc.buscarEntidades();
+            List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
+
+            // Crear un mapa de ID de categoría a lista de DTOs de subcategorías
+            Map<Long, List<SubcategoriaDTO>> subcategoriasMap = subcategorias.stream()
+                    .collect(Collectors.groupingBy(
+                            subcategoria -> subcategoria.getCategoria().getId(),
+                            Collectors.mapping(
+                                    subcategoria -> new SubcategoriaDTO(subcategoria.getId(), subcategoria.getTipo()),
+                                    Collectors.toList()
+                            )
+                    ));
+            // Convertir el mapa a JSON
+            ObjectMapper objectMapper = new ObjectMapper();
+            String subcategoriasJson = objectMapper.writeValueAsString(subcategoriasMap);
+
+            model.addAttribute("producto", productoEditado);
+            model.addAttribute("categorias", categorias);
+            model.addAttribute("subcategoriasMap", subcategoriasJson);
+            model.addAttribute("subcategorias", subcategorias);
+            return "admin/crear-producto";
         } else {
             model.addAttribute("error", "Producto no encontrado");
             return "error";
         }
     }
-
-    @PostMapping("/producto/eliminar/{id}")
-    public String eliminarProducto(@PathVariable int id) throws Exception {
-        productosSrvc.eliminarPorId((long) id);
-        return "redirect:/admin/productos";
+    @PostMapping("/eliminar/{id}")
+    public String eliminarProducto(@PathVariable Long id) {
+        try {
+            productosSrvc.eliminarPorId(id);
+            return "redirect:/admin/productos";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
-
 }

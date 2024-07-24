@@ -13,6 +13,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 
 import java.util.Locale;
 
@@ -47,5 +49,13 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
+    }
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setPrefix("classpath:/templates/");
+        templateResolver.setSuffix(".html");
+        templateResolver.setTemplateMode(TemplateMode.HTML);
+        return templateResolver;
     }
 }

@@ -39,7 +39,7 @@ public class ProductoCtrl {
         List<Producto> listaProductos = productosSrvc.getRepo().findAll();
         System.out.println("Lista de productos: " + listaProductos); // Verifica que la lista no esté vacía
         model.addAttribute("listaProducto", listaProductos);
-        return "nuevos-productos.html";
+        return "nuevos-CRUD-Productos.html";
     }
 
 }

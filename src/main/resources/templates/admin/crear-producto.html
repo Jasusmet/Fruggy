@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{product.create.title}">Crear Producto</title>
+    <script src="/js/select-category-subcategory.js" defer></script>
+</head>
+<body>
+<div class="container mt-4" layout:fragment="content">
+    <h1 th:text="#{admin.product.create}">Crear Producto</h1>
+    <div class="container">
+        <div th:replace="~{fragments/formularioAdminCrearProducto :: formularioAdminCrearProducto}"></div>
+    </div>
+</div>
+</body>
+</html>

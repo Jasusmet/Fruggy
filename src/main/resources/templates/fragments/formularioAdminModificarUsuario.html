@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-4" th:fragment="formularioAdminModificarUsuario">
+    <a class="btn btn-secondary" th:href="@{admin/usuarios}">Regresar</a>
+    <br><br>
+    <form th:action="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" method="post" th:object="${usuario}">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" th:field="*{email}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="active" class="form-label">Activo</label>
+            <input type="checkbox" th:field="*{active}" class="form-check-input">
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" th:field="*{password}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="tel" th:field="*{telefono}" class="form-control" required>
+        </div>
+        <!-- Selección de Roles -->
+        <div class="mb-3">
+            <label for="roles" class="form-label">Roles</label>
+            <select id="roles" class="form-control form-control-multiple" th:field="*{roles}" multiple>
+                <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.rolNombre}">Rol</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+</body>
+</html>

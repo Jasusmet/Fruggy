@@ -12,12 +12,16 @@
     <title>Mi Aplicación</title>
 </head>
 <body>
+<div th:replace="~{fragments/preloader :: preloader}"></div>
 <!--  humberger menu  -->
 <div th:replace="~{fragments/humberger-menu :: humbergerMenu}"></div>
 <!--  header  -->
 <div th:replace="~{fragments/header-productos :: header}"></div>
 <div class="container">
-    <div th:replace="~{fragments/adminProductosLista :: adminProductosLista}"></div>
+    <!-- Tabla de productos -->
+    <div th:replace="~{fragments/tablaAdminProductos :: tablaAdminProductos(${paginaProductos})}"></div>
+    <!-- Paginación -->
+    <div th:replace="~{fragments/paginacion :: paginacion(${paginaProductos})}"></div>
 </div>
 <!-- Footer Section  -->
 <div th:replace="~{fragments/footer-products :: footer}"></div>
@@ -31,13 +35,5 @@
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
         crossorigin="anonymous"></script>
 
-<script>
-    window.onload = function() {
-        var preloader = document.getElementById('preloader');
-        if (preloader) {
-            preloader.style.display = 'none';
-        }
-    };
-</script>
 </body>
 </html>

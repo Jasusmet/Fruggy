@@ -2,26 +2,22 @@
 <html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
 <head>
-
+    <meta charset="UTF-8">
     <title th:text="#{admin.product.list.title}">Lista de Productos - Admin</title>
     <link th:href="@{/css/styleFruggy.css}" type="text/css" rel="stylesheet">
 </head>
 <body>
-
-<div class="container" layout:fragment="content">
+<div class="container mt-4" layout:fragment="content">
     <h1 th:text="#{admin.product.list.header}">Lista de Productos</h1>
-    <a class="btn btn-primary" th:href="@{/productos/admin/agregar}" th:text="#{admin.product.create}">Crear
-        Producto</a>
-
-    <div th:if="${pagina != null and not #lists.isEmpty(pagina.content)}">
-        <div th:replace="fragments/tablaAdminProductos :: tablaAdminProductos">
-        </div>
+    <a class="btn btn-primary mb-3" th:href="@{/admin/productos/agregar}" th:text="#{admin.product.create}">Crear Producto</a>
+    <div th:if="${paginaProductos != null and not #lists.isEmpty(paginaProductos.content)}">
+        <div th:replace="fragments/tablaAdminProductos :: tablaAdminProductos"></div>
     </div>
-    <div th:if="${pagina == null or #lists.isEmpty(pagina.content)}">
+    <div th:if="${paginaProductos == null or #lists.isEmpty(paginaProductos.content)}">
         <p th:text="#{admin.product.empty}">La lista de productos está vacía</p>
     </div>
-    <div th:replace="fragments/paginacion::paginacion">
-    </div>
+
+    <div th:replace="fragments/paginacion :: paginacion"></div>
 </div>
 </body>
 </html>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Lista de Productos</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
 </head>
 <body>
 <table class="table table-striped mt-3" th:fragment="tablaAdminProductos">
@@ -29,11 +30,11 @@
         <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
         <td>
-            <a th:href="@{'/productos/admin/editar/' + ${producto.id}}" class="btn btn-warning" th:text="#{admin.product.edit}">Editar</a>
+            <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning" th:text="#{admin.product.edit}">Editar</a>
         </td>
         <td>
-            <form th:action="@{'/productos/admin/eliminar/' + ${producto.id}}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
-                <input type="submit" class="btn btn-danger" th:value="#{admin.product.delete}"/>
+            <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                <input type="submit" class="btn btn-danger" value="Eliminar"/>
             </form>
         </td>
     </tr>

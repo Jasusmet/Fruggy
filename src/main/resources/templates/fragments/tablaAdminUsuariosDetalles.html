@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<body>
+<div class="container mt-4" th:fragment="tablaAdminUsuariosDetalles">
+    <h1>Editar Detalle</h1>
+    <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Regresar</a>
+    <br><br>
+    <form th:action="@{/admin/usuarios/detalles/{id}(id=${detalle.id})}"
+          method="post"
+          th:object="${detalle}"
+          enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="nombreUsuario" class="form-label">Nombre Usuario</label>
+            <input type="text" th:field="*{nombreUsuario}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" th:field="*{nombre}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" th:field="*{apellido}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="edad" class="form-label">Edad</label>
+            <input type="number" th:field="*{edad}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="genero" class="form-label">Género</label>
+            <select id="genero" name="generoId" class="form-select" required>
+                <option value="" disabled selected>Seleccione un género</option>
+                <option th:each="genero : ${generos}"
+                        th:value="${genero.id}"
+                        th:text="${genero.descripcion}"
+                        th:selected="${detalle.detallesGenero != null && detalle.detallesGenero.id == genero.id}">
+                </option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="file" class="form-label">Imagen</label>
+            <input type="file" name="file" class="form-control"/>
+        </div>
+
+        <div class="mb-3">
+            <label for="calle" class="form-label">Calle</label>
+            <input type="text" th:field="*{calle}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="municipio" class="form-label">Municipio</label>
+            <input type="text" th:field="*{municipio}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="pais" class="form-label">País</label>
+            <input type="text" th:field="*{pais}" class="form-control" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="codigopostal" class="form-label">Código Postal</label>
+            <input type="number" th:field="*{codigopostal}" class="form-control" required/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+    <a class="btn btn-primary mt-3" th:href="@{/admin/usuarios}">Regresar a Usuarios</a>
+</div>
+
+</body>
+</html>

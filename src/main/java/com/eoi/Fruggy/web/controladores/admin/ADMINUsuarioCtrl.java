@@ -4,6 +4,7 @@ import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.servicios.SrvcDetalle;
+import com.eoi.Fruggy.servicios.SrvcImagen;
 import com.eoi.Fruggy.servicios.SrvcRol;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import lombok.extern.slf4j.Slf4j;
@@ -17,39 +18,43 @@ import java.util.Optional;
 import java.util.Set;
 
 
-@Controller
-@Slf4j
+@Controller()
 @RequestMapping("/admin/usuarios")
-public class UsuarioCtrl {
+public class ADMINUsuarioCtrl {
 
-    @Autowired
-    private SrvcUsuario usuariosSrvc;
-    @Autowired
-    private SrvcRol srvcRol;
-    @Autowired
-    private SrvcDetalle detalleSrvc;
+    private final SrvcUsuario usuarioSrvc;
+    private final SrvcDetalle detalleSrvc;
+    private final SrvcRol rolSrvc;
+    private final SrvcImagen imagenSrvc;
+
+    public ADMINUsuarioCtrl(SrvcUsuario usuarioSrvc, SrvcDetalle detalleSrvc, SrvcRol rolSrvc, SrvcImagen imagenSrvc) {
+        this.usuarioSrvc = usuarioSrvc;
+        this.detalleSrvc = detalleSrvc;
+        this.rolSrvc = rolSrvc;
+        this.imagenSrvc = imagenSrvc;
+    }
+
 
     @GetMapping
-    public String usuarios(Model model) {
-        List<Usuario> listaUsuarios = usuariosSrvc.buscarEntidades();
+    public String usuariosListarUsuarios(Model model) {
+        List<Usuario> listaUsuarios = usuarioSrvc.buscarEntidades();
         listaUsuarios.forEach(usuario -> {
-            Set<Rol> rolesUsuario = usuariosSrvc.obtenerRolesPorUsuario(usuario.getId());
+            Set<Rol> rolesUsuario = usuarioSrvc.obtenerRolesPorUsuario(usuario.getId());
             usuario.setRoles(rolesUsuario);
         });
         model.addAttribute("usuarios", listaUsuarios);
-        return "admin/usuarios";
+        return "admin/CRUD-Usuarios"; // Lo he llamado asi, porque desde esta vista se pueden hacer todas las funciones CRUD como admin de usuarios.
     }
 
-    @GetMapping("/agregar")
-    public String agregar(Usuario usuario, Model model) {
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("detalle", new Detalle());
-        List<Rol> roles = srvcRol.buscarEntidades();
-        // para comprobar
-        System.out.println("Roles enviados a la vista: " + roles.size());
-        model.addAttribute("roles", roles);
-        return "crear-usuario";
-    }
+@GetMapping("/agregar")
+public String agregarUsuario(Model model) {
+    model.addAttribute("usuario", new Usuario());
+    model.addAttribute("detalle", new Detalle());
+    List<Rol> roles = rolSrvc.buscarEntidades();
+    System.out.println("Roles enviados a la vista: " + roles.size());
+    model.addAttribute("roles", roles);
+    return "admin/crear-usuario";
+}
 
     @PostMapping("/guardar")
     public String guardar(@ModelAttribute Usuario usuario, Detalle detalle,
@@ -61,7 +66,7 @@ public class UsuarioCtrl {
         Set<Rol> roles = new HashSet<>();
         if (rolesSeleccionados != null) {
             for (Long roleId : rolesSeleccionados) {
-                Optional<Rol> rolOpt = srvcRol.encuentraPorId(roleId);
+                Optional<Rol> rolOpt = rolSrvc.encuentraPorId(roleId);
                 if (rolOpt.isPresent()) {
                     roles.add(rolOpt.get());
                 } else {
@@ -76,60 +81,65 @@ public class UsuarioCtrl {
         // Asignar detalle al usuario
         usuario.setDetalle(detalle);
         // Guardar o actualizar usuario
-        usuariosSrvc.guardar(usuario);
+        usuarioSrvc.guardar(usuario);
         // Guardar o actualizar detalle
         detalleSrvc.guardar(detalle);
         // Guardar roles actualizados (esto asegura que el nombre del rol se actualice si ha cambiado)
         for (Rol rol : roles) {
-            srvcRol.actualizarRol(rol);
+            rolSrvc.actualizarRol(rol);
         }
-        return "redirect:/usuarios";
+        return "redirect:/admin/usuarios";
     }
 
     @PostMapping("/asignar-rol")
     public String asignarRol(@RequestParam("usuarioId") Long usuarioId, @RequestParam("rolId") Long rolId) throws Exception {
-        Optional<Usuario> usuarioOpt = usuariosSrvc.encuentraPorId(usuarioId);
-        Optional<Rol> rolOpt = srvcRol.encuentraPorId(rolId);
+        Optional<Usuario> usuarioOpt = usuarioSrvc.encuentraPorId(usuarioId);
+        Optional<Rol> rolOpt = rolSrvc.encuentraPorId(rolId);
         if (usuarioOpt.isPresent() && rolOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             Rol rol = rolOpt.get();
-            srvcRol.asignarRolAUsuario(usuario, rol);
+            rolSrvc.asignarRolAUsuario(usuario, rol);
         }
-        return "redirect:/usuarios";
+        return "redirect:/admin/usuarios";
     }
 
     @PostMapping("/quitar-rol")
     public String quitarRol(@RequestParam("usuarioId") Long usuarioId, @RequestParam("rolId") Long rolId) throws Exception {
-        Optional<Usuario> usuarioOpt = usuariosSrvc.encuentraPorId(usuarioId);
-        Optional<Rol> rolOpt = srvcRol.encuentraPorId(rolId);
+        Optional<Usuario> usuarioOpt = usuarioSrvc.encuentraPorId(usuarioId);
+        Optional<Rol> rolOpt = rolSrvc.encuentraPorId(rolId);
 
         if (usuarioOpt.isPresent() && rolOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             Rol rol = rolOpt.get();
-            srvcRol.quitarRol(usuario, rol);
+            rolSrvc.quitarRol(usuario, rol);
         }
-        return "redirect:/usuarios";
+        return "redirect:/admin/usuarios";
     }
 
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") long id, Model model) {
-        Optional<Usuario> usuario = usuariosSrvc.encuentraPorId(id);
+        Optional<Usuario> usuario = usuarioSrvc.encuentraPorId(id);
         if (usuario.isPresent()) {
             model.addAttribute("usuario", usuario.get());
-            model.addAttribute("detalle", usuario.get().getDetalle());
-            List<Rol> roles = srvcRol.buscarEntidades();
+            List<Rol> roles = rolSrvc.buscarEntidades();
             model.addAttribute("roles", roles);
-            return "modificar";
+            return "admin/modificar-usuario"; // vista para editar
         } else {
             model.addAttribute("error", "Usuario no encontrado");
             return "error";
         }
     }
+    @PostMapping("/editar/{id}")
+    public String guardarEdicion(@PathVariable("id") long id, @ModelAttribute Usuario usuario) throws Exception {
+        usuario.setId(id);
+        usuarioSrvc.guardar(usuario);
+        return "redirect:/admin/usuarios";
+    }
 
     @PostMapping("/eliminar/{id}")
     public String eliminar(@PathVariable Long id) {
-        usuariosSrvc.eliminarPorId(id);
-        return "redirect:/usuarios";
+        usuarioSrvc.eliminarPorId(id);
+        return "redirect:/admin/usuarios";
     }
 }
 

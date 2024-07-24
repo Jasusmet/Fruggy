@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<html lang="en">
 <head>
-    <title th:text="#{product.create.title}">Crear Producto</title>
-    <script src="/js/select-category-subcategory.js" defer></script>
-
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-<div class="container mt-4" layout:fragment="content">
-    <h1 th:text="#{product.create.header}">Crear Producto</h1>
-    <a class="btn btn-primary mb-3" th:href="@{/productos/admin}" th:text="#{product.create.back}">Volver a la lista</a>
+<div class="container mt-4" th:fragment="formularioAdminCrearProducto">
+    <a class="btn btn-primary mb-3" th:href="@{/admin/productos}" th:text="#{product.create.back}">Volver a la lista</a>
 
-    <form th:action="@{/productos/admin/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" th:value="${producto.id}" />
 
         <div class="mb-3">
@@ -25,9 +23,8 @@
 
         <div class="mb-3">
             <label for="descripcion" class="form-label" th:text="#{product.create.descripcion}">Descripción</label>
-            <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3" required aria-required="true"></textarea>
+            <textarea class="form-control" id="descripcion" th:field="*{descripcion}" required aria-required="true"></textarea>
         </div>
-
         <div class="mb-3">
             <label for="activo" class="form-check-label" th:text="#{product.create.activo}">Activo</label>
             <input type="checkbox" class="form-check-input" id="activo" th:field="*{activo}" aria-checked="false">
@@ -54,13 +51,11 @@
         </div>
 
         <div class="mb-3">
-            <label for="file" class="form-label">Imagen</label>
-            <input type="file" name="file" class="form-control" accept="image/*">
+            <label for="file" class="form-label" th:text="#{product.create.image}">Imagen</label>
+            <input type="file" class="form-control" id="file" name="file">
         </div>
 
-        <button type="submit" class="btn btn-primary">
-            <span th:text="${producto.id != null ? 'Actualizar Producto' : 'Guardar Producto'}">Guardar Producto</span>
-        </button>
+        <button type="submit" class="btn btn-primary" th:text="${producto.id != null ? 'Actualizar' : 'Guardar'}">Guardar</button>
     </form>
 </div>
 </body>

@@ -7,16 +7,16 @@
 <body>
 <div>
     <ul class="pagination" th:fragment="paginacion">
-        <li class="page-item" th:if="${pagina.hasPrevious()}">
+        <li class="page-item" th:if="${paginaProductos.hasPrevious()}">
             <a class="page-link"
-               th:href="@{'/productos/admin?page=' + ${pagina.number - 1} + '&size=' + ${pagina.size}}">Anterior</a>
+               th:href="@{'/productos/admin?page=' + ${paginaProductos.number - 1} + '&size=' + ${paginaProductos.size}}">Anterior</a>
         </li>
         <li class="page-item disabled">
-            <span class="page-link" th:text="${pagina.number + 1}"></span>
+            <span class="page-link" th:text="${paginaProductos.number + 1}"></span>
         </li>
-        <li class="page-item" th:if="${pagina.hasNext()}">
+        <li class="page-item" th:if="${paginaProductos.hasNext()}">
             <a class="page-link"
-               th:href="@{'/productos/admin?page=' + ${pagina.number + 1} + '&size=' + ${pagina.size}}">Siguiente</a>
+               th:href="@{'/productos/admin?page=' + ${paginaProductos.number + 1} + '&size=' + ${paginaProductos.size}}">Siguiente</a>
         </li>
     </ul>
 </div>

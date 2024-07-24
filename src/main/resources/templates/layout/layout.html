@@ -33,14 +33,14 @@
 
 <body>
 <!--/* Standard layout can be mixed with Layout Dialect */-->
-<div th:replace="fragments/header :: header">
+<div th:replace="~{fragments/header :: header}">
 </div>
 <!-- Page Preloder -->
 <div th:replace="~{fragments/preloader :: preloader}"></div>
 <div class="container" layout:fragment="content">
 
 </div>
-<div th:replace="fragments/footer :: footer">&copy; 2014 The Static Templates</div>
+<div th:replace="~{fragments/footer :: footer}">&copy; 2014 The Static Templates</div>
 <script layout:fragment="script">
 </script>
 </body>

@@ -62,8 +62,6 @@ public class DataInitializer {
                 repoCategoria.save(new Categoria("Pasta, Arroz & Legumbres"));
                 repoCategoria.save(new Categoria("Perfumería & Parafarmacia"));
             }
-
-            // Asegúrate de que las categorías estén disponibles
             List<Categoria> categorias = repoCategoria.findAll();
 
             // Cargar subcategorías

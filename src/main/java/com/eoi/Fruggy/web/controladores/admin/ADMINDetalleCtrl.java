@@ -1,8 +1,7 @@
-package com.eoi.Fruggy.web.controladores;
+package com.eoi.Fruggy.web.controladores.admin;
 
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,39 +10,40 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
-public class DetalleCtrl {
+@RequestMapping("admin/usuarios")
+public class ADMINDetalleCtrl {
 
-    @Autowired
-    private SrvcDetalle detallesSrvc;
-    @Autowired
-    private SrvcGenero generoSrvc;
-    @Autowired
-    private SrvcImagen imagenSrvc;
-    @Autowired
-    private SrvcRol rolSrvc;
-    @Autowired
-    private SrvcUsuario usuarioSrvc;
+    private final SrvcDetalle detalleSrvc;
+    private final SrvcGenero generoSrvc;
+    private final SrvcImagen imagenSrvc;
+    private final SrvcRol rolSrvc;
+    private final SrvcUsuario usuarioSrvc;
+
+    public ADMINDetalleCtrl(SrvcDetalle detalleSrvc, SrvcGenero generoSrvc, SrvcImagen imagenSrvc, SrvcRol rolSrvc, SrvcUsuario usuarioSrvc) {
+        this.detalleSrvc = detalleSrvc;
+        this.generoSrvc = generoSrvc;
+        this.imagenSrvc = imagenSrvc;
+        this.rolSrvc = rolSrvc;
+        this.usuarioSrvc = usuarioSrvc;
+    }
 
 
     @GetMapping("/detalles/{id}")
     public String verDetalle(@PathVariable("id") Long id, Model model) {
-        Optional<Detalle> detalle = detallesSrvc.encuentraPorId(id);
+        Optional<Detalle> detalle = detalleSrvc.encuentraPorId(id);
         if (detalle.isPresent()) {
             model.addAttribute("detalle", detalle.get());
             model.addAttribute("generos", generoSrvc.buscarEntidades());
-            return "detalles";
+            return "admin/detalles-usuario";
         } else {
             model.addAttribute("error", "Detalle no encontrado");
             return "error";
         }
     }
+
 
     @PostMapping("/detalles/{id}")
     public String guardarDetalle(@PathVariable("id") Long id,
@@ -51,7 +51,7 @@ public class DetalleCtrl {
                                  @RequestParam(value = "file", required = false) MultipartFile file,
                                  @RequestParam("generoId") Long generoId,
                                  Model model) throws Exception {
-        Optional<Detalle> detalleOptional = detallesSrvc.encuentraPorId(id);
+        Optional<Detalle> detalleOptional = detalleSrvc.encuentraPorId(id);
         if (detalleOptional.isPresent()) {
             Detalle existente = detalleOptional.get();
             // Establecer los valores actualizados
@@ -60,6 +60,7 @@ public class DetalleCtrl {
             existente.setApellido(detalleActualizado.getApellido());
             existente.setEdad(detalleActualizado.getEdad());
             existente.setDetallesGenero(detalleActualizado.getDetallesGenero());
+
             // Establecer el género
             Optional<Genero> genero = generoSrvc.getRepo().findById(generoId);
             if (genero.isPresent()) {
@@ -68,6 +69,7 @@ public class DetalleCtrl {
                 model.addAttribute("error", "Género no encontrado");
                 return "error";
             }
+
             // Campos de dirección
             existente.setCalle(detalleActualizado.getCalle());
             existente.setMunicipio(detalleActualizado.getMunicipio());
@@ -106,13 +108,12 @@ public class DetalleCtrl {
                     return "error";
                 }
             }
-
             // Guardar el detalle
             try {
-                detallesSrvc.guardar(existente);
+                detalleSrvc.guardar(existente);
                 model.addAttribute("detalle", existente);
                 model.addAttribute("mensaje", "Detalle actualizado correctamente");
-                return "redirect:/detalles-actualizados/" + existente.getId();
+                return "redirect:/admin/usuarios/detalles-actualizados/" + existente.getId(); // Corrección aquí
             } catch (Exception e) {
                 model.addAttribute("error", "Error al guardar el detalle: " + e.getMessage());
                 return "error";
@@ -122,12 +123,13 @@ public class DetalleCtrl {
             return "error";
         }
     }
+
     @GetMapping("/detalles-actualizados/{id}")
     public String verDetallesActualizados(@PathVariable("id") Long id, Model model) {
-        Optional<Detalle> detalleActualizado = detallesSrvc.encuentraPorId(id);
+        Optional<Detalle> detalleActualizado = detalleSrvc.encuentraPorId(id);
         if (detalleActualizado.isPresent()) {
             model.addAttribute("detalle", detalleActualizado.get());
-            return "detalles-actualizados";
+            return "admin/detalles-usuario-actualizados";
         } else {
             model.addAttribute("error", "Detalle no encontrado");
             return "error";

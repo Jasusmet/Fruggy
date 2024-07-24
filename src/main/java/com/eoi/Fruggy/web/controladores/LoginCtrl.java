@@ -2,7 +2,6 @@ package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,7 +49,7 @@ public class LoginCtrl {
         if (error != null) {
             model.addAttribute("error", true);
         }
-        return "crear-usuario";
+        return "adminUsuarios";
     }
 
     @GetMapping("/login/recuperar-contraseña")
