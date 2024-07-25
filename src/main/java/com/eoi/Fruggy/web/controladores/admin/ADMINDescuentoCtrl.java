@@ -1,8 +1,11 @@
 package com.eoi.Fruggy.web.controladores.admin;
 
 import com.eoi.Fruggy.entidades.Descuento;
+import com.eoi.Fruggy.entidades.Precio;
+import com.eoi.Fruggy.entidades.Producto;
 import com.eoi.Fruggy.entidades.TipoDescuento;
 import com.eoi.Fruggy.servicios.SrvcDescuento;
+import com.eoi.Fruggy.servicios.SrvcPrecio;
 import com.eoi.Fruggy.servicios.SrvcProducto;
 import com.eoi.Fruggy.servicios.SrvcTipodescuento;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +29,13 @@ public class ADMINDescuentoCtrl {
     private final SrvcDescuento descuentoSrvc;
     private final SrvcProducto productoSrvc;
     private final SrvcTipodescuento tipoDescuentoSrvc;
+    private final SrvcPrecio precioSrvc;
 
-    public ADMINDescuentoCtrl(SrvcDescuento descuentoSrvc, SrvcProducto productoSrvc, SrvcTipodescuento tipoDescuentoSrvc) {
+    public ADMINDescuentoCtrl(SrvcDescuento descuentoSrvc, SrvcProducto productoSrvc, SrvcTipodescuento tipoDescuentoSrvc, SrvcPrecio precioSrvc) {
         this.descuentoSrvc = descuentoSrvc;
         this.productoSrvc = productoSrvc;
         this.tipoDescuentoSrvc = tipoDescuentoSrvc;
+        this.precioSrvc = precioSrvc;
     }
 
 
@@ -40,6 +45,7 @@ public class ADMINDescuentoCtrl {
         if (descuento.isPresent()) {
             model.addAttribute("descuento", descuento.get());
             model.addAttribute("tiposDescuento", tipoDescuentoSrvc.buscarEntidades());
+            model.addAttribute("precios", precioSrvc.buscarEntidades());
             return "admin/descuentos-productos";
         } else {
             model.addAttribute("error", "Descuento no encontrado");
@@ -52,6 +58,7 @@ public class ADMINDescuentoCtrl {
             @PathVariable("id") Long id,
             @ModelAttribute Descuento descuentoActualizado,
             @RequestParam("tipoDeDescuentoId") Long tipoDescuentoId,
+            @RequestParam("precioId") Long precioId,
             Model model) throws Exception {
         Optional<Descuento> descuentoOptional = descuentoSrvc.encuentraPorId(descuentoActualizado.getId());
         if (descuentoOptional.isPresent()) {
@@ -70,6 +77,26 @@ public class ADMINDescuentoCtrl {
                 model.addAttribute("error", "Tipo de descuento no encontrado");
                 return "error";
             }
+            // Asignar el precio
+            Optional<Precio> precioOptional = precioSrvc.getRepo().findById(precioId);
+            if (precioOptional.isPresent()) {
+                Precio precio = precioOptional.get();
+                existente.setDescuentosPrecios(precio);
+
+                // Aplicar el descuento al precio
+                Double precioOriginal = precio.getValor();
+                Double porcentajeDescuento = tipoDescuentoOptional.get().getPorcentaje();
+                if (precioOriginal != null && porcentajeDescuento != null) {
+                    Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
+                    Double precioConDescuento = precioOriginal - descuentoAplicado;
+                    precio.setValor(precioConDescuento);
+                }
+            } else {
+                model.addAttribute("error", "Precio no encontrado");
+                return "error";
+            }
+
+
             // Guardar Descuento
             try {
                 descuentoSrvc.guardar(existente);
@@ -95,9 +122,21 @@ public class ADMINDescuentoCtrl {
             String fechaInicioFormateada = (descuento.getFechaInicio() != null) ? convertToDate(descuento.getFechaInicio()).toInstant().atZone(ZoneId.systemDefault()).format(formatter) : "No disponible";
             String fechaFinFormateada = (descuento.getFechaFin() != null) ? convertToDate(descuento.getFechaFin()).toInstant().atZone(ZoneId.systemDefault()).format(formatter) : "No disponible";
 
+            // Si el descuento tiene un producto asociado, obtén el producto
+            Producto producto = descuento.getProducto();
+            Double precioOriginal = (producto != null && producto.getProductoPrecios() != null)
+                    ? producto.getProductoPrecios().getValor()
+                    : null;
+            // Calcula el precio con descuento
+            Double precioConDescuento = (descuento.getDescuentoTipoDescuento() != null && precioOriginal != null)
+                    ? precioOriginal * (1 - (descuento.getDescuentoTipoDescuento().getPorcentaje() / 100))
+                    : precioOriginal;
+
             model.addAttribute("fechaInicioFormateada", fechaInicioFormateada);
             model.addAttribute("fechaFinFormateada", fechaFinFormateada);
             model.addAttribute("descuento", descuento);
+            model.addAttribute("precioOriginal", precioOriginal);
+            model.addAttribute("precioConDescuento", precioConDescuento);
             return "admin/descuentos-productos-actualizados";
         } else {
             model.addAttribute("error", "Descuento no encontrado");

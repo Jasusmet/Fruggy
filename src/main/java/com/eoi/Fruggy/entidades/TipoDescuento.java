@@ -48,6 +48,7 @@ public class TipoDescuento implements Serializable {
     private Set<Descuento> descuentoTipoDescuento = new HashSet<>();
 
 
+
     public TipoDescuento(String descuentoPorVolumen, boolean activo, LocalDate localDate, LocalDate localDate1, double porcentaje) {
         this.tipo = descuentoPorVolumen;
         this.activo = activo;

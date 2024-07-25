@@ -36,27 +36,36 @@ public class ProductoCtrl {
         this.valProductosSrvc = valProductosSrvc;
     }
 
-    @RequestMapping
+    @GetMapping
     public String producto(Model model) {
         List<Producto> listaProductos = productosSrvc.getRepo().findAll();
+        model.addAttribute("listaProducto", listaProductos);
+        return "catalogoProductos";
+    }
+
+    @GetMapping("/ajax")
+    @ResponseBody
+    public List<Producto> obtenerProductos() {
+        return obtenerProductosConDescuento();
+    }
+    private List<Producto> obtenerProductosConDescuento() {
+        List<Producto> listaProductos = productosSrvc.getRepo().findAll();
         for (Producto producto : listaProductos) {
-            Descuento descuento = producto.getDescuento();  // Asumiendo que `Producto` tiene un método `getDescuento()`
+            Descuento descuento = producto.getDescuento();
             if (descuento != null) {
                 Double precioOriginal = producto.getProductoPrecios().getValor();
                 Double porcentajeDescuento = descuento.getDescuentoTipoDescuento().getPorcentaje();
                 Double precioConDescuento = precioOriginal - (precioOriginal * (porcentajeDescuento / 100.0));
 
-                // Añadir al producto la información del descuento
                 producto.setPrecioConDescuento(precioConDescuento);
                 producto.setPorcentajeDescuento(porcentajeDescuento);
             } else {
-                // Si no hay descuento, asigna los valores originales
                 producto.setPrecioConDescuento(producto.getProductoPrecios().getValor());
                 producto.setPorcentajeDescuento(0.0);
             }
         }
-        model.addAttribute("listaProducto", listaProductos);
-        return "";
-    }
+        return listaProductos;
 
+
+    }
 }

@@ -204,8 +204,6 @@ public class ADMINProductoCtrl {
     }
 
 
-
-
     @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         try {
