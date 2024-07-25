@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -50,6 +52,18 @@ public class Producto implements Serializable {
     @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_producto_categoria"))
     private Categoria categoria;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "descuento_id", referencedColumnName = "descuentos_id")
+    private Descuento descuento;
+
+    @ManyToMany
+    @JoinTable(
+            name = "producto_tipoDescuento",
+            joinColumns = @JoinColumn(name = "producto_id"),
+            inverseJoinColumns = @JoinColumn(name = "tipoDescuento_id")
+    )
+    private Set<TipoDescuento> tipoDescuentos = new HashSet<>();
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "imagen_id", referencedColumnName = "id")
     private Imagen imagen;
@@ -57,5 +71,11 @@ public class Producto implements Serializable {
     public String getPrecio() {
         return (productoPrecios != null) ? productoPrecios.getPrecio() : "No disponible";
     }
+
+    @Transient
+    private Double precioConDescuento;
+
+    @Transient
+    private Double porcentajeDescuento;
 }
 

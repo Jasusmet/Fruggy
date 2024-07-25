@@ -39,7 +39,22 @@ public class ProductoCtrl {
     @RequestMapping
     public String producto(Model model) {
         List<Producto> listaProductos = productosSrvc.getRepo().findAll();
-        System.out.println("Lista de productos: " + listaProductos); // Verifica que la lista no esté vacía
+        for (Producto producto : listaProductos) {
+            Descuento descuento = producto.getDescuento();  // Asumiendo que `Producto` tiene un método `getDescuento()`
+            if (descuento != null) {
+                Double precioOriginal = producto.getProductoPrecios().getValor();
+                Double porcentajeDescuento = descuento.getDescuentoTipoDescuento().getPorcentaje();
+                Double precioConDescuento = precioOriginal - (precioOriginal * (porcentajeDescuento / 100.0));
+
+                // Añadir al producto la información del descuento
+                producto.setPrecioConDescuento(precioConDescuento);
+                producto.setPorcentajeDescuento(porcentajeDescuento);
+            } else {
+                // Si no hay descuento, asigna los valores originales
+                producto.setPrecioConDescuento(producto.getProductoPrecios().getValor());
+                producto.setPorcentajeDescuento(0.0);
+            }
+        }
         model.addAttribute("listaProducto", listaProductos);
         return "";
     }

@@ -1,47 +1,51 @@
 package com.eoi.Fruggy.config;
 
-import com.eoi.Fruggy.entidades.Categoria;
-import com.eoi.Fruggy.entidades.Genero;
-import com.eoi.Fruggy.entidades.Rol;
-import com.eoi.Fruggy.entidades.Subcategoria;
-import com.eoi.Fruggy.repositorios.RepoCategoria;
-import com.eoi.Fruggy.repositorios.RepoGenero;
-import com.eoi.Fruggy.repositorios.RepoRol;
-import com.eoi.Fruggy.repositorios.RepoSubcategoria;
+import com.eoi.Fruggy.entidades.*;
+import com.eoi.Fruggy.repositorios.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-
 
 @Component
 public class DataInitializer {
+
+    private final RepoRol repoRol;
+    private final RepoGenero repoGenero;
+    private final RepoCategoria repoCategoria;
+    private final RepoSubcategoria repoSubcategoria;
+    private final RepoTipoDescuento repoTipoDescuento;
+    private final RepoDescuento repoDescuento;
+
     @Autowired
-    private RepoRol repoRol;
-    @Autowired
-    private RepoGenero repoGenero;
-    @Autowired
-    RepoCategoria repoCategoria;
-    @Autowired
-    RepoSubcategoria repoSubcategoria;
+    public DataInitializer(RepoRol repoRol, RepoGenero repoGenero, RepoCategoria repoCategoria,
+                           RepoSubcategoria repoSubcategoria, RepoTipoDescuento repoTipoDescuento, RepoDescuento repoDescuento) {
+        this.repoRol = repoRol;
+        this.repoGenero = repoGenero;
+        this.repoCategoria = repoCategoria;
+        this.repoSubcategoria = repoSubcategoria;
+        this.repoTipoDescuento = repoTipoDescuento;
+        this.repoDescuento = repoDescuento;
+    }
 
     @PostConstruct
     public void init() {
-        //  roles
+        // Inicialización de roles
         if (repoRol.count() == 0) {
             repoRol.save(new Rol("admin"));
             repoRol.save(new Rol("user"));
         }
 
-        //  géneros
+        // Inicialización de géneros
         if (repoGenero.count() == 0) {
             repoGenero.save(new Genero("Masculino"));
             repoGenero.save(new Genero("Femenino"));
             repoGenero.save(new Genero("Otros"));
         }
+
         try {
             // Cargar categorías
             if (repoCategoria.count() == 0) {
@@ -184,8 +188,56 @@ public class DataInitializer {
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Inicialización de tipos de descuento
+            if (repoTipoDescuento.count() == 0) {
+                LocalDate now = LocalDate.now();
+                // Descuento por volumen
+                repoTipoDescuento.save(new TipoDescuento(
+                        "Descuento por volumen 5%",
+                        true,
+                        now.minusMonths(1),    // 1 mes atrás
+                        now.plusMonths(6),     // 6 meses adelante
+                        5.0
+                ));
+
+                // Descuento estacional
+                repoTipoDescuento.save(new TipoDescuento(
+                        "Descuento estacional 10%",
+                        true,
+                        now.minusMonths(2),    // 2 meses atrás
+                        now.plusMonths(6),     // 6 meses adelante
+                        10.0
+                ));
+
+                // Descuento por fidelidad
+                repoTipoDescuento.save(new TipoDescuento(
+                        "Descuento por fidelidad 15%",
+                        true,
+                        now.minusMonths(3),    // 3 meses atrás
+                        now.plusMonths(6),     // 6 meses adelante
+                        15.0
+                ));
+
+                // Descuento promocional
+                repoTipoDescuento.save(new TipoDescuento(
+                        "Descuento promocional 20%",
+                        true,
+                        now.minusMonths(1),    // 1 mes atrás
+                        now.plusMonths(6),     // 6 meses adelante
+                        20.0
+                ));
+
+                // Descuento por introducción
+                repoTipoDescuento.save(new TipoDescuento(
+                        "Descuento por introducción 25%",
+                        true,
+                        now.minusMonths(2),    // 2 meses atrás
+                        now.plusMonths(6),     // 6 meses adelante
+                        25.0
+                ));
+            }
+            } catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
-}

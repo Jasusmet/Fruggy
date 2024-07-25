@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,15 +20,15 @@ import java.time.LocalDateTime;
 public class Descuento implements Serializable {
 
     @Id
-    @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @Column(name ="descuentos_id")
+    private Long id;
 
     @Column (name ="fechaInicio")
-    private LocalDateTime fechaInicio;
+    private LocalDate fechaInicio;
 
     @Column (name ="fechaFin")
-    private LocalDateTime fechaFin;
+    private LocalDate fechaFin;
 
     @Column (name ="activo", nullable = false)
     private Boolean activo;
@@ -36,7 +37,11 @@ public class Descuento implements Serializable {
     @JoinColumn(name = "precios_id", foreignKey = @ForeignKey(name = "fk_descuentos_precio"))
     private Precio descuentosPrecios;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tipo_de_descuentos_id", foreignKey = @ForeignKey(name = "fk_descuentos_tipoDeDescuentos"))
-    private TipoDescuento descuentosTipoDeDescuentos;
+    @OneToOne(mappedBy = "descuento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Producto producto;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "tipoDescuento_id", foreignKey = @ForeignKey(name = "fk_descuento_tipoDescuento"))
+    private TipoDescuento descuentoTipoDescuento;
+
 }

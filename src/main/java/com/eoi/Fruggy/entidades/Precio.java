@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -52,8 +53,8 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "valoracionesProductosPrecios", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ValProducto> preciosValoracionesProductos;
 
-    @OneToMany(mappedBy = "descuentosPrecios", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Descuento> preciosDescuentos;
+    @OneToMany(mappedBy = "descuentosPrecios")
+    private List<Descuento> descuentos;
 
     // Método para obtener el valor del precio
     public String getPrecio() {

@@ -12,11 +12,13 @@
         <th th:text="#{admin.product.id}">ID</th>
         <th th:text="#{admin.product.name}">Nombre</th>
         <th th:text="#{admin.product.description}">Descripción</th>
-        <th th:text="#{admin.product.price}">Precio</th>
+        <th th:text="#{admin.product.price}">Precio Original</th>
+        <th th:text="#{admin.product.price.discount}">Precio con Descuento</th>
         <th th:text="#{admin.product.category}">Categoría</th>
         <th th:text="#{admin.product.subcategory}">Subcategoría</th>
         <th th:text="#{admin.product.active}">Activo</th>
         <th th:text="#{admin.product.edit}">Editar</th>
+        <th th:text="#{admin.product.discounts}">Descuentos</th>
         <th th:text="#{admin.product.delete}">Eliminar</th>
     </tr>
     </thead>
@@ -31,6 +33,9 @@
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
         <td>
             <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning" th:text="#{admin.product.edit}">Editar</a>
+        </td>
+        <td>
+            <a th:href="@{/admin/productos/descuentos/editar/{id}(id=${producto.id})}" class="btn btn-info" th:text="#{admin.product.discounts}">Descuentos</a>
         </td>
         <td>
             <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">

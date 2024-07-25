@@ -1,5 +1,7 @@
 <!DOCTYPE html >
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="es">
 <head><!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
     <title layout:title-pattern="$CONTENT_TITLE"></title>
     <meta charset="UTF-8">
@@ -28,15 +30,15 @@
     <script th:src="@{/js/main.js}" type="text/javascript"></script>
 
 
-    <link rel="stylesheet" href="/css/styleFruggy.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
+<div th:replace="~{fragments/preloader :: preloader}"></div>
 <!--/* Standard layout can be mixed with Layout Dialect */-->
 <div th:replace="~{fragments/header :: header}">
 </div>
 <!-- Page Preloder -->
-<div th:replace="~{fragments/preloader :: preloader}"></div>
 <div class="container" layout:fragment="content">
 
 </div>

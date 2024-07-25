@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="container mt-4" th:fragment="tablaAdminProductosDescuentos">
+    <h1>Editar Detalle</h1>
+    <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Regresar</a>
+    <br><br>
+    <form th:action="@{/admin/productos/descuentos/guardar/{id}(id=${descuento.id})}"
+          method="post"
+          th:object="${descuento}"
+          enctype="application/x-www-form-urlencoded">
+        <input type="hidden" th:field="*{id}"/>
+
+        <label for="fechaInicio">Fecha de Inicio:</label>
+        <input type="date" id="fechaInicio" th:field="*{fechaInicio}" />
+
+        <label for="fechaFin">Fecha de Fin:</label>
+        <input type="date" id="fechaFin" th:field="*{fechaFin}" />
+
+        <label for="activo">Activo:</label>
+        <input type="checkbox" id="activo" th:field="*{activo}" />
+
+        <label for="tipoDeDescuento">Tipo de Descuento:</label>
+        <select id="tipoDeDescuento" name="tipoDeDescuentoId">
+            <option value="" th:text="'-- Selecciona un tipo de descuento --'"></option>
+            <option th:each="tipoDescuento : ${tiposDescuento}"
+                    th:value="${tipoDescuento.id}"
+                    th:text="${tipoDescuento.tipo}"></option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+    <a class="btn btn-primary mt-3" th:href="@{/admin/usuarios}">Regresar a Usuarios</a>
+</div>
+
+</body>
+</html>
