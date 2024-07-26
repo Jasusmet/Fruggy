@@ -31,11 +31,6 @@
                     th:value="${tipoDescuento.id}"
                     th:text="${tipoDescuento.tipo}"></option>
         </select>
-        <label for="precioId">Precio:</label>
-        <select id="precioId" name="precioId">
-            <option value="" th:text="'-- Selecciona un precio --'"></option>
-            <option th:each="precio : ${precios}" th:value="${precio.id}" th:text="${precio.valor}"></option>
-        </select>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>

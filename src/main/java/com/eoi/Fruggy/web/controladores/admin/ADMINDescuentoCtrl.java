@@ -46,6 +46,11 @@ public class ADMINDescuentoCtrl {
             model.addAttribute("descuento", descuento.get());
             model.addAttribute("tiposDescuento", tipoDescuentoSrvc.buscarEntidades());
             model.addAttribute("precios", precioSrvc.buscarEntidades());
+
+            // Obtenemos el precio asociado
+            Precio precio = descuento.get().getDescuentosPrecios();
+            model.addAttribute("precio", precio);
+
             return "admin/descuentos-productos";
         } else {
             model.addAttribute("error", "Descuento no encontrado");
@@ -58,7 +63,6 @@ public class ADMINDescuentoCtrl {
             @PathVariable("id") Long id,
             @ModelAttribute Descuento descuentoActualizado,
             @RequestParam("tipoDeDescuentoId") Long tipoDescuentoId,
-            @RequestParam("precioId") Long precioId,
             Model model) throws Exception {
         Optional<Descuento> descuentoOptional = descuentoSrvc.encuentraPorId(descuentoActualizado.getId());
         if (descuentoOptional.isPresent()) {
@@ -77,32 +81,37 @@ public class ADMINDescuentoCtrl {
                 model.addAttribute("error", "Tipo de descuento no encontrado");
                 return "error";
             }
-            // Asignar el precio
-            Optional<Precio> precioOptional = precioSrvc.getRepo().findById(precioId);
-            if (precioOptional.isPresent()) {
-                Precio precio = precioOptional.get();
-                existente.setDescuentosPrecios(precio);
 
-                // Aplicar el descuento al precio
-                Double precioOriginal = precio.getValor();
-                Double porcentajeDescuento = tipoDescuentoOptional.get().getPorcentaje();
-                if (precioOriginal != null && porcentajeDescuento != null) {
-                    Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
-                    Double precioConDescuento = precioOriginal - descuentoAplicado;
-                    precio.setValor(precioConDescuento);
+            // Obtener el precio del producto asociado
+            Producto producto = existente.getProducto(); // Asegúrate de que el descuento tenga un producto asociado
+            if (producto != null) {
+                Precio precio = producto.getProductoPrecios(); // Obtener el precio asociado al producto
+                if (precio != null) {
+                    existente.setDescuentosPrecios(precio);
+
+                    // Aplicar el descuento al precio
+                    Double precioOriginal = precio.getValor();
+                    Double porcentajeDescuento = tipoDescuentoOptional.get().getPorcentaje();
+                    if (precioOriginal != null && porcentajeDescuento != null) {
+                        Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
+                        Double precioConDescuento = precioOriginal - descuentoAplicado;
+                        precio.setValor(precioConDescuento);
+                    }
+                } else {
+                    model.addAttribute("error", "Precio no encontrado para el producto asociado");
+                    return "error";
                 }
             } else {
-                model.addAttribute("error", "Precio no encontrado");
+                model.addAttribute("error", "Producto no asociado al descuento");
                 return "error";
             }
-
 
             // Guardar Descuento
             try {
                 descuentoSrvc.guardar(existente);
                 model.addAttribute("descuento", existente);
                 model.addAttribute("mensaje", "Descuento actualizado correctamente");
-                return "redirect:/admin/productos/descuentos/descuento-actualizado/" + existente.getId();  // Redirigir a la página de detalles actualizados
+                return "redirect:/admin/productos/descuentos/descuento-actualizado/" + existente.getId();
             } catch (Exception e) {
                 model.addAttribute("error", "Error al guardar descuento");
                 return "error";
