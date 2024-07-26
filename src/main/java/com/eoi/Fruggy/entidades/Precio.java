@@ -1,5 +1,7 @@
 package com.eoi.Fruggy.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,6 +45,7 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "precioFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Favorito> preciosFavoritos;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "productoPrecios", fetch = FetchType.LAZY)
     private Producto precioProductos;
 
@@ -52,8 +56,8 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "valoracionesProductosPrecios", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ValProducto> preciosValoracionesProductos;
 
-    @OneToMany(mappedBy = "descuentosPrecios", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Descuento> preciosDescuentos;
+    @OneToMany(mappedBy = "descuentosPrecios")
+    private List<Descuento> descuentos;
 
     // Método para obtener el valor del precio
     public String getPrecio() {

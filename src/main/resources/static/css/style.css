@@ -1,10 +1,10 @@
+@import "preloader.css";
 @import "header.css";
 @import "footer.css";
 @import "sidebar.css";
 @import "categories.css";
 @import "hero.css";
 @import "featured.css";
-
 @import "mediaQueries.css";
 
 html, body {

@@ -31,10 +31,11 @@ public class Subcategoria implements Serializable {
     @Column (name ="tipo", length = 255)
     private String tipo;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "subcategoria", fetch = FetchType.LAZY)
     private Set<Producto> productos;
 
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;

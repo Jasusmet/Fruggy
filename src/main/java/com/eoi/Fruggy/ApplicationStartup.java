@@ -1,17 +1,14 @@
 package com.eoi.Fruggy;
 
-import com.eoi.Fruggy.entidades.Detalle;
-import com.eoi.Fruggy.entidades.Rol;
-import com.eoi.Fruggy.entidades.Usuario;
-import com.eoi.Fruggy.repositorios.RepoDetalle;
-import com.eoi.Fruggy.repositorios.RepoRol;
-import com.eoi.Fruggy.repositorios.RepoUsuario;
+import com.eoi.Fruggy.entidades.*;
+import com.eoi.Fruggy.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -42,16 +39,22 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     private final RepoUsuario repoUsuario;
     private final RepoRol repoRol;
     private final RepoDetalle repoDetalle;
+    private final RepoDescuento repoDescuento;
+    private final RepoTipoDescuento repoTipoDescuento;
+    private final RepoProducto repoProducto;
 
     /**
      * Constructor de la clase que recibe un {@link RepoUsuario} para interactuar con la base de datos.
      *
      * @param repoUsuario el repositorio de usuarios que se utilizará para guardar los datos del usuario.
      */
-    public ApplicationStartup(RepoUsuario repoUsuario, RepoRol repoRol, RepoDetalle repoDetalle) {
+    public ApplicationStartup(RepoUsuario repoUsuario, RepoRol repoRol, RepoDetalle repoDetalle, RepoDescuento repoDescuento, RepoTipoDescuento repoTipoDescuento, RepoProducto repoProducto) {
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
         this.repoDetalle = repoDetalle;
+        this.repoDescuento = repoDescuento;
+        this.repoTipoDescuento = repoTipoDescuento;
+        this.repoProducto = repoProducto;
     }
 
     /**
@@ -94,3 +97,4 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
         repoUsuario.save(usuario);
     }
 }
+

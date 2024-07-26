@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista de Productos</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
 <table class="table table-striped mt-3" th:fragment="tablaAdminProductos">
@@ -12,11 +12,13 @@
         <th th:text="#{admin.product.id}">ID</th>
         <th th:text="#{admin.product.name}">Nombre</th>
         <th th:text="#{admin.product.description}">Descripción</th>
-        <th th:text="#{admin.product.price}">Precio</th>
+        <th th:text="#{admin.product.price}">Precio Original</th>
+        <th th:text="#{admin.product.price.discount}">Precio con Descuento</th>
         <th th:text="#{admin.product.category}">Categoría</th>
         <th th:text="#{admin.product.subcategory}">Subcategoría</th>
         <th th:text="#{admin.product.active}">Activo</th>
         <th th:text="#{admin.product.edit}">Editar</th>
+        <th th:text="#{admin.product.discounts}">Descuentos</th>
         <th th:text="#{admin.product.delete}">Eliminar</th>
     </tr>
     </thead>
@@ -26,15 +28,24 @@
         <td th:text="${producto.nombreProducto}">Nombre</td>
         <td th:text="${producto.descripcion}">Descripción</td>
         <td th:text="${producto.productoPrecios.valor}">Precio</td>
+        <td th:text="${producto.descuento != null && producto.descuento.descuentoTipoDescuento != null ?
+                     producto.descuento.descuentoTipoDescuento.porcentaje + '%' :
+                     'N/A'}">Descuento</td>
         <td th:text="${producto.categoria.tipo}">Categoría</td>
         <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
         <td>
-            <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning" th:text="#{admin.product.edit}">Editar</a>
+            <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning"
+               th:text="#{admin.product.edit}">Editar</a>
         </td>
         <td>
-            <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
-                <input type="submit" class="btn btn-danger" value="Eliminar"/>
+            <a th:href="@{/admin/productos/descuentos/editar/{id}(id=${producto.id})}" class="btn btn-info"
+               th:text="#{admin.product.discounts}">Descuentos</a>
+        </td>
+        <td>
+            <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post"
+                  onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                <input type="submit" class="btn btn-danger" th:value="#{admin.product.delete}"/>
             </form>
         </td>
     </tr>

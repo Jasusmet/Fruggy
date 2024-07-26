@@ -1,0 +1,84 @@
+package com.eoi.Fruggy.web.controladores.admin;
+
+import com.eoi.Fruggy.entidades.Supermercado;
+import com.eoi.Fruggy.servicios.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+@RequestMapping("/admin/supermercados")
+public class ADMINSupermercadoCtrl {
+
+    private final SrvcSupermercado supermercadoSrvc;
+    private final SrvcUsuario usuarioSrvc;
+    private final SrvcImagen imagenSrvc;
+    private final SrvcPrecio precioSrvc;
+    private final SrvcValSupermercado valSupermercadoSrvc;
+
+    public ADMINSupermercadoCtrl(SrvcSupermercado supermercadoSrvc, SrvcUsuario usuarioSrvc, SrvcImagen imagenSrvc, SrvcPrecio precioSrvc, SrvcValSupermercado valSupermercadoSrvc) {
+        this.supermercadoSrvc = supermercadoSrvc;
+        this.usuarioSrvc = usuarioSrvc;
+        this.imagenSrvc = imagenSrvc;
+        this.precioSrvc = precioSrvc;
+        this.valSupermercadoSrvc = valSupermercadoSrvc;
+    }
+
+
+    @GetMapping
+    public String listarSupermercados(Model model) {
+        List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
+        model.addAttribute("supermercados", supermercados);
+        return "admin/CRUD-Supermercados";
+    }
+
+    @GetMapping("/agregar")
+    public String agregarSupermercado(Model model) {
+        model.addAttribute("supermercado", new Supermercado());
+        return "admin/crear-supermercado";
+    }
+
+    @PostMapping("/guardar")
+    public String guardarSupermercado(@ModelAttribute Supermercado supermercado, Model model) throws Exception {
+        supermercadoSrvc.guardar(supermercado);
+        return "redirect:/admin/supermercados";
+    }
+    @GetMapping("/editar/{id}")
+    public String editarSupermercado(@PathVariable("id") Long id, Model model) {
+        Optional<Supermercado> supermercadoOptional = supermercadoSrvc.encuentraPorId(id);
+        if (supermercadoOptional.isPresent()) {
+            Supermercado supermercado = supermercadoOptional.get();
+            model.addAttribute("supermercado", supermercado);
+            model.addAttribute("usuarios", usuarioSrvc.buscarEntidades());
+            model.addAttribute("imagenes", imagenSrvc.buscarEntidades());
+            model.addAttribute("precios", precioSrvc.buscarEntidades());
+            model.addAttribute("valoraciones", valSupermercadoSrvc.buscarEntidades());
+            return "admin/modificar-supermercado";
+        } else {
+            return "redirect:/admin/supermercados";
+        }
+    }
+
+    @PostMapping("/actualizar")
+    public String actualizarSupermercado(@ModelAttribute Supermercado supermercado) throws Exception {
+        supermercadoSrvc.guardar(supermercado);
+        return "redirect:/admin/supermercados";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminarSupermercado( @PathVariable("id") Long id, Model model) {
+        supermercadoSrvc.eliminarPorId(id);
+        return "redirect:/admin/supermercados";
+    }
+    @PostMapping("/eliminar/{id}")
+    public String eliminarSupermercado(@PathVariable("id") Long id) {
+        supermercadoSrvc.eliminarPorId(id);
+        return "redirect:/admin/supermercados";
+    }
+
+}
+
