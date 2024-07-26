@@ -1,5 +1,7 @@
 package com.eoi.Fruggy.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,6 +45,7 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "precioFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Favorito> preciosFavoritos;
 
+    @JsonBackReference
     @OneToOne(mappedBy = "productoPrecios", fetch = FetchType.LAZY)
     private Producto precioProductos;
 

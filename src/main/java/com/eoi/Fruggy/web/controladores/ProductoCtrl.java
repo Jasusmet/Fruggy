@@ -26,46 +26,39 @@ public class ProductoCtrl {
     private final SrvcCategoria categoriasSrvc;
     private final SrvcSubcategoria subcategoriasSrvc;
     private final SrvcValProducto valProductosSrvc;
+    private final SrvcSupermercado supermercadosSrvc;
 
-    public ProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcCategoria categoriasSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcValProducto valProductosSrvc) {
+    public ProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcCategoria categoriasSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcValProducto valProductosSrvc, SrvcSupermercado supermercadosSrvc) {
         this.productosSrvc = productosSrvc;
         this.preciosSrvc = preciosSrvc;
         this.imagenSrvc = imagenSrvc;
         this.categoriasSrvc = categoriasSrvc;
         this.subcategoriasSrvc = subcategoriasSrvc;
         this.valProductosSrvc = valProductosSrvc;
+        this.supermercadosSrvc = supermercadosSrvc;
     }
 
     @GetMapping
     public String producto(Model model) {
         List<Producto> listaProductos = productosSrvc.getRepo().findAll();
+        List<Categoria> categorias = categoriasSrvc.getRepo().findAll();
+        List<Subcategoria> subcategorias = subcategoriasSrvc.getRepo().findAll();
+        List<Supermercado> supermercados = supermercadosSrvc.getRepo().findAll();
+        List<Producto> productosConDescuento = productosSrvc.getRepo().findByDescuentoActivoTrue();
+
         model.addAttribute("listaProducto", listaProductos);
-        return "catalogoProductos";
-    }
+        model.addAttribute("categorias", categorias);
+        model.addAttribute("subcategorias", subcategorias);
+        model.addAttribute("supermercados", supermercados);
+        model.addAttribute("productosConDescuento", productosConDescuento);
 
-    @GetMapping("/ajax")
-    @ResponseBody
-    public List<Producto> obtenerProductos() {
-        return obtenerProductosConDescuento();
-    }
-    private List<Producto> obtenerProductosConDescuento() {
-        List<Producto> listaProductos = productosSrvc.getRepo().findAll();
-        for (Producto producto : listaProductos) {
-            Descuento descuento = producto.getDescuento();
-            if (descuento != null) {
-                Double precioOriginal = producto.getProductoPrecios().getValor();
-                Double porcentajeDescuento = descuento.getDescuentoTipoDescuento().getPorcentaje();
-                Double precioConDescuento = precioOriginal - (precioOriginal * (porcentajeDescuento / 100.0));
+        // Verificar que modelo no esté vacío
+        System.out.println("Productos: " + listaProductos.size());
+        System.out.println("Categorías: " + categorias.size());
+        System.out.println("Subcategorías: " + subcategorias.size());
+        System.out.println("Supermercados: " + supermercados.size());
+        System.out.println("Productos con descuento: " + productosConDescuento.size());
 
-                producto.setPrecioConDescuento(precioConDescuento);
-                producto.setPorcentajeDescuento(porcentajeDescuento);
-            } else {
-                producto.setPrecioConDescuento(producto.getProductoPrecios().getValor());
-                producto.setPorcentajeDescuento(0.0);
-            }
-        }
-        return listaProductos;
-
-
+        return "catalogoProductos"; //
     }
 }

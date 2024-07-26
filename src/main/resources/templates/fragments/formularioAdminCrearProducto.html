@@ -41,18 +41,17 @@
         </div>
 
         <div class="mb-3">
-            <label for="categoria" class="form-label">Categoría</label>
+            <label for="categoria" class="form-label" th:text="#{product.create.categoria}">Categoría</label>
             <select class="form-control" id="categoria" name="categoria.id" required aria-required="true">
-                <option value="">Selecciona una categoría</option>
-                <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
-                        th:text="${categoria.tipo}"></option>
+                <option value="" th:text="#{product.create.select_categoria}">Selecciona una categoría</option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.tipo}"></option>
             </select>
         </div>
 
         <div class="mb-3">
-            <label for="subcategoria" class="form-label">Subcategoría</label>
+            <label for="subcategoria" class="form-label" th:text="#{product.create.subcategoria}">Subcategoría</label>
             <select class="form-control" id="subcategoria" name="subcategoria.id" aria-required="true">
-                <option value="">Selecciona una subcategoría</option>
+                <option value="" th:text="#{product.create.select_subcategoria}">Selecciona una subcategoría</option>
             </select>
         </div>
         <button type="submit">Guardar</button>

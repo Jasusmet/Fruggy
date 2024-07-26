@@ -4,11 +4,13 @@ import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.repositorios.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class DataInitializer {
@@ -19,52 +21,56 @@ public class DataInitializer {
     private final RepoSubcategoria repoSubcategoria;
     private final RepoTipoDescuento repoTipoDescuento;
     private final RepoDescuento repoDescuento;
+    private final MessageSource messageSource;
+
 
     @Autowired
     public DataInitializer(RepoRol repoRol, RepoGenero repoGenero, RepoCategoria repoCategoria,
-                           RepoSubcategoria repoSubcategoria, RepoTipoDescuento repoTipoDescuento, RepoDescuento repoDescuento) {
+                           RepoSubcategoria repoSubcategoria, RepoTipoDescuento repoTipoDescuento, RepoDescuento repoDescuento, MessageSource messageSource) {
         this.repoRol = repoRol;
         this.repoGenero = repoGenero;
         this.repoCategoria = repoCategoria;
         this.repoSubcategoria = repoSubcategoria;
         this.repoTipoDescuento = repoTipoDescuento;
         this.repoDescuento = repoDescuento;
+        this.messageSource = messageSource;
     }
 
     @PostConstruct
     public void init() {
+        Locale locale = new Locale("es");
         // Inicialización de roles
         if (repoRol.count() == 0) {
-            repoRol.save(new Rol("admin"));
-            repoRol.save(new Rol("user"));
+            repoRol.save(new Rol(messageSource.getMessage("role.admin", null, locale)));
+            repoRol.save(new Rol(messageSource.getMessage("role.user", null, locale)));
         }
 
         // Inicialización de géneros
         if (repoGenero.count() == 0) {
-            repoGenero.save(new Genero("Masculino"));
-            repoGenero.save(new Genero("Femenino"));
-            repoGenero.save(new Genero("Otros"));
+            repoGenero.save(new Genero(messageSource.getMessage("gender.male", null, locale)));
+            repoGenero.save(new Genero(messageSource.getMessage("gender.female", null, locale)));
+            repoGenero.save(new Genero(messageSource.getMessage("gender.other", null, locale)));
         }
 
         try {
             // Cargar categorías
             if (repoCategoria.count() == 0) {
-                repoCategoria.save(new Categoria("Aperitivos"));
-                repoCategoria.save(new Categoria("Bazar & Casa"));
-                repoCategoria.save(new Categoria("Bébes & Niños"));
-                repoCategoria.save(new Categoria("Bebidas"));
-                repoCategoria.save(new Categoria("Café e Infusiones"));
-                repoCategoria.save(new Categoria("Chocolates & Dulces"));
-                repoCategoria.save(new Categoria("Conservas, Aceite & Condimentos"));
-                repoCategoria.save(new Categoria("Diéteticos"));
-                repoCategoria.save(new Categoria("Droguería"));
-                repoCategoria.save(new Categoria("Frescos & Charcutería"));
-                repoCategoria.save(new Categoria("Lácteos & Huevos"));
-                repoCategoria.save(new Categoria("Mascotas"));
-                repoCategoria.save(new Categoria("Ocio y Cultura"));
-                repoCategoria.save(new Categoria("Panadería, Bollería y Pastelería"));
-                repoCategoria.save(new Categoria("Pasta, Arroz & Legumbres"));
-                repoCategoria.save(new Categoria("Perfumería & Parafarmacia"));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.snacks", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.household", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.babies_kids", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.drinks", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.coffee_tea", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.chocolates_sweets", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.canned_goods", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.dietary", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.drugstore", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.fresh_meats", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.dairy_eggs", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.pets", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.leisure_culture", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.bakery", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.pasta_rice_legumes", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.perfumery_pharmacy", null, locale)));
             }
             List<Categoria> categorias = repoCategoria.findAll();
 
@@ -73,117 +79,119 @@ public class DataInitializer {
                 for (Categoria categoria : categorias) {
                     switch (categoria.getTipo()) {
                         case "Aperitivos":
-                            repoSubcategoria.save(new Subcategoria("Patatas Fritas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Snacks", categoria));
-                            repoSubcategoria.save(new Subcategoria("Frutos Secos", categoria));
-                            repoSubcategoria.save(new Subcategoria("Chocolates", categoria));
-                            repoSubcategoria.save(new Subcategoria("Galletas Saladas", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.chips", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.snacks", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.nuts", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.chocolates", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.salty_cookies", null, locale), categoria));
                             break;
                         case "Bazar & Casa":
-                            repoSubcategoria.save(new Subcategoria("Cestas de Mimbre", categoria));
-                            repoSubcategoria.save(new Subcategoria("Utensilios de Cocina", categoria));
-                            repoSubcategoria.save(new Subcategoria("Almacenaje", categoria));
-                            repoSubcategoria.save(new Subcategoria("Decoración", categoria));
-                            repoSubcategoria.save(new Subcategoria("Limpieza", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.basket", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.kitchen_utensils", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.storage", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.decoration", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cleaning", null, locale), categoria));
                             break;
                         case "Bébes & Niños":
-                            repoSubcategoria.save(new Subcategoria("Pañales", categoria));
-                            repoSubcategoria.save(new Subcategoria("Toallitas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Ropa de Bebé", categoria));
-                            repoSubcategoria.save(new Subcategoria("Juguetes", categoria));
-                            repoSubcategoria.save(new Subcategoria("Alimentación Infantil", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.diapers", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.wipes", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.baby_clothes", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.toys", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.infant_food", null, locale), categoria));
                             break;
                         case "Bebidas":
-                            repoSubcategoria.save(new Subcategoria("Refresco", categoria));
-                            repoSubcategoria.save(new Subcategoria("Zumo", categoria));
-                            repoSubcategoria.save(new Subcategoria("Bebida Energética", categoria));
-                            repoSubcategoria.save(new Subcategoria("Bebida Isotónica", categoria));
-                            repoSubcategoria.save(new Subcategoria("Agua Mineral", categoria));
-                            repoSubcategoria.save(new Subcategoria("Bebida Vegetal", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.soda", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.juice", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.energy_drink", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.sports_drink", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.mineral_water", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.vegetable_drink", null, locale), categoria));
                             break;
                         case "Café e Infusiones":
-                            repoSubcategoria.save(new Subcategoria("Café en Grano", categoria));
-                            repoSubcategoria.save(new Subcategoria("Café Molido", categoria));
-                            repoSubcategoria.save(new Subcategoria("Infusiones Relajantes", categoria));
-                            repoSubcategoria.save(new Subcategoria("Tés Frutales", categoria));
-                            repoSubcategoria.save(new Subcategoria("Café Instantáneo", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.coffee_beans", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.ground_coffee", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.relaxing_tea", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.fruit_tea", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.instant_coffee", null, locale), categoria));
                             break;
                         case "Chocolates & Dulces":
-                            repoSubcategoria.save(new Subcategoria("Chocolate con Leche", categoria));
-                            repoSubcategoria.save(new Subcategoria("Chocolate Negro", categoria));
-                            repoSubcategoria.save(new Subcategoria("Bombones", categoria));
-                            repoSubcategoria.save(new Subcategoria("Chocolates sin Azúcar", categoria));
-                            repoSubcategoria.save(new Subcategoria("Caramelos", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.milk_chocolate", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.dark_chocolate", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.bonbons", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.sugar_free_chocolates", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.candies", null, locale), categoria));
                             break;
                         case "Conservas, Aceite & Condimentos":
-                            repoSubcategoria.save(new Subcategoria("Aceite de Oliva", categoria));
-                            repoSubcategoria.save(new Subcategoria("Salsas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Conservas de Pescado", categoria));
-                            repoSubcategoria.save(new Subcategoria("Especias", categoria));
-                            repoSubcategoria.save(new Subcategoria("Vinagre", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.olive_oil", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.sauces", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.canned_fish", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.spices", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.vinegar", null, locale), categoria));
                             break;
                         case "Diéteticos":
-                            repoSubcategoria.save(new Subcategoria("Cereales", categoria));
-                            repoSubcategoria.save(new Subcategoria("Productos sin Gluten", categoria));
-                            repoSubcategoria.save(new Subcategoria("Suplementos Nutricionales", categoria));
-                            repoSubcategoria.save(new Subcategoria("Snacks Saludables", categoria));
-                            repoSubcategoria.save(new Subcategoria("Barras Energéticas", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cereals", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.gluten_free_products", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.nutritional_supplements", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.healthy_snacks", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.energy_bars", null, locale), categoria));
                             break;
                         case "Droguería":
-                            repoSubcategoria.save(new Subcategoria("Limpiadores Multiusos", categoria));
-                            repoSubcategoria.save(new Subcategoria("Detergentes", categoria));
-                            repoSubcategoria.save(new Subcategoria("Productos para la Ropa", categoria));
-                            repoSubcategoria.save(new Subcategoria("Productos de Higiene", categoria));
-                            repoSubcategoria.save(new Subcategoria("Ambientadores", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.multi_use_cleaners", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.detergent", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.bathroom_cleaners", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.sponges", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.broom", null, locale), categoria));
                             break;
                         case "Frescos & Charcutería":
-                            repoSubcategoria.save(new Subcategoria("Embutidos", categoria));
-                            repoSubcategoria.save(new Subcategoria("Carnes", categoria));
-                            repoSubcategoria.save(new Subcategoria("Pescados", categoria));
-                            repoSubcategoria.save(new Subcategoria("Frutas y Verduras", categoria));
-                            repoSubcategoria.save(new Subcategoria("Quesos Frescos", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.pork_sausage", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cooked_ham", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cooked_chicken", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.bacon", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cheese", null, locale), categoria));
                             break;
                         case "Lácteos & Huevos":
-                            repoSubcategoria.save(new Subcategoria("Leche", categoria));
-                            repoSubcategoria.save(new Subcategoria("Yogur", categoria));
-                            repoSubcategoria.save(new Subcategoria("Queso", categoria));
-                            repoSubcategoria.save(new Subcategoria("Mantequilla", categoria));
-                            repoSubcategoria.save(new Subcategoria("Nata", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.lactose_free_milk", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.fresh_milk", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.eggs", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.yogurt", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.butter", null, locale), categoria));
                             break;
                         case "Mascotas":
-                            repoSubcategoria.save(new Subcategoria("Piensos", categoria));
-                            repoSubcategoria.save(new Subcategoria("Juguetes para Mascotas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Accesorios para Mascotas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Cuidado y Higiene", categoria));
-                            repoSubcategoria.save(new Subcategoria("Snacks para Mascotas", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.dog_food", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cat_food", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.bird_food", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.fish_food", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.dog_toys", null, locale), categoria));
                             break;
                         case "Ocio y Cultura":
-                            repoSubcategoria.save(new Subcategoria("Libros", categoria));
-                            repoSubcategoria.save(new Subcategoria("Revistas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Películas", categoria));
-                            repoSubcategoria.save(new Subcategoria("Música", categoria));
-                            repoSubcategoria.save(new Subcategoria("Juegos de Mesa", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.books", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.magazines", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.video_games", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.movies", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.toys", null, locale), categoria));
                             break;
                         case "Panadería, Bollería y Pastelería":
-                            repoSubcategoria.save(new Subcategoria("Pan", categoria));
-                            repoSubcategoria.save(new Subcategoria("Croissants", categoria));
-                            repoSubcategoria.save(new Subcategoria("Pasteles", categoria));
-                            repoSubcategoria.save(new Subcategoria("Bollos", categoria));
-                            repoSubcategoria.save(new Subcategoria("Donuts", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.bread", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.croissants", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cakes", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cupcakes", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cookies", null, locale), categoria));
                             break;
                         case "Pasta, Arroz & Legumbres":
-                            repoSubcategoria.save(new Subcategoria("Pasta", categoria));
-                            repoSubcategoria.save(new Subcategoria("Arroz", categoria));
-                            repoSubcategoria.save(new Subcategoria("Legumbres", categoria));
-                            repoSubcategoria.save(new Subcategoria("Salsas para Pasta", categoria));
-                            repoSubcategoria.save(new Subcategoria("Cereales", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.rice", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.beans", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.pasta", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.lentils", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.chickpeas", null, locale), categoria));
                             break;
                         case "Perfumería & Parafarmacia":
-                            repoSubcategoria.save(new Subcategoria("Perfumes", categoria));
-                            repoSubcategoria.save(new Subcategoria("Cremas Faciales", categoria));
-                            repoSubcategoria.save(new Subcategoria("Jabones", categoria));
-                            repoSubcategoria.save(new Subcategoria("Geles de Ducha", categoria));
-                            repoSubcategoria.save(new Subcategoria("Productos de Maquillaje", categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.perfumes", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.vitamins", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.medicines", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.hair_care", null, locale), categoria));
+                            repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.skincare", null, locale), categoria));
+                            break;
+                        default:
                             break;
                     }
                 }
@@ -193,7 +201,7 @@ public class DataInitializer {
                 LocalDate now = LocalDate.now();
                 // Descuento por volumen
                 repoTipoDescuento.save(new TipoDescuento(
-                        "Descuento por volumen 5%",
+                        messageSource.getMessage("discount.volume", null,locale),
                         true,
                         now.minusMonths(1),    // 1 mes atrás
                         now.plusMonths(6),     // 6 meses adelante
@@ -202,7 +210,7 @@ public class DataInitializer {
 
                 // Descuento estacional
                 repoTipoDescuento.save(new TipoDescuento(
-                        "Descuento estacional 10%",
+                        messageSource.getMessage("discount.seasonal", null, locale),
                         true,
                         now.minusMonths(2),    // 2 meses atrás
                         now.plusMonths(6),     // 6 meses adelante
@@ -211,7 +219,7 @@ public class DataInitializer {
 
                 // Descuento por fidelidad
                 repoTipoDescuento.save(new TipoDescuento(
-                        "Descuento por fidelidad 15%",
+                        messageSource.getMessage("discount.loyalty", null, locale),
                         true,
                         now.minusMonths(3),    // 3 meses atrás
                         now.plusMonths(6),     // 6 meses adelante
@@ -220,7 +228,7 @@ public class DataInitializer {
 
                 // Descuento promocional
                 repoTipoDescuento.save(new TipoDescuento(
-                        "Descuento promocional 20%",
+                        messageSource.getMessage("discount.promotional",null, locale),
                         true,
                         now.minusMonths(1),    // 1 mes atrás
                         now.plusMonths(6),     // 6 meses adelante
@@ -229,15 +237,15 @@ public class DataInitializer {
 
                 // Descuento por introducción
                 repoTipoDescuento.save(new TipoDescuento(
-                        "Descuento por introducción 25%",
+                        messageSource.getMessage("discount.introductory", null, locale),
                         true,
                         now.minusMonths(2),    // 2 meses atrás
                         now.plusMonths(6),     // 6 meses adelante
                         25.0
                 ));
             }
-            } catch(Exception e){
-                e.printStackTrace();
-            }
+        } catch(Exception e){
+            e.printStackTrace();
         }
+    }
     }
