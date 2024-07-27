@@ -1,6 +1,10 @@
 package com.eoi.Fruggy.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,10 +34,16 @@ public class Usuario implements Serializable, UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Email
+    @NotBlank
+    @Size(min = 5, max = 250)
     @Column(name = "email", length = 250)
     private String email;
+
     private Boolean active;
 
+    @NotBlank
+    @Pattern(regexp = "^(?=.*[A-Z])(?=.*[!@#$&*-]).{8,}$", message = "La contraseña debe tener al menos 8 caracteres, incluir una mayúscula y un signo especial (!@#$&*-).")
     @Column(name = "password", length = 250)
     private String password;
 

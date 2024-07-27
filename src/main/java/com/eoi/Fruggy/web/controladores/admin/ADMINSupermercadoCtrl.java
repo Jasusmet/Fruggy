@@ -2,9 +2,11 @@ package com.eoi.Fruggy.web.controladores.admin;
 
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.servicios.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,7 +45,10 @@ public class ADMINSupermercadoCtrl {
     }
 
     @PostMapping("/guardar")
-    public String guardarSupermercado(@ModelAttribute Supermercado supermercado, Model model) throws Exception {
+    public String guardarSupermercado(@Valid @ModelAttribute Supermercado supermercado, BindingResult bindingResult, Model model) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "admin/crear-supermercado";
+        }
         supermercadoSrvc.guardar(supermercado);
         return "redirect:/admin/supermercados";
     }
@@ -64,7 +69,10 @@ public class ADMINSupermercadoCtrl {
     }
 
     @PostMapping("/actualizar")
-    public String actualizarSupermercado(@ModelAttribute Supermercado supermercado) throws Exception {
+    public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "admin/modificar-supermercado";
+        }
         supermercadoSrvc.guardar(supermercado);
         return "redirect:/admin/supermercados";
     }

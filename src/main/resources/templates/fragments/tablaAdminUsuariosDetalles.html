@@ -2,18 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Editar Detalle</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container mt-4" th:fragment="tablaAdminUsuariosDetalles">
     <h1>Editar Detalle</h1>
     <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Regresar</a>
     <br><br>
+
     <form th:action="@{/admin/usuarios/detalles/{id}(id=${detalle.id})}"
           method="post"
           th:object="${detalle}"
           enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
+
+        <!-- Mensajes de error -->
+        <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+            <ul>
+                <li th:each="error : ${#fields.errors('nombreUsuario')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('nombre')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('apellido')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('edad')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('calle')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('municipio')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('pais')}" th:text="${error}"></li>
+                <li th:each="error : ${#fields.errors('codigopostal')}" th:text="${error}"></li>
+            </ul>
+        </div>
 
         <div class="mb-3">
             <label for="nombreUsuario" class="form-label">Nombre Usuario</label>
