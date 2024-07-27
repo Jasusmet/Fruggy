@@ -27,10 +27,11 @@
         <td th:text="${producto.id}">ID</td>
         <td th:text="${producto.nombreProducto}">Nombre</td>
         <td th:text="${producto.descripcion}">Descripción</td>
-        <td th:text="${producto.productoPrecios.valor}">Precio</td>
+        <td th:text="${#numbers.formatDecimal(producto.productoPrecios.precioConDescuento, 1, 2) + ' €'}">Precio Final</td>
         <td th:text="${producto.descuento != null && producto.descuento.descuentoTipoDescuento != null ?
                      producto.descuento.descuentoTipoDescuento.porcentaje + '%' :
-                     'N/A'}">Descuento</td>
+                     'N/A'}">Descuento
+        </td>
         <td th:text="${producto.categoria.tipo}">Categoría</td>
         <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>

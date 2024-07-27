@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -89,13 +90,16 @@ public class ADMINDescuentoCtrl {
                 if (precio != null) {
                     existente.setDescuentosPrecios(precio);
 
-                    // Aplicar el descuento al precio
+                    // No modificar el precio original
                     Double precioOriginal = precio.getValor();
                     Double porcentajeDescuento = tipoDescuentoOptional.get().getPorcentaje();
                     if (precioOriginal != null && porcentajeDescuento != null) {
                         Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
                         Double precioConDescuento = precioOriginal - descuentoAplicado;
-                        precio.setValor(precioConDescuento);
+
+                        // Solo guardar el descuento, sin modificar el precio original
+                        model.addAttribute("precioOriginal", precioOriginal);
+                        model.addAttribute("precioConDescuento", precioConDescuento);
                     }
                 } else {
                     model.addAttribute("error", "Precio no encontrado para el producto asociado");
@@ -152,6 +156,7 @@ public class ADMINDescuentoCtrl {
             return "error";
         }
     }
+
 
     private Date convertToDate(LocalDate localDate) {
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());

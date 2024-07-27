@@ -5,9 +5,11 @@ import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -44,6 +46,19 @@ public class ADMINProductoCtrl {
                                        @RequestParam(defaultValue = "10") int size,
                                        Model model) {
         Page<Producto> pagina = productosSrvc.obtenerProductosPaginados(page, size);
+
+        pagina.forEach(producto -> {
+            if (producto.getDescuento() != null && producto.getDescuento().getDescuentoTipoDescuento() != null) {
+                Double precioOriginal = producto.getProductoPrecios().getValor();
+                Double porcentajeDescuento = producto.getDescuento().getDescuentoTipoDescuento().getPorcentaje();
+                Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
+                Double precioConDescuento = precioOriginal - descuentoAplicado;
+                producto.getProductoPrecios().setPrecioConDescuento(precioConDescuento);
+            } else {
+                producto.getProductoPrecios().setPrecioConDescuento(producto.getProductoPrecios().getValor());
+            }
+        });
+
         model.addAttribute("paginaProductos", pagina);
         return "admin/CRUD-Productos";
     }
@@ -76,14 +91,36 @@ public class ADMINProductoCtrl {
     }
 
     @PostMapping("/guardar")
-    public String guardarProductoConDetalles(@ModelAttribute Producto producto, Descuento descuento,
-                                             @RequestParam (value="tipoDescuentos", required = false) List<Long> tipoDescuentosSeleccionados,
+    public String guardarProductoConDetalles(@Valid @ModelAttribute Producto producto,
+                                             Descuento descuento,
+                                             @RequestParam(value = "tipoDescuentos", required = false) List<Long> tipoDescuentosSeleccionados,
                                              @RequestParam(value = "file", required = false) MultipartFile file,
-                                             @RequestParam("precio") Double precio,
+                                             @RequestParam("precio") String precio, // Recibido como String
                                              @RequestParam("categoria.id") Long categoriaId,
                                              @RequestParam(value = "subcategoria.id", required = false) Long subcategoriaId,
+                                             BindingResult result,
                                              Model model) throws Exception {
+        // Validar el producto
+        if (result.hasErrors()) {
+            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
+            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
+            return "admin/crear-producto";
+        }
+
         try {
+            // Eliminar el símbolo de euro y convertir a formato Double
+            String precioSinEuro = precio.replace(" €", "").replace(",", ".").trim();
+            double precioDouble = Double.parseDouble(precioSinEuro);
+
+            // Validar el rango del precio
+            if (precioDouble < 0.10 || precioDouble > 1000.00) {
+                model.addAttribute("error", "El precio debe estar entre 0.10 y 1000.00");
+                model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
+                model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
+                return "admin/crear-producto"; // Regresar al formulario si la validación falla
+            }
+
+            // Manejo de la imagen
             if (file != null && !file.isEmpty()) {
                 String directoryPath = "D:\\img";
                 File directory = new File(directoryPath);
@@ -102,29 +139,25 @@ public class ADMINProductoCtrl {
                 producto.setImagen(imagen);
             }
 
-            Precio nuevoPrecio = producto.getProductoPrecios();
-            if (nuevoPrecio == null) {
-                nuevoPrecio = new Precio();
-                nuevoPrecio.setActivo(true);
-            }
-            nuevoPrecio.setValor(precio);
+            // Guardar precio
+            Precio nuevoPrecio = new Precio();
+            nuevoPrecio.setActivo(true);
+            nuevoPrecio.setValor(precioDouble); // Asignar el precio validado
             preciosSrvc.guardar(nuevoPrecio);
             producto.setProductoPrecios(nuevoPrecio);
 
+            // Asignar categoría y subcategoría
             Categoria categoria = categoriasSrvc.encuentraPorId(categoriaId).orElse(null);
             Subcategoria subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId).orElse(null);
             producto.setCategoria(categoria);
             producto.setSubcategoria(subcategoria);
 
-            Set<TipoDescuento> tipoDescuentos =new HashSet<>();
+            // Asignar tipos de descuentos
+            Set<TipoDescuento> tipoDescuentos = new HashSet<>();
             if (tipoDescuentosSeleccionados != null) {
                 for (Long tipoDescuentoId : tipoDescuentosSeleccionados) {
                     Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
-                    if (tipoDescuentoOpt.isPresent()) {
-                        tipoDescuentos.add(tipoDescuentoOpt.get());
-                    }else {
-                        System.out.println("No existe el tipo de descuento" + tipoDescuentoId);
-                    }
+                    tipoDescuentoOpt.ifPresent(tipoDescuentos::add);
                 }
             }
             producto.setTipoDescuentos(tipoDescuentos);
@@ -135,9 +168,14 @@ public class ADMINProductoCtrl {
                 tipodescuentosSrvc.actualizarTipoDescuento(tipoDescuento);
             }
             return "redirect:/admin/productos";
+        } catch (NumberFormatException e) {
+            model.addAttribute("error", "El precio debe estar en un formato válido.");
+            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
+            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
+            return "admin/crear-producto"; // Regresar al formulario si hay un error de formato
         } catch (Exception e) {
             model.addAttribute("error", "Error al guardar el producto");
-            return "error";
+            return "error"; // Mostrar error genérico
         }
     }
 
@@ -152,6 +190,7 @@ public class ADMINProductoCtrl {
         }
         return "redirect:/admin/productos";
     }
+
     @PostMapping("/descuentos/quitar-tipoDescuento")
     public String quitarTipoDescuento(@RequestParam("producto_id") Long productoId, @RequestParam("tipoDescuentoId") Long tipoDescuentoId) throws Exception {
         Optional<Producto> productoOpt = productosSrvc.encuentraPorId(productoId);
