@@ -16,7 +16,7 @@
 <!--  humberger menu  -->
 <div th:replace="~{fragments/humberger-menu :: humbergerMenu}"></div>
 <!--  header  -->
-<div th:replace="~{fragments/header-productos :: header}"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="container">
     <!-- Tabla de productos -->
     <div th:replace="~{fragments/tablaAdminProductos :: tablaAdminProductos(${paginaProductos})}"></div>
@@ -25,7 +25,7 @@
 </div>
 
 <!-- Footer Section  -->
-<div th:replace="~{fragments/footer-products :: footer}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 
 <!-- Optional JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

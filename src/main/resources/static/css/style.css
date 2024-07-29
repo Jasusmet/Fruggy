@@ -5,6 +5,9 @@
 @import "categories.css";
 @import "hero.css";
 @import "featured.css";
+@import "nice-select.css";
+@import "elegant-icons.css";
+
 @import "mediaQueries.css";
 
 html, body {
@@ -162,14 +165,15 @@ a:hover, a:focus {
 
 .breadcrumb__text h2 {
     font-size: 46px;
-    color: #fff;
+    color: #ffffff;
     font-weight: 700;
 }
 
 .breadcrumb__option a {
     display: inline-block;
     font-size: 16px;
-    color: #fff;
+
+    color: #ffffff;
     font-weight: 700;
     margin-right: 20px;
     position: relative;
@@ -181,14 +185,14 @@ a:hover, a:focus {
     top: 13px;
     height: 1px;
     width: 10px;
-    background: #fff;
+    background: #ffffff;
     content: "";
 }
 
 .breadcrumb__option span {
     display: inline-block;
     font-size: 16px;
-    color: #fff;
+    color: #ffffff;
 }
 
 .price-range-wrap .range-slider {

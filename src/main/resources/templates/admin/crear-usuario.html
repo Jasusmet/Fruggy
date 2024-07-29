@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es"><head>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<head>
     <title th:text="#{page.title}">Creación de Usuario</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container mt-4" layout:fragment="content">
     <h1 th:text="#{user.list.header}">Lista de Usuarios</h1>
     <div class="container">
-        <div th:replace="~{fragments/formularioAdminCrearUsuario :: formularioAdminCrearProducto}"></div>
+        <div th:replace="~{fragments/formularioAdminCrearUsuario :: formularioAdminCrearUsuario}"></div>
     </div>
 </div>
 </body>

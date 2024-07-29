@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Modificar Supermercado</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4" th:fragment="formularioAdminModificarSupermercado">
+    <a class="btn btn-secondary" th:href="@{/admin/supermercados}">Regresar</a>
+    <br><br>
+    <form th:action="@{/admin/supermercados/actualizar}" method="post" th:object="${supermercado}">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="mb-3">
+            <label for="nombreSuper" class="form-label">Nombre del Supermercado</label>
+            <input type="text" th:field="*{nombreSuper}" id="nombreSuper" class="form-control" required>
+            <div th:if="${#fields.hasErrors('nombreSuper')}" class="text-danger">
+                <span th:errors="*{nombreSuper}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="url" class="form-label">URL</label>
+            <input type="url" th:field="*{url}" id="url" class="form-control" required>
+            <div th:if="${#fields.hasErrors('url')}" class="text-danger">
+                <span th:errors="*{url}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="imagenPath" class="form-label">Ruta de la Imagen</label>
+            <input type="text" th:field="*{imagenPath}" id="imagenPath" class="form-control" required>
+            <div th:if="${#fields.hasErrors('imagenPath')}" class="text-danger">
+                <span th:errors="*{imagenPath}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="horario" class="form-label">Horario</label>
+            <input type="text" th:field="*{horario}" id="horario" class="form-control" required>
+            <div th:if="${#fields.hasErrors('horario')}" class="text-danger">
+                <span th:errors="*{horario}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="calle" class="form-label">Calle</label>
+            <input type="text" th:field="*{calle}" id="calle" class="form-control" required>
+            <div th:if="${#fields.hasErrors('calle')}" class="text-danger">
+                <span th:errors="*{calle}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="municipio" class="form-label">Municipio</label>
+            <input type="text" th:field="*{municipio}" id="municipio" class="form-control" required>
+            <div th:if="${#fields.hasErrors('municipio')}" class="text-danger">
+                <span th:errors="*{municipio}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="pais" class="form-label">País</label>
+            <input type="text" th:field="*{pais}" id="pais" class="form-control" required>
+            <div th:if="${#fields.hasErrors('pais')}" class="text-danger">
+                <span th:errors="*{pais}">Error de validación</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="codigopostal" class="form-label">Código Postal</label>
+            <input type="number" th:field="*{codigopostal}" id="codigopostal" class="form-control" required>
+            <div th:if="${#fields.hasErrors('codigopostal')}" class="text-danger">
+                <span th:errors="*{codigopostal}">Error de validación</span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
+</body>
+</html>

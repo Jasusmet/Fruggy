@@ -21,7 +21,7 @@ public class CestaCtrl {
     public String listarCestas(Model model) {
         List<Cesta> listaCestas = cestasSrvc.buscarEntidades();
         model.addAttribute("cestas", listaCestas);
-        return "cesta";
+        return "Admincesta";
     }
 
     @GetMapping("/cesta/{id}")

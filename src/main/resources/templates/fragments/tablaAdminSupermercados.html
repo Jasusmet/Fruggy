@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Lista de Supermercados</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+<div th:fragment="tablaAdminSupermercados">
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{supermarket.list.name}">Nombre</th>
+            <th th:text="#{supermarket.list.url}">URL</th>
+            <th th:text="#{supermarket.list.schedule}">Horario</th>
+            <th th:text="#{supermarket.list.address}">Dirección</th>
+            <th th:text="#{supermarket.list.edit}">Editar</th>
+            <th th:text="#{supermarket.list.delete}">Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="supermercado : ${supermercados}">
+            <td th:text="${supermercado.nombreSuper}">Nombre</td>
+            <td th:text="${supermercado.url}">URL</td>
+            <td th:text="${supermercado.horario}">Horario</td>
+            <td th:text="${supermercado.calle + ', ' + supermercado.municipio + ', ' + supermercado.pais + ', ' + supermercado.codigopostal}">Dirección</td>
+            <td>
+                <a th:href="@{/admin/supermercados/editar/{id}(id=${supermercado.id})}" class="btn btn-warning">Editar</a>
+            </td>
+            <td>
+                <form th:action="@{/admin/supermercados/eliminar/{id}(id=${supermercado.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este supermercado?');">
+                    <input type="submit" class="btn btn-danger" value="Eliminar"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${supermercados == null or #lists.isEmpty(supermercados)}">
+    <p th:text="#{supermarket.list.empty}">La lista de supermercados está vacía</p>
+</div>
+</body>
+</html>

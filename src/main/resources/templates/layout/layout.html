@@ -1,5 +1,7 @@
 <!DOCTYPE html >
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      lang="es">
 <head><!--/*  Each token will be replaced by their respective titles in the resulting page. */-->
     <title layout:title-pattern="$CONTENT_TITLE"></title>
     <meta charset="UTF-8">
@@ -13,6 +15,11 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
           integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="../css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../css/slicknav.min.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/jquery-ui.min.js"></script>
@@ -26,9 +33,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mixitup/3.3.1/mixitup.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script th:src="@{/js/main.js}" type="text/javascript"></script>
-    <script th:src="@{/js/preloader.js}" type="text/javascript"></script>
-    <link rel="stylesheet" href="/css/style.css">
 
+    <script th:src="@{/js/jquery.slicknav.js}" type="text/javascript"></script>
+    <script th:src="@{/js/main_index_admin.js}" type="text/javascript"></script>
+    <script th:src="@{/js/preloader.js}" type="text/javascript"></script>
+
+
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <!-- Page Preloader -->

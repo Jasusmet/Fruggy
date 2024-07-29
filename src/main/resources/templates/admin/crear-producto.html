@@ -5,13 +5,14 @@
     <meta charset="UTF-8">
     <title th:text="#{product.create.title}">Crear Producto</title>
     <script src="/js/select-category-subcategory.js" defer></script>
+    <script src="/js/valor-euros.js"></script>
 </head>
 <body>
 <div class="container mt-4" layout:fragment="content">
-    <h1 th:text="#{admin.product.create}">Crear Producto</h1>
     <div class="container">
         <div th:replace="~{fragments/formularioAdminCrearProducto :: formularioAdminCrearProducto}"></div>
     </div>
+
 </div>
 </body>
 </html>

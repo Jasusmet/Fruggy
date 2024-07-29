@@ -1,6 +1,8 @@
 package com.eoi.Fruggy.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,14 +27,18 @@ public class Detalle implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+
     @Column(name = "nombreUsuario", length = 50)
     private String nombreUsuario;
+
 
     @Column(name = "nombre", length = 255)
     private String nombre;
 
+
     @Column(name = "apellido", length = 255)
     private String apellido;
+
 
     @Column(name = "pathImagen", length = 500)
     private String pathImagen;
@@ -43,10 +49,13 @@ public class Detalle implements Serializable {
     // Campos de dirección
     @Column(name = "calle", length = 250)
     private String calle;
+
     @Column(name = "municipio", length = 250)
     private String municipio;
+
     @Column(name = "pais", length = 250)
     private String pais;
+
     @Column(name = "codigoPostal")
     private Integer codigopostal;
 

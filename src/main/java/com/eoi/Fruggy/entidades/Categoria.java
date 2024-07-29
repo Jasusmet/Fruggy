@@ -33,6 +33,7 @@ public class Categoria implements Serializable {
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
     private List<Subcategoria> subcategorias;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
     private Set<Producto> productos;
 

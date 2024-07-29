@@ -1,4 +1,3 @@
-// filter-by-supermarket.js
 function filterBySupermarket() {
     var radios = document.getElementsByName('supermarket');
     var selectedSupermarket = "";
@@ -9,4 +8,5 @@ function filterBySupermarket() {
         }
     }
     alert("Filtrando por supermercado: " + selectedSupermarket);
+    // Aquí puedes agregar la lógica para filtrar los productos según el supermercado seleccionado.
 }

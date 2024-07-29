@@ -7,50 +7,34 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="/static/css/styleFruggy.css.css" rel="stylesheet">
+    <link href="/static/css/styleFruggy.css" rel="stylesheet">
 </head>
 <body>
 <section class="hero hero-normal" th:fragment="heroSection">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
-                <div class="hero__categories">
-                    <div class="hero__categories__all">
-                        <i class="fa fa-bars"></i>
-                        <span th:text="#{categories}">Categorías</span>
-                    </div>
-                    <ul>
-                        <li><a href="Categorias/Categoría_aperitivos.html" th:text="#{category.snacks}">Aperitivos</a></li>
-                        <li><a href="Categorias/Categoria_bazar_casa.html" th:text="#{category.homeBazaar}">Bazar & Casa</a></li>
-                        <li><a href="Categorias/Categoria_bébes_niños.html" th:text="#{category.babiesKids}">Bebés & Niños</a></li>
-                        <li><a href="Categorias/Categoria_bebidas.html" th:text="#{category.drinks}">Bebidas</a></li>
-                        <li><a href="Categorias/Categoría_cafe_infusiones.html" th:text="#{category.coffeeTea}">Café e Infusiones</a></li>
-                        <li><a href="Categorias/Categoría_chocolate_dulce.html" th:text="#{category.chocolateSweets}">Chocolates & Dulces</a></li>
-                        <li><a href="../Categoria_conservas,_aceite%20_condimentos.html" th:text="#{category.cannedOilCondiments}">Conservas, Aceite & Condimentos</a></li>
-                        <li><a href="Categorias/Categoria_dieteticos.html" th:text="#{category.dietary}">Diéteticos</a></li>
-                        <li><a href="Categorias/Categoria_drogueria.html" th:text="#{category.drugstore}">Droguería</a></li>
-                        <li><a href="Categorias/Categoría_frescos_charcutería.html" th:text="#{category.freshDeli}">Frescos & Charcutería</a></li>
-                        <li><a href="Categorias/Categoría_lacteos_huevos.html" th:text="#{category.dairyEggs}">Lácteos & Huevos</a></li>
-                        <li><a href="Categorias/Categoría_mascotas.html" th:text="#{category.pets}">Mascotas</a></li>
-                        <li><a href="Categorias/Categoría_ocio_cultura.html" th:text="#{category.leisureCulture}">Ocio y Cultura</a></li>
-                        <li><a href="Categorias/Categoría_panadería_bollería_pastelería.html" th:text="#{category.bakeryPastry}">Panadería, Bollería y Pastelería</a></li>
-                        <li><a href="Categorias/Categoría_pasta_arroz_legumbres.html" th:text="#{category.pastaRiceLegumes}">Pasta, Arroz & Legumbres</a></li>
-                        <li><a href="../Categoría_perfumeria_parafarmacia.html" th:text="#{category.perfumePharmacy}">Perfumería & Parafarmacia</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="hero__search">
-                    <div class="hero__search__form">
-                        <form action="#">
-                            <div class="hero__search__categories">
-                                <span th:text="#{all.categories}">Todas las categorías</span>
-                                <!-- AÑADIR AQUÍ UNA LISTA  -->
-                                <span class="arrow_carrot-down"></span>
+            <div class="col-lg-12">
+                <h2 th:text="#{product.list.title}">Lista de Productos</h2>
+                <div class="product__list">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6" th:each="product : ${products}">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg"
+                                     th:style="'background-image: url(' + ${product.pathImagen} + ');'">
+                                    <div class="product__item__pic__hover">
+                                        <a th:href="@{/details/{id}(id=${product.id})}" class="add-cart"
+                                           th:text="#{add.to.cart}">Añadir al carrito</a>
+                                        <a th:href="@{/details/{id}(id=${product.id})}" class="view"
+                                           th:text="#{view.details}">Ver Detalles</a>
+                                    </div>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6 th:text="${product.nombreProducto}">Nombre del Producto</h6>
+                                    <h5 th:text="${product.productoPrecios.valor}">Precio</h5>
+                                    <h5 th:text="${product.supermercado.nombreSuper}">Supermercado</h5>
+                                </div>
                             </div>
-                            <input type="text" th:placeholder="#{search.placeholder}">
-                            <button type="submit" class="site-btn" th:text="#{search.button}">BUSCAR</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
