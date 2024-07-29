@@ -2,6 +2,7 @@ package com.eoi.Fruggy.web.controladores;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class InicioCtrl {
@@ -11,3 +12,4 @@ public class InicioCtrl {
         return "inicio";
     }
 }
+

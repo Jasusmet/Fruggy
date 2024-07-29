@@ -10,7 +10,6 @@
 
 @import "mediaQueries.css";
 
-
 html, body {
     height: 100%;
     font-family: "Cairo", sans-serif;
@@ -62,8 +61,6 @@ a:hover, a:focus {
 .humberger__open {
     display: none;
 }
-
-
 
 /*---------------------
   Latest Product
@@ -175,6 +172,7 @@ a:hover, a:focus {
 .breadcrumb__option a {
     display: inline-block;
     font-size: 16px;
+
     color: #ffffff;
     font-weight: 700;
     margin-right: 20px;
