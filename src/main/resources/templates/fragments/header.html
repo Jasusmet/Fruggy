@@ -1,63 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<header th:fragment="header">
-    <div class="header__top">
-        <div class="container">
-            <div class="row">
-                    <div class="header__top__left">
-                        <ul>
-                            <li><i class="fa fa-envelope"></i> fruggy@gmail.com</li>
-                        </ul>
-                    </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="header__top__right">
-                        <div class="header__top__right__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </div>
-                        <div class="header__top__right__language">
-                            <img src="/img/language.png" alt="">
-                            <div th:text="#{language}">Español</div>
-                            <span class="arrow_carrot-down"></span>
-                            <ul>
-                                <li><a href="?lang=es" th:text="#{spanish}">Español</a></li>
-                                <li><a href="?lang=en" th:text="#{english}">English</a></li>
-                            </ul>
-                        </div>
-                        <div class="header__top__right__auth">
-                            <a href="/login"><i class="fa fa-user"></i> <span th:text="#{header.login}">Login</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<header  class="header" th:fragment="header">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="header__logo">
-                    <a href="/"><img src="/img/logo.png" height="120px" width="100px" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <nav class="header__menu">
-                    <ul>
-                        <li><a href="/productos" th:text="#{products}">Productos</a></li>
-                        <li><a href="/supermercados" th:text="#{supermarket}">Supermercados</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a href="#" th:text="#{supermarket.carrefour}">Carrefour</a></li>
-                                <li><a href="#" th:text="#{supermarket.mercadona}">Mercadona</a></li>
-                                <li><a href="#" th:text="#{supermarket.dia}">Día</a></li>
-                                <li><a href="#" th:text="#{supermarket.lidl}">Lidl</a></li>
-                                <li><a href="#" th:text="#{supermarket.supeco}">Supeco</a></li>
-                                <li><a href="#" th:text="#{supermarket.hipercor}">Hipercor</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+        <div class="header__logo">
+            <a href="/"><img src="img/logo.png" alt="Fruggy"></a>
+        </div>
+        <ul class="header__menu">
+            <li><a href="/productos" th:text="#{products}">Productos</a></li>
+            <li><a href="/supermercados" th:text="#{supermarket}">Supermercados</a>
+                <ul class="header__menu__dropdown">
+                    <li><a href="#" th:text="#{supermarket.carrefour}">Carrefour</a></li>
+                    <li><a href="#" th:text="#{supermarket.dia}">Día</a></li>
+                    <li><a href="#" th:text="#{supermarket.hipercor}">Hipercor</a></li>
+                    <li><a href="#" th:text="#{supermarket.lidl}">Lidl</a></li>
+                    <li><a href="#" th:text="#{supermarket.mercadona}">Mercadona</a></li>
+                    <li><a href="#" th:text="#{supermarket.supeco}">Supeco</a></li>
+                </ul>
+            <li><a href="/contacto" th:rext="#{contact}">Contacto</a></li>
+        </ul>
+        <form class="busqueda" role="buscar">
+            <input type="buscar" placeholder="Buscar">
+        </form>
+        <div class="header__top__right__language">
+            <img src="/img/language.png" alt="">
+            <div th:text="#{language}">Español</div>
+            <span class="arrow_carrot-down"></span>
+            <ul>
+                <li><a href="?lang=es" th:text="#{spanish}">Español</a></li>
+                <li><a href="?lang=en" th:text="#{english}">English</a></li>
+            </ul>
+        </div>
+        <div class="login">
+            <a href="/login">
+            <button type="button">Iniciar sesión</button>
+            </a>
+        </div>
+        <div class="admin">
+            <a href="#">
+            <button type="button">Admin</button>
+            </a>
+        </div>
+        <div class="moderador">
+            <a href="#">
+            <button type="button">Moderador</button>
+            </a>
         </div>
         <div class="humberger__open">
             <i class="fa fa-bars"></i>
