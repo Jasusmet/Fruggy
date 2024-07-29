@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Cuando el DOM está completamente cargado
-    const preloader = document.getElementById('preloder');
+    const preloader = document.getElementById('preloader');
     const content = document.getElementById('content');
 
     // Oculta el preloader y muestra el contenido de la página

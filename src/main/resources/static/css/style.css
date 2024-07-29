@@ -5,7 +5,11 @@
 @import "categories.css";
 @import "hero.css";
 @import "featured.css";
+@import "nice-select.css";
+@import "elegant-icons.css";
+
 @import "mediaQueries.css";
+
 
 html, body {
     height: 100%;

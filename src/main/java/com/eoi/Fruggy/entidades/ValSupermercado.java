@@ -30,5 +30,6 @@ public class ValSupermercado implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "supermercado_id")
-    private Supermercado valoracionSupermercadoSupermercado;
+    private Supermercado supermercado;
+
 }

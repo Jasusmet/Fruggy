@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Crear Usuario</title>
 </head>
 <body>
-<section class="user-creation spad" th:fragment="formularioAdminCrearProducto">
+<section class="user-creation spad" th:fragment="formularioAdminCrearUsuario">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -18,11 +18,17 @@
                             <!-- Campo de email -->
                             <div class="col-lg-6 col-md-6 mb-3">
                                 <input type="text" th:field="*{email}" class="form-control" placeholder="Correo Electrónico" required>
+                                <div th:if="${#fields.hasErrors('email')}" class="alert alert-danger">
+                                    <p th:each="err : ${#fields.errors('email')}" th:text="${err}"></p>
+                                </div>
                             </div>
 
                             <!-- Campo de contraseña -->
                             <div class="col-lg-6 col-md-6 mb-3">
                                 <input type="password" th:field="*{password}" class="form-control" placeholder="Contraseña" required>
+                                <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger">
+                                    <p th:each="err : ${#fields.errors('password')}" th:text="${err}"></p>
+                                </div>
                             </div>
 
                             <!-- Checkbox activo -->
@@ -36,6 +42,9 @@
                             <!-- Campo de teléfono -->
                             <div class="col-lg-6 col-md-6 mb-3">
                                 <input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono" required>
+                                <div th:if="${#fields.hasErrors('telefono')}" class="alert alert-danger">
+                                    <p th:each="err : ${#fields.errors('telefono')}" th:text="${err}"></p>
+                                </div>
                             </div>
 
                             <!-- Selección de roles -->
@@ -60,5 +69,8 @@
         </div>
     </div>
 </section>
+
+
+
 </body>
 </html>

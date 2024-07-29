@@ -7,11 +7,14 @@ import com.eoi.Fruggy.servicios.SrvcDetalle;
 import com.eoi.Fruggy.servicios.SrvcImagen;
 import com.eoi.Fruggy.servicios.SrvcRol;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -46,22 +49,24 @@ public class ADMINUsuarioCtrl {
         return "admin/CRUD-Usuarios"; // Lo he llamado asi, porque desde esta vista se pueden hacer todas las funciones CRUD como admin de usuarios.
     }
 
-@GetMapping("/agregar")
-public String agregarUsuario(Model model) {
-    model.addAttribute("usuario", new Usuario());
-    model.addAttribute("detalle", new Detalle());
-    List<Rol> roles = rolSrvc.buscarEntidades();
-    System.out.println("Roles enviados a la vista: " + roles.size());
-    model.addAttribute("roles", roles);
-    return "admin/crear-usuario";
-}
+    @GetMapping("/agregar")
+    public String agregarUsuario(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("detalle", new Detalle());
+        List<Rol> roles = rolSrvc.buscarEntidades();
+        System.out.println("Roles enviados a la vista: " + roles.size());
+        model.addAttribute("roles", roles);
+        return "admin/crear-usuario";
+    }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute Usuario usuario, Detalle detalle,
+    public String guardar(@Valid @ModelAttribute Usuario usuario, BindingResult result, Detalle detalle,
                           @RequestParam(value = "roles", required = false) List<Long> rolesSeleccionados,
                           Model model) throws Exception {
+
         // Depuración roles
         System.out.println("Roles seleccionados: " + rolesSeleccionados);
+
         // Convertir IDs de roles seleccionados en objetos Rol
         Set<Rol> roles = new HashSet<>();
         if (rolesSeleccionados != null) {
@@ -74,20 +79,34 @@ public String agregarUsuario(Model model) {
                 }
             }
         }
+
         // Imprimir roles asignados al usuario para depuración
         System.out.println("Roles asignados al usuario: " + roles);
+
         // Asignar roles al usuario
         usuario.setRoles(roles);
+
         // Asignar detalle al usuario
         usuario.setDetalle(detalle);
+
+        // Si hay errores de validación, regresar al formulario de creación de usuario
+        if (result.hasErrors()) {
+            List<Rol> rolesList = rolSrvc.buscarEntidades();
+            model.addAttribute("roles", rolesList);
+            return "admin/crear-usuario"; // Asegúrate de que este es el nombre correcto de la vista
+        }
+
         // Guardar o actualizar usuario
         usuarioSrvc.guardar(usuario);
+
         // Guardar o actualizar detalle
         detalleSrvc.guardar(detalle);
+
         // Guardar roles actualizados (esto asegura que el nombre del rol se actualice si ha cambiado)
         for (Rol rol : roles) {
             rolSrvc.actualizarRol(rol);
         }
+
         return "redirect:/admin/usuarios";
     }
 
@@ -129,8 +148,18 @@ public String agregarUsuario(Model model) {
             return "error";
         }
     }
+
     @PostMapping("/editar/{id}")
-    public String guardarEdicion(@PathVariable("id") long id, @ModelAttribute Usuario usuario) throws Exception {
+    public String guardarEdicion(@PathVariable("id") long id, @Valid @ModelAttribute Usuario usuario,
+                                 BindingResult result, Model model) throws Exception {
+        if (result.hasErrors()) {
+            // Si hay errores, cargar la lista de roles para la vista de edición
+            List<Rol> roles = rolSrvc.buscarEntidades();
+            model.addAttribute("roles", roles);
+            model.addAttribute("usuario", usuario);
+            return "admin/modificar-usuario"; // Regresa a la vista de edición
+        }
+
         usuario.setId(id);
         usuarioSrvc.guardar(usuario);
         return "redirect:/admin/usuarios";

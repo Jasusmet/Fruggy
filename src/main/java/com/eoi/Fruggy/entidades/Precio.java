@@ -3,6 +3,9 @@ package com.eoi.Fruggy.entidades;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +39,8 @@ public class Precio implements Serializable {
     @Column (name ="activo" , nullable = false )
     private Boolean activo;
 
+    @DecimalMin(value = "0.1", message = "El valor del precio debe ser mayor que 0.1.")
+    @DecimalMax(value = "1000", message = "El valor del precio no puede ser mayor que 1000.")
     @Column(name = "valor")
     private Double valor;
 
@@ -59,8 +64,13 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "descuentosPrecios")
     private List<Descuento> descuentos;
 
+
+    @Transient
+    private Double precioConDescuento;
+
     // Método para obtener el valor del precio
     public String getPrecio() {
-        return (valor != null) ? String.format("%.2f", valor) : "No disponible";
+        return (valor != null) ? String.format("%.2f €", valor).replace(".", ",") : "Escribe tu precio";
     }
+
 }

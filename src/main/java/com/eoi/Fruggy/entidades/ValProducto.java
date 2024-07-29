@@ -31,4 +31,6 @@ public class ValProducto implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "precios_id", foreignKey = @ForeignKey(name = "fk_valoracionesProductos_precio"))
     private Precio valoracionesProductosPrecios;
+
+
 }

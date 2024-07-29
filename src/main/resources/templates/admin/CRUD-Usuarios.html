@@ -9,7 +9,7 @@
 <body>
 
 <div class="container mt-4" layout:fragment="content">
-    <h1 th:text="#{admin.product.list.header}">Lista de Productos</h1>
+    <h1 th:text="#{user.list.header}">Lista de Usuarios</h1>
     <a class="btn btn-primary" th:href="@{/admin/usuarios/agregar}" th:text="#{user.list.create}">Crear Usuario</a>
     <div class="container">
         <div th:replace="~{fragments/tablaAdminUsuarios :: tablaAdminUsuarios}"></div>

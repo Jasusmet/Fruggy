@@ -3,6 +3,8 @@ package com.eoi.Fruggy.entidades;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,13 +29,18 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; // hay que cambiar en todas las entidades a Long sustituyendo a  long
 
-    @Column (name ="nombreProducto",length = 45)
+    @NotBlank(message = "El nombre del producto es obligatorio.")
+    @Size(max = 45, message = "El nombre del producto no puede tener más de 45 caracteres.")
+    @Column(name = "nombreProducto", length = 45)
     private String nombreProducto;
 
-    @Column (name ="marca",length = 45)
+    @NotBlank(message = "La marca es obligatoria.")
+    @Size(max = 45, message = "La marca no puede tener más de 45 caracteres.")
+    @Column(name = "marca", length = 45)
     private String marca;
 
-    @Column (name ="descripcion",length = 255)
+    @Size(max = 1000, message = "La descripción no puede tener más de 1000 caracteres.")
+    @Column(name = "descripcion", length = 1000)
     private String descripcion;
 
     @Column (name ="activo", nullable = true)
