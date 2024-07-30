@@ -7,8 +7,8 @@
 @import "featured.css";
 @import "nice-select.css";
 @import "elegant-icons.css";
-
 @import "mediaQueries.css";
+@import "login.css";
 
 html, body {
     height: 100%;
