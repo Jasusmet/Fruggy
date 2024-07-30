@@ -38,20 +38,20 @@ public class ProductoCtrl {
         List<Categoria> categorias = categoriasSrvc.getRepo().findAll();
         List<Subcategoria> subcategorias = subcategoriasSrvc.getRepo().findAll();
         List<Supermercado> supermercados = supermercadosSrvc.getRepo().findAll();
-        List<Producto> productosConDescuento = productosSrvc.getRepo().findByDescuentoActivoTrue();
+        //List<Producto> productosConDescuento = productosSrvc.getRepo().findByDescuentoActivoTrue();
 
         model.addAttribute("listaProducto", listaProductos);
         model.addAttribute("categorias", categorias);
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("supermercados", supermercados);
-        model.addAttribute("productosConDescuento", productosConDescuento);
+        //model.addAttribute("productosConDescuento", productosConDescuento);
 
         // Verificar que modelo no esté vacío
         System.out.println("Productos: " + listaProductos.size());
         System.out.println("Categorías: " + categorias.size());
         System.out.println("Subcategorías: " + subcategorias.size());
         System.out.println("Supermercados: " + supermercados.size());
-        System.out.println("Productos con descuento: " + productosConDescuento.size());
+      //  System.out.println("Productos con descuento: " + productosConDescuento.size());
 
         return "/productos/catalogoProductos"; //
     }

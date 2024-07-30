@@ -41,27 +41,27 @@ public class ADMINProductoCtrl {
         this.tipodescuentosSrvc = tipodescuentosSrvc;
     }
 
-    @GetMapping
-    public String adminListarProductos(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size,
-                                       Model model) {
-        Page<Producto> pagina = productosSrvc.obtenerProductosPaginados(page, size);
-
-        pagina.forEach(producto -> {
-            if (producto.getDescuento() != null && producto.getDescuento().getDescuentoTipoDescuento() != null) {
-                Double precioOriginal = producto.getProductoPrecios().getValor();
-                Double porcentajeDescuento = producto.getDescuento().getDescuentoTipoDescuento().getPorcentaje();
-                Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
-                Double precioConDescuento = precioOriginal - descuentoAplicado;
-                producto.getProductoPrecios().setPrecioConDescuento(precioConDescuento);
-            } else {
-                producto.getProductoPrecios().setPrecioConDescuento(producto.getProductoPrecios().getValor());
-            }
-        });
-
-        model.addAttribute("paginaProductos", pagina);
-        return "admin/CRUD-Productos";
-    }
+//    @GetMapping
+//    public String adminListarProductos(@RequestParam(defaultValue = "0") int page,
+//                                       @RequestParam(defaultValue = "10") int size,
+//                                       Model model) {
+//        Page<Producto> pagina = productosSrvc.obtenerProductosPaginados(page, size);
+//
+//        pagina.forEach(producto -> {
+//            if (producto.getDescuento() != null && producto.getDescuento().getDescuentoTipoDescuento() != null) {
+//                Double precioOriginal = producto.getProductoPrecios().getValor();
+//                Double porcentajeDescuento = producto.getDescuento().getDescuentoTipoDescuento().getPorcentaje();
+//                Double descuentoAplicado = precioOriginal * (porcentajeDescuento / 100);
+//                Double precioConDescuento = precioOriginal - descuentoAplicado;
+//                producto.getProductoPrecios().setPrecioConDescuento(precioConDescuento);
+//            } else {
+//                producto.getProductoPrecios().setPrecioConDescuento(producto.getProductoPrecios().getValor());
+//            }
+//        });
+//
+//        model.addAttribute("paginaProductos", pagina);
+//        return "admin/CRUD-Productos";
+//    }
 
     @GetMapping("/agregar")
     public String agregarProducto(Model model) throws JsonProcessingException {
@@ -89,119 +89,119 @@ public class ADMINProductoCtrl {
         model.addAttribute("tiposDescuento", tipoDescuentos);
         return "admin/crear-producto";
     }
-
-    @PostMapping("/guardar")
-    public String guardarProductoConDetalles(@Valid @ModelAttribute Producto producto,
-                                             Descuento descuento,
-                                             @RequestParam(value = "tipoDescuentos", required = false) List<Long> tipoDescuentosSeleccionados,
-                                             @RequestParam(value = "file", required = false) MultipartFile file,
-                                             @RequestParam("precio") String precio, // Recibido como String
-                                             @RequestParam("categoria.id") Long categoriaId,
-                                             @RequestParam(value = "subcategoria.id", required = false) Long subcategoriaId,
-                                             BindingResult result,
-                                             Model model) throws Exception {
-        // Validar el producto
-        if (result.hasErrors()) {
-            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
-            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
-            return "admin/crear-producto";
-        }
-
-        try {
-            // No funciona el simobolo del dolar, por lo tanto: eliminar el símbolo de euro y convertir a formato Double
-            String precioSinEuro = precio.replace(" €", "").replace(",", ".").trim();
-            double precioDouble = Double.parseDouble(precioSinEuro);
-
-            // Validar el rango del precio
-            if (precioDouble < 0.10 || precioDouble > 1000.00) {
-                model.addAttribute("error", "El precio debe estar entre 0.10 y 1000.00");
-                model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
-                model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
-                return "admin/crear-producto"; // Regresar al formulario si la validación falla
-            }
-
-            // Manejo de la imagen
-            if (file != null && !file.isEmpty()) {
-                String directoryPath = "D:\\img";
-                File directory = new File(directoryPath);
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                }
-                String fileName = file.getOriginalFilename();
-                File targetFile = new File(directoryPath + File.separator + fileName);
-                file.transferTo(targetFile);
-
-                Imagen imagen = new Imagen();
-                imagen.setNombreArchivo(fileName);
-                imagen.setRuta(directoryPath);
-                imagen.setPathImagen("/images/" + fileName);
-                imagenSrvc.guardar(imagen);
-                producto.setImagen(imagen);
-            }
-
-            // Guardar precio
-            Precio nuevoPrecio = new Precio();
-            nuevoPrecio.setActivo(true);
-            nuevoPrecio.setValor(precioDouble); // Asignar el precio validado
-            preciosSrvc.guardar(nuevoPrecio);
-            producto.setProductoPrecios(nuevoPrecio);
-
-            // Asignar categoría y subcategoría
-            Categoria categoria = categoriasSrvc.encuentraPorId(categoriaId).orElse(null);
-            Subcategoria subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId).orElse(null);
-            producto.setCategoria(categoria);
-            producto.setSubcategoria(subcategoria);
-
-            // Asignar tipos de descuentos
-            Set<TipoDescuento> tipoDescuentos = new HashSet<>();
-            if (tipoDescuentosSeleccionados != null) {
-                for (Long tipoDescuentoId : tipoDescuentosSeleccionados) {
-                    Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
-                    tipoDescuentoOpt.ifPresent(tipoDescuentos::add);
-                }
-            }
-            producto.setTipoDescuentos(tipoDescuentos);
-            producto.setDescuento(descuento);
-            productosSrvc.guardar(producto);
-            descuentosSrvc.guardar(descuento);
-            for (TipoDescuento tipoDescuento : tipoDescuentos) {
-                tipodescuentosSrvc.actualizarTipoDescuento(tipoDescuento);
-            }
-            return "redirect:/admin/productos";
-        } catch (NumberFormatException e) {
-            model.addAttribute("error", "El precio debe estar en un formato válido.");
-            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
-            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
-            return "admin/crear-producto"; // Regresar al formulario si hay un error de formato
-        } catch (Exception e) {
-            model.addAttribute("error", "Error al guardar el producto");
-            return "error"; // hay que crear un error generico
-        }
-    }
-
-    @PostMapping("/descuentos/asignar-tipoDescuento")
-    public String asignarTipoDescuento(@RequestParam("producto_id") Long productoId, @RequestParam("tipoDescuentoId") Long tipoDescuentoId) throws Exception {
-        Optional<Producto> productoOpt = productosSrvc.encuentraPorId(productoId);
-        Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
-        if (productoOpt.isPresent() && tipoDescuentoOpt.isPresent()) {
-            Producto p = productoOpt.get();
-            TipoDescuento t = tipoDescuentoOpt.get();
-            tipodescuentosSrvc.asignarTipoDescuentoAProducto(p, t);
-        }
-        return "redirect:/admin/productos";
-    }
-
-    @PostMapping("/descuentos/quitar-tipoDescuento")
-    public String quitarTipoDescuento(@RequestParam("producto_id") Long productoId, @RequestParam("tipoDescuentoId") Long tipoDescuentoId) throws Exception {
-        Optional<Producto> productoOpt = productosSrvc.encuentraPorId(productoId);
-        Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
-        if (productoOpt.isPresent() && tipoDescuentoOpt.isPresent()) {
-            Producto p = productoOpt.get();
-            TipoDescuento t = tipoDescuentoOpt.get();
-            tipodescuentosSrvc.quitarTipoDescuentoAProducto(p, t);
-        }
-        return "redirect:/admin/productos";
-    }
+//
+//    @PostMapping("/guardar")
+//    public String guardarProductoConDetalles(@Valid @ModelAttribute Producto producto,
+//                                             Descuento descuento,
+//                                             @RequestParam(value = "tipoDescuentos", required = false) List<Long> tipoDescuentosSeleccionados,
+//                                             @RequestParam(value = "file", required = false) MultipartFile file,
+//                                             @RequestParam("precio") String precio, // Recibido como String
+//                                             @RequestParam("categoria.id") Long categoriaId,
+//                                             @RequestParam(value = "subcategoria.id", required = false) Long subcategoriaId,
+//                                             BindingResult result,
+//                                             Model model) throws Exception {
+//        // Validar el producto
+//        if (result.hasErrors()) {
+//            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
+//            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
+//            return "admin/crear-producto";
+//        }
+//
+//        try {
+//            // No funciona el simobolo del dolar, por lo tanto: eliminar el símbolo de euro y convertir a formato Double
+//            String precioSinEuro = precio.replace(" €", "").replace(",", ".").trim();
+//            double precioDouble = Double.parseDouble(precioSinEuro);
+//
+//            // Validar el rango del precio
+//            if (precioDouble < 0.10 || precioDouble > 1000.00) {
+//                model.addAttribute("error", "El precio debe estar entre 0.10 y 1000.00");
+//                model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
+//                model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
+//                return "admin/crear-producto"; // Regresar al formulario si la validación falla
+//            }
+//
+//            // Manejo de la imagen
+//            if (file != null && !file.isEmpty()) {
+//                String directoryPath = "D:\\img";
+//                File directory = new File(directoryPath);
+//                if (!directory.exists()) {
+//                    directory.mkdirs();
+//                }
+//                String fileName = file.getOriginalFilename();
+//                File targetFile = new File(directoryPath + File.separator + fileName);
+//                file.transferTo(targetFile);
+//
+//                Imagen imagen = new Imagen();
+//                imagen.setNombreArchivo(fileName);
+//                imagen.setRuta(directoryPath);
+//                imagen.setPathImagen("/images/" + fileName);
+//                imagenSrvc.guardar(imagen);
+//                producto.setImagen(imagen);
+//            }
+//
+//            // Guardar precio
+//            Precio nuevoPrecio = new Precio();
+//            nuevoPrecio.setActivo(true);
+//            nuevoPrecio.setValor(precioDouble); // Asignar el precio validado
+//            preciosSrvc.guardar(nuevoPrecio);
+//            producto.setProductoPrecios(nuevoPrecio);
+//
+//            // Asignar categoría y subcategoría
+//            Categoria categoria = categoriasSrvc.encuentraPorId(categoriaId).orElse(null);
+//            Subcategoria subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId).orElse(null);
+//            producto.setCategoria(categoria);
+//            producto.setSubcategoria(subcategoria);
+//
+//            // Asignar tipos de descuentos
+//            Set<TipoDescuento> tipoDescuentos = new HashSet<>();
+//            if (tipoDescuentosSeleccionados != null) {
+//                for (Long tipoDescuentoId : tipoDescuentosSeleccionados) {
+//                    Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
+//                    tipoDescuentoOpt.ifPresent(tipoDescuentos::add);
+//                }
+//            }
+//            producto.setTipoDescuentos(tipoDescuentos);
+//            producto.setDescuento(descuento);
+//            productosSrvc.guardar(producto);
+//            descuentosSrvc.guardar(descuento);
+//            for (TipoDescuento tipoDescuento : tipoDescuentos) {
+//                tipodescuentosSrvc.actualizarTipoDescuento(tipoDescuento);
+//            }
+//            return "redirect:/admin/productos";
+//        } catch (NumberFormatException e) {
+//            model.addAttribute("error", "El precio debe estar en un formato válido.");
+//            model.addAttribute("categorias", categoriasSrvc.buscarEntidades());
+//            model.addAttribute("subcategorias", subcategoriasSrvc.buscarEntidades());
+//            return "admin/crear-producto"; // Regresar al formulario si hay un error de formato
+//        } catch (Exception e) {
+//            model.addAttribute("error", "Error al guardar el producto");
+//            return "error"; // hay que crear un error generico
+//        }
+//    }
+//
+//    @PostMapping("/descuentos/asignar-tipoDescuento")
+//    public String asignarTipoDescuento(@RequestParam("producto_id") Long productoId, @RequestParam("tipoDescuentoId") Long tipoDescuentoId) throws Exception {
+//        Optional<Producto> productoOpt = productosSrvc.encuentraPorId(productoId);
+//        Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
+//        if (productoOpt.isPresent() && tipoDescuentoOpt.isPresent()) {
+//            Producto p = productoOpt.get();
+//            TipoDescuento t = tipoDescuentoOpt.get();
+//            tipodescuentosSrvc.asignarTipoDescuentoAProducto(p, t);
+//        }
+//        return "redirect:/admin/productos";
+//    }
+//
+//    @PostMapping("/descuentos/quitar-tipoDescuento")
+//    public String quitarTipoDescuento(@RequestParam("producto_id") Long productoId, @RequestParam("tipoDescuentoId") Long tipoDescuentoId) throws Exception {
+//        Optional<Producto> productoOpt = productosSrvc.encuentraPorId(productoId);
+//        Optional<TipoDescuento> tipoDescuentoOpt = tipodescuentosSrvc.encuentraPorId(tipoDescuentoId);
+//        if (productoOpt.isPresent() && tipoDescuentoOpt.isPresent()) {
+//            Producto p = productoOpt.get();
+//            TipoDescuento t = tipoDescuentoOpt.get();
+//            tipodescuentosSrvc.quitarTipoDescuentoAProducto(p, t);
+//        }
+//        return "redirect:/admin/productos";
+//    }
 
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable("id") long id, Model model) throws Exception {

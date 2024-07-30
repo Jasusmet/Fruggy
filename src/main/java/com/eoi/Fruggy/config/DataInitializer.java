@@ -40,6 +40,7 @@ public class DataInitializer {
     public void init() {
         Locale locale = new Locale("es");
         // Inicialización de roles
+
         if (repoRol.count() == 0) {
             repoRol.save(new Rol(messageSource.getMessage("role.admin", null, locale)));
             repoRol.save(new Rol(messageSource.getMessage("role.user", null, locale)));
@@ -196,6 +197,8 @@ public class DataInitializer {
                     }
                 }
             }
+
+            /*
             // Inicialización de tipos de descuento
             if (repoTipoDescuento.count() == 0) {
                 LocalDate now = LocalDate.now();
@@ -243,7 +246,10 @@ public class DataInitializer {
                         now.plusMonths(6),     // 6 meses adelante
                         25.0
                 ));
-            }
+
+
+
+            }     */
         } catch(Exception e){
             e.printStackTrace();
         }

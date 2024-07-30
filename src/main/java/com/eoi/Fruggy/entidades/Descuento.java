@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -33,12 +36,8 @@ public class Descuento implements Serializable {
     @Column (name ="activo", nullable = false)
     private Boolean activo;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "precios_id", foreignKey = @ForeignKey(name = "fk_descuentos_precio"))
-    private Precio descuentosPrecios;
-
-    @OneToOne(mappedBy = "descuento", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Producto producto;
+    @ManyToMany
+    private Set<Producto> productos = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tipoDescuento_id", foreignKey = @ForeignKey(name = "fk_descuento_tipoDescuento"))

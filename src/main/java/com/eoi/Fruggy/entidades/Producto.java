@@ -50,9 +50,8 @@ public class Producto implements Serializable {
     private String pathImagen;
 
     @JsonManagedReference
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "precio_id")
-    private Precio productoPrecios;
+    @OneToMany
+    private Set<Precio> precios = new HashSet<>();
 
     @JsonManagedReference
     @ManyToOne(fetch = FetchType.LAZY)
@@ -65,17 +64,14 @@ public class Producto implements Serializable {
     private Categoria categoria;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "descuento_id", referencedColumnName = "descuentos_id")
-    private Descuento descuento;
-
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "producto_tipoDescuento",
+            name = "producto_descuento",
             joinColumns = @JoinColumn(name = "producto_id"),
-            inverseJoinColumns = @JoinColumn(name = "tipoDescuento_id")
+            inverseJoinColumns = @JoinColumn(name = "descuento_id")
     )
-    private Set<TipoDescuento> tipoDescuentos = new HashSet<>();
+    private Set<Descuento> descuentos = new HashSet<>();
+
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "imagen_id", referencedColumnName = "id")
@@ -88,9 +84,6 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ValProducto> valoraciones = new HashSet<>();
 
-    public String getPrecio() {
-        return (productoPrecios != null) ? productoPrecios.getPrecio() : "No disponible";
-    }
 
     @Transient
     private Double precioConDescuento;

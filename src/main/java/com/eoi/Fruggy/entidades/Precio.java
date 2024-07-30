@@ -50,16 +50,14 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "precioFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Favorito> preciosFavoritos;
 
-    @JsonBackReference
-    @OneToOne(mappedBy = "productoPrecios", fetch = FetchType.LAZY)
-    private Producto precioProductos;
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
     @ManyToOne
     @JoinColumn(name = "supermercado_id")
     private Supermercado precioSupermercado;
 
-    @OneToMany(mappedBy = "descuentosPrecios")
-    private List<Descuento> descuentos;
 
 
     @Transient

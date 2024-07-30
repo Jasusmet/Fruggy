@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tipoDescuentos")
+@Table(name = "tipoDescuento")
 
 public class TipoDescuento implements Serializable {
 
@@ -40,9 +40,6 @@ public class TipoDescuento implements Serializable {
 
     @Column (name ="activo", nullable = false)
     private Boolean activo;
-
-    @ManyToMany(mappedBy = "tipoDescuentos")
-    private Set<Producto> productos = new HashSet<>();
 
     @OneToMany(mappedBy = "descuentoTipoDescuento", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Descuento> descuentoTipoDescuento = new HashSet<>();
