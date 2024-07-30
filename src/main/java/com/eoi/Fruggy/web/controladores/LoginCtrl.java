@@ -44,12 +44,20 @@ public class LoginCtrl {
         return "redirect:/login?error=true";
     }
 
-    @GetMapping("/login/crear-usuario")
-    public String showCrearUsuarioForm(Model model, @RequestParam(value = "error", required = false) String error) {
+    @GetMapping("/login/registrarse")
+    public String showRegistrarseForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
             model.addAttribute("error", true);
         }
-        return "adminUsuarios";
+        return "signup";
+    }
+
+    @GetMapping("/login/contraseña-olvidada")
+    public String showContraseñaOlvidadaForm(Model model, @RequestParam(value = "error", required = false) String error) {
+        if (error != null) {
+            model.addAttribute("error", true);
+        }
+        return "forgot-password";
     }
 
     @GetMapping("/login/recuperar-contraseña")
@@ -57,7 +65,7 @@ public class LoginCtrl {
         if (error != null) {
             model.addAttribute("error", true);
         }
-        return "recuperar-contraseña";
+        return "reset-password";
     }
 
 }
