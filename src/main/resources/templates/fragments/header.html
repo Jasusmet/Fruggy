@@ -18,18 +18,16 @@
                     <li><a href="#" th:text="#{supermarket.mercadona}">Mercadona</a></li>
                     <li><a href="#" th:text="#{supermarket.supeco}">Supeco</a></li>
                 </ul>
-            <li><a href="/contacto" th:rext="#{contact}">Contacto</a></li>
+            <li><a href="/contacto" th:text="#{contact}">Contacto</a></li>
         </ul>
         <form class="busqueda" role="buscar">
             <input type="buscar" placeholder="Buscar">
         </form>
-        <div class="header__top__right__language">
-            <img src="/img/language.png" alt="">
-            <div th:text="#{language}">Español</div>
-            <span class="arrow_carrot-down"></span>
+        <div class="lang__menu">
+            <div class="selected-lang" th:text="#{language}">Español</div>
             <ul>
-                <li><a href="?lang=es" th:text="#{spanish}">Español</a></li>
-                <li><a href="?lang=en" th:text="#{english}">English</a></li>
+                <li><a href="?lang=es" class="es" th:text="#{spanish}">Español</a></li>
+                <li><a href="?lang=en" class="en" th:text="#{english}">Inglés</a></li>
             </ul>
         </div>
         <div class="login">

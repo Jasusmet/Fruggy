@@ -1,8 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
+
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
+    font-family: 'Didact Gothic', sans-serif;
+    color:#333;
+    box-sizing: border-box;
 }
 
 .header {
@@ -104,72 +105,83 @@ body {
     outline: none;
 }
 
-.header__top__right__language {
+.lang__menu {
+    width: 100px;
+    text-align: right;
+    font-weight: bold;
+    margin-top: 25px;
     position: relative;
-    display: inline-block;
-    margin-right: 40px;
+}
+.lang__menu .selected-lang {
+    display: flex;
+    justify-content: space-between;
+    line-height: 2;
     cursor: pointer;
 }
-
-.header__top__right__language:hover ul {
-    top: 23px;
-    opacity: 1;
-    visibility: visible;
-}
-
-.header__top__right__language:after {
-    position: absolute;
-    right: -21px;
-    top: 1px;
-    height: 20px;
-    width: 1px;
-    background: #000000;
-    opacity: 0.1;
-    content: "";
-}
-
-.header__top__right__language img {
-    margin-right: 6px;
-}
-
-.header__top__right__language div {
-    font-size: 16px;
-    color: #fff;
+.lang__menu .selected-lang:before {
+    content: '';
     display: inline-block;
-    margin-right: 4px;
+    width: 32px;
+    height: 32px;
+    background-image: url("/img/es.png");
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
-.header__top__right__language span {
-    font-size: 14px;
-    color: #1c1c1c;
-    position: relative;
-    top: 2px;
-}
-
-.header__top__right__language ul {
+.lang__menu ul {
+    margin: 0;
+    padding: 0;
+    display: none;
+    background-color: #fff;
+    border: 1px solid #f8f8f8;
     position: absolute;
-    background-color: #3E8E41;
-    color: #fff;
+    top: 45px;
+    right: 0px;
+    width: 125px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    z-index: 100;
-    visibility: hidden;
-    -webkit-transition: all, 0.3s;
-    -moz-transition: all, 0.3s;
-    -ms-transition: all, 0.3s;
-    -o-transition: all, 0.3s;
-    transition: all, 0.3s;
+    box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
 }
 
-.header__top__right__language ul li {
+
+.lang__menu ul li {
     list-style: none;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
 }
 
-.header__top__right__language ul li a {
-    font-size: 14px;
-    color: #fff;
+.lang__menu ul li a {
+    text-decoration: none;
+    width: 125px;
     padding: 5px 10px;
+    display: block;
+}
+
+.lang__menu ul li:hover {
+    background-color: #f2f2f2;
+}
+
+.lang__menu ul li a:before {
+    content: '';
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 10px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.es:before {
+    background-image: url(../Fruggy/src/main/resources/static/img/es.png);
+}
+
+.en:before {
+    background-image: url(../Fruggy/src/main/resources/static/img/en.png);
+}
+
+.lang__menu:hover ul {
+    display: block;
 }
 
 .login button {
