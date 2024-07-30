@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -35,6 +36,7 @@ public class SecurityConfig {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
     @Bean
+    @Profile("desarrollo")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Inicio de sesión personalizada
         http.formLogin(form -> form
@@ -48,25 +50,76 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
         );
         // Autorización de Solicitudes
-        http.authorizeHttpRequests()
-                .requestMatchers("/js/**").permitAll()
-                .requestMatchers("/img/**").permitAll()
-                .requestMatchers("/css/**").permitAll()
-                .requestMatchers("/fonts/**").permitAll()
-                .requestMatchers("/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/**").permitAll()
-                .anyRequest().authenticated()
+        http.authorizeHttpRequests(customizer -> {
+                    customizer
+                            .requestMatchers("/js/**").permitAll()
+                            .requestMatchers("/img/**").permitAll()
+                            .requestMatchers("/css/**").permitAll()
+                            .requestMatchers("/fonts/**").permitAll()
+                            .requestMatchers("/lib/**").permitAll()
+                            .requestMatchers("/scss/**").permitAll()
+                            .requestMatchers("/index").permitAll();
+                    try {
+                        customizer.anyRequest().authenticated()
+                                .and()
+                                .exceptionHandling()
+                                .accessDeniedPage("/accessDenied")
 
+                                // Desactivación de CSRF y CORS
+                                .and()
+                                .csrf().disable()
+                                .cors().disable()
+                                .authenticationProvider(authenticationProvider());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
                 // Página de Acceso Denegado
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/accessDenied")
 
-                // Desactivación de CSRF y CORS
-                .and()
-                .csrf().disable()
-                .cors().disable()
-                .authenticationProvider(authenticationProvider());
+        return http.build();
+    }
+    @Bean
+    @Profile("local")
+    public SecurityFilterChain securityFilterChainLocal(HttpSecurity http) throws Exception {
+        // Inicio de sesión personalizada
+        http.formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .permitAll()
+        );
+        // Cierre de sesión
+        http.logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+        );
+        // Autorización de Solicitudes
+        http.authorizeHttpRequests(customizer -> {
+                    customizer
+                            .requestMatchers("/js/**").permitAll()
+                            .requestMatchers("/img/**").permitAll()
+                            .requestMatchers("/css/**").permitAll()
+                            .requestMatchers("/fonts/**").permitAll()
+                            .requestMatchers("/lib/**").permitAll()
+                            .requestMatchers("/scss/**").permitAll()
+                            .requestMatchers("/index").permitAll();
+                    try {
+                        customizer.anyRequest().permitAll()
+                                .and()
+                                .exceptionHandling()
+                                .accessDeniedPage("/accessDenied")
+
+                                // Desactivación de CSRF y CORS
+                                .and()
+                                .csrf().disable()
+                                .cors().disable()
+                                .authenticationProvider(authenticationProvider());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+        );
+        // Página de Acceso Denegado
 
         return http.build();
     }
