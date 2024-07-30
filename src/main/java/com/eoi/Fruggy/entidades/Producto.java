@@ -85,7 +85,8 @@ public class Producto implements Serializable {
     @JoinColumn(name = "supermercado_id", foreignKey = @ForeignKey(name = "fk_producto_supermercado"))
     private Supermercado supermercado;
 
-
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ValProducto> valoraciones = new HashSet<>();
 
     public String getPrecio() {
         return (productoPrecios != null) ? productoPrecios.getPrecio() : "No disponible";

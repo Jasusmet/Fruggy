@@ -1,20 +1,14 @@
 package com.eoi.Fruggy.web.controladores;
 
-import com.eoi.Fruggy.DTO.SubcategoriaDTO;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/productos")
@@ -59,6 +53,35 @@ public class ProductoCtrl {
         System.out.println("Supermercados: " + supermercados.size());
         System.out.println("Productos con descuento: " + productosConDescuento.size());
 
-        return "catalogoProductos"; //
+        return "/productos/catalogoProductos"; //
+    }
+    @GetMapping("/{id}")
+    public String detallesProducto(@PathVariable("id") Long id, Model model) {
+        Optional<Producto> productoOptional = productosSrvc.encuentraPorId(id);
+        if (productoOptional.isPresent()) {
+            Producto producto = productoOptional.get();
+            Optional<ValProducto> valoraciones = valProductosSrvc.encuentraPorId(id);
+            double notaMedia = valoraciones.stream().mapToDouble(ValProducto::getNota).average().orElse(0.0);
+            model.addAttribute("producto", producto);
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("notaMedia", notaMedia);
+            model.addAttribute("nuevaValoracion", new ValProducto());
+            return "/productos/detalles-producto";
+        } else {
+            return "redirect:/productos";
+        }
+    }
+    @PostMapping("/valorar/{id}")
+    public String valorarProducto(@PathVariable("id") Long id, @Valid @ModelAttribute("nuevaValoracion") ValProducto nuevaValoracion, BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/productos/" + id;
+        }
+        Optional<Producto> productoOptional = productosSrvc.encuentraPorId(id);
+        if (productoOptional.isPresent()) {
+            Producto producto = productoOptional.get();
+            nuevaValoracion.setProducto(producto);
+            valProductosSrvc.guardar(nuevaValoracion);
+        }
+        return "redirect:/productos/" + id;
     }
 }

@@ -99,7 +99,7 @@ public class ADMINDetalleCtrl {
                     imagen.setRuta(directoryPath);
                     imagen.setPathImagen("/images/" + fileName); // URL relativa para acceder a la imagen
 
-                    // Guardar la imagen y establecer la relación bidireccional
+                    // Guardar la imagen y establecer la relación
                     imagenSrvc.guardar(imagen);
                     existente.setImagen(imagen);
 
@@ -113,7 +113,7 @@ public class ADMINDetalleCtrl {
                 detalleSrvc.guardar(existente);
                 model.addAttribute("detalle", existente);
                 model.addAttribute("mensaje", "Detalle actualizado correctamente");
-                return "redirect:/admin/usuarios/detalles-actualizados/" + existente.getId(); // Corrección aquí
+                return "redirect:/admin/usuarios/detalles-actualizados/" + existente.getId();
             } catch (Exception e) {
                 model.addAttribute("error", "Error al guardar el detalle: " + e.getMessage());
                 return "error";

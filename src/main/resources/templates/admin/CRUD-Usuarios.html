@@ -12,7 +12,7 @@
     <h1 th:text="#{user.list.header}">Lista de Usuarios</h1>
     <a class="btn btn-primary" th:href="@{/admin/usuarios/agregar}" th:text="#{user.list.create}">Crear Usuario</a>
     <div class="container">
-        <div th:replace="~{fragments/tablaAdminUsuarios :: tablaAdminUsuarios}"></div>
+        <div th:replace="~{fragments/usuario/tablaAdminUsuarios :: tablaAdminUsuarios}"></div>
     </div>
 </div>
 </body>

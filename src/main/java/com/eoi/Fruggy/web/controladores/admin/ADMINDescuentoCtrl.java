@@ -48,7 +48,7 @@ public class ADMINDescuentoCtrl {
             model.addAttribute("tiposDescuento", tipoDescuentoSrvc.buscarEntidades());
             model.addAttribute("precios", precioSrvc.buscarEntidades());
 
-            // Obtenemos el precio asociado
+            // Obtener precio asociado
             Precio precio = descuento.get().getDescuentosPrecios();
             model.addAttribute("precio", precio);
 
@@ -84,7 +84,7 @@ public class ADMINDescuentoCtrl {
             }
 
             // Obtener el precio del producto asociado
-            Producto producto = existente.getProducto(); // Asegúrate de que el descuento tenga un producto asociado
+            Producto producto = existente.getProducto();
             if (producto != null) {
                 Precio precio = producto.getProductoPrecios(); // Obtener el precio asociado al producto
                 if (precio != null) {

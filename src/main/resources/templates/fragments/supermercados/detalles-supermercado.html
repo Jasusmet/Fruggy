@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Supermercado</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4" th:fragment="detalles-supermercado">
+    <a class="btn btn-secondary" th:href="@{/templates/fragments/supermercados}">Regresar</a>
+    <br><br>
+    <div class="row">
+        <div class="col-md-4">
+            <img th:src="@{${supermercado.imagenPath}}" class="img-fluid" alt="Imagen del Supermercado">
+        </div>
+        <div class="col-md-8">
+            <h2 th:text="${supermercado.nombreSuper}">Nombre del Supermercado</h2>
+            <p><strong>URL:</strong> <a th:href="${supermercado.url}" th:text="${supermercado.url}">Página Web</a></p>
+            <p><strong>Horario:</strong> <span th:text="${supermercado.horario}">Horario</span></p>
+            <p><strong>Dirección:</strong></p>
+            <ul>
+                <li th:text="${supermercado.calle}">Calle</li>
+                <li th:text="${supermercado.municipio}">Municipio</li>
+                <li th:text="${supermercado.pais}">País</li>
+                <li th:text="${supermercado.codigopostal}">Código Postal</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3>Valoraciones</h3>
+    <p><strong>Nota Media:</strong> <span th:text="${notaMedia}">0.0</span></p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Comentario</th>
+            <th>Nota</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="valoracion : ${valoraciones}">
+           <!-- <td th:text="${valoracion.usuario.email}">Nombre</td>  Mostrar el nombre de usuario, hay que ver si tengo que meter detalles tb? -->
+            <td th:text="${valoracion.comentario}">Comentario</td>
+            <td th:text="${valoracion.nota}">Nota</td>
+        </tr>
+        <tr>
+            <td th:text="'Juan Pérez'">Nombre</td> <!-- Nombre de ejemplo -->
+            <td th:text="'¡Gran supermercado! Muy buena atención.'">Comentario</td> <!-- Comentario de ejemplo -->
+            <td th:text="5">Nota</td> <!-- Nota de ejemplo -->
+        </tr>
+        <tr>
+            <td th:text="'María López'">Nombre</td> <!-- Nombre de ejemplo -->
+            <td th:text="'Amplia variedad de productos y precios competitivos.'">Comentario</td> <!-- Comentario de ejemplo -->
+            <td th:text="4">Nota</td> <!-- Nota de ejemplo -->
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Agregar Valoración</h3>
+    <form th:action="@{/supermercados/valorar/{id}(id=${supermercado.id})}" method="post" th:object="${nuevaValoracion}">
+        <div class="mb-3">
+            <label for="comentario" class="form-label">Comentario</label>
+            <input type="text" id="comentario" th:field="*{comentario}" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="nota" class="form-label">Nota</label>
+            <input type="number" id="nota" th:field="*{nota}" class="form-control" required min="0" max="5" step="0.1">
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar Valoración</button>
+    </form>
+</div>
+</body>
+</html>

@@ -11,13 +11,13 @@
     <h1 th:text="#{admin.product.list.header}">Lista de Productos</h1>
     <a class="btn btn-primary mb-3" th:href="@{/admin/productos/agregar}" th:text="#{admin.product.create}">Crear Producto</a>
     <div th:if="${paginaProductos != null and not #lists.isEmpty(paginaProductos.content)}">
-        <div th:replace="fragments/tablaAdminProductos :: tablaAdminProductos"></div>
+        <div th:replace="fragments/productos/tablaAdminProductos :: tablaAdminProductos"></div>
     </div>
     <div th:if="${paginaProductos == null or #lists.isEmpty(paginaProductos.content)}">
         <p th:text="#{admin.product.empty}">La lista de productos está vacía</p>
     </div>
 
-    <div th:replace="fragments/paginacion :: paginacion"></div>
+    <div th:replace="fragments/layout/paginacion :: paginacion"></div>
 </div>
 </body>
 </html>

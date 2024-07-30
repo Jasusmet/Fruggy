@@ -108,7 +108,7 @@ public class ADMINProductoCtrl {
         }
 
         try {
-            // Eliminar el símbolo de euro y convertir a formato Double
+            // No funciona el simobolo del dolar, por lo tanto: eliminar el símbolo de euro y convertir a formato Double
             String precioSinEuro = precio.replace(" €", "").replace(",", ".").trim();
             double precioDouble = Double.parseDouble(precioSinEuro);
 
@@ -175,7 +175,7 @@ public class ADMINProductoCtrl {
             return "admin/crear-producto"; // Regresar al formulario si hay un error de formato
         } catch (Exception e) {
             model.addAttribute("error", "Error al guardar el producto");
-            return "error"; // Mostrar error genérico
+            return "error"; // hay que crear un error generico
         }
     }
 

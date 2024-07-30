@@ -72,6 +72,12 @@ public class Usuario implements Serializable, UserDetails {
     // Relación con Imagen
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Imagen> imagenes;
+    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ValSupermercado> valoracionesSuper = new HashSet<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<ValProducto> valoracionesProducto = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,6 +1,8 @@
 package com.eoi.Fruggy.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,16 +22,22 @@ public class ValSupermercado implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "comentario", length = 255)
     private String comentario;
 
+    @Min(value = 0, message = "La nota mínima es 0")
+    @Max(value = 5, message = "La nota máxima es 5")
     @Column(name = "nota")
     private Double nota;
 
     @ManyToOne
     @JoinColumn(name = "supermercado_id")
     private Supermercado supermercado;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
 }

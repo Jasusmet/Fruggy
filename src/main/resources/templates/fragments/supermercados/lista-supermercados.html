@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Supermercados</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4" th:fragment="lista-supermercados">
+    <h1>Lista de Supermercados</h1>
+    <ul class="list-group">
+        <li class="list-group-item" th:each="supermercado : ${supermercados}">
+            <a th:href="@{/supermercados/{id}(id=${supermercado.id})}" th:text="${supermercado.nombreSuper}">Nombre del Supermercado</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

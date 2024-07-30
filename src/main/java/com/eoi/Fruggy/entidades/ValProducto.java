@@ -1,6 +1,8 @@
 package com.eoi.Fruggy.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,17 +22,23 @@ public class ValProducto implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(name = "comentario", length = 255)
     private String comentario;
 
+    @Min(value = 0, message = "La nota mínima es 0")
+    @Max(value = 5, message = "La nota máxima es 5")
     @Column(name = "nota")
     private Double nota;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "precios_id", foreignKey = @ForeignKey(name = "fk_valoracionesProductos_precio"))
-    private Precio valoracionesProductosPrecios;
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 
 
 }
