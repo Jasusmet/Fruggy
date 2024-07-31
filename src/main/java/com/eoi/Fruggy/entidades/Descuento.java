@@ -27,6 +27,9 @@ public class Descuento implements Serializable {
     @Column(name ="descuentos_id")
     private Long id;
 
+    @Column (name ="porcentaje")
+    private Double porcentaje;
+
     @Column (name ="fechaInicio")
     private LocalDate fechaInicio;
 
@@ -36,11 +39,12 @@ public class Descuento implements Serializable {
     @Column (name ="activo", nullable = false)
     private Boolean activo;
 
-    @ManyToMany
-    private Set<Producto> productos = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "precios_id")
+    private Precio precio;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tipoDescuento_id", foreignKey = @ForeignKey(name = "fk_descuento_tipoDescuento"))
-    private TipoDescuento descuentoTipoDescuento;
+    @ManyToOne
+    @JoinColumn(name = "tipodescuento_id")
+    private TipoDescuento tipoDescuento;
 
 }

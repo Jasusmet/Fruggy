@@ -50,6 +50,10 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name = "telefono", length = 30)
     private String telefono;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "detalle_id", nullable = false)
+    private Detalle detalle;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "usuario_rol",
@@ -58,26 +62,15 @@ public class Usuario implements Serializable, UserDetails {
     )
     private Set<Rol> roles = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "detalle_id", referencedColumnName = "detalles_id")
-    private Detalle detalle;
-
-    @OneToOne(mappedBy = "cestaUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Cesta cestaUsuarios; // No se usa Set <> con OneToOne
-
-    @ManyToOne
-    @JoinColumn(name = "supermercado_id")
-    private Supermercado supermercadoUsuario;
-
     // Relación con Imagen
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Imagen> imagenes;
-    
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ValSupermercado> valoracionesSuper = new HashSet<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<ValProducto> valoracionesProducto = new HashSet<>();
+    @OneToMany(mappedBy = "usuario")
+    private Set<Donacion> donaciones;
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Cesta> cestas;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

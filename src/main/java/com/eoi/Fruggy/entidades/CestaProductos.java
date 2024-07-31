@@ -7,29 +7,24 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
 
 @Entity
+@Table(name = "cesta_productos")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "favoritos")
-
-public class Favorito implements Serializable {
-
+@AllArgsConstructor
+public class CestaProductos implements Serializable {
     @Id
-    @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "precios_id")
-    private Precio precio;
+    @JoinColumn(name = "cesta_id")
+    private Cesta cesta;
 
     @ManyToOne
-    @JoinColumn(name = "listas_id")
-    private Lista lista;
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
 }

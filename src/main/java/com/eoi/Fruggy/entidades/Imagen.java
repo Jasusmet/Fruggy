@@ -21,9 +21,6 @@ public class Imagen {
     @Column(name = "nombre_archivo", nullable = false)
     private String nombreArchivo;
 
-    @Column(name = "ruta", nullable = false)
-    private String ruta;
-
     @Column(name = "pathImagen", length = 500)
     private String pathImagen;
 

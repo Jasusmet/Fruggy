@@ -44,19 +44,25 @@ public class Precio implements Serializable {
     @Column(name = "valor")
     private Double valor;
 
-    @OneToMany(mappedBy = "preciosCesta", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Cesta> cestaPrecios;
-
-    @OneToMany(mappedBy = "precioFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Favorito> preciosFavoritos;
-
     @ManyToOne
-    @JoinColumn(name = "producto_id")
+    @JoinColumn(name = "productos_id")
     private Producto producto;
 
     @ManyToOne
-    @JoinColumn(name = "supermercado_id")
-    private Supermercado precioSupermercado;
+    @JoinColumn(name = "supermercados_id")
+    private Supermercado supermercado;
+
+    @OneToMany(mappedBy = "precio")
+    private Set<Favorito> favoritos;
+
+    @OneToMany(mappedBy = "precio")
+    private Set<Descuento> descuentos;
+
+    @OneToMany(mappedBy = "precio", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Cesta> cestaPrecios;
+
+    @OneToMany(mappedBy = "precio")
+    private Set<ValoracionProducto> valoracionesProductos;
 
 
 

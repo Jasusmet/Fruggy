@@ -29,9 +29,6 @@ public class TipoDescuento implements Serializable {
     @Column(name = "tipo", nullable = false)
     private String tipo;
 
-    @Column (name ="porcentaje")
-    private Double porcentaje;
-
     @Column (name ="fechaInicio", nullable = false)
     private LocalDate fechaInicio;
 
@@ -41,8 +38,8 @@ public class TipoDescuento implements Serializable {
     @Column (name ="activo", nullable = false)
     private Boolean activo;
 
-    @OneToMany(mappedBy = "descuentoTipoDescuento", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Descuento> descuentoTipoDescuento = new HashSet<>();
+    @OneToMany(mappedBy = "tipoDescuento")
+    private Set<Descuento> descuentos;
 
 
 
@@ -51,6 +48,5 @@ public class TipoDescuento implements Serializable {
         this.activo = activo;
         this.fechaInicio = localDate;
         this.fechaFin = localDate1;
-        this.porcentaje = porcentaje;
     }
 }

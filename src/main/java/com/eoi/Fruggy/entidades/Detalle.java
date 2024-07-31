@@ -1,17 +1,13 @@
 package com.eoi.Fruggy.entidades;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -25,7 +21,7 @@ public class Detalle implements Serializable {
     @Id
     @Column(name = "detalles_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
 
     @Column(name = "nombreUsuario", length = 50)
@@ -62,11 +58,9 @@ public class Detalle implements Serializable {
     @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "detalle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Imagen imagen;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "genero_id", foreignKey = @ForeignKey(name = "fk_detalles_genero"))
-    private Genero detallesGenero;
+    @NotNull(message = "El género es obligatorio")
+    @ManyToOne
+    @JoinColumn(name = "genero_id", nullable = false)
+    private Genero genero;
 
 }

@@ -22,15 +22,16 @@ public class Genero implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "descripcion")
     private String descripcion;
 
-    @OneToMany(mappedBy = "detallesGenero", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Detalle> detallesGenero = new HashSet<>();
+    @OneToMany(mappedBy = "genero")
+    private Set<Detalle> detalles;
 
     public Genero(String descripcion) {
         this.descripcion = descripcion;
-    }
+        this.detalles = new HashSet<>();
+        }
 }

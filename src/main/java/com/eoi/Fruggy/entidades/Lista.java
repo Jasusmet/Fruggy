@@ -29,7 +29,7 @@ public class Lista implements Serializable {
     private LocalDateTime fechaLista;
 
 
-    @OneToMany(mappedBy = "listaFavoritos", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Favorito> listaFavoritos;
+    @OneToMany(mappedBy = "lista")
+    private Set<Favorito> favoritos;
 
 }

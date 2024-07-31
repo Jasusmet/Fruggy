@@ -29,7 +29,7 @@ public class Donacion implements Serializable {
     @Column (name ="fecha")
     private LocalDateTime fecha;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id", foreignKey = @ForeignKey(name = "fk_donacion_usuario"))
-    private Usuario usuarioDonacion;
+    @ManyToOne
+    @JoinColumn(name = "usuarios_id")
+    private Usuario usuario;
 }

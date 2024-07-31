@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Table(name = "valoracionesProductos")
 
-public class ValProducto implements Serializable {
+public class ValoracionProducto implements Serializable {
 
     @Id
     @Column(name ="id")
@@ -33,12 +33,7 @@ public class ValProducto implements Serializable {
     private Double nota;
 
     @ManyToOne
-    @JoinColumn(name = "producto_id")
-    private Producto producto;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-
+    @JoinColumn(name = "precios_id")
+    private Precio precio;
 
 }

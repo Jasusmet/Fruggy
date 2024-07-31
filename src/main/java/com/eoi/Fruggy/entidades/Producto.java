@@ -1,6 +1,5 @@
 package com.eoi.Fruggy.entidades;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +11,6 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -53,37 +51,16 @@ public class Producto implements Serializable {
     @OneToMany
     private Set<Precio> precios = new HashSet<>();
 
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subcategoria_id", foreignKey = @ForeignKey(name = "fk_producto_subcategoria"))
+    @ManyToOne
+    @JoinColumn(name = "subcategoria_id")
     private Subcategoria subcategoria;
-
-    @JsonManagedReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", foreignKey = @ForeignKey(name = "fk_producto_categoria"))
-    private Categoria categoria;
-
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "producto_descuento",
-            joinColumns = @JoinColumn(name = "producto_id"),
-            inverseJoinColumns = @JoinColumn(name = "descuento_id")
-    )
-    private Set<Descuento> descuentos = new HashSet<>();
-
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "imagen_id", referencedColumnName = "id")
     private Imagen imagen;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "supermercado_id", foreignKey = @ForeignKey(name = "fk_producto_supermercado"))
-    private Supermercado supermercado;
-
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ValProducto> valoraciones = new HashSet<>();
-
+    @OneToMany(mappedBy = "producto")
+    private Set<CestaProductos> cestaProductos;
 
     @Transient
     private Double precioConDescuento;

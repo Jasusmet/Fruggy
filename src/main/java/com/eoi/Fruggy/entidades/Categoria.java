@@ -30,12 +30,8 @@ public class Categoria implements Serializable {
     private String tipo;
 
     @JsonBackReference
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
-    private List<Subcategoria> subcategorias;
-
-    @JsonBackReference
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
-    private Set<Producto> productos;
+    @OneToMany(mappedBy = "categoria")
+    private Set<Subcategoria> subcategorias;
 
     public Categoria(String categorias) {
         this.tipo = categorias;

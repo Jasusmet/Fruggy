@@ -3,6 +3,7 @@
 <head>
     <title>Lista de Usuarios</title>
     <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
 <div th:fragment="tablaAdminUsuarios">
@@ -11,11 +12,9 @@
         <tr>
             <th th:text="#{user.list.email}">Email</th>
             <th th:text="#{user.list.active}">Activo</th>
-            <th th:text="#{user.list.password}">Contraseña</th>
             <th th:text="#{user.list.phone}">Teléfono</th>
             <th th:text="#{user.list.roles}">Roles</th>
             <th th:text="#{user.list.edit}">Editar</th>
-            <th th:text="#{user.list.details}">Detalles</th>
             <th th:text="#{user.list.delete}">Eliminar</th>
         </tr>
         </thead>
@@ -23,7 +22,6 @@
         <tr th:each="usuario : ${usuarios}">
             <td th:text="${usuario.email}">Email</td>
             <td th:text="${usuario.active} ? 'Activo' : 'Inactivo'">Activo</td>
-            <td th:text="${usuario.password}">Contraseña</td>
             <td th:text="${usuario.telefono}">Teléfono</td>
             <td>
                 <ul>
@@ -32,9 +30,6 @@
             </td>
             <td>
                 <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{user.list.edit}">Editar</a>
-            </td>
-            <td>
-                <a th:href="@{/admin/usuarios/detalles/{id}(id=${usuario.id})}" class="btn btn-info" th:text="#{user.list.details}">Detalles</a>
             </td>
             <td>
                 <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">

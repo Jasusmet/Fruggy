@@ -1,10 +1,8 @@
 package com.eoi.Fruggy.web.controladores.admin;
 
 import com.eoi.Fruggy.entidades.Supermercado;
-import com.eoi.Fruggy.entidades.ValSupermercado;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

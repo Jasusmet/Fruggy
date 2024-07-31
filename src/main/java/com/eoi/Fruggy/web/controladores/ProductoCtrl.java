@@ -32,56 +32,5 @@ public class ProductoCtrl {
         this.supermercadosSrvc = supermercadosSrvc;
     }
 
-    @GetMapping
-    public String producto(Model model) {
-        List<Producto> listaProductos = productosSrvc.getRepo().findAll();
-        List<Categoria> categorias = categoriasSrvc.getRepo().findAll();
-        List<Subcategoria> subcategorias = subcategoriasSrvc.getRepo().findAll();
-        List<Supermercado> supermercados = supermercadosSrvc.getRepo().findAll();
-        //List<Producto> productosConDescuento = productosSrvc.getRepo().findByDescuentoActivoTrue();
 
-        model.addAttribute("listaProducto", listaProductos);
-        model.addAttribute("categorias", categorias);
-        model.addAttribute("subcategorias", subcategorias);
-        model.addAttribute("supermercados", supermercados);
-        //model.addAttribute("productosConDescuento", productosConDescuento);
-
-        // Verificar que modelo no esté vacío
-        System.out.println("Productos: " + listaProductos.size());
-        System.out.println("Categorías: " + categorias.size());
-        System.out.println("Subcategorías: " + subcategorias.size());
-        System.out.println("Supermercados: " + supermercados.size());
-      //  System.out.println("Productos con descuento: " + productosConDescuento.size());
-
-        return "/productos/catalogoProductos"; //
-    }
-    @GetMapping("/{id}")
-    public String detallesProducto(@PathVariable("id") Long id, Model model) {
-        Optional<Producto> productoOptional = productosSrvc.encuentraPorId(id);
-        if (productoOptional.isPresent()) {
-            Producto producto = productoOptional.get();
-            Optional<ValProducto> valoraciones = valProductosSrvc.encuentraPorId(id);
-            double notaMedia = valoraciones.stream().mapToDouble(ValProducto::getNota).average().orElse(0.0);
-            model.addAttribute("producto", producto);
-            model.addAttribute("valoraciones", valoraciones);
-            model.addAttribute("notaMedia", notaMedia);
-            model.addAttribute("nuevaValoracion", new ValProducto());
-            return "/productos/detalles-producto";
-        } else {
-            return "redirect:/productos";
-        }
-    }
-    @PostMapping("/valorar/{id}")
-    public String valorarProducto(@PathVariable("id") Long id, @Valid @ModelAttribute("nuevaValoracion") ValProducto nuevaValoracion, BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/productos/" + id;
-        }
-        Optional<Producto> productoOptional = productosSrvc.encuentraPorId(id);
-        if (productoOptional.isPresent()) {
-            Producto producto = productoOptional.get();
-            nuevaValoracion.setProducto(producto);
-            valProductosSrvc.guardar(nuevaValoracion);
-        }
-        return "redirect:/productos/" + id;
-    }
 }

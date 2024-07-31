@@ -68,17 +68,11 @@ public class Supermercado implements Serializable {
     @Column(name = "codigoPostal")
     private Integer codigopostal;
 
-    @OneToMany(mappedBy = "precioSupermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Precio> supermercadoPrecios;
-
-    @OneToMany(mappedBy = "supermercado", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Producto> productos;
+    @OneToMany(mappedBy = "supermercado")
+    private Set<Precio> precios;
 
     @OneToMany(mappedBy = "supermercado", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<ValSupermercado> valoraciones;
-
-    @OneToMany(mappedBy = "supermercadoUsuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Usuario> supermercadosUsuarios;
+    private Set<ValoracionSupermercado> valoraciones;
 
     // Relación con Imagen
     @OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

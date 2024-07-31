@@ -27,12 +27,16 @@ public class Cesta implements Serializable {
     @Column (name ="fecha")
     private LocalDateTime fecha;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuarios_id", foreignKey = @ForeignKey(name = "fk_usuarios_cesta"))
-    private Usuario cestaUsuario;
+    @ManyToOne
+    @JoinColumn(name = "usuarios_id")
+    private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "precios_id", foreignKey = @ForeignKey(name = "fk_precios_cesta"))
-    private Precio preciosCesta;
+    @ManyToOne
+    @JoinColumn(name = "precio_id")
+    private Precio precio;
+
+    @OneToMany(mappedBy = "cesta")
+    private Set<CestaProductos> cestaProductos;
+
 
 }

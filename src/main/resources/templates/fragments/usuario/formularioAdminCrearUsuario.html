@@ -12,7 +12,8 @@
                 <div class="section-title">
                     <h2>Crear usuario</h2>
                 </div>
-                <div class="user__creation__form">
+                <!-- Formulario de Creación de Usuario -->
+                <div class="user__creation__form" id="usuarioForm">
                     <form th:action="@{/admin/usuarios/guardar}" method="post" th:object="${usuario}">
                         <div class="row">
                             <!-- Campo de email -->
@@ -23,7 +24,6 @@
                                 </div>
                             </div>
 
-                            <!-- Campo de contraseña -->
                             <div class="col-lg-6 col-md-6 mb-3">
                                 <input type="password" th:field="*{password}" class="form-control" placeholder="Contraseña" required>
                                 <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger">
@@ -41,7 +41,7 @@
 
                             <!-- Campo de teléfono -->
                             <div class="col-lg-6 col-md-6 mb-3">
-                                <input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono" required>
+                                <input type="text" th:field="*{telefono}" class="form-control" placeholder="Teléfono">
                                 <div th:if="${#fields.hasErrors('telefono')}" class="alert alert-danger">
                                     <p th:each="err : ${#fields.errors('telefono')}" th:text="${err}"></p>
                                 </div>
@@ -49,15 +49,72 @@
 
                             <!-- Selección de roles -->
                             <div class="col-lg-6 col-md-6 mb-3">
-                                <select class="form-control" th:field="*{roles}" multiple>
-                                    <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.rolNombre}">Rol</option>
+                                <select class="form-control" th:field="*{roles}" multiple required>
+                                    <option th:each="rol : ${roles}"
+                                            th:value="${rol.id}"
+                                            th:text="${rol.rolNombre}">Seleccione Rol</option>
                                 </select>
                             </div>
 
-                            <!-- Botones -->
-                            <div class="col-lg-12">
-                                <button type="submit" class="btn btn-primary">Crear Cuenta</button>
-                                <button type="reset" class="btn btn-secondary">Reestablecer</button>
+                            <!-- Campo de nombre de usuario -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{detalle.nombreUsuario}" class="form-control" placeholder="Nombre de Usuario" required>
+                            </div>
+
+                            <!-- Campo de nombre -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{detalle.nombre}" class="form-control" placeholder="Nombre" required>
+                            </div>
+
+                            <!-- Campo de apellido -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{detalle.apellido}" class="form-control" placeholder="Apellido" required>
+                            </div>
+
+                            <!-- Campo de edad -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="number" th:field="*{detalle.edad}" class="form-control" placeholder="Edad" required>
+                            </div>
+
+                            <!-- Campo de calle -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{detalle.calle}" class="form-control" placeholder="Calle">
+                            </div>
+
+                            <!-- Campo de municipio -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{detalle.municipio}" class="form-control" placeholder="Municipio">
+                            </div>
+
+                            <!-- Campo de país -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="text" th:field="*{detalle.pais}" class="form-control" placeholder="País">
+                            </div>
+
+                            <!-- Campo de código postal -->
+                            <div class="col-lg-6 col-md-6 mb-3">
+                                <input type="number" th:field="*{detalle.codigopostal}" class="form-control" placeholder="Código Postal">
+                            </div>
+
+                            <!-- Selección de Género -->
+                            <div class="mb-3">
+                                <label for="generoId" class="form-label">Género</label>
+                                <select id="generoId" th:field="*{detalle.genero.id}" class="form-select" required>
+                                    <option value="" disabled selected>Seleccione un género</option>
+                                    <option th:each="genero : ${generos}"
+                                            th:value="${genero.id}"
+                                            th:text="${genero.descripcion}"></option>
+                                </select>
+                                <div th:if="${#fields.hasErrors('detalle.genero.id')}" class="alert alert-danger">
+                                    <p th:each="err : ${#fields.errors('detalle.genero.id')}" th:text="${err}"></p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                            <!-- Botón de guardar -->
+                            <div class="col-lg-12 mb-3">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
                             </div>
                         </div>
                     </form>
@@ -69,8 +126,5 @@
         </div>
     </div>
 </section>
-
-
-
 </body>
 </html>
