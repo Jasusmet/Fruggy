@@ -65,13 +65,4 @@ public class Precio implements Serializable {
     private Set<ValoracionProducto> valoracionesProductos;
 
 
-
-    @Transient
-    private Double precioConDescuento;
-
-    // Método para obtener el valor del precio
-    public String getPrecio() {
-        return (valor != null) ? String.format("%.2f €", valor).replace(".", ",") : "Escribe tu precio";
-    }
-
 }

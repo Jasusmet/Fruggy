@@ -41,8 +41,8 @@ public class Producto implements Serializable {
     @Column(name = "descripcion", length = 1000)
     private String descripcion;
 
-    @Column (name ="activo", nullable = true)
-    private Boolean activo;
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = true;
 
     @Column(name = "pathImagen", length = 500)
     private String pathImagen;
@@ -62,10 +62,5 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "producto")
     private Set<CestaProductos> cestaProductos;
 
-    @Transient
-    private Double precioConDescuento;
-
-    @Transient
-    private Double porcentajeDescuento;
 }
 
