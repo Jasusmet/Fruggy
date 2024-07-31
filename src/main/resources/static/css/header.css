@@ -123,7 +123,7 @@ body {
     display: inline-block;
     width: 32px;
     height: 32px;
-    background-image: url("/img/es.png");
+    background-image: url("/static/img/es.png");
     background-size: contain;
     background-repeat: no-repeat;
 }
@@ -141,7 +141,6 @@ body {
     border-radius: 5px;
     box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
 }
-
 
 .lang__menu ul li {
     list-style: none;
@@ -173,11 +172,11 @@ body {
 }
 
 .es:before {
-    background-image: url(../Fruggy/src/main/resources/static/img/es.png);
+    background-image: url("/static/img/es.png");
 }
 
 .en:before {
-    background-image: url(../Fruggy/src/main/resources/static/img/en.png);
+    background-image: url("/static/img/en.png");
 }
 
 .lang__menu:hover ul {
