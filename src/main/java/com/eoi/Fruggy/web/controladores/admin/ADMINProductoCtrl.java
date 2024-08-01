@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,8 +32,9 @@ public class ADMINProductoCtrl {
     private final SrvcCategoria categoriasSrvc;
     private final SrvcSupermercado supermercadoSrvc;
     private final SrvcDescuento descuentoSrvc;
+    private final SrvcTipodescuento tipoDescuentoSrvc;
 
-    public ADMINProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio precioSrvc, SrvcImagen imagenSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcCategoria categoriasSrvc, SrvcSupermercado supermercadoSrvc, SrvcDescuento descuentoSrvc) {
+    public ADMINProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio precioSrvc, SrvcImagen imagenSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcCategoria categoriasSrvc, SrvcSupermercado supermercadoSrvc, SrvcDescuento descuentoSrvc, SrvcTipodescuento tipoDescuentoSrvc) {
         this.productosSrvc = productosSrvc;
         this.precioSrvc = precioSrvc;
         this.imagenSrvc = imagenSrvc;
@@ -40,6 +42,7 @@ public class ADMINProductoCtrl {
         this.categoriasSrvc = categoriasSrvc;
         this.supermercadoSrvc = supermercadoSrvc;
         this.descuentoSrvc = descuentoSrvc;
+        this.tipoDescuentoSrvc = tipoDescuentoSrvc;
     }
 
 
@@ -179,26 +182,47 @@ public class ADMINProductoCtrl {
     @GetMapping("/descuento/{id}")
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
-        List<Descuento> descuentos = descuentoSrvc.buscarEntidades();
+        List<TipoDescuento> tiposDescuento = tipoDescuentoSrvc.buscarEntidades();
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
+            model.addAttribute("tiposDescuento", tiposDescuento);
         }
-        model.addAttribute("descuentos", descuentos);
         return "/admin/agregar-descuento";
     }
+
     // Post para agregar descuento a un producto
     @PostMapping("/descuento/{id}")
     public String agregarDescuento(@PathVariable Long id,
-                                   @RequestParam("descuento.id") Long descuentoId) throws Exception {
-        Optional<Producto> producto = productosSrvc.encuentraPorId(id);
-        Optional<Descuento> descuento = descuentoSrvc.encuentraPorId(descuentoId);
-        if (producto.isPresent() && descuento.isPresent()) {
-            Descuento d = descuento.get();
-            d.setProducto(producto.get());
-            descuentoSrvc.guardar(d);
+                                   @RequestParam("tipoDescuentoId") Long tipoDescuentoId,
+                                   @RequestParam("porcentaje") Double porcentaje,
+                                   @RequestParam("fechaInicio") String fechaInicio,
+                                   @RequestParam("fechaFin") String fechaFin) throws Exception {
+        Optional<Producto> productoOpt = productosSrvc.encuentraPorId(id);
+        Optional<TipoDescuento> tipoDescuentoOpt = tipoDescuentoSrvc.encuentraPorId(tipoDescuentoId);
+
+        if (productoOpt.isPresent() && tipoDescuentoOpt.isPresent()) {
+            Producto producto = productoOpt.get();
+            TipoDescuento tipoDescuento = tipoDescuentoOpt.get();
+
+            Descuento descuento = new Descuento();
+            descuento.setProducto(producto);
+            descuento.setTipoDescuento(tipoDescuento);
+            descuento.setPorcentaje(porcentaje);
+            descuento.setFechaInicio(LocalDate.parse(fechaInicio));
+            descuento.setFechaFin(LocalDate.parse(fechaFin));
+            descuento.setActivo(true);
+
+            descuentoSrvc.guardar(descuento);
+
+            // Aplicar el descuento al precio actual
+            Set<Precio> precios = producto.getPrecios();
+            for (Precio precio : precios) {
+                Double nuevoValor = precio.getValor() * (1 - porcentaje / 100);
+                precio.setValor(nuevoValor);
+                precioSrvc.guardar(precio);
+            }
         }
         return "redirect:/admin/productos";
     }
-
-
 }
+

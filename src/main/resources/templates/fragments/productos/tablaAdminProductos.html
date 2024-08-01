@@ -28,8 +28,16 @@
         <td th:text="${producto.nombreProducto}">Nombre</td>
         <td th:text="${producto.descripcion}">Descripción</td>
 
-        <td th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}">
-            Precio
+        <td>
+            <span th:if="${producto.descuentos.size() > 0}">
+                <!-- Calcula el nuevo precio aplicando el descuento -->
+                <span th:each="descuento : ${producto.descuentos}">
+                    <span th:if="${descuento.activo}">
+                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                    </span>
+                </span>
+            </span>
+            <span th:if="${producto.descuentos.size() == 0}" th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
         </td>
             <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">
             Supermercado

@@ -6,15 +6,31 @@
     <link th:href="@{/css/style.css}" rel="stylesheet"/>
 </head>
 <body>
-<h2 th:fragment="agregar-descuento" th:text="'Agregar Descuento a ' + ${producto.nombreProducto}">Agregar Descuento</h2>
-<form th:action="@{'/admin/productos/descuento/' + ${producto.id}}" method="post">
-    <div>
-        <label th:for="descuento" th:text="'Selecciona un Descuento'">Descuento</label>
-        <select th:field="*{descuento.id}">
-            <option th:each="descuento : ${descuentos}" th:value="${descuento.id}" th:text="${descuento.porcentaje + '% - ' + descuento.tipoDescuento.tipo}"></option>
-        </select>
-    </div>
-    <button type="submit" th:text="'Guardar'">Guardar</button>
-</form>
+<div th:fragment="agregar-descuento">
+    <h2>Agregar Descuento</h2>
+    <form th:action="@{'/admin/productos/descuento/' + ${producto.id}}" method="post">
+        <div>
+            <label for="tipoDescuento">Tipo de Descuento:</label>
+            <select name="tipoDescuentoId" id="tipoDescuento">
+                <option th:each="tipoDescuento : ${tiposDescuento}" th:value="${tipoDescuento.id}" th:text="${tipoDescuento.tipo}"></option>
+            </select>
+        </div>
+        <div>
+            <label for="porcentaje">Porcentaje:</label>
+            <input type="number" name="porcentaje" id="porcentaje" step="0.01" min="0" max="100" required>
+        </div>
+        <div>
+            <label for="fechaInicio">Fecha de Inicio:</label>
+            <input type="date" name="fechaInicio" id="fechaInicio" required>
+        </div>
+        <div>
+            <label for="fechaFin">Fecha de Fin:</label>
+            <input type="date" name="fechaFin" id="fechaFin" required>
+        </div>
+        <div>
+            <button type="submit">Agregar Descuento</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>
