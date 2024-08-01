@@ -5,7 +5,7 @@ function formatPrice(input) {
     value = value.replace(",", ".");
 
     // Validar que el valor es un número válido y menor que 1000
-    if (isNaN(value) || parseFloat(value) > 1000 || parseFloat(value) < 0.1) {
+    if (isNaN(value) || parseFloat(value) > 1000 || parseFloat(value) < 0.01) {
         input.value = ''; // Si no es válido, vaciar el campo
         return;
     }

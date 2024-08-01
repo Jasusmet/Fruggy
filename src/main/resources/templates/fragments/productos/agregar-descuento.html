@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Agregar Descuento</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<h2 th:fragment="agregar-descuento" th:text="'Agregar Descuento a ' + ${producto.nombreProducto}">Agregar Descuento</h2>
+<form th:action="@{'/admin/productos/descuento/' + ${producto.id}}" method="post">
+    <div>
+        <label th:for="descuento" th:text="'Selecciona un Descuento'">Descuento</label>
+        <select th:field="*{descuento.id}">
+            <option th:each="descuento : ${descuentos}" th:value="${descuento.id}" th:text="${descuento.porcentaje + '% - ' + descuento.tipoDescuento.tipo}"></option>
+        </select>
+    </div>
+    <button type="submit" th:text="'Guardar'">Guardar</button>
+</form>
+</body>
+</html>

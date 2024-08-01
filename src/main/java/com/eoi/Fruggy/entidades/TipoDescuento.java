@@ -41,12 +41,10 @@ public class TipoDescuento implements Serializable {
     @OneToMany(mappedBy = "tipoDescuento")
     private Set<Descuento> descuentos;
 
-
-
-    public TipoDescuento(String descuentoPorVolumen, boolean activo, LocalDate localDate, LocalDate localDate1, double porcentaje) {
+    public TipoDescuento(String descuentoPorVolumen, boolean activo, LocalDate now, LocalDate localDate) {
         this.tipo = descuentoPorVolumen;
         this.activo = activo;
-        this.fechaInicio = localDate;
-        this.fechaFin = localDate1;
+        this.fechaInicio = now;
+        this.fechaFin = localDate;
     }
 }

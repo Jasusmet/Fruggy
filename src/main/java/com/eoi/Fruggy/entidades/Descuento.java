@@ -40,11 +40,17 @@ public class Descuento implements Serializable {
     private Boolean activo;
 
     @ManyToOne
-    @JoinColumn(name = "precios_id")
-    private Precio precio;
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
     @ManyToOne
     @JoinColumn(name = "tipodescuento_id")
     private TipoDescuento tipoDescuento;
 
+    public Descuento(double porcentaje, LocalDate now, LocalDate localDate, boolean activo, Object o, TipoDescuento descuentoPorVolumen) {
+        this.porcentaje = porcentaje;
+        this.fechaInicio = now;
+        this.fechaFin = localDate;
+        this.activo = activo;
+    }
 }

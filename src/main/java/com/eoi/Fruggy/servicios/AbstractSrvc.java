@@ -2,6 +2,7 @@ package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -68,7 +69,6 @@ public abstract class AbstractSrvc<E, ID, REPO extends JpaRepository<E, ID>> {
     public REPO getRepo() {
         return repo;
     }
-
 
 }
 

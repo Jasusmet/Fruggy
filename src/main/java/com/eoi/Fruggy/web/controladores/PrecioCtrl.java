@@ -27,7 +27,7 @@ public class PrecioCtrl {
 
     @GetMapping("/precios/{id}")
     public String mostrarPrecio(@PathVariable Integer id, Model model) {
-        Optional<Precio> precio = preciosSrvc.encuentraPorId(id);
+        Optional<Precio> precio = preciosSrvc.encuentraPorId(Long.valueOf(id));
         model.addAttribute("precio", precio);
         return "redirect:/precios";
     }
@@ -46,7 +46,7 @@ public class PrecioCtrl {
     @DeleteMapping("/precios/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String eliminarPrecio(@PathVariable Integer id, Model model) {
-        preciosSrvc.eliminarPorId(id);
+        preciosSrvc.eliminarPorId(Long.valueOf(id));
         return "redirect:/precios";
     }
 }

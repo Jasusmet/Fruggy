@@ -17,6 +17,7 @@
         <th th:text="#{admin.product.category}">Categoría</th>
         <th th:text="#{admin.product.subcategory}">Subcategoría</th>
         <th th:text="#{admin.product.active}">Activo</th>
+        <th th:text="#{admin.product.discounts}">Descuentos</th>
         <th th:text="#{admin.product.edit}">Editar</th>
         <th th:text="#{admin.product.delete}">Eliminar</th>
     </tr>
@@ -26,11 +27,21 @@
         <td th:text="${producto.id}">ID</td>
         <td th:text="${producto.nombreProducto}">Nombre</td>
         <td th:text="${producto.descripcion}">Descripción</td>
-        <td th:text="${#numbers.formatDecimal(producto.precios.?[0].valor, 1, 2) + ' €'}">Precio</td>
-        <td th:text="${producto.precios.?[0].supermercado.nombre}">Supermercado</td>
-        <td th:text="${producto.subcategoria?.tipo}">Categoría</td>
-        <td th:text="${producto.subcategoria?.tipo}">Subcategoría</td>
+
+        <td th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}">
+            Precio
+        </td>
+            <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">
+            Supermercado
+        </td>
+
+        <td th:text="${producto.subcategoria.categoria.tipo}">Categoría</td>
+        <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
+        <td>
+            <a th:href="@{'/admin/productos/descuento/' + ${producto.id}}" class="btn btn-outline-success"
+               th:text="#{admin.product.discounts}">Descuentos</a>
+        </td>
         <td>
             <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning"
                th:text="#{admin.product.edit}">Editar</a>

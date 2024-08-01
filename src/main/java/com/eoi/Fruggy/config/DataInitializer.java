@@ -197,59 +197,36 @@ public class DataInitializer {
                     }
                 }
             }
+            // Crear tipos de descuento
+            TipoDescuento descuentoPorVolumen = new TipoDescuento("Descuento por Volumen", true, LocalDate.now(), LocalDate.now().plusYears(1));
+            TipoDescuento descuentoPorTemporada = new TipoDescuento("Descuento por Temporada", true, LocalDate.now(), LocalDate.now().plusMonths(3));
+            TipoDescuento descuentoFidelidad = new TipoDescuento("Descuento por Fidelidad", true, LocalDate.now(), LocalDate.now().plusMonths(6));
+            TipoDescuento descuentoLanzamiento = new TipoDescuento("Descuento por Lanzamiento", true, LocalDate.now(), LocalDate.now().plusMonths(1));
+            TipoDescuento descuentoLiquidacion = new TipoDescuento("Descuento por Liquidación", true, LocalDate.now(), LocalDate.now().plusMonths(2));
+            TipoDescuento descuentoEspecial = new TipoDescuento("Descuento Especial", true, LocalDate.now(), LocalDate.now().plusMonths(4));
 
-            /*
-            // Inicialización de tipos de descuento
-            if (repoTipoDescuento.count() == 0) {
-                LocalDate now = LocalDate.now();
-                // Descuento por volumen
-                repoTipoDescuento.save(new TipoDescuento(
-                        messageSource.getMessage("discount.volume", null,locale),
-                        true,
-                        now.minusMonths(1),    // 1 mes atrás
-                        now.plusMonths(6),     // 6 meses adelante
-                        5.0
-                ));
+            repoTipoDescuento.save(descuentoPorVolumen);
+            repoTipoDescuento.save(descuentoPorTemporada);
+            repoTipoDescuento.save(descuentoFidelidad);
+            repoTipoDescuento.save(descuentoLanzamiento);
+            repoTipoDescuento.save(descuentoLiquidacion);
+            repoTipoDescuento.save(descuentoEspecial);
 
-                // Descuento estacional
-                repoTipoDescuento.save(new TipoDescuento(
-                        messageSource.getMessage("discount.seasonal", null, locale),
-                        true,
-                        now.minusMonths(2),    // 2 meses atrás
-                        now.plusMonths(6),     // 6 meses adelante
-                        10.0
-                ));
+            // Crear descuentos
+            Descuento descuento1 = new Descuento(10.0, LocalDate.now(), LocalDate.now().plusDays(30), true, null, descuentoPorVolumen);
+            Descuento descuento2 = new Descuento(20.0, LocalDate.now(), LocalDate.now().plusDays(15), true, null, descuentoPorTemporada);
+            Descuento descuento3 = new Descuento(5.0, LocalDate.now(), LocalDate.now().plusMonths(6), true, null, descuentoFidelidad);
+            Descuento descuento4 = new Descuento(15.0, LocalDate.now(), LocalDate.now().plusMonths(1), true, null, descuentoLanzamiento);
+            Descuento descuento5 = new Descuento(25.0, LocalDate.now(), LocalDate.now().plusMonths(2), true, null, descuentoLiquidacion);
+            Descuento descuento6 = new Descuento(30.0, LocalDate.now(), LocalDate.now().plusMonths(4), true, null, descuentoEspecial);
 
-                // Descuento por fidelidad
-                repoTipoDescuento.save(new TipoDescuento(
-                        messageSource.getMessage("discount.loyalty", null, locale),
-                        true,
-                        now.minusMonths(3),    // 3 meses atrás
-                        now.plusMonths(6),     // 6 meses adelante
-                        15.0
-                ));
+            repoDescuento.save(descuento1);
+            repoDescuento.save(descuento2);
+            repoDescuento.save(descuento3);
+            repoDescuento.save(descuento4);
+            repoDescuento.save(descuento5);
+            repoDescuento.save(descuento6);
 
-                // Descuento promocional
-                repoTipoDescuento.save(new TipoDescuento(
-                        messageSource.getMessage("discount.promotional",null, locale),
-                        true,
-                        now.minusMonths(1),    // 1 mes atrás
-                        now.plusMonths(6),     // 6 meses adelante
-                        20.0
-                ));
-
-                // Descuento por introducción
-                repoTipoDescuento.save(new TipoDescuento(
-                        messageSource.getMessage("discount.introductory", null, locale),
-                        true,
-                        now.minusMonths(2),    // 2 meses atrás
-                        now.plusMonths(6),     // 6 meses adelante
-                        25.0
-                ));
-
-
-
-            }     */
         } catch(Exception e){
             e.printStackTrace();
         }

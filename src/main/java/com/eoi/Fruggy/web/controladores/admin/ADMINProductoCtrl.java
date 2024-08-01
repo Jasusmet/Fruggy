@@ -25,24 +25,23 @@ import java.util.stream.Collectors;
 public class ADMINProductoCtrl {
 
     private final SrvcProducto productosSrvc;
-    private final SrvcPrecio preciosSrvc;
+    private final SrvcPrecio precioSrvc;
     private final SrvcImagen imagenSrvc;
     private final SrvcSubcategoria subcategoriasSrvc;
     private final SrvcCategoria categoriasSrvc;
-    private final RepoPrecio precioSrvc;
     private final SrvcSupermercado supermercadoSrvc;
+    private final SrvcDescuento descuentoSrvc;
 
-
-    public ADMINProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio preciosSrvc, SrvcImagen imagenSrvc, SrvcSubcategoria subcategoriasSrvc,
-                             RepoPrecio repoPrecio, SrvcCategoria categoriasSrvc, RepoPrecio precioSrvc, SrvcSupermercado supermercadoSrvc) {
+    public ADMINProductoCtrl(SrvcProducto productosSrvc, SrvcPrecio precioSrvc, SrvcImagen imagenSrvc, SrvcSubcategoria subcategoriasSrvc, SrvcCategoria categoriasSrvc, SrvcSupermercado supermercadoSrvc, SrvcDescuento descuentoSrvc) {
         this.productosSrvc = productosSrvc;
-        this.preciosSrvc = preciosSrvc;
+        this.precioSrvc = precioSrvc;
         this.imagenSrvc = imagenSrvc;
         this.subcategoriasSrvc = subcategoriasSrvc;
         this.categoriasSrvc = categoriasSrvc;
-        this.precioSrvc = precioSrvc;
         this.supermercadoSrvc = supermercadoSrvc;
+        this.descuentoSrvc = descuentoSrvc;
     }
+
 
     // Mostrar lista de productos
     @GetMapping
@@ -87,14 +86,16 @@ public class ADMINProductoCtrl {
         }
         // Guardar el producto primero para que tenga un ID
         Producto productoGuardado = productosSrvc.guardar(producto);
+        // Obtener el supermercado
+        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
 
         Precio precio = new Precio();
         precio.setProducto(productoGuardado);
         precio.setValor(Double.parseDouble(precioValor.replace(",", ".")));
-        precio.setSupermercado((Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null));
+        precio.setSupermercado(supermercado);
         precio.setActivo(true);
 
-        preciosSrvc.guardar(precio); // Guardar el precio
+        precioSrvc.guardar(precio); // Guardar el precio
         return "redirect:/admin/productos";
     }
 
@@ -136,22 +137,68 @@ public class ADMINProductoCtrl {
 
         // Guardar el producto primero para que tenga un ID
         Producto productoGuardado = productosSrvc.guardar(producto);
+        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
 
-        Precio precio = new Precio();
-        precio.setProducto(productoGuardado);
-        precio.setValor(Double.parseDouble(precioValor.replace(",", ".")));
-        precio.setSupermercado((Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null));
-        precio.setActivo(true);
 
-        preciosSrvc.guardar(precio); // Guardar el precio
-
+        // Buscar el precio existente
+        Optional<Precio> precioExistenteOpt = precioSrvc.encuentraPorId(productoGuardado.getId());
+        if (precioExistenteOpt.isPresent()) {
+            // Actualizar el precio existente
+            Precio precioExistente = precioExistenteOpt.get();
+            precioExistente.setValor(Double.parseDouble(precioValor.replace(",", ".")));
+            precioExistente.setSupermercado(supermercado);
+            precioSrvc.guardar(precioExistente); // Usar el método guardar de la clase abstracta
+        } else {
+            // Si no existe un precio, crear uno nuevo
+            Precio nuevoPrecio = new Precio();
+            nuevoPrecio.setProducto(productoGuardado);
+            nuevoPrecio.setValor(Double.parseDouble(precioValor.replace(",", ".")));
+            nuevoPrecio.setSupermercado(supermercado);
+            nuevoPrecio.setActivo(true);
+            precioSrvc.guardar(nuevoPrecio);
+        }
         return "redirect:/admin/productos";
     }
 
     // Eliminar un producto
-    @GetMapping("/eliminar/{id}")
+    @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
+        Set<Precio> precios = precioSrvc.buscarTodosSet(); // Asegúrate de que esto devuelve un Set<Precio>
+        Optional<Precio> precioExistenteOpt = precios.stream()
+                .filter(precio -> precio.getProducto() != null && precio.getProducto().getId() == id)
+                .findFirst();
+        // Si hay un precio existente, eliminarlo
+        precioExistenteOpt.ifPresent(precio -> precioSrvc.eliminarPorId(precio.getId()));
         productosSrvc.eliminarPorId(id);
-        return "redirect: /admin/productos"; // Redirige a la lista de productos
+        return "redirect:/admin/productos"; // Redirige a la lista de productos
     }
+
+                        // DESCUENTOS
+
+    // Mostrar formulario para agregar descuento a un producto
+    @GetMapping("/descuento/{id}")
+    public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
+        Optional<Producto> producto = productosSrvc.encuentraPorId(id);
+        List<Descuento> descuentos = descuentoSrvc.buscarEntidades();
+        if (producto.isPresent()) {
+            model.addAttribute("producto", producto.get());
+        }
+        model.addAttribute("descuentos", descuentos);
+        return "/admin/agregar-descuento";
+    }
+    // Post para agregar descuento a un producto
+    @PostMapping("/descuento/{id}")
+    public String agregarDescuento(@PathVariable Long id,
+                                   @RequestParam("descuento.id") Long descuentoId) throws Exception {
+        Optional<Producto> producto = productosSrvc.encuentraPorId(id);
+        Optional<Descuento> descuento = descuentoSrvc.encuentraPorId(descuentoId);
+        if (producto.isPresent() && descuento.isPresent()) {
+            Descuento d = descuento.get();
+            d.setProducto(producto.get());
+            descuentoSrvc.guardar(d);
+        }
+        return "redirect:/admin/productos";
+    }
+
+
 }

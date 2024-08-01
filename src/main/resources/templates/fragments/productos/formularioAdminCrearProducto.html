@@ -58,7 +58,9 @@
             <label for="supermercado" class="form-label">Supermercado</label>
             <select class="form-control" id="supermercado" name="supermercado.id" required>
                 <option value="">Selecciona un supermercado</option>
-                <option th:each="supermercado : ${supermercados}" th:value="${supermercado.id}" th:text="${supermercado.nombreSuper}"></option>
+                <option th:each="supermercado : ${supermercados}"
+                        th:value="${supermercado.id}"
+                        th:text="${supermercado.nombreSuper + ' (' + supermercado.municipio + ')'}"></option>
             </select>
         </div>
 

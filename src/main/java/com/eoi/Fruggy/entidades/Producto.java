@@ -48,7 +48,7 @@ public class Producto implements Serializable {
     private String pathImagen;
 
     @JsonManagedReference
-    @OneToMany
+    @OneToMany (mappedBy = "producto", fetch = FetchType.LAZY)
     private Set<Precio> precios = new HashSet<>();
 
     @ManyToOne
@@ -61,6 +61,9 @@ public class Producto implements Serializable {
 
     @OneToMany(mappedBy = "producto")
     private Set<CestaProductos> cestaProductos;
+
+    @OneToMany(mappedBy = "producto")
+    private Set<Descuento> descuentos;
 
 }
 

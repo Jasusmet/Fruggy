@@ -55,8 +55,6 @@ public class Precio implements Serializable {
     @OneToMany(mappedBy = "precio")
     private Set<Favorito> favoritos;
 
-    @OneToMany(mappedBy = "precio")
-    private Set<Descuento> descuentos;
 
     @OneToMany(mappedBy = "precio", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Cesta> cestaPrecios;
