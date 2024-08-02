@@ -33,11 +33,9 @@ public class LoginCtrl {
     @PostMapping("/login")
     public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
         Optional<Usuario> optionalUsuario = Optional.ofNullable(repoUsuario.findByEmail(email));
-        if (optionalUsuario.isPresent() && optionalUsuario.get().getPassword().equals(bCryptPasswordEncoder.encode(password))) {
-            Usuario usuario = optionalUsuario.get();
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("msg", "Usuario encontrado");
-            return "/";
+        if (optionalUsuario.isPresent() && bCryptPasswordEncoder.matches(password, optionalUsuario.get().getPassword())) {
+            // Aquí puedes agregar la lógica para establecer la sesión del usuario o el manejo de autenticación
+            return "redirect:/"; // Redirige a la página principal o al dashboard
         } else {
             model.addAttribute("msg", "Usuario no encontrado");
         }
@@ -59,5 +57,4 @@ public class LoginCtrl {
         }
         return "recuperar-contraseña";
     }
-
 }

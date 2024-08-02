@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="/css/login/login.css">
+    <title>Iniciar Sesión</title>
 </head>
 <body>
-<form class="form" th:action="@{/templates/fragments/login}" method="post">
-
+<div class="container" th:fragment="login">
+<form class="form" th:action="@{/login}" method="post">
     <div class="logo">
-        <a href="/static">
+        <a href="/">
             <img src="img/logo.png" alt="Fruggy" width="200" height="200"/>
         </a>
     </div>
@@ -17,8 +18,8 @@
     <!-- Error message section -->
     <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
 
-    <label for="username" th:text="#{login.email}">Correo electrónico:</label>
-    <input type="email" id="username" name="username" required>
+    <label for="email" th:text="#{login.email}">Correo electrónico:</label>
+    <input type="email" id="email" name="email" required>
 
     <label for="password" th:text="#{login.password}">Contraseña:</label>
     <input type="password" id="password" name="password" required>
@@ -26,12 +27,10 @@
     <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
 
     <div class="enlaces">
-        <a href="/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
-        <a href="/crear-cuenta" th:text="#{login.signUp}">Registrarse</a>
+        <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
+        <a href="/login/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
     </div>
-
-    <!-- Error message section -->
-    <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
 </form>
+</div>
 </body>
 </html>

@@ -1,36 +1,38 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lista de Cestas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Cestas</title>
+    <link rel="stylesheet" href="/css/listar-cestas.css">
 </head>
 <body>
-
-<div th:fragment="cesta-lista">
-    <h1>Lista de Cestas</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Usuario</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="cesta : ${cestas}">
-            <td th:text="${cesta.nombre}"></td>
-            <td th:text="${cesta.usuario.detalle.nombreUsuario} + ' (' + ${cesta.usuario.email} + ')'"></td>
-            <td>
-                <a th:href="@{/cestas/{id}(id=${cesta.id})}">Ver</a>
-                <a th:href="@{/cestas/{id}/editar(id=${cesta.id})}">Editar</a>
-                <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post" style="display:inline;">
-                    <input type="submit" value="Eliminar"/>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container" th:fragment="cesta-lista">
+<h1>Mis Cestas</h1>
+<div>
     <a href="/cestas/crear">Crear Nueva Cesta</a>
 </div>
-
+<table>
+    <thead>
+    <tr>
+        <th>Nombre de la Cesta</th>
+        <th>Fecha de Creación</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cesta : ${cestas}">
+        <td th:text="${cesta.nombre}"></td>
+        <td th:text="${cesta.fecha}"></td>
+        <td>
+            <a th:href="@{/cestas/{id}(id=${cesta.id})}">Ver Detalles</a>
+            <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
 </body>
 </html>
