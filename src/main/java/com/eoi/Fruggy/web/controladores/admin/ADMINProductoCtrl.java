@@ -81,7 +81,7 @@ public class ADMINProductoCtrl {
 
         // Asegúrate de que el campo activo tenga un valor
         if (producto.getActivo() == null) {
-            producto.setActivo(true); // o false, dependiendo de tu lógica de negocio
+            producto.setActivo(true);
         }
         Optional<Subcategoria> subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId);
         if (subcategoria.isPresent()) {
@@ -177,7 +177,6 @@ public class ADMINProductoCtrl {
     }
 
                         // DESCUENTOS
-
     // Mostrar formulario para agregar descuento a un producto
     @GetMapping("/descuento/{id}")
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {

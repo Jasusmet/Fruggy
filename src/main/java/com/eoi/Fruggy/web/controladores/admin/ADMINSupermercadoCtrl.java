@@ -81,11 +81,5 @@ public class ADMINSupermercadoCtrl {
         supermercadoSrvc.eliminarPorId(id);
         return "redirect:/admin/supermercados";
     }
-    @PostMapping("/eliminar/{id}")
-    public String eliminarSupermercado(@PathVariable("id") Long id) {
-        supermercadoSrvc.eliminarPorId(id);
-        return "redirect:/admin/supermercados";
-    }
-
 }
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Cestas</title>
+</head>
+<body>
+
+<div th:fragment="cesta-lista">
+    <h1>Lista de Cestas</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Usuario</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cesta : ${cestas}">
+            <td th:text="${cesta.nombre}"></td>
+            <td th:text="${cesta.usuario.detalle.nombreUsuario} + ' (' + ${cesta.usuario.email} + ')'"></td>
+            <td>
+                <a th:href="@{/cestas/{id}(id=${cesta.id})}">Ver</a>
+                <a th:href="@{/cestas/{id}/editar(id=${cesta.id})}">Editar</a>
+                <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post" style="display:inline;">
+                    <input type="submit" value="Eliminar"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/cestas/crear">Crear Nueva Cesta</a>
+</div>
+
+</body>
+</html>

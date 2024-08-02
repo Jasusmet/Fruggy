@@ -36,4 +36,8 @@ public class ValoracionSupermercado implements Serializable {
     @JoinColumn(name = "supermercados_id")
     private Supermercado supermercado;
 
+    @ManyToOne // Hace falta para que cada usuario pueda dejar una valoracion de supermercado.
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
 }

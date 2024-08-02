@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Detalles del Producto</title>
@@ -7,62 +7,38 @@
 </head>
 <body>
 <div class="container mt-4" th:fragment="detalles-producto">
-    <a class="btn btn-secondary" th:href="@{/templates/fragments/productos}">Regresar</a>
-    <br><br>
-    <div class="row">
-        <div class="col-md-4">
-            <img th:src="@{${producto.pathImagen}}" class="img-fluid" alt="Imagen del Producto">
-        </div>
-        <div class="col-md-8">
-            <h2 th:text="${producto.nombreProducto}">Nombre del Producto</h2>
-            <p><strong>Marca:</strong> <span th:text="${producto.marca}">Marca</span></p>
-            <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}">Descripción</span></p>
-            <p><strong>Precio:</strong> <span th:text="${producto.getPrecio()}">Precio</span></p>
-        </div>
-    </div>
+    <h1 th:text="${producto.nombreProducto}">Nombre del Producto</h1>
+    <p><strong>Marca:</strong> <span th:text="${producto.marca}"></span></p>
+    <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+    <p><strong>Precio:</strong>
+        <span th:if="${producto.descuentos.size() > 0}">
+            <span th:each="descuento : ${producto.descuentos}">
+                <span th:if="${descuento.activo}">
+                    <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                </span>
+            </span>
+        </span>
+        <span th:if="${producto.descuentos.size() == 0}" th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+    </p>
+    <p><strong>Supermercado:</strong> <span th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
 
-    <h3>Valoraciones</h3>
-    <p><strong>Nota Media:</strong> <span th:text="${notaMedia}">0.0</span></p>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>Comentario</th>
-            <th>Nota</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="valoracion : ${valoraciones}">
-           <!-- <td th:text="${valoracion.usuario.email}">Nombre</td> -->
-            <td th:text="${valoracion.comentario}">Comentario</td>
-            <td th:text="${valoracion.nota}">Nota</td>
-        </tr>
-        <!-- Comentarios de ejemplo -->
-        <tr>
-            <td th:text="'Juan Pérez'">Nombre</td>
-            <td th:text="'Excelente producto, muy recomendable.'">Comentario</td>
-            <td th:text="5">Nota</td>
-        </tr>
-        <tr>
-            <td th:text="'María López'">Nombre</td>
-            <td th:text="'Buena relación calidad-precio.'">Comentario</td>
-            <td th:text="4">Nota</td>
-        </tr>
-        </tbody>
-    </table>
+    <h2>Nota Media</h2>
+    <p th:text="${#numbers.formatDecimal(notaMedia, 1, 1)}">0.0</p> <!-- Utilizando la variable notaMedia -->
 
-    <h3>Agregar Valoración</h3>
-    <form th:action="@{/productos/valorar/{id}(id=${producto.id})}" method="post" th:object="${nuevaValoracion}">
-        <div class="mb-3">
-            <label for="comentario" class="form-label">Comentario</label>
-            <input type="text" id="comentario" th:field="*{comentario}" class="form-control" required>
+    <h2>Deja tu valoración</h2>
+    <form th:action="@{/productos/valoraciones/producto/{id}/guardar(id=${producto.id})}" method="post">
+        <div class="form-group">
+            <label for="comentario">Comentario:</label>
+            <textarea id="comentario" name="comentario" class="form-control" required></textarea>
         </div>
-        <div class="mb-3">
-            <label for="nota" class="form-label">Nota</label>
-            <input type="number" id="nota" th:field="*{nota}" class="form-control" required min="0" max="5" step="0.1">
+        <div class="form-group">
+            <label for="nota">Nota (0 a 5):</label>
+            <input type="number" id="nota" name="nota" class="form-control" min="0" max="5" step="0.1" required />
         </div>
-        <button type="submit" class="btn btn-primary">Agregar Valoración</button>
+        <button type="submit" class="btn btn-primary">Enviar Valoración</button>
     </form>
+
+    <a th:href="@{/productos}" class="btn btn-secondary mt-3">Volver al Catálogo</a>
 </div>
 </body>
 </html>

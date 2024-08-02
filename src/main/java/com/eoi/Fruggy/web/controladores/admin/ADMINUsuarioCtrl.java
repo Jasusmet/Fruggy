@@ -89,6 +89,14 @@ public class ADMINUsuarioCtrl {
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "admin/crear-usuario";
         }
+        // Crear y asignar el detalle al usuario
+        if (detalle != null) {
+            detalle = detalleSrvc.guardar(detalle); // Guardar el detalle primero
+        } else {
+            model.addAttribute("error", "Detalles del usuario no proporcionados");
+            return "admin/crear-usuario";
+        }
+
         // Guardar el usuario
         usuarioSrvc.guardar(usuario);
         return "redirect:/admin/usuarios";

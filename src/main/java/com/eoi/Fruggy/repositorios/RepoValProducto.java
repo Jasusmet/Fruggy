@@ -4,6 +4,10 @@ import com.eoi.Fruggy.entidades.ValoracionProducto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface RepoValProducto extends JpaRepository<ValoracionProducto, Long> {
+    List<ValoracionProducto> findByPrecioId(Long precioId);
+
 }

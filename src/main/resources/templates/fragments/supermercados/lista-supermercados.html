@@ -8,11 +8,24 @@
 <body>
 <div class="container mt-4" th:fragment="lista-supermercados">
     <h1>Lista de Supermercados</h1>
-    <ul class="list-group">
-        <li class="list-group-item" th:each="supermercado : ${supermercados}">
-            <a th:href="@{/supermercados/{id}(id=${supermercado.id})}" th:text="${supermercado.nombreSuper}">Nombre del Supermercado</a>
-        </li>
-    </ul>
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>URL</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="supermercado : ${supermercados}">
+            <td th:text="${supermercado.nombreSuper}"></td>
+            <td><a th:href="${supermercado.url}" th:text="${supermercado.url}"></a></td>
+            <td>
+                <a th:href="@{'/supermercados/detalles/' + ${supermercado.id}}">Detalles</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

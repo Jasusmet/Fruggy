@@ -13,18 +13,14 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <div class="filter__found">
-                            <h6><span th:text="${listaProducto.size()}">100</span> Productos </h6>
+                            <h6><span th:text="${listaProducto.size()}">100</span> Productos</h6>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-3">
                         <div class="pull-right">
                             <div class="btn-group">
-                                <button class="btn btn-info" id="list" onclick="switchView('list')">
-                                    Vista Lista
-                                </button>
-                                <button class="btn btn-danger" id="grid" onclick="switchView('grid')">
-                                    Vista Cuadrícula
-                                </button>
+                                <button class="btn btn-info" id="list" onclick="switchView('list')">Vista Lista</button>
+                                <button class="btn btn-danger" id="grid" onclick="switchView('grid')">Vista Cuadrícula</button>
                             </div>
                         </div>
                     </div>
@@ -34,7 +30,6 @@
                         <div class="item col-xs-4 col-lg-4" th:each="producto : ${listaProducto}">
                             <div class="thumbnail card">
                                 <div class="img-event">
-                                    <!-- Manejo condicional de la imagen -->
                                     <img class="group list-group-image img-fluid"
                                          th:if="${producto.imagen != null}"
                                          th:src="@{${producto.imagen.pathImagen}}"
@@ -49,19 +44,39 @@
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h5>
                                     <p class="card-text">
-                                        <span th:text="${producto.productoPrecios.precio}">Precio</span><br>
-                                        <span th:text="${producto.supermercado.nombreSuper}">Supermercado</span><br>
+                                        <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span><br/>
+                                        <strong>Marca:</strong> <span th:text="${producto.marca}">Marca</span><br/>
+                                        <strong>Precio:</strong>
+                                        <span th:if="${producto.descuentos.size() > 0}">
+                                            <span th:each="descuento : ${producto.descuentos}">
+                                                <span th:if="${descuento.activo}">
+                                                    <span th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2)} + ' €'"></span><br/>
+                                                    <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - (descuento.porcentaje / 100)), 1, 2)} + ' € (' + descuento.porcentaje + '% descuento)'"></span>
+                                                </span>
+                                            </span>
+                                        </span>
+                                        <span th:if="${producto.descuentos.size() == 0}"
+                                              th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2)} + ' €'">Precio</span>
+                                        <br>
+                                        <strong>Supermercado:</strong>
+                                        <span th:if="${producto.precios.size() > 0 && producto.precios[0].supermercado != null}"
+                                              th:text="${producto.precios[0].supermercado.nombreSuper}">Supermercado</span>
+                                        <span th:if="${producto.precios.size() == 0 || producto.precios[0].supermercado == null}">Sin supermercado asignado</span>
+                                        <br>
+                                        <strong>Nota Media:</strong>
+                                        <span th:if="${notaMedia != null}" th:text="${#numbers.formatDecimal(notaMedia, 1, 2)}"></span>
+                                        <span th:if="${notaMedia == null}">N/A</span>
                                     </p>
-                                    <a th:href="@{/details/{id}(id=${producto.id})}" class="btn btn-primary">Añadir al
-                                        carrito</a>
-                                    <a th:href="@{/details/{id}(id=${producto.id})}" class="btn btn-secondary">Ver
-                                        Detalles</a>
+                                    <a th:href="@{/cart/add/{id}(id=${producto.id})}" class="btn btn-primary">Añadir al carrito</a>
+                                    <a th:href="@{/productos/detalles/{id}(id=${producto.id})}" class="btn btn-secondary">Ver Detalles</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 </section>
 </body>
 </html>

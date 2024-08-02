@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Cesta</title>
+</head>
+<body>
+
+<div th:fragment="crear-cesta">
+    <h1>Crear Nueva Cesta</h1>
+
+    <form th:action="@{/cestas}" th:object="${cesta}" method="post">
+        <label for="nombre">Nombre de la Cesta:</label>
+        <input type="text" id="nombre" th:field="*{nombre}" required/><br/>
+
+        <input type="hidden" th:field="*{usuario.id}" th:value="${usuarioId}"/>
+        <input type="submit" value="Crear Cesta"/>
+    </form>
+
+    <a href="/cestas">Volver a la lista de cestas</a>
+</div>
+
+</body>
+</html>

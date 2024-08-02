@@ -36,4 +36,8 @@ public class ValoracionProducto implements Serializable {
     @JoinColumn(name = "precios_id")
     private Precio precio;
 
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
+
 }

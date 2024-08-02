@@ -24,6 +24,9 @@ public class Cesta implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "nombre", length = 100)
+    private String nombre;
+
     @Column (name ="fecha")
     private LocalDateTime fecha;
 
