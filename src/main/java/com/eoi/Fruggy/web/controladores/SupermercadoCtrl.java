@@ -7,6 +7,7 @@ import com.eoi.Fruggy.servicios.SrvcSupermercado;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import com.eoi.Fruggy.servicios.SrvcValSupermercado;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ public class SupermercadoCtrl {
         this.usuarioSrvc = usuarioSrvc;
     }
 
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String listarSupermercados(Model model) {
         List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
@@ -36,6 +38,7 @@ public class SupermercadoCtrl {
         return "/supermercados/lista-supermercados";
     }
 
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detalles/{id}")
     public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
@@ -50,6 +53,7 @@ public class SupermercadoCtrl {
     }
 
     //FUNCIONA PERO HAY QUE HACER UN LOGIN PARA VER SI ES CORRECTO.
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/detalles/{supermercadoId}/guardar")
     public String guardarValoracion(@PathVariable Long supermercadoId,
                                     @Valid @ModelAttribute("valoracion") ValoracionSupermercado valoracion,

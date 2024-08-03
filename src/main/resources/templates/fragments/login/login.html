@@ -6,31 +6,31 @@
 </head>
 <body>
 <div class="container" th:fragment="login">
-<form class="form" th:action="@{/login}" method="post">
-    <div class="logo">
-        <a href="/">
-            <img src="img/logo.png" alt="Fruggy" width="200" height="200"/>
-        </a>
-    </div>
+    <form class="form" th:action="@{/login}" method="post">
+        <div class="logo">
+            <a href="/">
+                <img src="/img/logo.png" alt="Fruggy" width="200" height="200"/>
+            </a>
+        </div>
 
-    <h2 th:text="#{login.heading}">Iniciar sesión</h2>
+        <h2 th:text="#{login.heading}">Iniciar sesión</h2>
 
-    <!-- Error message section -->
-    <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
+        <!-- Sección de mensaje de error -->
+        <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
 
-    <label for="email" th:text="#{login.email}">Correo electrónico:</label>
-    <input type="email" id="email" name="email" required>
+        <label for="email" th:text="#{login.email}">Correo electrónico:</label>
+        <input type="email" id="email" name="email" required placeholder="Introduce tu correo electrónico">
 
-    <label for="password" th:text="#{login.password}">Contraseña:</label>
-    <input type="password" id="password" name="password" required>
+        <label for="password" th:text="#{login.password}">Contraseña:</label>
+        <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña">
 
-    <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
+        <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
 
-    <div class="enlaces">
-        <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
-        <a href="/login/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
-    </div>
-</form>
+        <div class="enlaces">
+            <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
+            <a href="/login/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
+        </div>
+    </form>
 </div>
 </body>
 </html>

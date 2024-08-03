@@ -5,6 +5,7 @@ import com.eoi.Fruggy.entidades.Cesta;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.servicios.SrvcCesta;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class CestaCtrl {
         this.usuarioSrvc = usuarioSrvc;
     }
         //Listar cestas usuarios
+//        @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String listarCestas(@AuthenticationPrincipal Usuario usuario, Model model) {
         List<Cesta> cestas = cestaSrvc.getRepo().findAll();
@@ -36,12 +38,14 @@ public class CestaCtrl {
     }
 
     // Crear una nueva cesta (GET)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/crear")
     public String mostrarFormularioCrearCesta(Model model) {
         model.addAttribute("cesta", new Cesta());
         return "cestas/crear-cesta";
     }
     // Crear una nueva cesta (POST)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/crear")
     public String crearCesta(@ModelAttribute Cesta cesta, @AuthenticationPrincipal Usuario usuario, RedirectAttributes redirectAttributes) throws Exception {
         if (usuario.getCestas().size() < 10) {
@@ -56,6 +60,7 @@ public class CestaCtrl {
     }
 
     // Obtener una cesta por ID
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public String obtenerCesta(@PathVariable Long id, Model model) throws Throwable {
         Cesta cesta = (Cesta) cestaSrvc.encuentraPorId(id)
@@ -64,6 +69,7 @@ public class CestaCtrl {
         return "/cestas/cesta-detalle"; // Nombre de la vista para mostrar detalles de la cesta
     }
     // Actualizar una cesta (GET)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEdicion(@PathVariable Long id, Model model) throws Throwable {
         Cesta cesta = (Cesta) cestaSrvc.encuentraPorId(id)
@@ -72,6 +78,7 @@ public class CestaCtrl {
         return "/cestas/cesta-editar";
     }
     // Actualizar una cesta (POST)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{id}")
     public String actualizarCesta(@PathVariable Long id, @ModelAttribute Cesta cestaActualizada) throws Throwable {
         Cesta cestaExistente = (Cesta) cestaSrvc.encuentraPorId(id)
@@ -81,6 +88,7 @@ public class CestaCtrl {
         return "redirect:/cestas";
     }
     // Eliminar una cesta (POST)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{id}/eliminar")
     public String eliminarCesta(@PathVariable Long id) throws Throwable {
         cestaSrvc.encuentraPorId(id)

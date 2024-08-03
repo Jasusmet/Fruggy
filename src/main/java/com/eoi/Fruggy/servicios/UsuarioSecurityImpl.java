@@ -39,10 +39,10 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       Usuario usuario = repoUsuario.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Usuario usuario = repoUsuario.findByEmail(email);
        if (usuario==null){
-           throw new UsernameNotFoundException("Usuario no encontrado"+ username);
+           throw new UsernameNotFoundException("Usuario no encontrado"+ email);
        }
        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
        for (Rol rol: usuario.getRoles()){

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,6 +48,7 @@ public class ADMINProductoCtrl {
 
 
     // Mostrar lista de productos
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String listarProductos(Model model) {
         List<Producto> productos = productosSrvc.buscarEntidades();
@@ -54,7 +56,7 @@ public class ADMINProductoCtrl {
         return "/admin/CRUD-Productos";
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
         Producto producto = new Producto();
@@ -69,6 +71,7 @@ public class ADMINProductoCtrl {
     }
 
     //  formulario de creación de producto
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute("producto") Producto producto,
                                   BindingResult result,
@@ -103,6 +106,7 @@ public class ADMINProductoCtrl {
     }
 
     // Mostrar formulario para editar un producto
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -119,6 +123,7 @@ public class ADMINProductoCtrl {
     }
 
     // post de edición de producto
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/editar/{id}")
     public String guardarEdicionProducto(@PathVariable Long id,
                                          @Valid @ModelAttribute("producto") Producto producto,
@@ -164,6 +169,7 @@ public class ADMINProductoCtrl {
     }
 
     // Eliminar un producto
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         Set<Precio> precios = precioSrvc.buscarTodosSet(); // Asegúrate de que esto devuelve un Set<Precio>
@@ -176,8 +182,9 @@ public class ADMINProductoCtrl {
         return "redirect:/admin/productos"; // Redirige a la lista de productos
     }
 
-                        // DESCUENTOS
+    // DESCUENTOS
     // Mostrar formulario para agregar descuento a un producto
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/descuento/{id}")
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -190,6 +197,7 @@ public class ADMINProductoCtrl {
     }
 
     // Post para agregar descuento a un producto
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/descuento/{id}")
     public String agregarDescuento(@PathVariable Long id,
                                    @RequestParam("tipoDescuentoId") Long tipoDescuentoId,

@@ -34,36 +34,38 @@ public class AdminUserInitializer implements CommandLineRunner {
         this.repoDetalle = repoDetalle;
         this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public void run(String... args) throws Exception {
-            Usuario admin = new Usuario();
-            admin.setEmail("admin@example.com");
-            admin.setActive(true);
-            admin.setPassword(passwordEncoder.encode("Password@123"));
+        Usuario admin = new Usuario();
+        admin.setEmail("admin@example.com");
+        admin.setActive(true);
+        admin.setEmail("admin@example.com");
+        admin.setPassword(passwordEncoder.encode("Password-123"));
 
-            Detalle detalle = new Detalle();
-            detalle.setNombreUsuario("admin");
-            detalle.setNombre("Admin");
-            detalle.setApellido("User");
-            detalle.setEdad(30);
-            detalle.setCalle("Calle Admin");
-            detalle.setMunicipio("Municipio Admin");
-            detalle.setPais("País Admin");
-            detalle.setCodigopostal(12345);
+        Detalle detalle = new Detalle();
+        detalle.setNombreUsuario("admin");
+        detalle.setNombre("Admin");
+        detalle.setApellido("User");
+        detalle.setEdad(30);
+        detalle.setCalle("Calle Admin");
+        detalle.setMunicipio("Municipio Admin");
+        detalle.setPais("País Admin");
+        detalle.setCodigopostal(12345);
 
-            // Asigna un género al detalle, asegúrate de que exista un género con ID 1
-            Genero genero = repoGenero.findById(1).orElseThrow(() -> new RuntimeException("Género no encontrado"));
-            detalle.setGenero(genero);
+        // Asignar un género al detalle
+        Genero genero = repoGenero.findById(1).orElseThrow(() -> new RuntimeException("Género no encontrado"));
+        detalle.setGenero(genero);
 
-            admin.setDetalle(detalle);
+        admin.setDetalle(detalle);
 
-            // Añade el rol al usuario
-            Rol adminRole = repoRol.findByRolNombre("ROLE_ADMIN");
-            Set<Rol> roles = new HashSet<>();
-            roles.add(adminRole);
-            admin.setRoles(roles);
+        // Añadir el rol al usuario
+        Rol adminRole = repoRol.findByRolNombre("ROLE_ADMIN");
+        Set<Rol> roles = new HashSet<>();
+        roles.add(adminRole);
+        admin.setRoles(roles);
 
-            // Guarda el usuario
-            repoUsuario.save(admin);
-        }
+        // Guardar el usuario
+        repoUsuario.save(admin);
     }
+}

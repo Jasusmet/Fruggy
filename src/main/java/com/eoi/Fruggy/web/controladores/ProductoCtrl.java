@@ -3,6 +3,7 @@ package com.eoi.Fruggy.web.controladores;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ public class ProductoCtrl {
         this.favoritoSrvc = favoritoSrvc;
     }
 
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String mostrarCatalogo(Model model, @AuthenticationPrincipal Usuario usuario) {
         List<Producto> listaProducto = productosSrvc.buscarEntidades(); // Obtener todos los productos
@@ -41,6 +43,7 @@ public class ProductoCtrl {
         return "/productos/catalogoProductos";
     }
 
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detalles/{id}")
     public String verDetallesProducto(@PathVariable("id") Long id, Model model) throws Throwable {
         Producto producto = productosSrvc.encuentraPorId(id).orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + id));
@@ -63,6 +66,7 @@ public class ProductoCtrl {
     }
 
     // hay que añadir el usuario loggeado para que un usuario solo pueda hacer una reseña y que nos muestre quien ha dejado el comentario.
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/valoraciones/producto/{id}/guardar")
     public String guardarValoracion(@PathVariable Long id,
                                     @Valid @ModelAttribute("valoracion") ValoracionProducto valoracion,
@@ -76,8 +80,10 @@ public class ProductoCtrl {
         valProductosSrvc.guardar(valoracion);
         return "redirect:/productos/detalles/" + id;
     }
+
     // AGREGAR PRODUCTO A CESTA
     // Al agregar a la cesta, este método puede ser llamado desde el formulario
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/agregar-a-cesta")
     public String agregarProductoACesta(@RequestParam Long productoId, @RequestParam Long cestaId, @AuthenticationPrincipal Usuario usuario) throws Throwable {
         // Aregar el producto a la cesta seleccionada
@@ -93,6 +99,7 @@ public class ProductoCtrl {
     }
 
 //  FAVORITOS
+//@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
 @PostMapping("/{listaId}/favoritos")
 public String agregarFavorito(@PathVariable Long listaId, @RequestParam Long productoId, Model model) throws Throwable {
     Lista lista = (Lista) listaSrvc.encuentraPorId(listaId).orElseThrow(() -> new IllegalArgumentException("Lista no encontrada: " + listaId));

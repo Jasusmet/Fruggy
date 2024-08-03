@@ -2,6 +2,7 @@ package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,13 +34,17 @@ public class LoginCtrl {
     @PostMapping("/login")
     public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
         Optional<Usuario> optionalUsuario = Optional.ofNullable(repoUsuario.findByEmail(email));
-        if (optionalUsuario.isPresent() && bCryptPasswordEncoder.matches(password, optionalUsuario.get().getPassword())) {
-            // Aquí puedes agregar la lógica para establecer la sesión del usuario o el manejo de autenticación
-            return "redirect:/"; // Redirige a la página principal o al dashboard
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            if (bCryptPasswordEncoder.matches(password, usuario.getPassword())) {
+                return "redirect:/"; // Redirige a la página principal
+            } else {
+                model.addAttribute("error", true); // Contraseña incorrecta
+            }
         } else {
-            model.addAttribute("msg", "Usuario no encontrado");
+            model.addAttribute("error", true); // Usuario no encontrado
         }
-        return "redirect:/login?error=true";
+        return "login"; // Vuelve a la vista de login sin redirigir
     }
 
     @GetMapping("/login/crear-usuario")

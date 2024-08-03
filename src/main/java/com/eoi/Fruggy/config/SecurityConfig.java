@@ -38,88 +38,64 @@ public class SecurityConfig {
     @Bean
     @Profile("desarrollo")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Inicio de sesión personalizada
-        http.formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
-                .permitAll()
-        );
-        // Cierre de sesión
-        http.logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-        );
-        // Autorización de Solicitudes
-        http.authorizeHttpRequests(customizer -> {
-                    customizer
-                            .requestMatchers("/js/**").permitAll()
-                            .requestMatchers("/img/**").permitAll()
-                            .requestMatchers("/css/**").permitAll()
-                            .requestMatchers("/fonts/**").permitAll()
-                            .requestMatchers("/lib/**").permitAll()
-                            .requestMatchers("/scss/**").permitAll()
-                            .requestMatchers("/index").permitAll();
-                    try {
-                        customizer.anyRequest().authenticated()
-                                .and()
-                                .exceptionHandling()
-                                .accessDeniedPage("/accessDenied")
-
-                                // Desactivación de CSRF y CORS
-                                .and()
-                                .csrf().disable()
-                                .cors().disable()
-                                .authenticationProvider(authenticationProvider());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
-                // Página de Acceso Denegado
+        http
+                .csrf().disable() // Desactivación de CSRF solo para simplificar pruebas
+                .cors().disable() // Desactivación de CORS
+                .authorizeHttpRequests(customizer -> customizer
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/img/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/fonts/**").permitAll()
+                        .requestMatchers("/lib/**").permitAll()
+                        .requestMatchers("/scss/**").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated() // Asegura que cualquier otra petición requiera autenticación
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/")
+                        .permitAll() // Permitir a todos el acceso a la página de inicio de sesión
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                )
+                .exceptionHandling(exception -> exception // hay que modifcar el exceptionHandling asi para que funcione!
+                        .accessDeniedPage("/accessDenied") // Página de acceso denegado
+                );
 
         return http.build();
     }
+
     @Bean
     @Profile("local")
     public SecurityFilterChain securityFilterChainLocal(HttpSecurity http) throws Exception {
-        // Inicio de sesión personalizada
-        http.formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/")
-                .permitAll()
-        );
-        // Cierre de sesión
-        http.logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-        );
-        // Autorización de Solicitudes
-        http.authorizeHttpRequests(customizer -> {
-                    customizer
-                            .requestMatchers("/js/**").permitAll()
-                            .requestMatchers("/img/**").permitAll()
-                            .requestMatchers("/css/**").permitAll()
-                            .requestMatchers("/fonts/**").permitAll()
-                            .requestMatchers("/lib/**").permitAll()
-                            .requestMatchers("/scss/**").permitAll()
-                            .requestMatchers("/index").permitAll();
-                    try {
-                        customizer.anyRequest().permitAll()
-                                .and()
-                                .exceptionHandling()
-                                .accessDeniedPage("/accessDenied")
-
-                                // Desactivación de CSRF y CORS
-                                .and()
-                                .csrf().disable()
-                                .cors().disable()
-                                .authenticationProvider(authenticationProvider());
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-        );
-        // Página de Acceso Denegado
+        http
+                .csrf().disable()
+                .cors().disable()
+                .authorizeHttpRequests(customizer -> customizer
+                        .requestMatchers("/js/**").permitAll()
+                        .requestMatchers("/img/**").permitAll()
+                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/fonts/**").permitAll()
+                        .requestMatchers("/lib/**").permitAll()
+                        .requestMatchers("/scss/**").permitAll()
+                        .requestMatchers("/index").permitAll()
+                        .anyRequest().permitAll() // Permitir acceso a todas las demás solicitudes
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/accessDenied") // Página de acceso denegado
+                );
 
         return http.build();
     }

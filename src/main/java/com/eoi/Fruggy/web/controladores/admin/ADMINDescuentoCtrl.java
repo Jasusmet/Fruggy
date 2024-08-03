@@ -39,7 +39,7 @@ public class ADMINDescuentoCtrl {
         this.precioSrvc = precioSrvc;
     }
 
-
+//    @PreAuthorize("hasRole('ADMIN')") // Solo los usuarios con rol ADMIN pueden acceder a este método
     @GetMapping("/editar/{id}")
     public String verDescuento(@PathVariable("id") Long id, Model model) {
         Optional<Descuento> descuento = descuentoSrvc.encuentraPorId(id);
@@ -55,7 +55,7 @@ public class ADMINDescuentoCtrl {
         }
     }
 
-
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/descuento-actualizado/{id}")
     public String verDescuentoActualizado(@PathVariable("id") Long id, Model model) {
         Optional<Descuento> descuentoActualizado = descuentoSrvc.encuentraPorId(id);

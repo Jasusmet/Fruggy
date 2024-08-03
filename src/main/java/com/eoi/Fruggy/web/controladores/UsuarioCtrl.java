@@ -1,111 +1,105 @@
-package com.eoi.Fruggy.web.controladores.admin;
+package com.eoi.Fruggy.web.controladores;
 
-import com.eoi.Fruggy.entidades.*;
-import com.eoi.Fruggy.servicios.*;
+
+import com.eoi.Fruggy.entidades.Detalle;
+import com.eoi.Fruggy.entidades.Genero;
+import com.eoi.Fruggy.entidades.Rol;
+import com.eoi.Fruggy.entidades.Usuario;
+import com.eoi.Fruggy.servicios.SrvcDetalle;
+import com.eoi.Fruggy.servicios.SrvcGenero;
+import com.eoi.Fruggy.servicios.SrvcRol;
+import com.eoi.Fruggy.servicios.SrvcUsuario;
 import jakarta.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
+@Controller
+@RequestMapping("/registro")
+public class UsuarioCtrl {
 
-@Controller()
-@RequestMapping("/admin/usuarios")
-public class ADMINUsuarioCtrl {
-
-    private static final Logger log = LoggerFactory.getLogger(ADMINUsuarioCtrl.class);
     private final SrvcUsuario usuarioSrvc;
     private final SrvcDetalle detalleSrvc;
     private final SrvcRol rolSrvc;
-    private final SrvcImagen imagenSrvc;
-    private final SrvcDonacion donacionSrvc;
     private final SrvcGenero generoSrvc;
+    private final MessageSource messageSource;
 
-    public ADMINUsuarioCtrl(SrvcUsuario usuarioSrvc, SrvcDetalle detalleSrvc, SrvcRol rolSrvc, SrvcImagen imagenSrvc, SrvcDonacion donacionSrvc, SrvcGenero generoSrvc) {
+
+    public UsuarioCtrl(SrvcUsuario usuarioSrvc, SrvcDetalle detalleSrvc, SrvcRol rolSrvc, SrvcGenero generoSrvc, MessageSource messageSource) {
         this.usuarioSrvc = usuarioSrvc;
         this.detalleSrvc = detalleSrvc;
         this.rolSrvc = rolSrvc;
-        this.imagenSrvc = imagenSrvc;
-        this.donacionSrvc = donacionSrvc;
         this.generoSrvc = generoSrvc;
+        this.messageSource = messageSource;
     }
-
-//    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
-    public String listarUsuarios(Model model) {
-        List<Usuario> usuarios = usuarioSrvc.buscarEntidades();
-        model.addAttribute("usuarios", usuarios);
-        return "admin/CRUD-Usuarios"; // Lo he llamado asi, porque desde esta vista se pueden hacer todas las funciones CRUD como admin de usuarios.
-    }
-
-//    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/agregar")
-    public String agregarUsuario(Model model) {
+    @GetMapping()
+    public String mostrarFormularioRegistro(Model model) {
         Usuario usuario = new Usuario();
         Detalle detalle = new Detalle();
         detalle.setGenero(new Genero());
         usuario.setDetalle(detalle); // Asegúrate de que el detalle está asociado al usuario
         model.addAttribute("usuario", usuario);
-        model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
         model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-
-       log.info("Usuario agregado. {}", usuario);
-        return "admin/crear-usuario";
+        return "usuarios/registroUsuario";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario,
-                          BindingResult bindingResult, Model model) throws Exception {
+    public String guardarUsuario(@Valid @ModelAttribute("usuario") Usuario usuario,
+                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-            return "admin/crear-usuario";
+            return "registro/crear-usuario";
         }
-        // Asignar el género del detalle
-        Detalle detalle = usuario.getDetalle();
 
-        // Verificar que detalle y genero no sean null
-        if (detalle.getGenero() != null && detalle.getGenero().getId() != null) {
-            Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
-            if (generoOptional.isPresent()) {
-                detalle.setGenero(generoOptional.get());
-            } else {
-                model.addAttribute("error", "Género no encontrado");
-                model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-                return "admin/crear-usuario";
+        try {
+            // Obtener el rol de usuario por defecto desde el archivo de propiedades
+            Locale locale = new Locale("es");
+            String roleName = messageSource.getMessage("role.user", null, locale);
+            Optional<Rol> rolUsuarioOpt = Optional.ofNullable(rolSrvc.getRepo().findByRolNombre(roleName));
+            if (rolUsuarioOpt.isEmpty()) {
+                throw new Exception("Rol " + roleName + " no encontrado");
             }
-        } else {
-            model.addAttribute("error", "Género no seleccionado");
-            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-            return "admin/crear-usuario";
-        }
-        // Crear y asignar el detalle al usuario
-        if (detalle != null) {
-            detalle = detalleSrvc.guardar(detalle); // Guardar el detalle primero
-        } else {
-            model.addAttribute("error", "Detalles del usuario no proporcionados");
-            return "admin/crear-usuario";
-        }
+            Rol rolUsuario = rolUsuarioOpt.get();
+            usuario.setRoles(Set.of(rolUsuario));
+            usuario.setActive(true); // Establecer usuario como activo
 
-        // Guardar el usuario
-        usuarioSrvc.guardar(usuario);
-        return "redirect:/admin/usuarios";
+            // Asignar el género del detalle
+            Detalle detalle = usuario.getDetalle();
+            if (detalle.getGenero() != null && detalle.getGenero().getId() != null) {
+                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
+                if (generoOptional.isPresent()) {
+                    detalle.setGenero(generoOptional.get());
+                } else {
+                    model.addAttribute("error", "Género no encontrado");
+                    model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                    return "registro/crear-usuario";
+                }
+            } else {
+                model.addAttribute("error", "Género no seleccionado");
+                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                return "registro/crear-usuario";
+            }
+
+            // Guardar el detalle primero
+            detalle = detalleSrvc.guardar(detalle);
+            usuario.setDetalle(detalle);
+
+            // Guardar el usuario
+            usuarioSrvc.guardar(usuario);
+            return "redirect:/login"; // Redirigir al login después de registrar el usuario
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al guardar el usuario: " + e.getMessage());
+            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            return "registro/crear-usuario";
+        }
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -120,8 +114,6 @@ public class ADMINUsuarioCtrl {
             return "error";
         }
     }
-
-//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/editar/{id}")
     public String guardarEdicion(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -131,9 +123,6 @@ public class ADMINUsuarioCtrl {
         }
 
         Detalle detalle = usuario.getDetalle();
-        log.info("Detalle antes de guardar: {}", detalle);
-        log.info("Género ID antes de guardar: {}", detalle.getGenero() != null ? detalle.getGenero().getId() : "Género no asignado");
-
         if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
             Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
             if (generoOptional.isPresent()) {
@@ -156,9 +145,6 @@ public class ADMINUsuarioCtrl {
         usuarioSrvc.guardar(usuario);
         return "redirect:/admin/usuarios"; // Redirigir a la lista de usuarios después de guardar
     }
-
-//    @PreAuthorize("hasRole('ADMIN')")
-    // Mostrar cestas de un usuario
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -170,4 +156,3 @@ public class ADMINUsuarioCtrl {
         return "redirect:/usuarios";
     }
 }
-

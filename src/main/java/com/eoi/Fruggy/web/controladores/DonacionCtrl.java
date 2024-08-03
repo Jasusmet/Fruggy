@@ -4,6 +4,7 @@ import com.eoi.Fruggy.entidades.Donacion;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.servicios.SrvcDonacion;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class DonacionCtrl {
 
 
     // Obtener todas las donaciones
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String listarDonaciones(Model model) {
         List<Donacion> donaciones = donacionSrvc.buscarEntidades();
@@ -34,6 +36,7 @@ public class DonacionCtrl {
 
 
     // Crear una nueva donación (GET)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/crear")
     public String mostrarFormularioCreacion(Model model) {
         model.addAttribute("donacion", new Donacion());
@@ -41,6 +44,7 @@ public class DonacionCtrl {
     }
 
     // Crear una nueva donación (POST)
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping
     public String crearDonacion(@RequestParam Long usuarioId, @ModelAttribute Donacion donacion) throws Exception {
         Usuario usuario = usuarioSrvc.encuentraPorId(usuarioId)
@@ -52,6 +56,7 @@ public class DonacionCtrl {
     }
 
     // Obtener una donación por ID
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public String obtenerDonacion(@PathVariable Long id, Model model) throws Throwable {
         Donacion donacion = (Donacion) donacionSrvc.encuentraPorId(id)
