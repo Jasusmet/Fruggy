@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Usuario</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container" th:fragment="editar-usuario">
+    <h1>Editar Detalles de Usuario</h1>
+    <form th:action="@{/registro/editar}" th:object="${usuario}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" id="nombre" th:field="*{detalle.nombre}" />
+        </div>
+        <div class="form-group">
+            <label for="apellido">Apellido:</label>
+            <input type="text" class="form-control" id="apellido" th:field="*{detalle.apellido}" />
+        </div>
+        <div class="form-group">
+            <label for="genero">Género:</label>
+            <select class="form-control" id="genero" th:field="*{detalle.genero.id}">
+                <option th:each="genero : ${generos}" th:value="${genero.id}" th:text="${genero.nombre}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+    <form th:action="@{/registro/baja}" method="post">
+        <button type="submit" class="btn btn-danger mt-3">Dar de Baja</button>
+    </form>
+</div>
+</body>
+</html>

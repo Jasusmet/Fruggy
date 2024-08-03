@@ -11,6 +11,8 @@ import com.eoi.Fruggy.servicios.SrvcRol;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -100,58 +102,61 @@ public class UsuarioCtrl {
         }
     }
 
-    @GetMapping("/editar/{id}")
-    public String editar(@PathVariable("id") Long id, Model model) {
-        Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
-        if (usuarioOptional.isPresent()) {
-            model.addAttribute("usuario", usuarioOptional.get());
-            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+    @GetMapping("/editar")
+    public String mostrarFormularioEditar(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(usuarioSrvc.getRepo().findByEmail(userDetails.getUsername()));
+        if (usuarioOpt.isPresent()) {
+            model.addAttribute("usuario", usuarioOpt.get());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-//            model.addAttribute("imagenes", imagenSrvc.buscarEntidadesSet());
-            return "admin/modificar-usuario";
-        } else {
-            model.addAttribute("error", "Usuario no encontrado");
-            return "error";
+            return "usuarios/editarUsuario";
         }
+        return "redirect:/login";
     }
-    @PostMapping("/editar/{id}")
-    public String guardarEdicion(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) throws Exception {
+
+
+    // Hay que hacer el logging con un usuario para ver si funciona!!
+    @PostMapping("/editar")
+    public String editarUsuario(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult,
+                                @AuthenticationPrincipal UserDetails userDetails, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-            return "admin/modificar-usuario"; // Regresa a la vista de edición
+            return "usuarios/editarUsuario";
         }
 
-        Detalle detalle = usuario.getDetalle();
-        if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
-            Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
-            if (generoOptional.isPresent()) {
-                detalle.setGenero(generoOptional.get());
-            } else {
-                model.addAttribute("error", "Género no encontrado");
-                model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-                return "admin/modificar-usuario"; // Regresa a la vista de edición si hay un error
-            }
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(usuarioSrvc.getRepo().findByEmail(userDetails.getUsername()));
+        if (usuarioOpt.isPresent()) {
+            Usuario usuarioExistente = usuarioOpt.get();
+            Detalle detalle = usuario.getDetalle();
+            detalle.setId(usuarioExistente.getDetalle().getId());
+            usuarioExistente.setDetalle(detalle);
+            detalleSrvc.guardar(detalle);
+            usuarioSrvc.guardar(usuarioExistente);
+            return "redirect:/registro/editar";
         } else {
-            model.addAttribute("error", "Género no seleccionado");
-            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-            return "admin/modificar-usuario"; // Regresa a la vista de edición si hay un error
+            return "redirect:/login";
         }
-
-        // Establecer el ID del usuario para la edición
-        usuario.setId(id);
-        usuarioSrvc.guardar(usuario);
-        return "redirect:/admin/usuarios"; // Redirigir a la lista de usuarios después de guardar
     }
+
+    @PostMapping("/baja")
+    public String darDeBaja(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+        Optional<Usuario> usuarioOpt = Optional.ofNullable(usuarioSrvc.getRepo().findByEmail(userDetails.getUsername()));
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            usuario.setActive(false);
+            usuarioSrvc.guardar(usuario);
+            return "redirect:/logout";
+        } else {
+            return "redirect:/login";
+        }
+    }
+
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
         if (usuarioOptional.isPresent()) {
             model.addAttribute("usuario", usuarioOptional.get());
             model.addAttribute("cestas", usuarioOptional.get().getCestas());
-            return "usuarios/cestas"; // Vista para mostrar las cestas, hay que crear
+            return "usuarios/cestas";
         }
         return "redirect:/usuarios";
     }
