@@ -23,6 +23,16 @@ public class DonacionCtrl {
         this.usuarioSrvc = usuarioSrvc;
     }
 
+
+    // Obtener todas las donaciones
+    @GetMapping
+    public String listarDonaciones(Model model) {
+        List<Donacion> donaciones = donacionSrvc.buscarEntidades();
+        model.addAttribute("donaciones", donaciones);
+        return "donaciones/donacion-lista";
+    }
+
+
     // Crear una nueva donación (GET)
     @GetMapping("/crear")
     public String mostrarFormularioCreacion(Model model) {
@@ -41,14 +51,6 @@ public class DonacionCtrl {
         return "redirect:/donaciones";
     }
 
-    // Obtener todas las donaciones
-    @GetMapping
-    public String listarDonaciones(Model model) {
-        List<Donacion> donaciones = donacionSrvc.buscarEntidades();
-        model.addAttribute("donaciones", donaciones);
-        return "donaciones/donacion-lista";
-    }
-
     // Obtener una donación por ID
     @GetMapping("/{id}")
     public String obtenerDonacion(@PathVariable Long id, Model model) throws Throwable {
@@ -56,33 +58,5 @@ public class DonacionCtrl {
                 .orElseThrow(() -> new RuntimeException("Donación no encontrada"));
         model.addAttribute("donacion", donacion);
         return "donaciones/donacion-detalle";
-    }
-
-    // Actualizar una donación (GET)
-    @GetMapping("/{id}/editar")
-    public String mostrarFormularioEdicion(@PathVariable Long id, Model model) throws Throwable {
-        Donacion donacion = (Donacion) donacionSrvc.encuentraPorId(id)
-                .orElseThrow(() -> new RuntimeException("Donación no encontrada"));
-        model.addAttribute("donacion", donacion);
-        return "donaciones/donacion-editar";
-    }
-
-    // Actualizar una donación (POST)
-    @PostMapping("/{id}")
-    public String actualizarDonacion(@PathVariable Long id, @ModelAttribute Donacion donacionActualizada) throws Throwable {
-        Donacion donacionExistente = (Donacion) donacionSrvc.encuentraPorId(id)
-                .orElseThrow(() -> new RuntimeException("Donación no encontrada"));
-        donacionExistente.setDonacion(donacionActualizada.getDonacion());
-        donacionSrvc.guardar(donacionExistente);
-        return "redirect:/donaciones";
-    }
-
-    // Eliminar una donación (POST)
-    @PostMapping("/{id}/eliminar")
-    public String eliminarDonacion(@PathVariable Long id) throws Throwable {
-        donacionSrvc.encuentraPorId(id)
-                .orElseThrow(() -> new RuntimeException("Donación no encontrada"));
-        donacionSrvc.eliminarPorId(id);
-        return "redirect:/donaciones";
     }
 }

@@ -3,6 +3,7 @@ package com.eoi.Fruggy.web.controladores;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,9 +29,11 @@ public class ProductoCtrl {
     }
 
     @GetMapping
-    public String mostrarCatalogo(Model model) {
+    public String mostrarCatalogo(Model model, @AuthenticationPrincipal Usuario usuario) {
         List<Producto> listaProducto = productosSrvc.buscarEntidades(); // Obtener todos los productos
+        List<Cesta> cestas = cestaSrvc.buscarEntidades();
         model.addAttribute("listaProducto", listaProducto); // Agregar la lista de productos al modelo
+        model.addAttribute("cestas", cestas);
         return "/productos/catalogoProductos";
     }
 
