@@ -22,7 +22,7 @@ public class Favorito implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "precios_id")
@@ -31,5 +31,9 @@ public class Favorito implements Serializable {
     @ManyToOne
     @JoinColumn(name = "listas_id")
     private Lista lista;
+
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
 }

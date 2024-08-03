@@ -23,7 +23,7 @@
     <p><strong>Supermercado:</strong> <span th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
 
     <h2>Nota Media</h2>
-    <p th:text="${#numbers.formatDecimal(notaMedia, 1, 1)}">0.0</p> <!-- Utilizando la variable notaMedia -->
+    <p th:text="${notaMedia != null ? #numbers.formatDecimal(notaMedia, 1, 1) : 'N/A'}"></p>
 
     <h2>Deja tu valoración</h2>
     <form th:action="@{/productos/valoraciones/producto/{id}/guardar(id=${producto.id})}" method="post">

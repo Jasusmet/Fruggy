@@ -32,4 +32,8 @@ public class Lista implements Serializable {
     @OneToMany(mappedBy = "lista")
     private Set<Favorito> favoritos;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
 }

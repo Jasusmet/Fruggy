@@ -20,12 +20,16 @@ public class ProductoCtrl {
     private final SrvcProducto productosSrvc;
     private final SrvcValProducto valProductosSrvc;
     private final SrvcCesta cestaSrvc;
+    private final SrvcLista listaSrvc;
+    private final SrvcFavorito favoritoSrvc;
 
 
-    public ProductoCtrl(SrvcProducto productosSrvc, SrvcValProducto valProductosSrvc, SrvcCesta cestaSrvc) {
+    public ProductoCtrl(SrvcProducto productosSrvc, SrvcValProducto valProductosSrvc, SrvcCesta cestaSrvc, SrvcLista listaSrvc, SrvcFavorito favoritoSrvc) {
         this.productosSrvc = productosSrvc;
         this.valProductosSrvc = valProductosSrvc;
         this.cestaSrvc = cestaSrvc;
+        this.listaSrvc = listaSrvc;
+        this.favoritoSrvc = favoritoSrvc;
     }
 
     @GetMapping
@@ -40,9 +44,11 @@ public class ProductoCtrl {
     @GetMapping("/detalles/{id}")
     public String verDetallesProducto(@PathVariable("id") Long id, Model model) throws Throwable {
         Producto producto = productosSrvc.encuentraPorId(id).orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + id));
+        List<Lista> listas = listaSrvc.buscarEntidades();
         List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(producto.getPrecios().iterator().next().getId());
 
         model.addAttribute("producto", producto);
+        model.addAttribute("listas", listas);
         model.addAttribute("valoraciones", valoraciones);
         model.addAttribute("valoracion", new ValoracionProducto());
 
@@ -85,6 +91,21 @@ public class ProductoCtrl {
 
         return "redirect:/cestas";
     }
+
+//  FAVORITOS
+@PostMapping("/{listaId}/favoritos")
+public String agregarFavorito(@PathVariable Long listaId, @RequestParam Long productoId, Model model) throws Throwable {
+    Lista lista = (Lista) listaSrvc.encuentraPorId(listaId).orElseThrow(() -> new IllegalArgumentException("Lista no encontrada: " + listaId));
+    Producto producto = productosSrvc.encuentraPorId(productoId).orElseThrow(() -> new IllegalArgumentException("Producto no encontrado: " + productoId));
+
+    Favorito favorito = new Favorito();
+    favorito.setLista(lista);
+    favorito.setProducto(producto);
+    favoritoSrvc.guardar(favorito);
+
+    return "redirect:/listas/" + listaId;
+}
+
 
 
 }

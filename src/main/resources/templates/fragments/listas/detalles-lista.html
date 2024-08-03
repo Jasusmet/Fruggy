@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de la Lista</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4" th:fragment="detalles-lista">
+    <h1 th:text="'Detalles de la Lista: ' + ${lista.nombreLista}">Detalles de la Lista</h1>
+    <h2>Favoritos</h2>
+    <ul class="list-group">
+        <th:block th:each="favorito : ${favoritos}">
+            <li class="list-group-item">
+                <span th:text="${favorito.precio.producto.nombreProducto}">Nombre del Producto</span>
+                <form th:action="@{/listas/{listaId}/favoritos/{favoritoId}(listaId=${lista.id}, favoritoId=${favorito.id})}" method="post" style="display:inline;">
+                    <input type="hidden" name="_method" value="delete"/>
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </li>
+        </th:block>
+    </ul>
+
+    <h2 class="mt-4">Agregar Favorito</h2>
+    <form th:action="@{/listas/{id}/favoritos(id=${lista.id})}" method="post">
+        <div class="form-group">
+            <label for="precio">Precio:</label>
+            <select id="precio" name="precioId" class="form-control">
+                <option th:each="precio : ${#lists.toList(#prices)}" th:value="${precio.id}" th:text="${precio.producto.nombreProducto}">Precio</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar</button>
+    </form>
+</div>
+</body>
+</html>
