@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Productos</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 <section class="product spad" th:fragment="catalogoProductos">
@@ -23,7 +19,22 @@
                         <div class="pull-right">
                             <div class="btn-group">
                                 <button class="btn btn-info" id="list" onclick="switchView('list')">Vista Lista</button>
-                                <button class="btn btn-danger" id="grid" onclick="switchView('grid')">Vista Cuadrícula</button>
+                                <button class="btn btn-danger" id="grid" onclick="switchView('grid')">Vista Cuadrícula
+                                </button>
+                                <!-- Botón para desplegar categorías -->
+                                <div class="btn-group">
+                                    <button class="btn btn-secondary" id="categoryButton" onclick="toggleCategories()">
+                                        Categorías
+                                    </button>
+                                    <div id="categoryMenu" class="dropdown-menu" style="display: none;">
+                                        <div th:each="categoria : ${categorias}">
+                                            <a class="dropdown-item"
+                                               th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
+                                               th:text="${categoria.tipo}"></a>
+                                        </div>
+                                        <p th:if="${categorias.size() == 0}">No hay categorías disponibles.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -47,7 +58,8 @@
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h5>
                                     <p class="card-text">
-                                        <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span><br/>
+                                        <strong>Descripción:</strong> <span
+                                            th:text="${producto.descripcion}"></span><br/>
                                         <strong>Marca:</strong> <span th:text="${producto.marca}">Marca</span><br/>
                                         <strong>Precio:</strong>
                                         <span th:if="${producto.descuentos.size() > 0}">
@@ -67,16 +79,20 @@
                                         <span th:if="${producto.precios.size() == 0 || producto.precios[0].supermercado == null}">Sin supermercado asignado</span>
                                         <br>
                                         <strong>Nota Media:</strong>
-                                        <span th:if="${notaMedia != null}" th:text="${#numbers.formatDecimal(notaMedia, 1, 2)}"></span>
+                                        <span th:if="${notaMedia != null}"
+                                              th:text="${#numbers.formatDecimal(notaMedia, 1, 2)}"></span>
                                         <span th:if="${notaMedia == null}">N/A</span>
                                     </p>
-                                    <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#agregarCestaModal" th:data-producto-id="${producto.id}">
+                                    <button class="btn btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#agregarCestaModal" th:data-producto-id="${producto.id}">
                                         <i class="fas fa-shopping-basket"></i> Agregar a Cesta
                                     </button>
-                                    <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#agregarFavoritoModal" th:data-producto-id="${producto.id}">
+                                    <button class="btn btn-info" data-bs-toggle="modal"
+                                            data-bs-target="#agregarFavoritoModal" th:data-producto-id="${producto.id}">
                                         <i class="fas fa-star"></i> Agregar a Favoritos
                                     </button>
-                                    <a th:href="@{/productos/detalles/{id}(id=${producto.id})}" class="btn btn-secondary">Ver Detalles</a>
+                                    <a th:href="@{/productos/detalles/{id}(id=${producto.id})}"
+                                       class="btn btn-secondary">Ver Detalles</a>
                                 </div>
                             </div>
                         </div>
@@ -88,7 +104,8 @@
 </section>
 
 <!-- Modal para seleccionar cesta -->
-<div class="modal fade" id="agregarCestaModal" tabindex="-1" aria-labelledby="agregarCestaModalLabel" aria-hidden="true">
+<div class="modal fade" id="agregarCestaModal" tabindex="-1" aria-labelledby="agregarCestaModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -101,7 +118,8 @@
                     <div class="mb-3">
                         <label for="cestaId" class="form-label">Selecciona una Cesta:</label>
                         <select class="form-select" id="cestaId" name="cestaId" required>
-                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}" th:text="${cesta.nombre}"></option>
+                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}"
+                                    th:text="${cesta.nombre}"></option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Agregar a Cesta</button>
@@ -116,7 +134,8 @@
 </div>
 
 <!-- Modal para seleccionar lista de favoritos -->
-<div class="modal fade" id="agregarFavoritoModal" tabindex="-1" aria-labelledby="agregarFavoritoModalLabel" aria-hidden="true">
+<div class="modal fade" id="agregarFavoritoModal" tabindex="-1" aria-labelledby="agregarFavoritoModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -129,7 +148,8 @@
                     <div class="mb-3">
                         <label for="listaId" class="form-label">Selecciona una Lista:</label>
                         <select class="form-select" id="listaId" name="listaId" required>
-                            <option th:each="lista : ${listas}" th:value="${lista.id}" th:text="${lista.nombreLista}"></option>
+                            <option th:each="lista : ${listas}" th:value="${lista.id}"
+                                    th:text="${lista.nombreLista}"></option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Agregar a Favoritos</button>
@@ -141,10 +161,3 @@
         </div>
     </div>
 </div>
-
-
-
-</script>
-
-</body>
-</html>

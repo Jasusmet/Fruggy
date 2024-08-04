@@ -258,4 +258,16 @@ a:hover, a:focus {
     background: #dd2222;
 }
 
-
+/* Estilo para el menú desplegable */
+#categoryMenu {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+}
+.dropdown-menu {
+    display: none; /* Asegúrate de que se oculta inicialmente */
+    position: absolute; /* Para que el menú aparezca sobre otros elementos */
+    z-index: 1000; /* Para que el menú esté por encima de otros elementos */
+}

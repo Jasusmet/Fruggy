@@ -1,6 +1,8 @@
 package com.eoi.Fruggy.entidades;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,10 @@ public class Cesta implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotBlank(message = "El nombre no puede estar vacío.")
+    @Size(max = 100, message = "El nombre no puede exceder los 100 caracteres.")
     @Column(name = "nombre", length = 100)
+
     private String nombre;
 
     @Column (name ="fecha")

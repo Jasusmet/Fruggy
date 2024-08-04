@@ -40,10 +40,9 @@ public class DataInitializer {
     public void init() {
         Locale locale = new Locale("es");
         // Inicialización de roles
-
         if (repoRol.count() == 0) {
-            repoRol.save(new Rol(messageSource.getMessage("role.admin", null, locale)));
-            repoRol.save(new Rol(messageSource.getMessage("role.user", null, locale)));
+            repoRol.save(new Rol("ROLE_" + messageSource.getMessage("role.admin", null, locale)));
+            repoRol.save(new Rol("ROLE_" + messageSource.getMessage("role.user", null, locale)));
         }
 
         // Inicialización de géneros

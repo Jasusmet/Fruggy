@@ -7,16 +7,23 @@
 
 <div th:fragment="crear-cesta">
     <h1>Crear Nueva Cesta</h1>
-    <form th:action="@{/cestas/crear}" method="post">
+    <form th:action="@{/cestas/crear}" method="post" th:object="${cesta}">
         <label for="nombre">Nombre de la Cesta:</label>
-        <input type="text" id="nombre" name="nombre" required>
+        <input type="text" id="nombre" th:field="*{nombre}" required/>
+
+        <div th:if="${#fields.hasErrors('nombre')}" class="alert alert-danger">
+            <p th:each="error : ${#fields.errors('nombre')}" th:text="${error}"></p>
+        </div>
+
         <button type="submit">Crear Cesta</button>
     </form>
+
     <div th:if="${param.error}">
         <p>Error: Solo se pueden crear hasta 10 cestas por usuario.</p>
     </div>
-    <a href="/cestas">Volver a Mis Cestas</a>
 
+    <a href="/cestas">Volver a Mis Cestas</a>
 </div>
+
 </body>
 </html>

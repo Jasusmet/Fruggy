@@ -36,13 +36,17 @@ public class LoginCtrl {
         Optional<Usuario> optionalUsuario = Optional.ofNullable(repoUsuario.findByEmail(email));
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
+            System.out.println("Usuario encontrado: " + usuario.getEmail());
+            System.out.println("Contraseña del usuario: " + usuario.getPassword());
             if (bCryptPasswordEncoder.matches(password, usuario.getPassword())) {
                 return "redirect:/"; // Redirige a la página principal
             } else {
                 model.addAttribute("error", true); // Contraseña incorrecta
+                System.out.println("Contraseña incorrecta para el usuario: " + usuario.getEmail());
             }
         } else {
             model.addAttribute("error", true); // Usuario no encontrado
+            System.out.println("Usuario no encontrado: " + email);
         }
         return "login"; // Vuelve a la vista de login sin redirigir
     }

@@ -11,8 +11,13 @@
         <label for="nombre">Nombre de la Cesta:</label>
         <input type="text" id="nombre" th:field="*{nombre}" required/><br/>
 
+        <div th:if="${#fields.hasErrors('nombre')}" class="alert alert-danger">
+            <p th:each="error : ${#fields.errors('nombre')}" th:text="${error}"></p>
+        </div>
+
         <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" th:value="${cesta.usuario.detalle.nombreUsuario} + ' (' + ${cesta.usuario.email} + ')'" readonly/><br/>
+        <input type="text" id="usuario"
+               th:value="${cesta.usuario.detalle.nombreUsuario} + ' (' + ${cesta.usuario.email} + ')'" readonly/><br/>
 
         <input type="submit" value="Actualizar Cesta"/>
     </form>

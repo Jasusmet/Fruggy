@@ -48,7 +48,7 @@ public class ADMINProductoCtrl {
 
 
     // Mostrar lista de productos
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String listarProductos(Model model) {
         List<Producto> productos = productosSrvc.buscarEntidades();
@@ -56,7 +56,7 @@ public class ADMINProductoCtrl {
         return "/admin/CRUD-Productos";
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
         Producto producto = new Producto();
@@ -71,7 +71,7 @@ public class ADMINProductoCtrl {
     }
 
     //  formulario de creación de producto
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute("producto") Producto producto,
                                   BindingResult result,
@@ -106,7 +106,7 @@ public class ADMINProductoCtrl {
     }
 
     // Mostrar formulario para editar un producto
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -204,6 +204,8 @@ public class ADMINProductoCtrl {
                                    @RequestParam("porcentaje") Double porcentaje,
                                    @RequestParam("fechaInicio") String fechaInicio,
                                    @RequestParam("fechaFin") String fechaFin) throws Exception {
+
+
         Optional<Producto> productoOpt = productosSrvc.encuentraPorId(id);
         Optional<TipoDescuento> tipoDescuentoOpt = tipoDescuentoSrvc.encuentraPorId(tipoDescuentoId);
 

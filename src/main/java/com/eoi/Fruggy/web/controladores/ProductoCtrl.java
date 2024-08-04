@@ -23,23 +23,27 @@ public class ProductoCtrl {
     private final SrvcCesta cestaSrvc;
     private final SrvcLista listaSrvc;
     private final SrvcFavorito favoritoSrvc;
+    private final SrvcCategoria categoriaSrvc;
 
 
-    public ProductoCtrl(SrvcProducto productosSrvc, SrvcValProducto valProductosSrvc, SrvcCesta cestaSrvc, SrvcLista listaSrvc, SrvcFavorito favoritoSrvc) {
+    public ProductoCtrl(SrvcProducto productosSrvc, SrvcValProducto valProductosSrvc, SrvcCesta cestaSrvc, SrvcLista listaSrvc, SrvcFavorito favoritoSrvc, SrvcCategoria categoriaSrvc) {
         this.productosSrvc = productosSrvc;
         this.valProductosSrvc = valProductosSrvc;
         this.cestaSrvc = cestaSrvc;
         this.listaSrvc = listaSrvc;
         this.favoritoSrvc = favoritoSrvc;
+        this.categoriaSrvc = categoriaSrvc;
     }
 
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String mostrarCatalogo(Model model, @AuthenticationPrincipal Usuario usuario) {
         List<Producto> listaProducto = productosSrvc.buscarEntidades(); // Obtener todos los productos
+        List<Categoria> categorias = categoriaSrvc.buscarEntidades();
         List<Cesta> cestas = cestaSrvc.buscarEntidades();
         model.addAttribute("listaProducto", listaProducto); // Agregar la lista de productos al modelo
         model.addAttribute("cestas", cestas);
+        model.addAttribute("categorias", categorias);
         return "/productos/catalogoProductos";
     }
 

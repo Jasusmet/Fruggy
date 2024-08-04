@@ -5,10 +5,12 @@ import com.eoi.Fruggy.entidades.Cesta;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.servicios.SrvcCesta;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
+import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,7 +49,15 @@ public class CestaCtrl {
     // Crear una nueva cesta (POST)
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/crear")
-    public String crearCesta(@ModelAttribute Cesta cesta, @AuthenticationPrincipal Usuario usuario, RedirectAttributes redirectAttributes) throws Exception {
+    public String crearCesta(@Valid @ModelAttribute Cesta cesta,
+                             BindingResult bindingResult,
+                             @AuthenticationPrincipal Usuario usuario,
+                             RedirectAttributes redirectAttributes) throws Exception {
+        // Validar el objeto Cesta
+        if (bindingResult.hasErrors()) {
+            return "cestas/crear-cesta"; // Volver al formulario si hay errores
+        }
+
         if (usuario.getCestas().size() < 10) {
             cesta.setUsuario(usuario);
             cesta.setFecha(LocalDateTime.now());
@@ -80,7 +90,13 @@ public class CestaCtrl {
     // Actualizar una cesta (POST)
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{id}")
-    public String actualizarCesta(@PathVariable Long id, @ModelAttribute Cesta cestaActualizada) throws Throwable {
+    public String actualizarCesta(@PathVariable Long id,
+                                  @Valid @ModelAttribute Cesta cestaActualizada,
+                                  BindingResult bindingResult) throws Throwable {
+        // Validar el objeto Cesta
+        if (bindingResult.hasErrors()) {
+            return "/cestas/cesta-editar"; // Volver al formulario si hay errores
+        }
         Cesta cestaExistente = (Cesta) cestaSrvc.encuentraPorId(id)
                 .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
         cestaExistente.setNombre(cestaActualizada.getNombre());
