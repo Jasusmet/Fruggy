@@ -63,7 +63,7 @@ public class UsuarioCtrl {
             // Obtener el rol de usuario por defecto desde el archivo de propiedades
             Locale locale = new Locale("es");
             String roleName = messageSource.getMessage("role.user", null, locale);
-            Optional<Rol> rolUsuarioOpt = Optional.ofNullable(rolSrvc.getRepo().findByRolNombre(roleName));
+            Optional<Rol> rolUsuarioOpt = rolSrvc.getRepo().findByRolNombre(roleName);
             if (rolUsuarioOpt.isEmpty()) {
                 throw new Exception("Rol " + roleName + " no encontrado");
             }

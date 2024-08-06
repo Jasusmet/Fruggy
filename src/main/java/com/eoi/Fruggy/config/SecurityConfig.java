@@ -39,8 +39,8 @@ public class SecurityConfig {
     @Profile("desarrollo")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // Desactivación de CSRF solo para simplificar pruebas
-                .cors().disable() // Desactivación de CORS
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/js/**").permitAll()
@@ -72,8 +72,8 @@ public class SecurityConfig {
     @Profile("local")
     public SecurityFilterChain securityFilterChainLocal(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .cors().disable()
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/img/**").permitAll()

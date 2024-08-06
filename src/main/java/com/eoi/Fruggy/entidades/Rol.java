@@ -27,10 +27,18 @@ public class Rol implements Serializable {
     @Column(name = "rol_nombre", unique = true, nullable = false)
     private String rolNombre;
 
+    @Column(name = "es_desc", unique = true, nullable = false)
+    private String esDesc;
+
+    @Column(name = "en_desc", unique = true, nullable = false)
+    private String enDesc;
+
     @ManyToMany(mappedBy = "roles")
     private Set<Usuario> usuarios = new HashSet<>();
 
-    public Rol(String rolNombre) {
+    public Rol(String rolNombre , String es , String en) {
         this.rolNombre = rolNombre;
+        this.esDesc = es;
+        this.enDesc = en;
     }
 }

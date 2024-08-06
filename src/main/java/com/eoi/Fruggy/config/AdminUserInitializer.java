@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 
 @Component
@@ -28,18 +29,22 @@ public class AdminUserInitializer implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
 
-    public AdminUserInitializer(RepoUsuario repoUsuario, RepoRol repoRol, RepoGenero repoGenero, RepoDetalle repoDetalle, PasswordEncoder passwordEncoder, MessageSource messageSource) {
+    private final DataInitializer dataInitializer;
+
+    public AdminUserInitializer(RepoUsuario repoUsuario, RepoRol repoRol, RepoGenero repoGenero, RepoDetalle repoDetalle, PasswordEncoder passwordEncoder, MessageSource messageSource, DataInitializer dataInitializer) {
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
         this.repoGenero = repoGenero;
         this.repoDetalle = repoDetalle;
         this.passwordEncoder = passwordEncoder;
         this.messageSource = messageSource;
+        this.dataInitializer = dataInitializer;
     }
 
     @Override
     @Transactional
     public void run(String... args) throws Exception {
+        dataInitializer.init();
         if (repoUsuario.count() == 0) {
             // Crear y guardar Detalle
             Detalle detalle = new Detalle();
@@ -68,15 +73,26 @@ public class AdminUserInitializer implements CommandLineRunner {
             // Añadir el rol al usuario
             Locale locale = new Locale("es");
             String adminRoleName = "ROLE_" + messageSource.getMessage("role.admin", null, locale);
-            Rol adminRole = repoRol.findByRolNombre(adminRoleName);
-            if (adminRole == null) {
-                adminRole = new Rol();
+            String adminRoleDescEs = messageSource.getMessage("role.admin.es.desc", null, locale);
+            String adminRoleDescEn = messageSource.getMessage("role.admin.en.desc", null, locale);
+
+            Optional<Rol> adminRoleopt = repoRol.findByRolNombre(adminRoleName);
+            Rol adminRolefinal = new Rol();
+            if (adminRoleopt.isPresent()) {
+                adminRolefinal = adminRoleopt.get();
+            }
+            else
+            {
+                Rol adminRole = new Rol();
                 adminRole.setRolNombre(adminRoleName);
+                adminRole.setEsDesc(adminRoleDescEs);
+                adminRole.setEnDesc(adminRoleDescEn);
                 adminRole = repoRol.save(adminRole); // Guardar el rol si no existe
+                adminRolefinal = adminRole;
             }
 
             Set<Rol> roles = new HashSet<>();
-            roles.add(adminRole);
+            roles.add(adminRolefinal);
             admin.setRoles(roles);
 
             // Guardar el Usuario

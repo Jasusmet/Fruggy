@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,13 +37,21 @@ public class DataInitializer {
         this.messageSource = messageSource;
     }
 
-    @PostConstruct
     public void init() {
         Locale locale = new Locale("es");
         // Inicialización de roles
         if (repoRol.count() == 0) {
-            repoRol.save(new Rol("ROLE_" + messageSource.getMessage("role.admin", null, locale)));
-            repoRol.save(new Rol("ROLE_" + messageSource.getMessage("role.user", null, locale)));
+            repoRol.save(new Rol("ROLE_" + messageSource.getMessage("role.admin", null, locale),
+                            messageSource.getMessage("role.admin.es.desc", null, locale),
+                            messageSource.getMessage("role.admin.en.desc", null, locale)
+                    )
+            );
+            repoRol.save(new Rol("ROLE_" + messageSource.getMessage("role.user", null, locale),
+                            messageSource.getMessage("role.user.es.desc", null, locale),
+                            messageSource.getMessage("role.user.en.desc", null, locale)
+                    )
+            );
+
         }
 
         // Inicialización de géneros
@@ -230,4 +239,39 @@ public class DataInitializer {
             e.printStackTrace();
         }
     }
+    public void crearsecuencial(){
+        // Creating and initializing the ArrayList
+        // Declaring object of integer type
+        List<String> productos = Arrays.asList("p1","p2","p3","p2" ,"p5","p6","p2","p1"  );
+        String[][] precios = {
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"},
+                {"12/05/2024","12/05/2024","1","5.77"}
+
+        };
+        List<String> nombreSuper =  Arrays.asList("sup 1","sup 2","sup 3","sup 1" ,"sup 1","sup 2","sup 3","sup 1"  );
+
+        for (int i = 0; i < productos.size(); ++i) {
+            for (int j = 0; j < precios[i].length; ++j) {
+                //Guardo la fecha iniciA J = 0
+                //Guardo la fecha FINAL  J = 1
+                //gUARDO ACTIVO J = 2
+                //gUARDO PRECIO J = 3
+
+                //gUARDO EL SUPER nombreSuper[0]
+
+
+            }
+            //uNA VEZ CREADO EL PRECIO CREO EL PRODUCTO AÑADIENDO EL PRECIO
+
+
+        };
+
+
     }
+}

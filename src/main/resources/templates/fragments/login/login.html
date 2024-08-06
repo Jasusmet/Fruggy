@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container" th:fragment="login">
-    <form class="form" th:action="@{/login}" method="post">
+    <form class="form" th:action="@{/login}" th:object="${loginForm}" method="post">
         <div class="logo">
             <a href="/">
                 <img src="/img/logo.png" alt="Fruggy" width="200" height="200"/>
@@ -19,7 +19,7 @@
         <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
 
         <label for="email" th:text="#{login.email}">Correo electrónico:</label>
-        <input type="email" id="email" name="email" required placeholder="Introduce tu correo electrónico">
+        <input type="email" id="email" name="username" required placeholder="Introduce tu correo electrónico">
 
         <label for="password" th:text="#{login.password}">Contraseña:</label>
         <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña">

@@ -50,9 +50,9 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
     public Usuario guardar(Usuario usuario, Set<String> roles) throws Exception {
         Set<Rol> rolesSet = new HashSet<>();
         for (String rolNombre : roles) {
-            Rol rol = repoRol.findByRolNombre(rolNombre);
-            if (rol != null) {
-                rolesSet.add(rol);
+            Optional<Rol> adminRoleopt = repoRol.findByRolNombre(rolNombre);
+            if (adminRoleopt.isPresent()) {
+                rolesSet.add(adminRoleopt.get());
             }
         }
         usuario.setRoles(rolesSet);
