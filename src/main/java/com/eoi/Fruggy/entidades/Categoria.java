@@ -29,6 +29,7 @@ public class Categoria implements Serializable {
     @Column(name = "tipo", length = 255)
     private String tipo;
 
+
     @JsonBackReference
     @OneToMany(mappedBy = "categoria")
     private Set<Subcategoria> subcategorias;

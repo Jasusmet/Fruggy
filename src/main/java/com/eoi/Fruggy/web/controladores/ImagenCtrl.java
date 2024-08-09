@@ -15,5 +15,4 @@ public class ImagenCtrl {
         File file = new File("D:\\img\\" + filename);
         return (Resource) new FileSystemResource(file);
     }
-
 }
