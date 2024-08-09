@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="sign-up">
+<head>
+    <title th:text="#{login.signUp}">Registrarse</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<div class="box">
+    <span class="borderLine"></span>
+    <form class="form" th:action="@{/login}" method="post">
+        <h2 th:text="#{login.signUp}">Registrarse</h2>
+        <div class="inputBox">
+            <input type="text" required="required">
+            <span th:text="#{login.name}">Nombre</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="text" required="required">
+            <span th:text="#{login.email}">Correo electrónico</span>
+            <i></i>
+        </div>
+        <div class="inputBox">
+            <input type="text" required="required">
+            <span th:text="#{login.password}">Contraseña</span>
+            <i></i>
+        </div>
+        <input type="submit" value="Siguiente">
+    </form>
+</div>
+</body>
+</html>

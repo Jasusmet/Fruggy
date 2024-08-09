@@ -44,15 +44,15 @@ public class LoginCtrl {
         return "redirect:/login?error=true";
     }
 
-    @GetMapping("/login/registrarse")
+    @GetMapping("/login/sign-up")
     public String showRegistrarseForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
             model.addAttribute("error", true);
         }
-        return "signup";
+        return "sign-up";
     }
 
-    @GetMapping("/login/contraseña-olvidada")
+    @GetMapping("/login/forgot-password")
     public String showContraseñaOlvidadaForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
             model.addAttribute("error", true);
@@ -60,7 +60,7 @@ public class LoginCtrl {
         return "forgot-password";
     }
 
-    @GetMapping("/login/recuperar-contraseña")
+    @GetMapping("/login/reset-password") // Tengo que ver como hacer accesible únicamente este enlace a quien se le ha mandado previamente un correo electrónico para poder reestablecer su contraseña
     public String showRecuperarContraseñaForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
             model.addAttribute("error", true);
