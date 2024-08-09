@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.web.controladores;
+package com.eoi.Fruggy.controladores;
 
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoUsuario;

@@ -1,14 +1,31 @@
-<footer>
-    <div class="footer-content">
-        <h3>Fruggy</h3>
-        <p>La forma inteligente de comprar en el supermercado</p>
-        <ul class="socials">
-            <li><a href="https://www.linkedin.com/in/jes%C3%BAs-clemente-p%C3%A9rez/" target="_blank"><i class="fa fa-linkedin-square"></i></a></li>
-            <li><a href="https://github.com/Jasusmet/Fruggy" target="_blank"><i class="fa fa-github"></i></a></li>
-            <li><a href="https://www.linkedin.com/in/mihai-laurentiu-livadaru/" target="_blank"><i class="fa fa-linkedin-square"></i></a></li>
+<div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
+            th:fragment="footer">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                <svg class="bi" width="30" height="24">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+            </a>
+            <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2024 Company, Inc</span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3"><a class="text-body-secondary" href="#">
+                <svg class="bi" width="24" height="24">
+                    <use xlink:href="#twitter"/>
+                </svg>
+            </a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#">
+                <svg class="bi" width="24" height="24">
+                    <use xlink:href="#instagram"/>
+                </svg>
+            </a></li>
+            <li class="ms-3"><a class="text-body-secondary" href="#">
+                <svg class="bi" width="24" height="24">
+                    <use xlink:href="#facebook"/>
+                </svg>
+            </a></li>
         </ul>
-    </div>
-    <div class="footer-bottom">
-        <p>Copyright &copy;2024</p>
-    </div>
-</footer>
+    </footer>
+</div>

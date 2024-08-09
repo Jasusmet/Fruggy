@@ -1,6 +1,5 @@
 package com.eoi.Fruggy.servicios;
 
-
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoDetalle;
@@ -30,7 +29,6 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
 
     @Override
     public String getEncodedPassword (Usuario usuario) {

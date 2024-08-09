@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.web.controladores.admin;
+package com.eoi.Fruggy.controladores.admin;
 
 import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Rol;

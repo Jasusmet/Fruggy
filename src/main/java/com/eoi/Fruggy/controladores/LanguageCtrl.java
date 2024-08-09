@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.web.controladores;
+package com.eoi.Fruggy.controladores;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.i18n.LocaleContextHolder;

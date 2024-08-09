@@ -1,54 +1,29 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<body>
-<header  class="header" th:fragment="header">
+<header class="p-3 text-bg-dark" th:fragment="header">
     <div class="container">
-        <div class="header__logo">
-            <a href="/"><img src="img/logo.png" alt="Fruggy"></a>
-        </div>
-        <ul class="header__menu">
-            <li><a href="/productos" th:text="#{products}">Productos</a></li>
-            <li><a href="/supermercados" th:text="#{supermarket}">Supermercados</a>
-                <ul class="header__menu__dropdown">
-                    <li><a href="#" th:text="#{supermarket.carrefour}">Carrefour</a></li>
-                    <li><a href="#" th:text="#{supermarket.dia}">Día</a></li>
-                    <li><a href="#" th:text="#{supermarket.hipercor}">Hipercor</a></li>
-                    <li><a href="#" th:text="#{supermarket.lidl}">Lidl</a></li>
-                    <li><a href="#" th:text="#{supermarket.mercadona}">Mercadona</a></li>
-                    <li><a href="#" th:text="#{supermarket.supeco}">Supeco</a></li>
-                </ul>
-            <li><a href="/contacto" th:text="#{contact}">Contacto</a></li>
-        </ul>
-        <form class="busqueda" role="buscar">
-            <input type="buscar" placeholder="Buscar">
-        </form>
-        <div class="lang__menu">
-            <div class="selected-lang" th:text="#{language}">Español</div>
-            <ul>
-                <li><a href="?lang=es" class="es" th:text="#{spanish}">Español</a></li>
-                <li><a href="?lang=en" class="en" th:text="#{english}">Inglés</a></li>
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+                    <use xlink:href="#bootstrap"/>
+                </svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
             </ul>
-        </div>
-        <div class="login">
-            <a href="/login">
-            <button type="button">Iniciar sesión</button>
-            </a>
-        </div>
-        <div class="admin">
-            <a href="#">
-            <button type="button">Admin</button>
-            </a>
-        </div>
-        <div class="moderador">
-            <a href="#">
-            <button type="button">Moderador</button>
-            </a>
-        </div>
-        <div class="humberger__open">
-            <i class="fa fa-bars"></i>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
+                       aria-label="Search">
+            </form>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-outline-light me-2">Login</button>
+                <button type="button" class="btn btn-warning">Sign-up</button>
+            </div>
         </div>
     </div>
 </header>
-</body>
-</html>
