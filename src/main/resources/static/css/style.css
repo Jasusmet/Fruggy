@@ -1,3 +1,5 @@
+@import "bootstrap.min.css";
+
 @import "preloader.css";
 @import "sidebar.css";
 @import "categories.css";
@@ -6,13 +8,10 @@
 @import "nice-select.css";
 @import "elegant-icons.css";
 @import "mediaQueries.css";
-@import "login.css";
-@import "bootstrap.min.css";
 @import "slicknav.min.css";
 @import "owl.carousel.min.css";
 @import "jquery-ui.min.css";
 @import "font-awesome.min.css";
-
 .form-control-dark {
     border-color: var(--bs-gray);
 }

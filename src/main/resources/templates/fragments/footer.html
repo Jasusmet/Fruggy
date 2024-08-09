@@ -1,31 +1,30 @@
-<div class="container">
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top"
-            th:fragment="footer">
-        <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-                <svg class="bi" width="30" height="24">
-                    <use xlink:href="#bootstrap"/>
-                </svg>
-            </a>
-            <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2024 Company, Inc</span>
+<div class="container my-5" th:fragment="footer">
+    <footer class="bg-dark text-center text-white">
+        <div class="container p-4 pb-0">
+            <section class="mb-4">
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-facebook-f"></i
+                ></a>
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-twitter"></i
+                ></a>
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-google"></i
+                ></a>
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-instagram"></i
+                ></a>
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-linkedin-in"></i
+                ></a>
+                <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
+                ><i class="fab fa-github"></i
+                ></a>
+            </section>
         </div>
-
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-            <li class="ms-3"><a class="text-body-secondary" href="#">
-                <svg class="bi" width="24" height="24">
-                    <use xlink:href="#twitter"/>
-                </svg>
-            </a></li>
-            <li class="ms-3"><a class="text-body-secondary" href="#">
-                <svg class="bi" width="24" height="24">
-                    <use xlink:href="#instagram"/>
-                </svg>
-            </a></li>
-            <li class="ms-3"><a class="text-body-secondary" href="#">
-                <svg class="bi" width="24" height="24">
-                    <use xlink:href="#facebook"/>
-                </svg>
-            </a></li>
-        </ul>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 Copyright:
+            <a class="text-white" href="https://fruggy.com/">Fruggy</a>
+        </div>
     </footer>
 </div>

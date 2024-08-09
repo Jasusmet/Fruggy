@@ -1,29 +1,52 @@
-<header class="p-3 text-bg-dark" th:fragment="header">
-    <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                    <use xlink:href="#bootstrap"/>
-                </svg>
-            </a>
-
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="header">
+    <div class="container d-flex flex-wrap">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="nav me-auto">
+                <li class="nav-item"><a href="/" class="nav-link text-white" aria-current="page">Inicio</a></li>
+                <li class="nav-item"><a href="/productos" class="nav-link text-white">Productos</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Supermercados
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="/supermercados/carrefour">Carrefour</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/dia">Dia</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/hipercor">Hipercor</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/lidl">Lidl</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/mercadona">Mercadona</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/supeco">Supeco</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="/contacto" class="nav-link text-white">Contacto</a></li>
             </ul>
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Search..."
-                       aria-label="Search">
-            </form>
-
-            <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-warning">Sign-up</button>
-            </div>
+            <ul class="nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Idioma
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="/es">Español</a></li>
+                        <li><a class="dropdown-item" href="/en">Inglés</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="/login" class="nav-link text-white">Iniciar sesión</a></li>
+                <li class="nav-item"><a href="/login/sign-up" class="nav-link text-white">Registrarse</a></li>
+            </ul>
         </div>
     </div>
+</nav>
+<header class="py-3 mb-4 border-bottom bg-dark">
+    <div class="container d-flex flex-wrap justify-content-center">
+        <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+            <span class="fs-4 text-white">Fruggy</span>
+        </a>
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
+            <input type="search" class="form-control" placeholder="Buscar..." aria-label="Search">
+        </form>
+    </div>
+    <!-- CUSTOM JS -->
+    <script>const navbarToggler = document.querySelector('.navbar-toggler');const navbarCollapse = document.querySelector('.navbar-collapse');navbarToggler.addEventListener('click', () => {navbarCollapse.classList.toggle('show');});</script>
 </header>
