@@ -15,8 +15,16 @@ public class SrvcValProducto extends AbstractSrvc<ValoracionProducto, Long, Repo
         super(repoValProducto);
         this.repoValProducto = repoValProducto;
     }
-
-    public List<ValoracionProducto> obtenerValoracionesPorProducto(Long precioId) {
-        return repoValProducto.findByPrecioId(precioId);
+    public List<ValoracionProducto> obtenerValoracionesPorProducto(Long productoId) {
+        return repoValProducto.findByProductoId(productoId);
     }
+
+    public double calcularNotaMedia(Long productoId) {
+        List<ValoracionProducto> valoraciones = obtenerValoracionesPorProducto(productoId);
+        return valoraciones.stream()
+                .mapToDouble(ValoracionProducto::getNota)
+                .average()
+                .orElse(0);
+    }
+
 }

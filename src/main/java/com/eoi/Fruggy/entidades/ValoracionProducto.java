@@ -32,15 +32,12 @@ public class ValoracionProducto implements Serializable {
     @Column(name = "nota")
     private Double nota;
 
-    @ManyToOne
-    @JoinColumn(name = "precios_id")
-    private Precio precio;
 
     @ManyToOne
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
-    @ManyToOne
+    @ManyToOne // Hace falta para que cada usuario pueda dejar una valoracion de producto.
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 

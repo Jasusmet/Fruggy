@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface RepoValProducto extends JpaRepository<ValoracionProducto, Long> {
-    List<ValoracionProducto> findByPrecioId(Long precioId);
-
+    List<ValoracionProducto> findByProductoId(Long productoId);
 }

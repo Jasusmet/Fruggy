@@ -35,7 +35,7 @@
 
     <!-- Formulario para dejar una valoración -->
     <h2>Deja tu valoración</h2>
-    <form th:action="@{/productos/valoraciones/producto/{id}/guardar(id=${producto.id})}" method="post">
+    <form th:action="@{/productos/valoraciones/{productoId}/guardar(productoId=${producto.id})}" method="post">
         <div class="form-group">
             <label for="comentario">Comentario:</label>
             <textarea id="comentario" name="comentario" class="form-control" required></textarea>
@@ -48,14 +48,18 @@
     </form>
 
     <!-- Sección de valoraciones -->
-    <h2 class="mt-5">Valoraciones</h2>
-    <ul class="list-group">
-        <li class="list-group-item" th:each="valoracion : ${valoraciones}">
-            <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span><br>
-            <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span><br>
-            <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
-        </li>
-    </ul>
+    <div>
+        <h2>Valoraciones</h2>
+        <ul>
+            <li th:each="valoracion : ${valoraciones}">
+                <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
+                <br/>
+                <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
+                <br/>
+                <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
+            </li>
+        </ul>
+    </div>
 
     <!-- Botón para volver al catálogo -->
     <a th:href="@{/productos}" class="btn btn-secondary mt-3">Volver al Catálogo</a>

@@ -66,8 +66,5 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "producto")
     private Set<Descuento> descuentos;
 
-    @OneToMany(mappedBy = "producto")
-    private List<ValoracionProducto> valoracionesProductos;
-
 }
 
