@@ -71,16 +71,19 @@ public class ProductoCtrl {
 
     // hay que añadir el usuario loggeado para que un usuario solo pueda hacer una reseña y que nos muestre quien ha dejado el comentario.
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @PostMapping("/valoraciones/producto/{id}/guardar")
+    @PostMapping("/productos/valoraciones/producto/{id}/guardar")
+    @PreAuthorize("isAuthenticated()")
     public String guardarValoracion(@PathVariable Long id,
                                     @Valid @ModelAttribute("valoracion") ValoracionProducto valoracion,
                                     BindingResult result,
-                                    Principal principal) throws Throwable {
+                                    @AuthenticationPrincipal Usuario usuario) throws Throwable {
         if (result.hasErrors()) {
-            return "productos/detalles-producto";
+            return "productos/detalles-producto"; // Debes manejar esto mejor para mostrar errores.
         }
+
         Producto producto = productosSrvc.encuentraPorId(id).orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + id));
         valoracion.setProducto(producto);
+        valoracion.setUsuario(usuario); // Asignar el usuario autenticado a la valoración
         valProductosSrvc.guardar(valoracion);
         return "redirect:/productos/detalles/" + id;
     }

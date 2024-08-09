@@ -18,5 +18,11 @@ public class SrvcValSupermercado extends AbstractSrvc <ValoracionSupermercado, L
     public List<ValoracionSupermercado> obtenerValoracionesPorSupermercado(Long supermercadoId) {
         return repoValSupermercado.findBySupermercadoId(supermercadoId);
     }
-
+    public Double calcularNotaMedia(Long supermercadoId) {
+        List<ValoracionSupermercado> valoraciones = obtenerValoracionesPorSupermercado(supermercadoId);
+        return valoraciones.stream()
+                .mapToDouble(ValoracionSupermercado::getNota)
+                .average()
+                .orElse(0.0);
+    }
 }

@@ -39,18 +39,21 @@ public class SupermercadoCtrl {
     }
 
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @GetMapping("/detalles/{id}")
-    public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
-        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + id));
+@GetMapping("/detalles/{id}")
+public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
+    Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
+            .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + id));
 
-        List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(id);
+    List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(id);
+    Double notaMedia = valSupermercadoSrvc.calcularNotaMedia(id);
 
-        model.addAttribute("supermercado", supermercado);
-        model.addAttribute("valoraciones", valoraciones);
-        model.addAttribute("valoracion", new ValoracionSupermercado()); // Crear un nuevo objeto para la valoración
-        return "supermercados/detalles-supermercado";
-    }
+    model.addAttribute("supermercado", supermercado);
+    model.addAttribute("valoraciones", valoraciones);
+    model.addAttribute("notaMedia", notaMedia);
+    model.addAttribute("valoracion", new ValoracionSupermercado());
+
+    return "supermercados/detalles-supermercado";
+}
 
     //FUNCIONA PERO HAY QUE HACER UN LOGIN PARA VER SI ES CORRECTO.
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
@@ -61,7 +64,6 @@ public class SupermercadoCtrl {
                                     Principal principal,
                                     Model model) throws Throwable {
         if (result.hasErrors()) {
-            // Si hay errores, recargar los detalles del supermercado
             Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
                     .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + supermercadoId));
             List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(supermercadoId);
@@ -70,7 +72,6 @@ public class SupermercadoCtrl {
             return "supermercados/detalles-supermercado";
         }
 
-        // Obtener el usuario actual y establecerlo en la valoración
         String username = principal.getName();
         Usuario usuario = usuarioSrvc.getRepo().findByEmail(username);
         valoracion.setUsuario(usuario);
