@@ -3,15 +3,12 @@ package com.eoi.Fruggy.web.controladores;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.entidades.Lista;
 import com.eoi.Fruggy.servicios.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/listas")

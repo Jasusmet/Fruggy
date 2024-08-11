@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -24,7 +25,7 @@ public class Cesta implements Serializable {
     @Id
     @Column(name ="id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "El nombre no puede estar vacío.")
     @Size(max = 100, message = "El nombre no puede exceder los 100 caracteres.")
@@ -35,16 +36,15 @@ public class Cesta implements Serializable {
     @Column (name ="fecha")
     private LocalDateTime fecha;
 
-    @ManyToOne
-    @JoinColumn(name = "usuarios_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "precio_id")
     private Precio precio;
 
-    @OneToMany(mappedBy = "cesta")
-    private Set<CestaProductos> cestaProductos;
-
+    @OneToMany(mappedBy = "cesta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Producto> productos = new HashSet<>();
 
 }

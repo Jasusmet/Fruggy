@@ -2,6 +2,8 @@ package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.*;
@@ -95,24 +98,39 @@ public class ProductoCtrl {
         return "redirect:/productos/detalles/" + productoId;
     }
 
-    // AGREGAR PRODUCTO A CESTA
-    // Al agregar a la cesta, este método puede ser llamado desde el formulario
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-    @PostMapping("/agregar-a-cesta")
-    public String agregarProductoACesta(@RequestParam Long productoId, @RequestParam Long cestaId, @AuthenticationPrincipal Usuario usuario) throws Throwable {
-        // Aregar el producto a la cesta seleccionada
-        Producto producto = productosSrvc.encuentraPorId(productoId).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-        Cesta cesta = (Cesta) cestaSrvc.encuentraPorId(cestaId).orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-        CestaProductos cestaProducto = new CestaProductos();
-        cestaProducto.setCesta(cesta);
-        cestaProducto.setProducto(producto);
-        cestaSrvc.guardar(cestaProducto);
+    // Aqui o en CESTA?
+    @PostMapping("/{cestaId}/agregar-a-cesta)")
+    public String agregarProductoACesta(@PathVariable Long cestaId,
+                                        @RequestParam Long productoId,
+                                        @AuthenticationPrincipal Usuario usuario,
+                                        HttpServletResponse response,
+                                        RedirectAttributes redirectAttributes) throws Exception {
+        // Buscar el producto por ID
+        Producto producto = productosSrvc.encuentraPorId(productoId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        return "redirect:/cestas";
+        // Obtener la cesta por ID y verificar si pertenece al usuario
+        Cesta cesta = cestaSrvc.encuentraPorId(cestaId)
+                .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
+
+        if (!cesta.getUsuario().equals(usuario)) {
+            throw new RuntimeException("No tienes permiso para agregar productos a esta cesta.");
+        }
+
+        // Crear una cookie con el ID del producto
+        Cookie cookie = new Cookie("producto_" + productoId, productoId.toString());
+        cookie.setPath("/");
+        cookie.setMaxAge(7 * 24 * 60 * 60); // La cookie expira en una semana, poner menos/más tiempo?
+        response.addCookie(cookie);
+
+        redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta.");
+        return "redirect:/cestas/" + cestaId;
     }
 
     //  FAVORITOS
+    // ME HACE LISTA?? o debería ser directamente favoritos?
+
 //@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{listaId}/favoritos")
     public String agregarFavorito(@PathVariable Long listaId, @RequestParam Long productoId, Model model) throws Throwable {

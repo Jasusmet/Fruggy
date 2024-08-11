@@ -69,8 +69,9 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuario")
     private Set<Donacion> donaciones;
 
-    @OneToMany(mappedBy = "usuario")
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Cesta> cestas;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Lista> listas;
 

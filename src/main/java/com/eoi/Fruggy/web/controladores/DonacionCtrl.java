@@ -24,7 +24,6 @@ public class DonacionCtrl {
         this.usuarioSrvc = usuarioSrvc;
     }
 
-
     // Obtener todas las donaciones
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
@@ -33,7 +32,6 @@ public class DonacionCtrl {
         model.addAttribute("donaciones", donaciones);
         return "donaciones/donacion-lista";
     }
-
 
     // Crear una nueva donación (GET)
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")

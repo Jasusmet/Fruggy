@@ -61,10 +61,12 @@ public class Producto implements Serializable {
     private Imagen imagen;
 
     @OneToMany(mappedBy = "producto")
-    private Set<CestaProductos> cestaProductos;
-
-    @OneToMany(mappedBy = "producto")
     private Set<Descuento> descuentos;
+
+    // Relación Cesta
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cesta_id")
+    private Cesta cesta;
 
 }
 

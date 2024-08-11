@@ -30,7 +30,7 @@ public class SupermercadoCtrl {
         this.usuarioSrvc = usuarioSrvc;
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String listarSupermercados(Model model) {
         List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
@@ -38,22 +38,22 @@ public class SupermercadoCtrl {
         return "/supermercados/lista-supermercados";
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-@GetMapping("/detalles/{id}")
-public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
-    Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
-            .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + id));
+    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/detalles/{id}")
+    public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
+        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + id));
 
-    List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(id);
-    Double notaMedia = valSupermercadoSrvc.calcularNotaMedia(id);
+        List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(id);
+        Double notaMedia = valSupermercadoSrvc.calcularNotaMedia(id);
 
-    model.addAttribute("supermercado", supermercado);
-    model.addAttribute("valoraciones", valoraciones);
-    model.addAttribute("notaMedia", notaMedia);
-    model.addAttribute("valoracion", new ValoracionSupermercado());
+        model.addAttribute("supermercado", supermercado);
+        model.addAttribute("valoraciones", valoraciones);
+        model.addAttribute("notaMedia", notaMedia);
+        model.addAttribute("valoracion", new ValoracionSupermercado());
 
-    return "supermercados/detalles-supermercado";
-}
+        return "supermercados/detalles-supermercado";
+    }
 
     //FUNCIONA PERO HAY QUE HACER UN LOGIN PARA VER SI ES CORRECTO.
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
