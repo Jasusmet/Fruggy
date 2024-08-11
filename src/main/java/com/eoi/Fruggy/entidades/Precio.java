@@ -52,10 +52,6 @@ public class Precio implements Serializable {
     @JoinColumn(name = "supermercados_id")
     private Supermercado supermercado;
 
-    @OneToMany(mappedBy = "precio")
-    private Set<Favorito> favoritos;
-
-
     @OneToMany(mappedBy = "precio", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Cesta> cestaPrecios;
 

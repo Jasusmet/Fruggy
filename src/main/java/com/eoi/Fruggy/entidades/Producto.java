@@ -68,5 +68,7 @@ public class Producto implements Serializable {
     @JoinColumn(name = "cesta_id")
     private Cesta cesta;
 
+    @Transient // Este campo no se guardará en la base de datos. Es para coger nota media de Valoraciones
+    private Double notaMedia;
 }
 

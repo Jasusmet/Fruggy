@@ -79,18 +79,18 @@
                                         <span th:if="${producto.precios.size() == 0 || producto.precios[0].supermercado == null}">Sin supermercado asignado</span>
                                         <br>
                                         <strong>Nota Media:</strong>
-                                        <span th:if="${notaMedia != null}"
-                                              th:text="${#numbers.formatDecimal(notaMedia, 1, 2)}"></span>
-                                        <span th:if="${notaMedia == null}">N/A</span>
-                                    </p>
-                                    <button class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#agregarCestaModal" th:data-producto-id="${producto.id}">
-                                        <i class="fas fa-shopping-basket"></i> Agregar a Cesta
-                                    </button>
-                                    <button class="btn btn-info" data-bs-toggle="modal"
-                                            data-bs-target="#agregarFavoritoModal" th:data-producto-id="${producto.id}">
-                                        <i class="fas fa-star"></i> Agregar a Favoritos
-                                    </button>
+                                        <span th:if="${producto.notaMedia != null}"
+                                              th:text="${#numbers.formatDecimal(producto.notaMedia, 1, 2)}"></span>
+                                        <span th:if="${producto.notaMedia == null}">N/A</span>
+
+                                        <!-- Botones para agregar a cesta, favoritos y ver detalles -->
+                                        <button class="btn btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#agregarCestaModal"
+                                                th:data-producto-id="${producto.id}"
+                                                onclick="abrirModal(${producto.id})">
+                                            <i class="fas fa-shopping-basket"></i> Agregar a Cesta
+                                        </button>
+
                                     <a th:href="@{/productos/detalles/{id}(id=${producto.id})}"
                                        class="btn btn-secondary">Ver Detalles</a>
                                 </div>
@@ -102,10 +102,8 @@
         </div>
     </div>
 </section>
-
 <!-- Modal para seleccionar cesta -->
-<div class="modal fade" id="agregarCestaModal" tabindex="-1" aria-labelledby="agregarCestaModalLabel"
-     aria-hidden="true">
+<div class="modal fade" id="agregarCestaModal" tabindex="-1" aria-labelledby="agregarCestaModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -113,13 +111,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formAgregarCesta" th:action="@{/productos/agregar-a-cesta}" method="post">
+                <form id="formAgregarCesta" th:action="@{/cestas/{cestaId}/agregarProducto(cestaId=${cestaId})}" method="post">
                     <input type="hidden" id="productoId" name="productoId" value="">
                     <div class="mb-3">
                         <label for="cestaId" class="form-label">Selecciona una Cesta:</label>
                         <select class="form-select" id="cestaId" name="cestaId" required>
-                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}"
-                                    th:text="${cesta.nombre}"></option>
+                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}" th:text="${cesta.nombre}"></option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Agregar a Cesta</button>
@@ -132,32 +129,24 @@
         </div>
     </div>
 </div>
+<!-- Script para mostrar modal después de crear una cesta -->
 
-<!-- Modal para seleccionar lista de favoritos -->
-<div class="modal fade" id="agregarFavoritoModal" tabindex="-1" aria-labelledby="agregarFavoritoModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="agregarFavoritoModalLabel">Agregar a Favoritos</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formAgregarFavorito" th:action="@{/listas/{id}/favoritos(id=${producto.id})}" method="post">
-                    <input type="hidden" id="productoFavoritoId" name="productoId" value="">
-                    <div class="mb-3">
-                        <label for="listaId" class="form-label">Selecciona una Lista:</label>
-                        <select class="form-select" id="listaId" name="listaId" required>
-                            <option th:each="lista : ${listas}" th:value="${lista.id}"
-                                    th:text="${lista.nombreLista}"></option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Agregar a Favoritos</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+<script th:if="${mostrarModal}" th:inline="javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        var modal = new bootstrap.Modal(document.getElementById('agregarCestaModal'));
+        document.getElementById('cestaId').value = [[${cestaId}]];
+        modal.show();
+    });
+</script>
+<script>
+    // Definir la función abrirModal
+    function abrirModal(productoId) {
+        document.getElementById('productoId').value = productoId;
+    }
+    function mostrarNotificacion(mensaje) {
+        alert(mensaje);
+    }
+</script>
+</body>
+</html>

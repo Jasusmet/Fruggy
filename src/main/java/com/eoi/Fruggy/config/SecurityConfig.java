@@ -1,6 +1,5 @@
 package com.eoi.Fruggy.config;
 
-import com.eoi.Fruggy.servicios.SrvcUsuario;
 import com.eoi.Fruggy.servicios.UsuarioSecurityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

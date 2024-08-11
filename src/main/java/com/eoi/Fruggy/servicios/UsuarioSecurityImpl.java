@@ -3,7 +3,6 @@ package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
-import com.eoi.Fruggy.repositorios.RepoDetalle;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

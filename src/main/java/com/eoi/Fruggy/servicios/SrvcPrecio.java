@@ -10,10 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class SrvcPrecio extends AbstractSrvc {
+public class SrvcPrecio extends AbstractSrvc<Precio, Long, RepoPrecio> {
 
     protected SrvcPrecio(RepoPrecio repoPrecio) {
         super(repoPrecio);
     }
 
+    public Precio findActivePriceByProduct(Long productoId) {
+        return (Precio) getRepo().findFirstByProductoIdAndActivoTrue(productoId);
+    }
 }

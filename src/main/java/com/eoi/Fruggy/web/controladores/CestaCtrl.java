@@ -64,31 +64,29 @@ public class CestaCtrl {
     public String guardarCesta(@Valid @ModelAttribute Cesta cesta,
                                BindingResult result,
                                @AuthenticationPrincipal Usuario usuario,
-                               RedirectAttributes redirectAttributes) throws Exception {
+                               RedirectAttributes redirectAttributes,
+                               @RequestParam(value = "productoId", required = false) Long productoId) throws Exception {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Errores en la creación de la cesta.");
             return "redirect:/cestas";
         }
 
-        // Comprobar cuántas cestas tiene el usuario
         List<Cesta> cestasUsuario = cestaSrvc.findByUsuario(usuario);
         if (cestasUsuario.size() >= 10) {
             redirectAttributes.addFlashAttribute("error", "No puedes tener más de 10 cestas.");
             return "redirect:/cestas";
         }
 
-        /*HE INTENTADO HACER LO MISMO QUE CON VALORACIONES, AÑADIR PRINCIPAL Y String username = principal.getName();
-                Usuario usuario = usuarioSrvc.getRepo().findByEmail(username);
-                Pero aún asi no funciona, porque sera??? Que es lo que se me escapa?
-        */
-
-        // Asignar el usuario autenticado a la cesta
         cesta.setUsuario(usuario);
-        cesta.setFecha(LocalDateTime.now()); // Establecer la fecha de creación
+        cesta.setFecha(LocalDateTime.now());
 
-        // Guardar la cesta
         cestaSrvc.guardar(cesta);
         redirectAttributes.addFlashAttribute("success", "Cesta creada con éxito.");
+
+        if (productoId != null) {
+            return "redirect:/productos?agregarACesta=true&cestaId=" + cesta.getId();
+        }
+
         return "redirect:/cestas";
     }
 
@@ -160,20 +158,27 @@ public class CestaCtrl {
     @PostMapping("/{cestaId}/agregarProducto")
     public String agregarProductoACesta(@PathVariable Long cestaId,
                                         @RequestParam Long productoId,
-                                        HttpServletResponse response,
-                                        RedirectAttributes redirectAttributes) throws Exception {
-        // Buscar el producto por ID
-        Producto producto = productoSrvc.encuentraPorId(productoId)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                                        RedirectAttributes redirectAttributes,
+                                        @AuthenticationPrincipal Usuario usuario) throws Exception {
+        try {
+            Producto producto = productoSrvc.encuentraPorId(productoId)
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Crear una cookie con el ID del producto
-        Cookie cookie = new Cookie("producto_" + productoId, productoId.toString());
-        cookie.setPath("/");
-        cookie.setMaxAge(7 * 24 * 60 * 60); // La cookie expira en una semana
-        response.addCookie(cookie);
+            Cesta cesta = cestaSrvc.encuentraPorId(cestaId)
+                    .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-        redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta.");
-        return "redirect:/cestas/" + cestaId;
+            if (!cesta.getUsuario().equals(usuario)) {
+                throw new RuntimeException("No tienes permiso para agregar productos a esta cesta.");
+            }
+
+            cestaSrvc.agregarProductoACesta(cesta.getId(), producto);
+
+            redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/productos"; // Redirige a la página de productos
     }
 
 }
