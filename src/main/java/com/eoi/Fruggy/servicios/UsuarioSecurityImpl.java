@@ -43,7 +43,7 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
         for (Rol rol : usuario.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(rol.getRolNombre()));
         }
-        return new org.springframework.security.core.userdetails.User(usuario.getEmail(), usuario.getPassword(), grantedAuthorities);
+        return usuario;
     }
 }
 

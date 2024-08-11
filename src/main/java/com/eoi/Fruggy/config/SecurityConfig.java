@@ -1,5 +1,7 @@
 package com.eoi.Fruggy.config;
 
+import com.eoi.Fruggy.servicios.SrvcUsuario;
+import com.eoi.Fruggy.servicios.UsuarioSecurityImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +27,7 @@ public class SecurityConfig {
 
     @Autowired
     @Qualifier("usuarioSecurityImpl")
-    private UserDetailsService userDetailsService;
+    private UsuarioSecurityImpl userDetailsService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
