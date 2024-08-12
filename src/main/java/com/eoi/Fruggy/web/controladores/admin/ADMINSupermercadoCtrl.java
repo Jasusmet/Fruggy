@@ -56,10 +56,10 @@ public class ADMINSupermercadoCtrl {
         supermercadoSrvc.guardar(supermercado);
 
         // Procesa las imágenes
-        if (supermercado.getImagenesArchivo() != null) { // Cambia esto para que coincida con el nombre en Supermercado
+        if (supermercado.getImagenesArchivo() != null) {
             for (MultipartFile file : supermercado.getImagenesArchivo()) {
                 if (!file.isEmpty()) {
-                    Imagen imagen = imagenSrvc.guardarImagen(file, supermercado); // Asumiendo que guardarImagen maneja el almacenamiento de la imagen
+                    Imagen imagen = imagenSrvc.guardarImagen(file, supermercado); // Aquí se llama al servicio de imagen
                     imagen.setSupermercado(supermercado); // Establece la relación
                     imagenSrvc.guardar(imagen); // Guarda la imagen en la base de datos
                 }

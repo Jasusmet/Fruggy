@@ -21,6 +21,8 @@ public class Imagen {
     @Column(name = "nombre_archivo", nullable = false)
     private String nombreArchivo;
 
+    private String rutaImagen;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;

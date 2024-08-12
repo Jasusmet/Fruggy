@@ -27,7 +27,7 @@
             <div class="col">
                 <ul>
                     <li th:each="imagen : ${imagenes}">
-                        <img th:src="@{/imagenes/{nombreArchivo}(nombreArchivo=${imagen.nombreArchivo})}"
+                        <img th:src="@{/imagenes/{rutaImagen}(rutaImagen=${imagen.rutaImagen})}"
                              alt="Imagen del supermercado"
                              class="img-thumbnail"
                              style="max-width: 200px; max-height: 150px;"/>

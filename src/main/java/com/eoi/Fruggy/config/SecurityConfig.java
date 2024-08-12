@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/fonts/**").permitAll()
                         .requestMatchers("/lib/**").permitAll()
                         .requestMatchers("/scss/**").permitAll()
+                        .requestMatchers("/imagenes/**").permitAll()
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated() // Asegura que cualquier otra petición requiera autenticación
                 )
@@ -82,6 +83,7 @@ public class SecurityConfig {
                         .requestMatchers("/fonts/**").permitAll()
                         .requestMatchers("/lib/**").permitAll()
                         .requestMatchers("/scss/**").permitAll()
+                        .requestMatchers("/imagenes/**").permitAll()
                         .requestMatchers("/index").permitAll()
                         .anyRequest().permitAll() // Permitir acceso a todas las demás solicitudes
                 )

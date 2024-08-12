@@ -8,26 +8,38 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
 @Service
 public class SrvcImagen extends AbstractSrvc<Imagen, Long, RepoImagen> {
     protected SrvcImagen(RepoImagen repoImagen) {
         super(repoImagen);
     }
 
+    private final Path LOCATION = Paths.get("D:/ficheros");
+
     public Imagen guardarImagen(MultipartFile file, Supermercado supermercado) throws Exception {
-        String nombreArchivo = file.getOriginalFilename();
-        String rutaDestino = "D:/ficheros/" + nombreArchivo;
-        // Guarda el archivo en la ruta especificada
-        try {
-            file.transferTo(new File(rutaDestino));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // Genera un nombre único para la imagen
+        String nombreArchivo = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path destino = this.LOCATION.resolve(nombreArchivo);
+
+        // Guarda la imagen en el sistema de archivos
+        Files.copy(file.getInputStream(), destino);
+
+        // Crea la entidad Imagen
         Imagen imagen = new Imagen();
         imagen.setNombreArchivo(nombreArchivo);
+        imagen.setRutaImagen(destino.toString());  // Establece la ruta completa de la imagen
         imagen.setSupermercado(supermercado);
 
-        // Guarda la imagen en la base de datos
+        // Aquí suponemos que tienes un método para guardar la entidad en la base de datos
+        return guardar(imagen);
+    }
+    public Imagen guardar(Imagen imagen) {
         return getRepo().save(imagen);
     }
 }

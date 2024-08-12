@@ -7,12 +7,18 @@ import com.eoi.Fruggy.servicios.SrvcImagen;
 import com.eoi.Fruggy.servicios.SrvcSupermercado;
 import jakarta.annotation.Resource;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
@@ -27,34 +33,35 @@ public class ImagenCtrl {
     }
 
     @PostMapping("/guardar/{supermercadoId}")
-    public ResponseEntity<Imagen> guardarImagen(@PathVariable Long supermercadoId, @RequestParam("imagen") MultipartFile file) {
-        try {
-            Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
-                    .orElseThrow(() -> new RuntimeException("Supermercado no encontrado"));
+    public ResponseEntity<Imagen> guardarImagen(@RequestParam("file") MultipartFile file, @PathVariable Long supermercadoId) throws Throwable {
+        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
+                .orElseThrow(() -> new RuntimeException("Supermercado no encontrado"));
 
-            Imagen imagen = imagenSrvc.guardarImagen(file, supermercado); // Ahora pasando el supermercado
-            return ResponseEntity.ok(imagen);
-        } catch (Throwable e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        String nombreArchivo = file.getOriginalFilename();
+        Path rutaArchivo = Paths.get("D:/ficheros/" + nombreArchivo);
+
+        try {
+            Files.copy(file.getInputStream(), rutaArchivo);
+            Imagen imagen = new Imagen();
+            imagen.setNombreArchivo(nombreArchivo);
+            imagen.setRutaImagen(nombreArchivo); // Asegúrate de establecer la ruta
+            imagen.setSupermercado(supermercado);
+            imagen = imagenSrvc.guardar(imagen); // Guarda la imagen en la base de datos
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(imagen);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
         }
     }
 
-    @GetMapping("/{nombreArchivo}")
-    public ResponseEntity<FileSystemResource> obtenerImagen(@PathVariable String nombreArchivo) {
-        try {
-            // Define la ruta donde se guardan las imágenes
-            String rutaDestino = "D:/ficheros/" + nombreArchivo;
-            File archivo = new File(rutaDestino);
-
-            if (!archivo.exists()) {
-                return ResponseEntity.notFound().build(); // Devuelve 404 si la imagen no se encuentra
-            }
-
-            FileSystemResource resource = new FileSystemResource(archivo);
-            return ResponseEntity.ok().body(resource); // Devuelve el archivo como recurso
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Devuelve 500 en caso de error
-        }
+    @GetMapping("/{rutaImagen:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> obtenerImagen(@PathVariable String rutaImagen) throws MalformedURLException {
+        Path path = Paths.get("D:/ficheros/" + rutaImagen);
+        Resource resource = (Resource) new UrlResource(path.toUri());
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG) // Cambia según el tipo de imagen
+                .body(resource);
     }
 }
 
