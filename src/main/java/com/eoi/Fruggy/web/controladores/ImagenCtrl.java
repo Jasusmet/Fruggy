@@ -20,6 +20,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/imagenes")
@@ -37,14 +38,15 @@ public class ImagenCtrl {
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
                 .orElseThrow(() -> new RuntimeException("Supermercado no encontrado"));
 
-        String nombreArchivo = file.getOriginalFilename();
-        Path rutaArchivo = Paths.get("D:/ficheros/" + nombreArchivo);
+        // Genera un nombre único para la imagen
+        String nombreArchivoUnico = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path rutaArchivo = Paths.get("D:/ficheros/" + nombreArchivoUnico);
 
         try {
             Files.copy(file.getInputStream(), rutaArchivo);
             Imagen imagen = new Imagen();
-            imagen.setNombreArchivo(nombreArchivo);
-            imagen.setRutaImagen(nombreArchivo); // Asegúrate de establecer la ruta
+            imagen.setNombreArchivo(file.getOriginalFilename()); // Guarda el nombre original
+            imagen.setRutaImagen(nombreArchivoUnico); // Guarda el nombre único para acceder a la imagen
             imagen.setSupermercado(supermercado);
             imagen = imagenSrvc.guardar(imagen); // Guarda la imagen en la base de datos
 
@@ -56,12 +58,21 @@ public class ImagenCtrl {
 
     @GetMapping("/{rutaImagen:.+}")
     @ResponseBody
-    public ResponseEntity<Resource> obtenerImagen(@PathVariable String rutaImagen) throws MalformedURLException {
+    public ResponseEntity<org.springframework.core.io.Resource> obtenerImagen(@PathVariable String rutaImagen) throws MalformedURLException {
         Path path = Paths.get("D:/ficheros/" + rutaImagen);
-        Resource resource = (Resource) new UrlResource(path.toUri());
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG) // Cambia según el tipo de imagen
-                .body(resource);
+
+        if (!Files.exists(path) || !Files.isReadable(path)) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            org.springframework.core.io.Resource resource = new UrlResource(path.toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 }
 

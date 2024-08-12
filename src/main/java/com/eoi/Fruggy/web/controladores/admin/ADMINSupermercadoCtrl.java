@@ -80,6 +80,7 @@ public class ADMINSupermercadoCtrl {
             model.addAttribute("imagenes", imagenSrvc.buscarEntidades());
             model.addAttribute("precios", precioSrvc.buscarEntidades());
             model.addAttribute("valoraciones", valSupermercadoSrvc.buscarEntidades());
+            model.addAttribute("imagenes", imagenSrvc.buscarEntidades());
             return "admin/modificar-supermercado";
         } else {
             return "redirect:/admin/supermercados";

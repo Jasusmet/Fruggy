@@ -1,5 +1,6 @@
 package com.eoi.Fruggy.web.controladores;
 
+import com.eoi.Fruggy.entidades.Imagen;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.entidades.ValoracionSupermercado;
@@ -14,7 +15,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/supermercados")
@@ -51,7 +54,12 @@ public class SupermercadoCtrl {
         model.addAttribute("valoraciones", valoraciones);
         model.addAttribute("notaMedia", notaMedia);
         model.addAttribute("valoracion", new ValoracionSupermercado());
-        model.addAttribute("imagenes", supermercado.getImagenes());
+
+        Set<Imagen> imagenes = supermercado.getImagenes();
+        model.addAttribute("imagenes", imagenes);
+        for (Imagen imagen : imagenes) {
+            System.out.println("Ruta de imagen: " + imagen.getRutaImagen());
+        }
 
         return "supermercados/detalles-supermercado";
     }

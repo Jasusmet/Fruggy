@@ -26,29 +26,27 @@
         <div class="row">
             <div class="col">
                 <ul>
-                    <li th:each="imagen : ${imagenes}">
-                        <img th:src="@{/imagenes/{rutaImagen}(rutaImagen=${imagen.rutaImagen})}"
-                             alt="Imagen del supermercado"
-                             class="img-thumbnail"
-                             style="max-width: 200px; max-height: 150px;"/>
-                    </li>
+                    <img th:src="@{/imagenes/${imagen.rutaImagen}}"
+                         alt="Imagen del Supermercado"
+                         class="img-thumbnail"
+                         style="max-width: 200px; max-height: 150px;"/>
                 </ul>
             </div>
         </div>
 
-    <!-- Sección de valoraciones existente al final de la página -->
-    <div>
-        <h2>Valoraciones</h2>
-        <ul>
-            <li th:each="valoracion : ${valoraciones}">
-                <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
-                <br/>
-                <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
-                <br/>
-                <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
-            </li>
-        </ul>
+        <!-- Sección de valoraciones existente al final de la página -->
+        <div>
+            <h2>Valoraciones</h2>
+            <ul>
+                <li th:each="valoracion : ${valoraciones}">
+                    <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
+                    <br/>
+                    <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
+                    <br/>
+                    <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
+                </li>
+            </ul>
+        </div>
+        <!-- Enlace de navegación al final de la página -->
+        <a th:href="@{/supermercados}">Volver a la lista de supermercados</a>
     </div>
-    <!-- Enlace de navegación al final de la página -->
-    <a th:href="@{/supermercados}">Volver a la lista de supermercados</a>
-</div>

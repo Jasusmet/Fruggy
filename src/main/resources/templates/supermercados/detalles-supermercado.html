@@ -11,7 +11,19 @@
     <div>
         <p><strong>Nombre:</strong> <span th:text="${supermercado.nombreSuper}"></span></p>
         <p><strong>URL:</strong> <a th:href="${supermercado.url}" th:text="${supermercado.url}"></a></p>
-        <p><strong>Imagen:</strong> <img th:src="@{/images/ + ${supermercado.imagenPath}}" alt="Imagen del Supermercado" /></p>
+        <h2>Imágenes</h2>
+        <div class="row">
+            <div class="col">
+                <ul>
+                    <li th:each="imagen : ${imagenes}">
+                        <img th:src="@{/imagenes/${imagen.rutaImagen}}"
+                             alt="Imagen del Supermercado"
+                             class="img-thumbnail"
+                             style="max-width: 200px; max-height: 150px;"/>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <p><strong>Horario:</strong> <span th:text="${supermercado.horario}"></span></p>
         <p><strong>Calle:</strong> <span th:text="${supermercado.calle}"></span></p>
         <p><strong>Municipio:</strong> <span th:text="${supermercado.municipio}"></span></p>

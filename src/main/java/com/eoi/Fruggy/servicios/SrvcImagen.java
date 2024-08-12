@@ -33,13 +33,10 @@ public class SrvcImagen extends AbstractSrvc<Imagen, Long, RepoImagen> {
         // Crea la entidad Imagen
         Imagen imagen = new Imagen();
         imagen.setNombreArchivo(nombreArchivo);
-        imagen.setRutaImagen(destino.toString());  // Establece la ruta completa de la imagen
+        imagen.setRutaImagen(nombreArchivo);
         imagen.setSupermercado(supermercado);
 
-        // Aquí suponemos que tienes un método para guardar la entidad en la base de datos
+        // Guarda la entidad en la base de datos
         return guardar(imagen);
-    }
-    public Imagen guardar(Imagen imagen) {
-        return getRepo().save(imagen);
     }
 }
