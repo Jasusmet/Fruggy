@@ -52,6 +52,9 @@ public class SupermercadoCtrl {
         model.addAttribute("notaMedia", notaMedia);
         model.addAttribute("valoracion", new ValoracionSupermercado());
 
+        // Agregar las imágenes al modelo
+        model.addAttribute("imagenes", supermercado.getImagenes());
+
         return "supermercados/detalles-supermercado";
     }
 

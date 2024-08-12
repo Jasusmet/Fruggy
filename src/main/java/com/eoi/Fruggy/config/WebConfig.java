@@ -52,6 +52,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
     }
+    public void addResourceHandlers2(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/imagenes/**")
+                .addResourceLocations("file:D:/ficheros/");
+    }
+
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();

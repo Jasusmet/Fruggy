@@ -1,5 +1,6 @@
 package com.eoi.Fruggy.web.controladores.admin;
 
+import com.eoi.Fruggy.entidades.Imagen;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +54,18 @@ public class ADMINSupermercadoCtrl {
             return "admin/crear-supermercado";
         }
         supermercadoSrvc.guardar(supermercado);
+
+        // Procesa las imágenes
+        if (supermercado.getImagenesArchivo() != null) { // Cambia esto para que coincida con el nombre en Supermercado
+            for (MultipartFile file : supermercado.getImagenesArchivo()) {
+                if (!file.isEmpty()) {
+                    Imagen imagen = imagenSrvc.guardarImagen(file, supermercado); // Asumiendo que guardarImagen maneja el almacenamiento de la imagen
+                    imagen.setSupermercado(supermercado); // Establece la relación
+                    imagenSrvc.guardar(imagen); // Guarda la imagen en la base de datos
+                }
+            }
+        }
+
         return "redirect:/admin/supermercados";
     }
 
@@ -71,6 +85,27 @@ public class ADMINSupermercadoCtrl {
             return "redirect:/admin/supermercados";
         }
     }
+
+    //IMAGENES
+    @PostMapping("/{id}/agregar-imagen")
+    public String agregarImagen(@PathVariable("id") Long id, @RequestParam("imagen") MultipartFile file, Model model) {
+        try {
+            Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
+                    .orElseThrow(() -> new RuntimeException("Supermercado no encontrado"));
+
+            if (!file.isEmpty()) {
+                Imagen imagen = imagenSrvc.guardarImagen(file, supermercado);
+                imagen.setSupermercado(supermercado);
+                imagenSrvc.guardar(imagen);
+            } else {
+                model.addAttribute("error", "El archivo no puede estar vacío.");
+            }
+        } catch (Throwable e) {
+            model.addAttribute("error", "Error al agregar la imagen: " + e.getMessage());
+        }
+        return "redirect:/admin/supermercados/editar/" + id;
+    }
+
 
 //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/actualizar")

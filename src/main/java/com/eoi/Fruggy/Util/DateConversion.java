@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.config;
+package com.eoi.Fruggy.Util;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

@@ -10,8 +10,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,9 +40,6 @@ public class Supermercado implements Serializable {
     @Size(max = 255, message = "La URL no puede tener más de 255 caracteres")
     @Column (name ="url",length = 255)
     private String url;
-
-    @Column(name = "imagen_path", length = 500)
-    private String imagenPath;
 
     @Size(max = 255, message = "El horario no puede tener más de 255 caracteres")
     @Column (name ="horario",length = 255)
@@ -75,7 +74,9 @@ public class Supermercado implements Serializable {
     private Set<ValoracionSupermercado> valoraciones;
 
     // Relación con Imagen
-    @OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supermercado", cascade = CascadeType.ALL)
     private Set<Imagen> imagenes;
 
+    @Transient // No se almacena en la base de datos
+    private List<MultipartFile> imagenesArchivo;
 }

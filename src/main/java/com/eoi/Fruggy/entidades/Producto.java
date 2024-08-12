@@ -45,9 +45,6 @@ public class Producto implements Serializable {
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
 
-    @Column(name = "pathImagen", length = 500)
-    private String pathImagen;
-
     @JsonManagedReference
     @OneToMany (mappedBy = "producto", fetch = FetchType.LAZY)
     private Set<Precio> precios = new HashSet<>();
@@ -57,7 +54,7 @@ public class Producto implements Serializable {
     private Subcategoria subcategoria;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "imagen_id", referencedColumnName = "id")
+    @JoinColumn(name = "imagen_id")
     private Imagen imagen;
 
     @OneToMany(mappedBy = "producto")

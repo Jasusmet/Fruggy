@@ -45,13 +45,8 @@
                             <div class="thumbnail card">
                                 <div class="img-event">
                                     <img class="group list-group-image img-fluid"
-                                         th:if="${producto.imagen != null}"
-                                         th:src="@{${producto.imagen.pathImagen}}"
-                                         alt="Imagen del Producto"
-                                         th:alt="${producto.nombreProducto}"/>
-                                    <img class="group list-group-image img-fluid"
-                                         th:if="${producto.imagen == null}"
-                                         src="/static/img/product/product-1.jpg"
+                                         th:if="${producto.pathImagen != null}"
+                                         th:src="@{/imagenes/leerImagen/{nombreImagen}(nombreImagen=${producto.pathImagen})}"
                                          alt="Imagen del Producto"
                                          th:alt="${producto.nombreProducto}"/>
                                 </div>

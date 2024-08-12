@@ -70,7 +70,6 @@ public class ProductoCtrl {
         model.addAttribute("valoraciones", valoraciones);
         model.addAttribute("notaMedia", notaMedia);
         model.addAttribute("valoracion", new ValoracionProducto());
-
         return "productos/detalles-producto";
     }
 

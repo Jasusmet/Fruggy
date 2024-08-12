@@ -9,7 +9,7 @@
 <div class="container mt-4" th:fragment="formularioAdminCrearSupermercado">
     <a class="btn btn-secondary" th:href="@{/admin/supermercados}">Regresar</a>
     <br><br>
-    <form th:action="@{/admin/supermercados/guardar}" method="post" th:object="${supermercado}">
+    <form th:action="@{/admin/supermercados/guardar}" method="post" th:object="${supermercado}" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="mb-3">
@@ -29,10 +29,10 @@
         </div>
 
         <div class="mb-3">
-            <label for="imagenPath" class="form-label">Ruta de Imagen</label>
-            <input type="text" id="imagenPath" th:field="*{imagenPath}" class="form-control">
-            <div th:if="${#fields.hasErrors('imagenPath')}" class="text-danger">
-                <span th:errors="*{imagenPath}">Error de validación</span>
+            <label for="imagenes" class="form-label">Subir Imágenes</label>
+            <input type="file" id="imagenes" th:field="*{imagenesArchivo}" class="form-control" multiple required>
+            <div th:if="${#fields.hasErrors('imagenesArchivo')}" class="text-danger">
+                <span th:errors="*{imagenesArchivo}">Error de validación</span>
             </div>
         </div>
 

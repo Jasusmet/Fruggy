@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -25,5 +26,4 @@ public class SrvcProducto extends AbstractSrvc<Producto, Long, RepoProducto> {
         Pageable pageable = PageRequest.of(page, size);
         return repoProducto.findAll(pageable);
     }
-
 }
