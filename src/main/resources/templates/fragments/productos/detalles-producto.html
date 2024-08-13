@@ -10,6 +10,15 @@
     <!-- Título del producto -->
     <h1 th:text="${producto.nombreProducto}">Nombre del Producto</h1>
 
+    <!-- Imágenes del producto -->
+    <div class="product-images">
+        <div th:each="imagen : ${producto.imagenes}">
+            <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
+                 class="img-fluid"
+                 th:alt="${producto.nombreProducto}"/>
+        </div>
+    </div>
+
     <!-- Información básica del producto -->
     <p><strong>Marca:</strong> <span th:text="${producto.marca}"></span></p>
     <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
@@ -23,7 +32,8 @@
                 </span>
             </span>
         </span>
-        <span th:if="${producto.descuentos.size() == 0}" th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+        <span th:if="${producto.descuentos.size() == 0}"
+              th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
     </p>
 
     <!-- Nombre del supermercado -->
@@ -42,7 +52,7 @@
         </div>
         <div class="form-group">
             <label for="nota">Nota (0 a 5):</label>
-            <input type="number" id="nota" name="nota" class="form-control" min="0" max="5" step="0.1" required />
+            <input type="number" id="nota" name="nota" class="form-control" min="0" max="5" step="0.1" required/>
         </div>
         <button type="submit" class="btn btn-primary">Enviar Valoración</button>
     </form>

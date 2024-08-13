@@ -1,6 +1,7 @@
 package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Imagen;
+import com.eoi.Fruggy.entidades.Producto;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.repositorios.RepoImagen;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,26 @@ public class SrvcImagen extends AbstractSrvc<Imagen, Long, RepoImagen> {
 
     public Set<Imagen> buscarPorSupermercado(Supermercado supermercado) {
         return getRepo().findBySupermercado(supermercado);
+    }
+
+    public Imagen guardarImagenProducto(MultipartFile file, Producto producto) throws Exception {
+        // Genera un nombre único para la imagen
+        String nombreArchivo = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path destino = this.LOCATION.resolve(nombreArchivo);
+        // Guarda la imagen en el sistema de archivos
+        Files.copy(file.getInputStream(), destino);
+        // Crea la entidad Imagen
+        Imagen imagen = new Imagen();
+        imagen.setNombreArchivo(nombreArchivo);
+        imagen.setRutaImagen(nombreArchivo);
+        imagen.setProductos(producto);
+
+        // Guarda la entidad en la base de datos
+        return guardar(imagen);
+    }
+
+    public Set<Imagen> buscarPorProducto(Producto producto) {
+        return getRepo().findByProductos(producto);
     }
 
 }

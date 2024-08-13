@@ -44,12 +44,16 @@
                         <div class="item col-xs-4 col-lg-4" th:each="producto : ${listaProducto}">
                             <div class="thumbnail card">
                                 <div class="img-event">
-                                    <img class="group list-group-image img-fluid"
-                                         th:if="${producto.pathImagen != null}"
-                                         th:src="@{/imagenes/leerImagen/{nombreImagen}(nombreImagen=${producto.pathImagen})}"
-                                         alt="Imagen del Producto"
-                                         th:alt="${producto.nombreProducto}"/>
-                                </div>
+                                    <!-- Itera sobre las imágenes del producto -->
+                                    <div th:each="producto : ${listaProducto}">
+                                        <h5 th:text="${producto.nombreProducto}">Nombre del Producto</h5>
+                                        <ul>
+                                            <li th:each="imagen : ${producto.imagenes}">
+                                                <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
+                                                     class="img-thumbnail" style="max-width: 200px; max-height: 150px;"/>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h5>
                                     <p class="card-text">

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -53,10 +54,6 @@ public class Producto implements Serializable {
     @JoinColumn(name = "subcategoria_id")
     private Subcategoria subcategoria;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "imagen_id")
-    private Imagen imagen;
-
     @OneToMany(mappedBy = "producto")
     private Set<Descuento> descuentos;
 
@@ -65,7 +62,16 @@ public class Producto implements Serializable {
     @JoinColumn(name = "cesta_id")
     private Cesta cesta;
 
+    // Relación con Imagen
+    @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL)
+    private Set<Imagen> imagenes;
+
+    @Transient // No se almacena en la base de datos
+    private List<MultipartFile> imagenesArchivo;
+
     @Transient // Este campo no se guardará en la base de datos. Es para coger nota media de Valoraciones
     private Double notaMedia;
+
+
 }
 

@@ -35,6 +35,7 @@ public class Imagen {
     @JoinColumn(name = "supermercado_id")
     private Supermercado supermercado;
 
-    @OneToOne(mappedBy = "imagen", fetch = FetchType.LAZY)
-    private Producto producto;
+    @ManyToOne
+    @JoinColumn(name = "productos_id")
+    private Producto productos;
 }

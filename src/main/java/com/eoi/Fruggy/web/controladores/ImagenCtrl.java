@@ -2,8 +2,10 @@ package com.eoi.Fruggy.web.controladores;
 
 
 import com.eoi.Fruggy.entidades.Imagen;
+import com.eoi.Fruggy.entidades.Producto;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.servicios.SrvcImagen;
+import com.eoi.Fruggy.servicios.SrvcProducto;
 import com.eoi.Fruggy.servicios.SrvcSupermercado;
 import jakarta.annotation.Resource;
 import org.springframework.core.io.FileSystemResource;
@@ -27,10 +29,12 @@ import java.util.UUID;
 public class ImagenCtrl {
     private final SrvcImagen imagenSrvc;
     private final SrvcSupermercado supermercadoSrvc;
+    private final SrvcProducto productoSrvc;
 
-    public ImagenCtrl(SrvcImagen imagenSrvc, SrvcSupermercado supermercadoSrvc) {
+    public ImagenCtrl(SrvcImagen imagenSrvc, SrvcSupermercado supermercadoSrvc, SrvcProducto productoSrvc) {
         this.imagenSrvc = imagenSrvc;
         this.supermercadoSrvc = supermercadoSrvc;
+        this.productoSrvc = productoSrvc;
     }
 
     @GetMapping("/{rutaImagen:.+}")
@@ -71,6 +75,28 @@ public class ImagenCtrl {
             imagen.setRutaImagen(nombreArchivoUnico); // Guarda el nombre único para acceder a la imagen
             imagen.setSupermercado(supermercado);
             imagen = imagenSrvc.guardar(imagen); // Guarda la imagen en la base de datos
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(imagen);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al guardar la imagen", e);
+        }
+    }
+
+    @PostMapping("/guardarProducto/{productoId}")
+    public ResponseEntity<Imagen> guardarImagenProducto(@RequestParam("file") MultipartFile file, @PathVariable Long productoId) throws Throwable {
+        Producto producto = productoSrvc.encuentraPorId(productoId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        String nombreArchivoUnico = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path rutaArchivo = Paths.get("D:/ficheros/" + nombreArchivoUnico);
+
+        try {
+            Files.copy(file.getInputStream(), rutaArchivo);
+            Imagen imagen = new Imagen();
+            imagen.setNombreArchivo(file.getOriginalFilename());
+            imagen.setRutaImagen(nombreArchivoUnico);
+            imagen.setProductos(producto);
+            imagen = imagenSrvc.guardar(imagen);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(imagen);
         } catch (IOException e) {

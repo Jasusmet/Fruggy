@@ -9,9 +9,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin/productos")
@@ -69,33 +71,44 @@ public class ADMINProductoCtrl {
                                   @RequestParam("precio") String precioValor,
                                   @RequestParam("subcategoria.id") Long subcategoriaId,
                                   @RequestParam("supermercado.id") Long supermercadoId
-                                 ) throws Exception {
+    ) throws Exception {
         if (result.hasErrors()) {
             return "/admin/crear-producto";
         }
 
-        // Asegúrate de que el campo activo tenga un valor
+        // Set the 'activo' field to true if it is null
         if (producto.getActivo() == null) {
             producto.setActivo(true);
         }
 
+        // Set the subcategory for the product
         Optional<Subcategoria> subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId);
         if (subcategoria.isPresent()) {
             producto.setSubcategoria(subcategoria.get());
         }
-        // Guardar el producto primero para que tenga un ID
+
+        // Save the product first to ensure it has an ID
         Producto productoGuardado = productosSrvc.guardar(producto);
 
-        // Guardar la imagen si el archivo no está vacío
-
-        // Guardar el precio
+        // Procesar imagenes
+        if (producto.getImagenesArchivo() != null){
+            for (MultipartFile file : producto.getImagenesArchivo()) {
+                if (!file.isEmpty()) {
+                    Imagen imagen = imagenSrvc.guardarImagenProducto(file, producto);
+                    imagen.setProductos(producto);
+                    imagenSrvc.guardar(imagen);
+                }
+            }
+        }
+        // Save the price
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
         Precio precio = new Precio();
         precio.setProducto(productoGuardado);
         precio.setValor(Double.parseDouble(precioValor.replace(",", ".")));
         precio.setSupermercado(supermercado);
         precio.setActivo(true);
-        precioSrvc.guardar(precio); // Guardar el precio
+        precioSrvc.guardar(precio);
+
         return "redirect:/admin/productos";
     }
 
@@ -113,45 +126,62 @@ public class ADMINProductoCtrl {
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("categorias", categorias);
         model.addAttribute("supermercados", supermercados);
+        model.addAttribute("imagenes", imagenSrvc.buscarEntidades());
         return "/admin/crear-producto";
     }
 
     // post de edición de producto
 //    @PreAuthorize("hasRole('ADMIN')")
+    // Método para editar un producto
     @PostMapping("/editar/{id}")
     public String guardarEdicionProducto(@PathVariable Long id,
                                          @Valid @ModelAttribute("producto") Producto producto,
                                          BindingResult result,
                                          @RequestParam("precio") String precioValor,
                                          @RequestParam("subcategoria.id") Long subcategoriaId,
-                                         @RequestParam("supermercado.id") Long supermercadoId
-                                        ) throws Exception {
+                                         @RequestParam("supermercado.id") Long supermercadoId,
+                                         @RequestParam("imagenesArchivo") MultipartFile imagenesArchivo
+    ) throws Exception {
         if (result.hasErrors()) {
             return "/admin/crear-producto";
         }
-        // Asegúrate de que el campo activo tenga un valor
+
+        // Set the 'activo' field to true if it is null
         if (producto.getActivo() == null) {
             producto.setActivo(true);
         }
+
+        // Set the subcategory for the product
         Optional<Subcategoria> subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId);
         if (subcategoria.isPresent()) {
             producto.setSubcategoria(subcategoria.get());
         }
 
-        // Guardar el producto primero para que tenga un ID
+        // Save the product first to ensure it has an ID
         Producto productoGuardado = productosSrvc.guardar(producto);
-        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
 
-        // Buscar el precio existente
+        // Procesa la nueva imagen subida
+        if (imagenesArchivo != null && !imagenesArchivo.isEmpty()) {
+            // Eliminar la imagen existente si la hay
+            Set<Imagen> imagenesExistentes = imagenSrvc.buscarPorProducto(producto);
+            for (Imagen imagen : imagenesExistentes) {
+                imagenSrvc.eliminarPorId(imagen.getId());
+            }
+
+            // Guardar la nueva imagen
+            Imagen nuevaImagen = imagenSrvc.guardarImagenProducto(imagenesArchivo, producto);
+            nuevaImagen.setProductos(producto);
+            imagenSrvc.guardar(nuevaImagen);
+        }
+        // Update the price
+        Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
         Optional<Precio> precioExistenteOpt = precioSrvc.encuentraPorId(productoGuardado.getId());
         if (precioExistenteOpt.isPresent()) {
-            // Actualizar el precio existente
             Precio precioExistente = precioExistenteOpt.get();
             precioExistente.setValor(Double.parseDouble(precioValor.replace(",", ".")));
             precioExistente.setSupermercado(supermercado);
-            precioSrvc.guardar(precioExistente); // Usar el método guardar de la clase abstracta
+            precioSrvc.guardar(precioExistente);
         } else {
-            // Si no existe un precio, crear uno nuevo
             Precio nuevoPrecio = new Precio();
             nuevoPrecio.setProducto(productoGuardado);
             nuevoPrecio.setValor(Double.parseDouble(precioValor.replace(",", ".")));
@@ -159,6 +189,7 @@ public class ADMINProductoCtrl {
             nuevoPrecio.setActivo(true);
             precioSrvc.guardar(nuevoPrecio);
         }
+
         return "redirect:/admin/productos";
     }
 
