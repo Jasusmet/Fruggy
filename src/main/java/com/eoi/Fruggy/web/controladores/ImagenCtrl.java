@@ -33,6 +33,28 @@ public class ImagenCtrl {
         this.supermercadoSrvc = supermercadoSrvc;
     }
 
+    @GetMapping("/{rutaImagen:.+}")
+    @ResponseBody
+    public ResponseEntity<org.springframework.core.io.Resource> obtenerImagen(@PathVariable String rutaImagen) throws MalformedURLException {
+        System.out.println("Ruta de la imagen solicitada: " + rutaImagen);
+        Path path = Paths.get("D:/ficheros/" + rutaImagen);
+
+        if (!Files.exists(path) || !Files.isReadable(path)) {
+            System.out.println("Archivo no encontrado o no legible.");
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            org.springframework.core.io.Resource resource = new UrlResource(path.toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping("/guardar/{supermercadoId}")
     public ResponseEntity<Imagen> guardarImagen(@RequestParam("file") MultipartFile file, @PathVariable Long supermercadoId) throws Throwable {
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
@@ -55,24 +77,7 @@ public class ImagenCtrl {
             throw new RuntimeException("Error al guardar la imagen", e);
         }
     }
-
-    @GetMapping("/{rutaImagen:.+}")
-    @ResponseBody
-    public ResponseEntity<org.springframework.core.io.Resource> obtenerImagen(@PathVariable String rutaImagen) throws MalformedURLException {
-        Path path = Paths.get("D:/ficheros/" + rutaImagen);
-
-        if (!Files.exists(path) || !Files.isReadable(path)) {
-            return ResponseEntity.notFound().build();
-        }
-        try {
-            org.springframework.core.io.Resource resource = new UrlResource(path.toUri());
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(resource);
-        } catch (MalformedURLException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-
-    }
 }
+
+
 

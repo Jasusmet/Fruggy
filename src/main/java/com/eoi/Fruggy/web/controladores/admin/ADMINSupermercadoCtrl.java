@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin/supermercados")
@@ -109,14 +110,34 @@ public class ADMINSupermercadoCtrl {
 
 
 //    @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/actualizar")
-    public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado, BindingResult bindingResult) throws Exception {
-        if (bindingResult.hasErrors()) {
-            return "admin/modificar-supermercado";
-        }
-        supermercadoSrvc.guardar(supermercado);
-        return "redirect:/admin/supermercados";
+@PostMapping("/actualizar")
+public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado,
+                                     BindingResult bindingResult,
+                                     @RequestParam("imagenesArchivo") MultipartFile imagenesArchivo,
+                                     Model model) throws Exception {
+    if (bindingResult.hasErrors()) {
+        return "admin/modificar-supermercado";
     }
+
+    // Guarda el supermercado
+    supermercadoSrvc.guardar(supermercado);
+
+    // Procesa la nueva imagen subida
+    if (imagenesArchivo != null && !imagenesArchivo.isEmpty()) {
+        // Eliminar la imagen existente si la hay
+        Set<Imagen> imagenesExistentes = imagenSrvc.buscarPorSupermercado(supermercado);
+        for (Imagen imagen : imagenesExistentes) {
+            imagenSrvc.eliminarPorId(imagen.getId());
+        }
+
+        // Guardar la nueva imagen
+        Imagen nuevaImagen = imagenSrvc.guardarImagen(imagenesArchivo, supermercado);
+        nuevaImagen.setSupermercado(supermercado);
+        imagenSrvc.guardar(nuevaImagen);
+    }
+
+    return "redirect:/admin/supermercados";
+}
 
 //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/eliminar/{id}")

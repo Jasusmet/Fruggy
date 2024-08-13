@@ -4,6 +4,7 @@ import com.eoi.Fruggy.entidades.Imagen;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.entidades.ValoracionSupermercado;
+import com.eoi.Fruggy.servicios.SrvcImagen;
 import com.eoi.Fruggy.servicios.SrvcSupermercado;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import com.eoi.Fruggy.servicios.SrvcValSupermercado;
@@ -26,11 +27,13 @@ public class SupermercadoCtrl {
     private final SrvcSupermercado supermercadoSrvc;
     private final SrvcValSupermercado valSupermercadoSrvc;
     private final SrvcUsuario usuarioSrvc;
+    private final SrvcImagen imagenSrvc;
 
-    public SupermercadoCtrl(SrvcSupermercado supermercadoSrvc, SrvcValSupermercado valSupermercadoSrvc, SrvcUsuario usuarioSrvc) {
+    public SupermercadoCtrl(SrvcSupermercado supermercadoSrvc, SrvcValSupermercado valSupermercadoSrvc, SrvcUsuario usuarioSrvc, SrvcImagen imagenSrvc) {
         this.supermercadoSrvc = supermercadoSrvc;
         this.valSupermercadoSrvc = valSupermercadoSrvc;
         this.usuarioSrvc = usuarioSrvc;
+        this.imagenSrvc = imagenSrvc;
     }
 
     //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
@@ -54,12 +57,7 @@ public class SupermercadoCtrl {
         model.addAttribute("valoraciones", valoraciones);
         model.addAttribute("notaMedia", notaMedia);
         model.addAttribute("valoracion", new ValoracionSupermercado());
-
-        Set<Imagen> imagenes = supermercado.getImagenes();
-        model.addAttribute("imagenes", imagenes);
-        for (Imagen imagen : imagenes) {
-            System.out.println("Ruta de imagen: " + imagen.getRutaImagen());
-        }
+        model.addAttribute("imagenes", supermercado.getImagenes());
 
         return "supermercados/detalles-supermercado";
     }

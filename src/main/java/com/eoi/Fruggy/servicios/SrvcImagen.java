@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -39,4 +41,9 @@ public class SrvcImagen extends AbstractSrvc<Imagen, Long, RepoImagen> {
         // Guarda la entidad en la base de datos
         return guardar(imagen);
     }
+
+    public Set<Imagen> buscarPorSupermercado(Supermercado supermercado) {
+        return getRepo().findBySupermercado(supermercado);
+    }
+
 }
