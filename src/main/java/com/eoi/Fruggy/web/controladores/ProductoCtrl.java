@@ -5,6 +5,7 @@ import com.eoi.Fruggy.servicios.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,20 +41,24 @@ public class ProductoCtrl {
 
     //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
-    public String mostrarCatalogo(Model model, @AuthenticationPrincipal Usuario usuario) {
-        List<Producto> listaProducto = productosSrvc.buscarEntidades(); // Obtener todos los productos
+    public String mostrarCatalogo(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size,
+                                  Model model, @AuthenticationPrincipal Usuario usuario) {
+        Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
         List<Categoria> categorias = categoriaSrvc.buscarEntidades();
         List<Cesta> cestas = cestaSrvc.buscarEntidades();
 
         // Calcular la nota media para cada producto
-        for (Producto producto : listaProducto) {
+        for (Producto producto : paginaProductos) {
             Double notaMedia = valProductosSrvc.calcularNotaMedia(producto.getId());
             producto.setNotaMedia(notaMedia);
         }
 
-        model.addAttribute("listaProducto", listaProducto); // Agregar la lista de productos al modelo
+        model.addAttribute("pagina", paginaProductos);
         model.addAttribute("cestas", cestas);
         model.addAttribute("categorias", categorias);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", paginaProductos.getTotalPages());
         return "/productos/catalogoProductos";
     }
 

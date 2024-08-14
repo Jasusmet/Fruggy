@@ -4,6 +4,9 @@ import com.eoi.Fruggy.entidades.Imagen;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +22,8 @@ import java.util.Set;
 @RequestMapping("/admin/supermercados")
 public class ADMINSupermercadoCtrl {
 
+    private static final Logger log = LoggerFactory.getLogger(ADMINSupermercadoCtrl.class);
+
     private final SrvcSupermercado supermercadoSrvc;
     private final SrvcUsuario usuarioSrvc;
     private final SrvcImagen imagenSrvc;
@@ -33,22 +38,32 @@ public class ADMINSupermercadoCtrl {
         this.valSupermercadoSrvc = valSupermercadoSrvc;
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public String listarSupermercados(Model model) {
-        List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
-        model.addAttribute("supermercados", supermercados);
+    public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      Model model) {
+        Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size);
+        model.addAttribute("supermercados", paginaSupermercados);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", paginaSupermercados.getTotalPages());
+
+        // para comprobar si carga paginas
+        log.info("Total de usuarios: {}", paginaSupermercados.getTotalElements());
+        log.info("Número total de páginas: {}", paginaSupermercados.getTotalPages());
+        log.info("Página actual: {}", page);
+
         return "admin/CRUD-Supermercados";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/agregar")
     public String agregarSupermercado(Model model) {
         model.addAttribute("supermercado", new Supermercado());
         return "admin/crear-supermercado";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/guardar")
     public String guardarSupermercado(@Valid @ModelAttribute Supermercado supermercado, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -70,7 +85,7 @@ public class ADMINSupermercadoCtrl {
         return "redirect:/admin/supermercados";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editar/{id}")
     public String editarSupermercado(@PathVariable("id") Long id, Model model) {
         Optional<Supermercado> supermercadoOptional = supermercadoSrvc.encuentraPorId(id);
@@ -109,39 +124,39 @@ public class ADMINSupermercadoCtrl {
     }
 
 
-//    @PreAuthorize("hasRole('ADMIN')")
-@PostMapping("/actualizar")
-public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado,
-                                     BindingResult bindingResult,
-                                     @RequestParam("imagenesArchivo") MultipartFile imagenesArchivo,
-                                     Model model) throws Exception {
-    if (bindingResult.hasErrors()) {
-        return "admin/modificar-supermercado";
-    }
-
-    // Guarda el supermercado
-    supermercadoSrvc.guardar(supermercado);
-
-    // Procesa la nueva imagen subida
-    if (imagenesArchivo != null && !imagenesArchivo.isEmpty()) {
-        // Eliminar la imagen existente si la hay
-        Set<Imagen> imagenesExistentes = imagenSrvc.buscarPorSupermercado(supermercado);
-        for (Imagen imagen : imagenesExistentes) {
-            imagenSrvc.eliminarPorId(imagen.getId());
+    //    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/actualizar")
+    public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado,
+                                         BindingResult bindingResult,
+                                         @RequestParam("imagenesArchivo") MultipartFile imagenesArchivo,
+                                         Model model) throws Exception {
+        if (bindingResult.hasErrors()) {
+            return "admin/modificar-supermercado";
         }
 
-        // Guardar la nueva imagen
-        Imagen nuevaImagen = imagenSrvc.guardarImagen(imagenesArchivo, supermercado);
-        nuevaImagen.setSupermercado(supermercado);
-        imagenSrvc.guardar(nuevaImagen);
+        // Guarda el supermercado
+        supermercadoSrvc.guardar(supermercado);
+
+        // Procesa la nueva imagen subida
+        if (imagenesArchivo != null && !imagenesArchivo.isEmpty()) {
+            // Eliminar la imagen existente si la hay
+            Set<Imagen> imagenesExistentes = imagenSrvc.buscarPorSupermercado(supermercado);
+            for (Imagen imagen : imagenesExistentes) {
+                imagenSrvc.eliminarPorId(imagen.getId());
+            }
+
+            // Guardar la nueva imagen
+            Imagen nuevaImagen = imagenSrvc.guardarImagen(imagenesArchivo, supermercado);
+            nuevaImagen.setSupermercado(supermercado);
+            imagenSrvc.guardar(nuevaImagen);
+        }
+
+        return "redirect:/admin/supermercados";
     }
 
-    return "redirect:/admin/supermercados";
-}
-
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/eliminar/{id}")
-    public String eliminarSupermercado( @PathVariable("id") Long id, Model model) {
+    public String eliminarSupermercado(@PathVariable("id") Long id, Model model) {
         supermercadoSrvc.eliminarPorId(id);
         return "redirect:/admin/supermercados";
     }

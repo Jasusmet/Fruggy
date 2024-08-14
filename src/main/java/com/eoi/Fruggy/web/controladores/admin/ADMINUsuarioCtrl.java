@@ -5,6 +5,9 @@ import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,15 +43,26 @@ public class ADMINUsuarioCtrl {
         this.generoSrvc = generoSrvc;
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public String listarUsuarios(Model model) {
-        List<Usuario> usuarios = usuarioSrvc.buscarEntidades();
-        model.addAttribute("usuarios", usuarios);
-        return "admin/CRUD-Usuarios"; // Lo he llamado asi, porque desde esta vista se pueden hacer todas las funciones CRUD como admin de usuarios.
+    public String listarUsuarios(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 Model model) {
+        Page <Usuario> paginaUsuarios = usuarioSrvc.obtenerUsuariosPaginados(page,size);
+        model.addAttribute("usuarios", paginaUsuarios);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", paginaUsuarios.getTotalPages());
+
+
+        // para comprobar si carga paginas
+        log.info("Total de usuarios: {}", paginaUsuarios.getTotalElements());
+        log.info("Número total de páginas: {}", paginaUsuarios.getTotalPages());
+        log.info("Página actual: {}", page);
+
+        return "admin/CRUD-Usuarios";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/agregar")
     public String agregarUsuario(Model model) {
         Usuario usuario = new Usuario();
@@ -59,11 +73,11 @@ public class ADMINUsuarioCtrl {
         model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
         model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
 
-       log.info("Usuario agregado. {}", usuario);
+        log.info("Usuario agregado. {}", usuario);
         return "admin/crear-usuario";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario,
                           BindingResult bindingResult, Model model) throws Exception {
@@ -105,7 +119,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -121,7 +135,7 @@ public class ADMINUsuarioCtrl {
         }
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/editar/{id}")
     public String guardarEdicion(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -157,7 +171,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios"; // Redirigir a la lista de usuarios después de guardar
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     // Mostrar cestas de un usuario
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
@@ -168,6 +182,12 @@ public class ADMINUsuarioCtrl {
             return "usuarios/cestas"; // Vista para mostrar las cestas, hay que crear
         }
         return "redirect:/usuarios";
+    }
+
+    @PostMapping("/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable Long id) {
+        usuarioSrvc.eliminarPorId(id);
+        return "redirect:/admin/usuarios"; // Redirige de vuelta a la lista de usuarios
     }
 }
 

@@ -3,6 +3,9 @@ package com.eoi.Fruggy.web.controladores.admin;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +22,7 @@ import java.util.List;
 @RequestMapping("/admin/productos")
 public class ADMINProductoCtrl {
 
+    private static final Logger log = LoggerFactory.getLogger(ADMINProductoCtrl.class);
     private final SrvcProducto productosSrvc;
     private final SrvcPrecio precioSrvc;
     private final SrvcImagen imagenSrvc;
@@ -43,9 +47,18 @@ public class ADMINProductoCtrl {
     // Mostrar lista de productos
 //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public String listarProductos(Model model) {
-        List<Producto> productos = productosSrvc.buscarEntidades();
-        model.addAttribute("productos", productos);
+    public String listarProductos(@RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size,
+                                  Model model) {
+        Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
+        model.addAttribute("productos", paginaProductos);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", paginaProductos.getTotalPages());
+        // para comprobar si carga paginas
+        log.info("Total de usuarios: {}", paginaProductos.getTotalElements());
+        log.info("Número total de páginas: {}", paginaProductos.getTotalPages());
+        log.info("Página actual: {}", page);
+
         return "/admin/CRUD-Productos";
     }
 

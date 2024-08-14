@@ -1,10 +1,14 @@
 package com.eoi.Fruggy.servicios;
 
+import com.eoi.Fruggy.entidades.Producto;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoRol;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +51,7 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         }
         return super.guardar(usuario);
     }
+
     public Usuario guardar(Usuario usuario, Set<String> roles) throws Exception {
         Set<Rol> rolesSet = new HashSet<>();
         for (String rolNombre : roles) {
@@ -58,6 +63,7 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         usuario.setRoles(rolesSet);
         return guardar(usuario);
     }
+
     public Set<Rol> obtenerRolesPorUsuario(Long usuarioId) {
         Optional<Usuario> usuario = encuentraPorId(usuarioId);
         return usuario.map(Usuario::getRoles).orElse(new HashSet<>());
@@ -67,4 +73,8 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         repoUsuario.deleteById((long) id);
     }
 
+    public Page<Usuario> obtenerUsuariosPaginados(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return getRepo().findAll(pageable);
+    }
 }

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <title>Lista de Usuarios</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="usuario : ${usuarios}">
+        <tr th:each="usuario : ${usuarios.content}">
             <td th:text="${usuario.email}">Email</td>
             <td th:text="${usuario.active} ? 'Activo' : 'Inactivo'">Activo</td>
             <td th:text="${usuario.telefono}">Teléfono</td>
@@ -29,10 +29,12 @@
                 </ul>
             </td>
             <td>
-                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{user.list.edit}">Editar</a>
+                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-warning"
+                   th:text="#{user.list.edit}">Editar</a>
             </td>
             <td>
-                <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" method="post"
+                      onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
                     <input type="submit" class="btn btn-danger" th:value="#{user.list.delete}"/>
                 </form>
             </td>
@@ -40,8 +42,30 @@
         </tbody>
     </table>
 </div>
-<div th:if="${usuarios == null or #lists.isEmpty(usuarios)}">
+
+<div th:if="${usuarios == null or #lists.isEmpty(usuarios.content)}">
     <p th:text="#{user.list.empty}">La lista de usuarios está vacía</p>
+</div>
+<!-- Paginación -->
+<div th:if="${totalPages > 1}" class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item" th:if="${currentPage > 0}">
+                <a class="page-link" th:href="@{/admin/usuarios(page=${currentPage - 1})}" aria-label="Anterior">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                <a class="page-link" th:href="@{/admin/usuarios(page=${i})}"
+                   th:text="${i + 1}" th:classappend="${i == currentPage} ? 'active'"></a>
+            </li>
+            <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                <a class="page-link" th:href="@{/admin/usuarios(page=${currentPage + 1})}" aria-label="Siguiente">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 </html>

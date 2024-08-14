@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="supermercado : ${supermercados}">
+        <tr th:each="supermercado : ${supermercados.content}">
             <td th:text="${supermercado.nombreSuper}">Nombre</td>
             <td th:text="${supermercado.url}">URL</td>
             <td th:text="${supermercado.horario}">Horario</td>
@@ -35,7 +35,23 @@
         </tbody>
     </table>
 </div>
-<div th:if="${supermercados == null or #lists.isEmpty(supermercados)}">
+
+<!-- Controles de paginación -->
+<div>
+    <ul class="pagination">
+        <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{/admin/supermercados(page=${currentPage - 1}, size=${10})}" th:disabled="${currentPage == 0}">Anterior</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.range(0, totalPages - 1)}">
+            <a class="page-link" th:href="@{/admin/supermercados(page=${i}, size=${10})}" th:class="${i == currentPage} ? 'active'">[[${i + 1}]]</a>
+        </li>
+        <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{/admin/supermercados(page=${currentPage + 1}, size=${10})}" th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
+        </li>
+    </ul>
+</div>
+
+<div th:if="${supermercados.content == null or #lists.isEmpty(supermercados.content)}">
     <p th:text="#{supermarket.list.empty}">La lista de supermercados está vacía</p>
 </div>
 </body>
