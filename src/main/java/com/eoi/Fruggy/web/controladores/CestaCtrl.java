@@ -171,14 +171,12 @@ public class CestaCtrl {
                 throw new RuntimeException("No tienes permiso para agregar productos a esta cesta.");
             }
 
-            cestaSrvc.agregarProductoACesta(cesta.getId(), producto);
+            cestaSrvc.agregarProductoACesta(cesta.getId(), producto.getId());
 
             redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
-
-        return "redirect:/productos"; // Redirige a la página de productos
+        return "redirect:/productos";
     }
-
 }

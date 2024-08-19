@@ -23,7 +23,7 @@
                     </div>
                     <ul id="categoryMenu" style="display: none;">>
                         <li th:each="categoria : ${categorias}">
-                            <a th:href="@{/Categorias/Categoria_{id}(id=${categoria.id})}" th:text="${categoria.tipo}">Categoria Nombre</a>
+                            <a th:href="@{/Categorias/Categoria_{id}(id=${categoria.id})}" th:text="${categoria.getTipo('${idioma}')}">Categoria Nombre</a>
                         </li>
                     </ul>
                 </div>

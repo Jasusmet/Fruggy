@@ -47,7 +47,7 @@
             <label for="categoria" class="form-label">Categoría</label>
             <select class="form-control" id="categoria" name="categoria.id" required>
                 <option value="">Selecciona una categoría</option>
-                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.tipo}"></option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.getTipo('${idioma}')}"></option>
             </select>
         </div>
 

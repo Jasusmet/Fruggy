@@ -38,7 +38,7 @@
             <span th:if="${producto.descuentos.size() == 0}" th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
         </td>
         <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">Supermercado</td>
-        <td th:text="${producto.subcategoria.categoria.tipo}">Categoría</td>
+        <td th:text="${producto.subcategoria.categoria.getTipo('${idioma}')}">Categoría</td>
         <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
         <td>

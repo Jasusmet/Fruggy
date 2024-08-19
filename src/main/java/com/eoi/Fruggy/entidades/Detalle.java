@@ -36,9 +36,6 @@ public class Detalle implements Serializable {
     private String apellido;
 
 
-    @Column(name = "pathImagen", length = 500)
-    private String pathImagen;
-
     @Column(name = "edad")
     private Integer edad;
 

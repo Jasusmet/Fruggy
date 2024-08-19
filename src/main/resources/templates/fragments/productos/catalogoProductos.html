@@ -23,7 +23,7 @@
                                     <div th:each="categoria : ${categorias}">
                                         <a class="dropdown-item"
                                            th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
-                                           th:text="${categoria.tipo}"></a>
+                                           th:text="${categoria.getTipo('${idioma}')}"></a>
                                     </div>
                                     <p th:if="${categorias.size() == 0}">No hay categorías disponibles.</p>
                                 </div>
@@ -39,7 +39,6 @@
                         <div class="thumbnail card">
                             <div class="img-event">
                                 <h5 th:text="${producto.nombreProducto}">Nombre del Producto</h5>
-                                <h5 th:text="${producto.nombreProducto}">Nombre del Producto</h5>
                                 <ul>
                                     <li th:each="imagen : ${producto.imagenes}">
                                         <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
@@ -48,7 +47,6 @@
                                 </ul>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h5>
                                 <p class="card-text">
                                     <strong>Descripción:</strong> <span
                                         th:text="${producto.descripcion}"></span><br/>
@@ -146,9 +144,8 @@
         </div>
     </div>
 </div>
+
 <!-- Script para mostrar modal después de crear una cesta -->
-
-
 <script th:if="${mostrarModal}" th:inline="javascript">
     document.addEventListener("DOMContentLoaded", function () {
         var modal = new bootstrap.Modal(document.getElementById('agregarCestaModal'));
@@ -156,6 +153,7 @@
         modal.show();
     });
 </script>
+
 <script>
     // Definir la función abrirModal
     function abrirModal(productoId) {

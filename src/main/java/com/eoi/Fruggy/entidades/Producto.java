@@ -58,9 +58,8 @@ public class Producto implements Serializable {
     private Set<Descuento> descuentos;
 
     // Relación Cesta
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cesta_id")
-    private Cesta cesta;
+    @ManyToMany(mappedBy = "productos")
+    private Set<Cesta> cestas = new HashSet<>();
 
     // Relación con Imagen
     @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL)

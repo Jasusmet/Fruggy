@@ -2,18 +2,18 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Supermercados</title>
+    <title th:text="#{supermarket.list.header}"></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container mt-4" th:fragment="lista-supermercados">
-    <h1>Lista de Supermercados</h1>
+    <h1 th:text="#{supermarket.list.header}"></h1>
     <table>
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>URL</th>
-            <th>Acciones</th>
+            <th th:text="#{supermarket.list.nombre}"></th>
+            <th th:text="#{supermarket.list.URL}"></th>
+            <th th:text="#{supermarket.list.acciones}"></th>
         </tr>
         </thead>
         <tbody>

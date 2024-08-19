@@ -27,7 +27,6 @@ public class Genero implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-
     @OneToMany(mappedBy = "genero")
     private Set<Detalle> detalles;
 

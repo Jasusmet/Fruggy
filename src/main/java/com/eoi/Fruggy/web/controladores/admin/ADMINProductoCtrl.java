@@ -5,6 +5,7 @@ import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,10 +70,13 @@ public class ADMINProductoCtrl {
         List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
         List<Categoria> categorias = categoriasSrvc.buscarEntidades();
         List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
+        String idioma = LocaleContextHolder.getLocale().getLanguage();
+
         model.addAttribute("producto", producto);
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("categorias", categorias);
         model.addAttribute("supermercados", supermercados);
+        model.addAttribute("idioma", idioma);
         return "/admin/crear-producto";
     }
 
@@ -133,6 +137,8 @@ public class ADMINProductoCtrl {
         List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
         List<Categoria> categorias = categoriasSrvc.buscarEntidades();
         List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
+        String idioma = LocaleContextHolder.getLocale().getLanguage();
+
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
         }
@@ -140,6 +146,7 @@ public class ADMINProductoCtrl {
         model.addAttribute("categorias", categorias);
         model.addAttribute("supermercados", supermercados);
         model.addAttribute("imagenes", imagenSrvc.buscarEntidades());
+        model.addAttribute("idioma", idioma);
         return "/admin/crear-producto";
     }
 

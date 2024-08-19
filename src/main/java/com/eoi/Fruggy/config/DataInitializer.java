@@ -64,29 +64,45 @@ public class DataInitializer {
         try {
             // Cargar categorías
             if (repoCategoria.count() == 0) {
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.snacks", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.household", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.babies_kids", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.drinks", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.coffee_tea", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.chocolates_sweets", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.canned_goods", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.dietary", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.drugstore", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.fresh_meats", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.dairy_eggs", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.pets", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.leisure_culture", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.bakery", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.pasta_rice_legumes", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.perfumery_pharmacy", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.snacks", null, locale),
+                        messageSource.getMessage("category.en.snacks", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.household", null, locale),
+                        messageSource.getMessage("category.en.household", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.babies_kids", null, locale),
+                        messageSource.getMessage("category.en.babies_kids", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.drinks", null, locale),
+                        messageSource.getMessage("category.en.drinks", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.coffee_tea", null, locale),
+                        messageSource.getMessage("category.en.coffee_tea", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.chocolates_sweets", null, locale),
+                        messageSource.getMessage("category.en.chocolates_sweets", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.canned_goods", null, locale),
+                        messageSource.getMessage("category.en.canned_goods", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.dietary", null, locale),
+                        messageSource.getMessage("category.en.dietary", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.drugstore", null, locale),
+                        messageSource.getMessage("category.en.drugstore", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.fresh_meats", null, locale),
+                        messageSource.getMessage("category.en.fresh_meats", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.dairy_eggs", null, locale),
+                        messageSource.getMessage("category.en.dairy_eggs", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.pets", null, locale),
+                        messageSource.getMessage("category.en.pets", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.leisure_culture", null, locale),
+                        messageSource.getMessage("category.en.leisure_culture", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.bakery", null, locale),
+                        messageSource.getMessage("category.en.bakery", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.pasta_rice_legumes", null, locale),
+                        messageSource.getMessage("category.en.pasta_rice_legumes", null, locale)));
+                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.perfumery_pharmacy", null, locale),
+                        messageSource.getMessage("category.en.perfumery_pharmacy", null, locale)));
             }
             List<Categoria> categorias = repoCategoria.findAll();
 
             // Cargar subcategorías
             if (repoSubcategoria.count() == 0) {
                 for (Categoria categoria : categorias) {
-                    switch (categoria.getTipo()) {
+                    switch (categoria.getTipo_es()) {
                         case "Aperitivos":
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.chips", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.snacks", null, locale), categoria));
@@ -235,26 +251,27 @@ public class DataInitializer {
             repoDescuento.save(descuento5);
             repoDescuento.save(descuento6);
 
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void crearsecuencial(){
+
+    public void crearsecuencial() {
         // Creating and initializing the ArrayList
         // Declaring object of integer type
-        List<String> productos = Arrays.asList("p1","p2","p3","p2" ,"p5","p6","p2","p1"  );
+        List<String> productos = Arrays.asList("p1", "p2", "p3", "p2", "p5", "p6", "p2", "p1");
         String[][] precios = {
                 {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"},
-                {"12/05/2024","12/05/2024","1","5.77"}
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024", "12/05/2024", "1", "5.77"},
+                {"12/05/2024", "12/05/2024", "1", "5.77"}
 
         };
-        List<String> nombreSuper =  Arrays.asList("sup 1","sup 2","sup 3","sup 1" ,"sup 1","sup 2","sup 3","sup 1"  );
+        List<String> nombreSuper = Arrays.asList("sup 1", "sup 2", "sup 3", "sup 1", "sup 1", "sup 2", "sup 3", "sup 1");
 
         for (int i = 0; i < productos.size(); ++i) {
             for (int j = 0; j < precios[i].length; ++j) {
@@ -270,7 +287,8 @@ public class DataInitializer {
             //uNA VEZ CREADO EL PRECIO CREO EL PRODUCTO AÑADIENDO EL PRECIO
 
 
-        };
+        }
+        ;
 
 
     }

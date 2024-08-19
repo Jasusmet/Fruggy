@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -22,19 +20,32 @@ import java.util.Set;
 public class Categoria implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "tipo", length = 255)
-    private String tipo;
+    @Column(name = "tipo_es", length = 255)
+    private String tipo_es;
 
+    @Column(name = "tipo_en", length = 255)
+    private String tipo_en;
 
     @JsonBackReference
     @OneToMany(mappedBy = "categoria")
     private Set<Subcategoria> subcategorias;
 
-    public Categoria(String categorias) {
-        this.tipo = categorias;
+    public Categoria(String categorias_es, String categorias_en) {
+        this.tipo_es = categorias_es;
+        this.tipo_en = categorias_en;
+    }
+
+    public String getTipo(String idioma) {
+        if ("es".equalsIgnoreCase(idioma)) {
+            return tipo_es;
+        } else if ("en".equalsIgnoreCase(idioma)) {
+            return tipo_en;
+        } else {
+            return tipo_es; // idioma por defecto
+        }
     }
 }

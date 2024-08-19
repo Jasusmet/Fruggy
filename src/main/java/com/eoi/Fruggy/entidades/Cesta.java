@@ -44,7 +44,11 @@ public class Cesta implements Serializable {
     @JoinColumn(name = "precio_id")
     private Precio precio;
 
-    @OneToMany(mappedBy = "cesta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "cesta_producto",
+            joinColumns = @JoinColumn(name = "cesta_id"),
+            inverseJoinColumns = @JoinColumn(name = "producto_id")
+    )
     private Set<Producto> productos = new HashSet<>();
-
 }
