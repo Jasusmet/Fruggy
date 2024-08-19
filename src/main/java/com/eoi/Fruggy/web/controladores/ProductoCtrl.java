@@ -2,21 +2,15 @@ package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -59,7 +53,7 @@ public class ProductoCtrl {
         model.addAttribute("categorias", categorias);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaProductos.getTotalPages());
-        return "/productos/catalogoProductos";
+        return "/productos/productos";
     }
 
     //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
