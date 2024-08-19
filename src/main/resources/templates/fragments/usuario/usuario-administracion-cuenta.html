@@ -9,7 +9,7 @@
     <h1>Administración de Usuario</h1>
     <div>
         <h2>Editar Detalles</h2>
-        <form th:action="@{/usuario/editar}" th:object="${usuario}" method="post">
+        <form th:action="@{/templates/layout/usuario/editar}" th:object="${usuario}" method="post">
             <!-- Campos del formulario para editar detalles -->
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
@@ -30,7 +30,7 @@
     </div>
     <div>
         <h2>Dar de Baja la Cuenta</h2>
-        <form th:action="@{/usuario/baja}" method="post">
+        <form th:action="@{/templates/layout/usuario/baja}" method="post">
             <button type="submit" class="btn btn-danger">Dar de Baja</button>
         </form>
     </div>

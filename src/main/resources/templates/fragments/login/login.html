@@ -1,36 +1,32 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
 <head>
-    <link rel="stylesheet" href="/css/login/login.css">
-    <title>Iniciar Sesión</title>
+    <title th:text="#{login.title}">Iniciar sesión</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-<div class="container" th:fragment="login">
-    <form class="form" th:action="@{/login}" th:object="${loginForm}" method="post">
-        <div class="logo">
-            <a href="/">
-                <img src="/img/logo.png" alt="Fruggy" width="200" height="200"/>
-            </a>
+<div class="box">
+    <span class="borderLine"></span>
+    <form class="form" th:action="@{/login}" method="post">
+        <h2  th:text="#{login.heading}">Iniciar sesión</h2>
+        <div class="inputBox">
+            <input type="text" required="required">
+            <span th:text="#{login.email}">Email</span>
+            <i></i>
         </div>
-
-        <h2 th:text="#{login.heading}">Iniciar sesión</h2>
-
-        <!-- Sección de mensaje de error -->
-        <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
-
-        <label for="email" th:text="#{login.email}">Correo electrónico:</label>
-        <input type="email" id="email" name="username" required placeholder="Introduce tu correo electrónico">
-
-        <label for="password" th:text="#{login.password}">Contraseña:</label>
-        <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña">
-
-        <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
-
-        <div class="enlaces">
-            <a href="/login/recuperar-contraseña" th:text="#{login.forgotPassword}">¿Olvidaste tu contraseña?</a>
-            <a href="/login/crear-usuario" th:text="#{login.signUp}">Registrarse</a>
+        <div class="inputBox">
+            <input type="password" required="required">
+            <span th:text="#{login.password}">Contraseña</span>
+            <i></i>
         </div>
+        <div class="links">
+            <a href="/login/forgot-password" th:text="#{login.forgotPassword}">¿Has olvidado tu contraseña?</a>
+            <a href="/login/sign-up" th:text="#{login.signUp}">Registrarse</a>
+        </div>
+        <input type="submit" value="Siguiente">
     </form>
+    <!-- Error message section -->
+    <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>
 </div>
 </body>
 </html>

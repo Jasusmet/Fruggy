@@ -10,7 +10,7 @@
     <p>ID: <span th:text="${cesta.id}"></span></p>
     <p>Nombre: <span th:text="${cesta.nombre}"></span></p>
     <p>Usuario: <span th:text="${cesta.usuario.detalle.nombreUsuario} + ' (' + cesta.usuario.email + ')'"></span></p>
-    <a th:href="@{/cestas}">Volver a la lista de cestas</a>
+    <a th:href="@{/templates/layout/cestas}">Volver a la lista de cestas</a>
 </div>
 
 </body>

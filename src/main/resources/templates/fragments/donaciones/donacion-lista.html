@@ -24,9 +24,9 @@
             <td th:text="${donacion.fecha}"></td>
             <td th:text="${donacion.usuario.detalle.nombreUsuario}"></td>
             <td>
-                <a th:href="@{/donaciones/{id}(id=${donacion.id})}">Ver</a>
-                <a th:href="@{/donaciones/{id}/editar(id=${donacion.id})}">Editar</a>
-                <form th:action="@{/donaciones/{id}/eliminar(id=${donacion.id})}" method="post" style="display:inline;">
+                <a th:href="@{/templates/layout/donaciones/{id}(id=${donacion.id})}">Ver</a>
+                <a th:href="@{/templates/layout/donaciones/{id}/editar(id=${donacion.id})}">Editar</a>
+                <form th:action="@{/templates/layout/donaciones/{id}/eliminar(id=${donacion.id})}" method="post" style="display:inline;">
                     <input type="submit" value="Eliminar"/>
                 </form>
             </td>

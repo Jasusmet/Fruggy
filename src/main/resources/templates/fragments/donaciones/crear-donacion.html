@@ -8,7 +8,7 @@
 <div th:fragment="crear-donacion">
     <h1>Crear Nueva Donación</h1>
 
-    <form th:action="@{/donaciones}" th:object="${donacion}" method="post">
+    <form th:action="@{/templates/layout/donaciones}" th:object="${donacion}" method="post">
         <label for="donacion">Cantidad a Donar:</label>
         <input type="number" id="donacion" th:field="*{donacion}" step="0.01" required/><br/>
 

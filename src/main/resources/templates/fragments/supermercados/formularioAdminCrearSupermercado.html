@@ -7,9 +7,9 @@
 </head>
 <body>
 <div class="container mt-4" th:fragment="formularioAdminCrearSupermercado">
-    <a class="btn btn-secondary" th:href="@{/admin/supermercados}">Regresar</a>
+    <a class="btn btn-secondary" th:href="@{/templates/layout/admin/supermercados}">Regresar</a>
     <br><br>
-    <form th:action="@{/admin/supermercados/guardar}" method="post" th:object="${supermercado}" enctype="multipart/form-data">
+    <form th:action="@{/templates/layout/admin/supermercados/guardar}" method="post" th:object="${supermercado}" enctype="multipart/form-data">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="mb-3">

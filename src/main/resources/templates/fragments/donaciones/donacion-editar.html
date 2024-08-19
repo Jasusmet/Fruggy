@@ -7,13 +7,13 @@
 
 <div th:fragment="editar-donacion">
     <h1>Editar Donación</h1>
-    <form th:action="@{/donaciones/{id}(id=${donacion.id})}" th:object="${donacion}" method="post">
+    <form th:action="@{/templates/layout/donaciones/{id}(id=${donacion.id})}" th:object="${donacion}" method="post">
         <label for="donacion">Cantidad a Donar:</label>
         <input type="number" id="donacion" th:field="*{donacion}" step="0.01" required/><br/>
 
         <input type="submit" value="Actualizar Donación"/>
     </form>
-    <a th:href="@{/donaciones}">Cancelar</a>
+    <a th:href="@{/templates/layout/donaciones}">Cancelar</a>
 </div>
 
 </body>

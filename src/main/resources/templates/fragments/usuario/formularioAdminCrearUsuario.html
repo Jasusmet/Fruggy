@@ -14,7 +14,7 @@
                 </div>
                 <!-- Formulario de Creación de Usuario -->
                 <div class="user__creation__form" id="usuarioForm">
-                    <form th:action="@{/admin/usuarios/guardar}" method="post" th:object="${usuario}">
+                    <form th:action="@{/templates/layout/admin/usuarios/guardar}" method="post" th:object="${usuario}">
                         <div class="row">
                             <!-- Campo de email -->
                             <div class="col-lg-6 col-md-6 mb-3">

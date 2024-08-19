@@ -7,7 +7,7 @@
 
 <div th:fragment="editar-cesta">
     <h1>Editar Cesta</h1>
-    <form th:action="@{/cestas/{id}(id=${cesta.id})}" th:object="${cesta}" method="post">
+    <form th:action="@{/templates/layout/cestas/{id}(id=${cesta.id})}" th:object="${cesta}" method="post">
         <label for="nombre">Nombre de la Cesta:</label>
         <input type="text" id="nombre" th:field="*{nombre}" required/><br/>
 
@@ -21,7 +21,7 @@
 
         <input type="submit" value="Actualizar Cesta"/>
     </form>
-    <a th:href="@{/cestas}">Cancelar</a>
+    <a th:href="@{/templates/layout/cestas}">Cancelar</a>
 </div>
 
 </body>

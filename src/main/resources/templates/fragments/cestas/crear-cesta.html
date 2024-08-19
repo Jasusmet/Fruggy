@@ -7,7 +7,7 @@
 <body>
 <div th:fragment="crear-cesta">
     <h1>Crear Nueva Cesta</h1>
-    <form th:action="@{/cestas/guardar}" method="post" th:object="${cesta}">
+    <form th:action="@{/templates/layout/cestas/guardar}" method="post" th:object="${cesta}">
         <input type="hidden" name="productoId" th:value="${param.productoId}" />
         <label for="nombre">Nombre de la Cesta:</label>
         <input type="text" id="nombre" th:field="*{nombre}" required/>

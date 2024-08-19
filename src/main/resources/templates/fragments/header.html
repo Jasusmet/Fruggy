@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="w3.org/1999/xhtml">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<body>
+<!-- Header Section Begin -->
+<header class="header" th:fragment="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="header__top__left">
+                        <ul>
+                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="header__top__right">
+                        <div class="header__top__right__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </div>
+                        <div class="header__top__right__language">
+                            <img src="/img/language.english.png" alt="">
+                            <div th:text="#{language}">Español</div>
+                            <span class="arrow_carrot-down"></span>
+                            <ul>
+                                <li><a href="?lang=es" th:text="#{spanish}">Español</a></li>
+                                <li><a href="?lang=en" th:text="#{english}">English</a></li>
+                            </ul>
+                        </div>
+                        <div class="header__top__right__auth">
+                            <a href="/registro/editar"><i class="fa fa-user"></i> <span th:text="#{header.user.admin}">Administración Usuario</span></a>
+                            <!-- Botón de logout -->
+                            <a href="/logout"><i class="fa fa-sign-out"></i> <span th:text="#{header.logout}">Logout</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="header__logo">
+                    <a href="/static"><img src="/img/logo.png" height="120px" width="100px" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <nav class="header__menu">
+                    <ul>
+                        <!-- Menú desplegable para roles de administrador -->
+                        <li sec:authorize="hasRole('ADMIN')">
+                            <a href="#" th:text="#{admi.administrador}"></a>
+                            <ul class="header__menu__dropdown">
+                                <li><a th:href="@{/templates/layout/admin/usuarios}" th:text="#{gestion.user}"></a></li>
+                                <li><a th:href="@{/templates/layout/admin/productos}" th:text="#{administrar.productos}"></a></li>
+                                <li><a th:href="@{/templates/layout/admin/supermercados}" th:text="#{administrar.supermercado}"></a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Enlaces de navegación adicionales -->
+                        <li><a th:href="@{/templates/layout/productos}">Productos</a></li>
+                        <li>
+                            <a th:href="@{/templates/layout/supermercados}" th:text="#{supermarket}">Supermercados</a>
+                            <ul class="header__menu__dropdown">
+                                <li><a th:href="@{/templates/layout/supermercados/carrefour}" th:text="#{supermarket.carrefour}">Carrefour</a></li>
+                                <li><a th:href="@{/templates/layout/supermercados/mercadona}" th:text="#{supermarket.mercadona}">Mercadona</a></li>
+                                <li><a th:href="@{/templates/layout/supermercados/dia}" th:text="#{supermarket.dia}">Día</a></li>
+                                <li><a th:href="@{/templates/layout/supermercados/lidl}" th:text="#{supermarket.lidl}">Lidl</a></li>
+                                <li><a th:href="@{/templates/layout/supermercados/supeco}" th:text="#{supermarket.supeco}">Supeco</a></li>
+                                <li><a th:href="@{/templates/layout/supermercados/hipercor}" th:text="#{supermarket.hipercor}">Hipercor</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+        <div class="humberger__open">
+            <i class="fa fa-bars"></i>
+        </div>
+    </div>
+</header>
+<!-- Header Section End -->
+</body>
+</html>

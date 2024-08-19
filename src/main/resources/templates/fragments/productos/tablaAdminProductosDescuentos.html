@@ -7,9 +7,9 @@
 <body>
 <div class="container mt-4" th:fragment="tablaAdminProductosDescuentos">
     <h1>Editar Detalle</h1>
-    <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Regresar</a>
+    <a class="btn btn-secondary" th:href="@{/templates/layout/admin/usuarios}">Regresar</a>
     <br><br>
-    <form th:action="@{/admin/productos/descuentos/guardar/{id}(id=${descuento.id})}"
+    <form th:action="@{/templates/layout/admin/productos/descuentos/guardar/{id}(id=${descuento.id})}"
           method="post"
           th:object="${descuento}"
           enctype="application/x-www-form-urlencoded">
@@ -34,7 +34,7 @@
 
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
-    <a class="btn btn-primary mt-3" th:href="@{/admin/usuarios}">Regresar a Usuarios</a>
+    <a class="btn btn-primary mt-3" th:href="@{/templates/layout/admin/usuarios}">Regresar a Usuarios</a>
 </div>
 
 </body>

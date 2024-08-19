@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1>Datos del Usuario</h1>
-    <a class="btn btn-secondary" th:href="@{/usuarios}">Regresar</a>
+    <a class="btn btn-secondary" th:href="@{/templates/layout/usuario}">Regresar</a>
     <br><br>
     <form th:action="@{/guardar}" method="post" th:object="${usuario}">
         <input type="hidden" th:field="*{id}"/>

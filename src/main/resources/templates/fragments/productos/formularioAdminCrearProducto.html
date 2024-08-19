@@ -8,9 +8,9 @@
 <body>
 <div class="container mt-4" th:fragment="formularioAdminCrearProducto">
     <h1 th:text="${producto.id == null ? 'Agregar Producto' : 'Editar Producto'}"></h1>
-    <a class="btn btn-primary mb-3" th:href="@{/admin/productos}">Volver a la lista</a>
+    <a class="btn btn-primary mb-3" th:href="@{/templates/layout/admin/productos}">Volver a la lista</a>
 
-    <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/templates/layout/admin/productos/guardar}" th:object="${producto}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" th:value="${producto.id}"/>
 
         <div class="mb-3">

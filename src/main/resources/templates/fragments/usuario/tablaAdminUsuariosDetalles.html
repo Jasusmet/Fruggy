@@ -8,10 +8,10 @@
 <body>
 <div class="container mt-4" th:fragment="tablaAdminUsuariosDetalles">
     <h1>Editar Detalle</h1>
-    <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Regresar</a>
+    <a class="btn btn-secondary" th:href="@{/templates/layout/admin/usuarios}">Regresar</a>
     <br><br>
 
-    <form th:action="@{/admin/usuarios/detalles/{id}(id=${detalle.id})}"
+    <form th:action="@{/templates/layout/admin/usuarios/detalles/{id}(id=${detalle.id})}"
           method="post"
           th:object="${detalle}"
           enctype="multipart/form-data">
@@ -109,7 +109,7 @@
 
         <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
-    <a class="btn btn-primary mt-3" th:href="@{/admin/usuarios}">Regresar a Usuarios</a>
+    <a class="btn btn-primary mt-3" th:href="@{/templates/layout/admin/usuarios}">Regresar a Usuarios</a>
 </div>
 
 </body>

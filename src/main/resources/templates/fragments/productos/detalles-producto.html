@@ -45,7 +45,7 @@
 
     <!-- Formulario para dejar una valoración -->
     <h2>Deja tu valoración</h2>
-    <form th:action="@{/productos/valoraciones/{productoId}/guardar(productoId=${producto.id})}" method="post">
+    <form th:action="@{/templates/layout/productos/valoraciones/{productoId}/guardar(productoId=${producto.id})}" method="post">
         <div class="form-group">
             <label for="comentario">Comentario:</label>
             <textarea id="comentario" name="comentario" class="form-control" required></textarea>
@@ -72,7 +72,7 @@
     </div>
 
     <!-- Botón para volver al catálogo -->
-    <a th:href="@{/productos}" class="btn btn-secondary mt-3">Volver al Catálogo</a>
+    <a th:href="@{/templates/layout/productos}" class="btn btn-secondary mt-3">Volver al Catálogo</a>
 </div>
 </body>
 </html>

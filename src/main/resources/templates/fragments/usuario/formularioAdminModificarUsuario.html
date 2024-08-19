@@ -7,9 +7,9 @@
 </head>
 <body>
 <div class="container mt-4" th:fragment="formularioAdminModificarUsuario">
-    <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Regresar</a>
+    <a class="btn btn-secondary" th:href="@{/templates/layout/admin/usuarios}">Regresar</a>
     <br><br>
-    <form th:action="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" method="post" th:object="${usuario}">
+    <form th:action="@{/templates/layout/admin/usuarios/editar/{id}(id=${usuario.id})}" method="post" th:object="${usuario}">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="mb-3">

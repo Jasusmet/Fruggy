@@ -6,7 +6,7 @@
 
         <!-- Formulario para agregar una valoración -->
         <h2>Deja tu valoración</h2>
-        <form th:action="@{/supermercados/detalles/{supermercadoId}/guardar(supermercadoId=${supermercado.id})}"
+        <form th:action="@{/templates/layout/supermercados/detalles/{supermercadoId}/guardar(supermercadoId=${supermercado.id})}"
               method="post"
               th:object="${valoracion}">
 
@@ -48,5 +48,5 @@
             </ul>
         </div>
         <!-- Enlace de navegación al final de la página -->
-        <a th:href="@{/supermercados}">Volver a la lista de supermercados</a>
+        <a th:href="@{/templates/layout/supermercados}">Volver a la lista de supermercados</a>
     </div>

@@ -22,7 +22,7 @@
                                 <div id="categoryMenu" class="dropdown-menu" style="display: none;">
                                     <div th:each="categoria : ${categorias}">
                                         <a class="dropdown-item"
-                                           th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
+                                           th:href="@{/templates/layout/productos/categoria/{id}(id=${categoria.id})}"
                                            th:text="${categoria.getTipo('${idioma}')}"></a>
                                     </div>
                                     <p th:if="${categorias.size() == 0}">No hay categorías disponibles.</p>
@@ -81,7 +81,7 @@
                                         <i class="fas fa-shopping-basket"></i> Agregar a Cesta
                                     </button>
 
-                                    <a th:href="@{/productos/detalles/{id}(id=${producto.id})}"
+                                    <a th:href="@{/templates/layout/productos/detalles/{id}(id=${producto.id})}"
                                        class="btn btn-secondary">Ver Detalles</a>
                             </div>
                         </div>
@@ -93,17 +93,17 @@
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
                         <li class="page-item" th:if="${pagina.hasPrevious()}">
-                            <a class="page-link" th:href="@{/productos(page=${pagina.number - 1}, size=${pagina.size})}"
+                            <a class="page-link" th:href="@{/templates/layout/productos(page=${pagina.number - 1}, size=${pagina.size})}"
                                aria-label="Anterior">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
                         <li class="page-item" th:each="i : ${#numbers.sequence(0, pagina.totalPages - 1)}">
-                            <a class="page-link" th:href="@{/productos(page=${i}, size=${pagina.size})}"
+                            <a class="page-link" th:href="@{/templates/layout/productos(page=${i}, size=${pagina.size})}"
                                th:text="${i + 1}" th:classappend="${i == pagina.number} ? 'active'"></a>
                         </li>
                         <li class="page-item" th:if="${pagina.hasNext()}">
-                            <a class="page-link" th:href="@{/productos(page=${pagina.number + 1}, size=${pagina.size})}"
+                            <a class="page-link" th:href="@{/templates/layout/productos(page=${pagina.number + 1}, size=${pagina.size})}"
                                aria-label="Siguiente">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -124,7 +124,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formAgregarCesta" th:action="@{/cestas/{cestaId}/agregarProducto(cestaId=${cestaId})}"
+                <form id="formAgregarCesta" th:action="@{/templates/layout/cestas/{cestaId}/agregarProducto(cestaId=${cestaId})}"
                       method="post">
                     <input type="hidden" id="productoId" name="productoId" value="">
                     <div class="mb-3">
@@ -139,7 +139,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <a th:href="@{/cestas/crear}" class="btn btn-success">Crear Nueva Cesta</a>
+                <a th:href="@{/templates/layout/cestas/crear}" class="btn btn-success">Crear Nueva Cesta</a>
             </div>
         </div>
     </div>

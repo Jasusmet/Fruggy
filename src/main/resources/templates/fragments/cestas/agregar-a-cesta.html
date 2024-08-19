@@ -19,7 +19,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formAgregarCesta" th:action="@{/productos/agregar-a-cesta}" method="post">
+                    <form id="formAgregarCesta" th:action="@{/templates/layout/productos/agregar-a-cesta}" method="post">
                         <input type="hidden" id="productoId" name="productoId" value="">
                         <div class="mb-3">
                             <label for="cestaId" class="form-label">Selecciona una Cesta:</label>

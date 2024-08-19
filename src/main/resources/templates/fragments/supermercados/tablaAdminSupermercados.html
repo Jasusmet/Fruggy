@@ -24,10 +24,10 @@
             <td th:text="${supermercado.horario}">Horario</td>
             <td th:text="${supermercado.calle + ', ' + supermercado.municipio + ', ' + supermercado.pais + ', ' + supermercado.codigopostal}">Dirección</td>
             <td>
-                <a th:href="@{/admin/supermercados/editar/{id}(id=${supermercado.id})}" class="btn btn-warning">Editar</a>
+                <a th:href="@{/templates/layout/admin/supermercados/editar/{id}(id=${supermercado.id})}" class="btn btn-warning">Editar</a>
             </td>
             <td>
-                <form th:action="@{/admin/supermercados/eliminar/{id}(id=${supermercado.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este supermercado?');">
+                <form th:action="@{/templates/layout/admin/supermercados/eliminar/{id}(id=${supermercado.id})}" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este supermercado?');">
                     <input type="submit" class="btn btn-danger" value="Eliminar"/>
                 </form>
             </td>
@@ -40,13 +40,13 @@
 <div>
     <ul class="pagination">
         <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
-            <a class="page-link" th:href="@{/admin/supermercados(page=${currentPage - 1}, size=${10})}" th:disabled="${currentPage == 0}">Anterior</a>
+            <a class="page-link" th:href="@{/templates/layout/admin/supermercados(page=${currentPage - 1}, size=${10})}" th:disabled="${currentPage == 0}">Anterior</a>
         </li>
         <li class="page-item" th:each="i : ${#numbers.range(0, totalPages - 1)}">
-            <a class="page-link" th:href="@{/admin/supermercados(page=${i}, size=${10})}" th:class="${i == currentPage} ? 'active'">[[${i + 1}]]</a>
+            <a class="page-link" th:href="@{/templates/layout/admin/supermercados(page=${i}, size=${10})}" th:class="${i == currentPage} ? 'active'">[[${i + 1}]]</a>
         </li>
         <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
-            <a class="page-link" th:href="@{/admin/supermercados(page=${currentPage + 1}, size=${10})}" th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
+            <a class="page-link" th:href="@{/templates/layout/admin/supermercados(page=${currentPage + 1}, size=${10})}" th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
         </li>
     </ul>
 </div>

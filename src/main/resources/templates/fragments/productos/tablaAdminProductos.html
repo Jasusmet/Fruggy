@@ -46,11 +46,11 @@
                th:text="#{admin.product.discounts}">Descuentos</a>
         </td>
         <td>
-            <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning"
+            <a th:href="@{/templates/layout/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning"
                th:text="#{admin.product.edit}">Editar</a>
         </td>
         <td>
-            <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post"
+            <form th:action="@{/templates/layout/admin/productos/eliminar/{id}(id=${producto.id})}" method="post"
                   onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
                 <input type="submit" class="btn btn-danger" th:value="#{admin.product.delete}"/>
             </form>
@@ -62,15 +62,15 @@
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center mt-3">
         <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
-            <a class="page-link" th:href="@{/admin/productos(page=${currentPage - 1}, size=10)}" tabindex="-1">Anterior</a>
+            <a class="page-link" th:href="@{/templates/layout/admin/productos(page=${currentPage - 1}, size=10)}" tabindex="-1">Anterior</a>
         </li>
 
         <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'">
-            <a class="page-link" th:href="@{/admin/productos(page=${i}, size=10)}" th:text="${i + 1}"></a>
+            <a class="page-link" th:href="@{/templates/layout/admin/productos(page=${i}, size=10)}" th:text="${i + 1}"></a>
         </li>
 
         <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
-            <a class="page-link" th:href="@{/admin/productos(page=${currentPage + 1}, size=10)}">Siguiente</a>
+            <a class="page-link" th:href="@{/templates/layout/admin/productos(page=${currentPage + 1}, size=10)}">Siguiente</a>
         </li>
     </ul>
 </nav>

@@ -25,8 +25,8 @@
         <td th:text="${cesta.nombre}"></td>
         <td th:text="${cesta.fecha}"></td>
         <td>
-            <a th:href="@{/cestas/{id}(id=${cesta.id})}">Ver Detalles</a>
-            <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post">
+            <a th:href="@{/templates/layout/cestas/{id}(id=${cesta.id})}">Ver Detalles</a>
+            <form th:action="@{/templates/layout/cestas/{id}/eliminar(id=${cesta.id})}" method="post">
                 <button type="submit">Eliminar</button>
             </form>
         </td>
