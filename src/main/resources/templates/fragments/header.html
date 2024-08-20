@@ -1,88 +1,63 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="w3.org/1999/xhtml">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<body>
-<!-- Header Section Begin -->
-<header class="header" th:fragment="header">
-    <div class="header__top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="header__top__left">
-                        <ul>
-                            <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="header__top__right">
-                        <div class="header__top__right__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </div>
-                        <div class="header__top__right__language">
-                            <img src="/img/language.english.png" alt="">
-                            <div th:text="#{language}">Español</div>
-                            <span class="arrow_carrot-down"></span>
-                            <ul>
-                                <li><a href="?lang=es" th:text="#{spanish}">Español</a></li>
-                                <li><a href="?lang=en" th:text="#{english}">English</a></li>
-                            </ul>
-                        </div>
-                        <div class="header__top__right__auth">
-                            <a href="/registro/editar"><i class="fa fa-user"></i> <span th:text="#{header.user.admin}">Administración Usuario</span></a>
-                            <!-- Botón de logout -->
-                            <a href="/logout"><i class="fa fa-sign-out"></i> <span th:text="#{header.logout}">Logout</span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="header__logo">
-                    <a href="/static"><img src="/img/logo.png" height="120px" width="100px" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <nav class="header__menu">
-                    <ul>
-                        <!-- Menú desplegable para roles de administrador -->
-                        <li sec:authorize="hasRole('ADMIN')">
-                            <a href="#" th:text="#{admi.administrador}"></a>
-                            <ul class="header__menu__dropdown">
-                                <li><a th:href="@{/templates/layout/admin/usuarios}" th:text="#{gestion.user}"></a></li>
-                                <li><a th:href="@{/templates/layout/admin/productos}" th:text="#{administrar.productos}"></a></li>
-                                <li><a th:href="@{/templates/layout/admin/supermercados}" th:text="#{administrar.supermercado}"></a></li>
-                            </ul>
-                        </li>
-
-                        <!-- Enlaces de navegación adicionales -->
-                        <li><a th:href="@{/templates/layout/productos}">Productos</a></li>
-                        <li>
-                            <a th:href="@{/templates/layout/supermercados}" th:text="#{supermarket}">Supermercados</a>
-                            <ul class="header__menu__dropdown">
-                                <li><a th:href="@{/templates/layout/supermercados/carrefour}" th:text="#{supermarket.carrefour}">Carrefour</a></li>
-                                <li><a th:href="@{/templates/layout/supermercados/mercadona}" th:text="#{supermarket.mercadona}">Mercadona</a></li>
-                                <li><a th:href="@{/templates/layout/supermercados/dia}" th:text="#{supermarket.dia}">Día</a></li>
-                                <li><a th:href="@{/templates/layout/supermercados/lidl}" th:text="#{supermarket.lidl}">Lidl</a></li>
-                                <li><a th:href="@{/templates/layout/supermercados/supeco}" th:text="#{supermarket.supeco}">Supeco</a></li>
-                                <li><a th:href="@{/templates/layout/supermercados/hipercor}" th:text="#{supermarket.hipercor}">Hipercor</a></li>
-                            </ul>
-                        </li>
+<nav class="navbar navbar-expand-lg navbar-light" th:fragment="header">
+    <div class="container d-flex flex-wrap">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="nav me-auto">
+                <li class="nav-item"><a href="/" class="nav-link text-white" aria-current="page" th:text="#{index}">Inicio</a></li>
+                <li class="nav-item"><a href="/productos" class="nav-link text-white" th:text="#{products}">Productos</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="#{supermarkets}">
+                        Supermercados
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="/supermercados/carrefour">Carrefour</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/dia">Dia</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/hipercor">Hipercor</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/lidl">Lidl</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/mercadona">Mercadona</a></li>
+                        <li><a class="dropdown-item" href="/supermercados/supeco">Supeco</a></li>
                     </ul>
-                </nav>
-
-            </div>
-        </div>
-        <div class="humberger__open">
-            <i class="fa fa-bars"></i>
+                </li>
+                <li class="nav-item"><a href="/contacto" class="nav-link text-white" th:text="#{contact}">Contacto</a></li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="#{language}">
+                        Idioma
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="?lang=es" th:text="#{language.spanish}">Español</a></li>
+                        <li><a class="dropdown-item" href="?lang=en" th:text="#{language.english}">Inglés</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="/login" class="nav-link text-white" th:text="#{login}">Iniciar sesión</a></li>
+                <li class="nav-item"><a href="/login/sign-up" class="nav-link text-white" th:text="#{login.signUp}">Registrarse</a></li>
+            </ul>
         </div>
     </div>
+</nav>
+<header class="py-3 mb-4 border-bottom bg-dark">
+    <div class="container d-flex flex-wrap justify-content-center">
+        <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
+            <span class="fs-4 text-white">Fruggy</span>
+        </a>
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
+            <input type="search" class="form-control" th:value="#{search}" aria-label="Search">
+        </form>
+    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <!-- Custom JS -->
+    <script>const navbarToggler = document.querySelector('.navbar-toggler');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    navbarToggler.addEventListener('click', () => {
+        navbarCollapse.classList.toggle('show');
+    });</script>
 </header>
-<!-- Header Section End -->
-</body>
-</html>

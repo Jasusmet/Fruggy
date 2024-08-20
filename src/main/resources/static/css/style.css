@@ -1,6 +1,3 @@
-@import "bootstrap.min.css"; /* Este import habilita Bootstrap */
-@import "font-awesome.min.css"; /* Este import habilita iconos */
-@import "owl.carousel.min.css"; /* Este import sirve para el carrusel */
 @import "jquery-ui.min.css";
 @import "slicknav.min.css";
 @import "preloader.css"; /* Preloader */

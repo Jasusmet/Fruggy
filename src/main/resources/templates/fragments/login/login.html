@@ -1,14 +1,13 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="login">
 <head>
-    <title th:text="#{login.title}">Iniciar sesión</title>
+    <title th:text="#{login}">Iniciar sesión</title>
     <link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
 <div class="box">
     <span class="borderLine"></span>
     <form class="form" th:action="@{/login}" method="post">
-        <h2  th:text="#{login.heading}">Iniciar sesión</h2>
+        <h2 th:text="#{login}">Iniciar sesión</h2>
         <div class="inputBox">
             <input type="text" required="required">
             <span th:text="#{login.email}">Email</span>
@@ -23,7 +22,7 @@
             <a href="/login/forgot-password" th:text="#{login.forgotPassword}">¿Has olvidado tu contraseña?</a>
             <a href="/login/sign-up" th:text="#{login.signUp}">Registrarse</a>
         </div>
-        <input type="submit" value="Siguiente">
+        <input type="submit" th:value="#{login.next}">
     </form>
     <!-- Error message section -->
     <div th:if="${error}" class="alert alert-danger" th:text="#{login.error}">Usuario o contraseña incorrectos</div>

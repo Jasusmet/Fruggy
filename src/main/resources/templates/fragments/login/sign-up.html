@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="sign-up">
 <head>
     <title th:text="#{login.signUp}">Registrarse</title>
@@ -11,7 +10,7 @@
         <h2 th:text="#{login.signUp}">Registrarse</h2>
         <div class="inputBox">
             <input type="text" required="required">
-            <span th:text="#{login.name}">Nombre</span>
+            <span th:text="#{login.username}">Nombre</span>
             <i></i>
         </div>
         <div class="inputBox">
@@ -24,7 +23,7 @@
             <span th:text="#{login.password}">Contraseña</span>
             <i></i>
         </div>
-        <input type="submit" value="Siguiente">
+        <input type="submit" th:value="#{login.next}">
     </form>
 </div>
 </body>

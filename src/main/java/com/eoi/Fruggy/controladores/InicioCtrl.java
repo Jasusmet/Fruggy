@@ -8,7 +8,7 @@ public class InicioCtrl {
 
     @GetMapping("/")
     public String Inicio() {
-        return "index";
+        return "layout/index";
     }
 }
 
