@@ -52,11 +52,11 @@
                     <ul>
                         <!-- Menú desplegable para roles de administrador -->
                         <li sec:authorize="hasRole('ADMIN')">
-                            <a href="#" th:text="#{admi.administrador}"></a>
+                            <a href="#" th:text="#{admin}"></a>
                             <ul class="header__menu__dropdown">
-                                <li><a th:href="@{/templates/layout/admin/usuarios}" th:text="#{gestion.user}"></a></li>
-                                <li><a th:href="@{/templates/layout/admin/productos}" th:text="#{administrar.productos}"></a></li>
-                                <li><a th:href="@{/templates/layout/admin/supermercados}" th:text="#{administrar.supermercado}"></a></li>
+                                <li><a th:href="@{/templates/layout/admin/usuarios}" th:text="#{admin.users}"></a></li>
+                                <li><a th:href="@{/templates/layout/admin/productos}" th:text="#{admin.products}"></a></li>
+                                <li><a th:href="@{/templates/layout/admin/supermercados}" th:text="#{admin.supermarkets}"></a></li>
                             </ul>
                         </li>
 

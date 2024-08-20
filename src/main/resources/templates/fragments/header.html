@@ -6,8 +6,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="nav me-auto">
-                <li class="nav-item"><a href="/" class="nav-link text-white" aria-current="page" th:text="#{index}">Inicio</a></li>
-                <li class="nav-item"><a href="/productos" class="nav-link text-white" th:text="#{products}">Productos</a></li>
+                <li class="nav-item"><a href="/" class="nav-link text-white" aria-current="page" th:text="#{index}">Inicio</a>
+                </li>
+                <li class="nav-item"><a href="/productos" class="nav-link text-white"
+                                        th:text="#{products}">Productos</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false" th:text="#{supermarkets}">
@@ -22,7 +24,8 @@
                         <li><a class="dropdown-item" href="/supermercados/supeco">Supeco</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="/contacto" class="nav-link text-white" th:text="#{contact}">Contacto</a></li>
+                <li class="nav-item"><a href="/contacto" class="nav-link text-white" th:text="#{contact}">Contacto</a>
+                </li>
             </ul>
             <ul class="nav">
                 <li class="nav-item dropdown">
@@ -35,8 +38,29 @@
                         <li><a class="dropdown-item" href="?lang=en" th:text="#{language.english}">Inglés</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="/login" class="nav-link text-white" th:text="#{login}">Iniciar sesión</a></li>
-                <li class="nav-item"><a href="/login/sign-up" class="nav-link text-white" th:text="#{login.signUp}">Registrarse</a></li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()"><a href="/login" class="nav-link text-white"
+                                                                           th:text="#{login}">Iniciar sesión</a></li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()"><a href="/login/sign-up"
+                                                                           class="nav-link text-white"
+                                                                           th:text="#{login.signUp}">Registrarse</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()"><a th:href="@{/logout}"
+                                                                          class="nav-link text-white"
+                                                                          th:text="#{logout}">Cerrar sesión</a></li>
+                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                    <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false" th:text="#{admin}">
+                        Administrador
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" th:href="@{/templates/layout/admin/usuarios}"
+                               th:text="#{admin.users}"></a></li>
+                        <li><a class="dropdown-item" th:href="@{/templates/layout/admin/productos}"
+                               th:text="#{admin.products}"></a></li>
+                        <li><a class="dropdown-item" th:href="@{/templates/layout/admin/supermercados}"
+                               th:text="#{admin.supermarkets}"></a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -46,6 +70,9 @@
         <a href="#" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis text-decoration-none">
             <span class="fs-4 text-white">Fruggy</span>
         </a>
+        <button class="btn btn-link mx-2" onclick="location.href='/cesta'">
+            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+        </button>
         <form class="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
             <input type="search" class="form-control" th:value="#{search}" aria-label="Search">
         </form>
