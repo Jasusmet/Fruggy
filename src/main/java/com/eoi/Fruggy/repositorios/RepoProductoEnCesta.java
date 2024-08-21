@@ -3,8 +3,10 @@ package com.eoi.Fruggy.repositorios;
 import com.eoi.Fruggy.entidades.ProductoEnCesta;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface RepoProductoEnCesta extends JpaRepository<ProductoEnCesta, Long> {
 
-    void deleteByCestaIdAndProductoId(Long cestaId, Long productoId);
+    Optional<ProductoEnCesta> findByCestaIdAndProductoId(Long cestaId, Long productoId);
 
 }

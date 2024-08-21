@@ -1,4 +1,4 @@
-package com.eoi.Fruggy.web.controladores;
+package com.eoi.Fruggy.Util;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;

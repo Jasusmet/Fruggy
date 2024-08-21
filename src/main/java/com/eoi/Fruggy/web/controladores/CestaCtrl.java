@@ -97,17 +97,16 @@ public class CestaCtrl {
         Cesta cesta = cestaSrvc.encuentraPorId(id)
                 .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-        // Asumiendo que tienes una forma de obtener los productos con detalles
-        List<Producto> productosConDetalles = new ArrayList<>();
-        for (Producto producto : cesta.getProductos()) {
-            // Cargar detalles adicionales como descuentos y supermercado
-            Producto productoConDetalles = productoSrvc.encuentraPorId(producto.getId())
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-            productosConDetalles.add(productoConDetalles);
-        }
+        // Calcular el total en el controlador
+        double total = cesta.getProductosEnCesta().stream()
+                .mapToDouble(pc -> pc.getProducto().getPrecios().stream()
+                        .findFirst()
+                        .map(precio -> precio.getValor() * pc.getCantidad())
+                        .orElse(0.0))
+                .sum();
 
         model.addAttribute("cesta", cesta);
-        model.addAttribute("productos", productosConDetalles);
+        model.addAttribute("total", total); // Agregar el total al modelo
         return "cestas/cesta-detalle";
     }
 
@@ -193,6 +192,7 @@ public class CestaCtrl {
         redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta con éxito.");
         return "redirect:/productos";
     }
+
     @PostMapping("/{cestaId}/eliminarProducto")
     public String eliminarProductoDeCesta(@PathVariable Long cestaId,
                                           @RequestParam Long productoId,
@@ -205,4 +205,51 @@ public class CestaCtrl {
         }
         return "redirect:/cestas/{cestaId}";
     }
+
+    @PostMapping("/{cestaId}/incrementarProducto")
+    public String incrementarProductoEnCesta(@PathVariable Long cestaId,
+                                             @RequestParam Long productoId,
+                                             RedirectAttributes redirectAttributes) {
+        try {
+            cestaSrvc.agregarProductoACesta(cestaId, productoId, 1, null);
+            redirectAttributes.addFlashAttribute("success", "Producto incrementado en la cesta con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "No se pudo incrementar el producto en la cesta.");
+        }
+        return "redirect:/cestas/" + cestaId;
+    }
+
+    @PostMapping("/{cestaId}/decrementarProducto")
+    public String decrementarProductoEnCesta(@PathVariable Long cestaId,
+                                             @RequestParam Long productoId,
+                                             RedirectAttributes redirectAttributes) {
+        try {
+            cestaSrvc.agregarProductoACesta(cestaId, productoId, -1, null);
+            redirectAttributes.addFlashAttribute("success", "Producto decrementado en la cesta con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "No se pudo decrementar el producto en la cesta.");
+        }
+        return "redirect:/cestas/" + cestaId;
+    }
+
+    @PostMapping("/{cestaId}/actualizarCantidad")
+    public String actualizarCantidadProductoEnCesta(@PathVariable Long cestaId,
+                                                    @RequestParam Long productoId,
+                                                    @RequestParam Integer cantidad,
+                                                    RedirectAttributes redirectAttributes) {
+        try {
+            if (cantidad <= 0) {
+                // Eliminar el producto si la cantidad es cero o negativa
+                cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
+            } else {
+                // Actualizar la cantidad del producto en la cesta
+                cestaSrvc.actualizarCantidadProductoEnCesta(cestaId, productoId, cantidad);
+            }
+            redirectAttributes.addFlashAttribute("success", "Cantidad del producto actualizada con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "No se pudo actualizar la cantidad del producto.");
+        }
+        return "redirect:/cestas/" + cestaId;
+    }
+
 }

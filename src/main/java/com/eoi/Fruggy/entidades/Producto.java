@@ -67,6 +67,5 @@ public class Producto implements Serializable {
     @Transient // Este campo no se guardará en la base de datos. Es para coger nota media de Valoraciones
     private Double notaMedia;
 
-
 }
 

@@ -76,4 +76,14 @@ public class Cesta implements Serializable {
                 .map(ProductoEnCesta::getProducto)
                 .collect(Collectors.toSet());
     }
+    @Transient // No se almacena en la base de datos
+    public Double getTotal() {
+        return productosEnCesta.stream()
+                .mapToDouble(p -> p.getProducto().getPrecios().stream().findFirst()
+                        .map(precio -> precio.getValor() * p.getCantidad())
+                        .orElse(0.0))
+                .sum();
+    }
+
+
 }
