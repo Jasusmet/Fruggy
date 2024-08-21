@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
-class DonacionoTest {
+class DonacionTest {
 
     @Autowired
     RepoDonacion repoDonacion;
