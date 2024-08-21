@@ -66,7 +66,48 @@ class DetalleTest {
 
     @Test
     public void modificarDetalle() {
+        // Primero, crear un detalle nuevo para asegurarse de que haya uno para modificar
+        crearDetalleNuevo();
 
+        // Buscar el detalle guardado
+        Detalle detalleExistente = repoDetalle.findByNombre("Ana").orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
+
+        // Modificar todos los campos del detalle
+        detalleExistente.setNombre("Carlos");
+        detalleExistente.setApellido("Martínez");
+        detalleExistente.setEdad(40);
+        detalleExistente.setCalle("Avenida Prueba 456");
+        detalleExistente.setMunicipio("Municipio Real");
+        detalleExistente.setPais("País Verdadero");
+        detalleExistente.setCodigopostal(98765);
+
+        // Guardar los cambios
+        Detalle detalleModificado = repoDetalle.save(detalleExistente);
+
+        // Verificar que el detalle se haya modificado correctamente
+        assertNotNull(detalleModificado.getId(), "El ID del detalle modificado no debe ser null");
+        assertEquals("Carlos", detalleModificado.getNombre(), "El nombre del detalle modificado no coincide");
+        assertEquals("Martínez", detalleModificado.getApellido(), "El apellido del detalle modificado no coincide");
+        assertEquals(40, detalleModificado.getEdad(), "La edad del detalle modificado no coincide");
+        assertEquals("Avenida Prueba 456", detalleModificado.getCalle(), "La calle del detalle modificado no coincide");
+        assertEquals("Municipio Real", detalleModificado.getMunicipio(), "El municipio del detalle modificado no coincide");
+        assertEquals("País Verdadero", detalleModificado.getPais(), "El país del detalle modificado no coincide");
+        assertEquals(98765, detalleModificado.getCodigopostal(), "El código postal del detalle modificado no coincide");
+    }
+
+    @Test
+    public void eliminarDetalle() {
+        // Crear un detalle nuevo para asegurarse de que haya uno para eliminar
+        crearDetalleNuevo();
+
+        // Buscar el detalle guardado
+        Detalle detalleExistente = repoDetalle.findByNombre("Ana").orElseThrow(() -> new RuntimeException("Detalle no encontrado"));
+
+        // Eliminar el detalle
+        repoDetalle.delete(detalleExistente);
+
+        // Verificar que el detalle ha sido eliminado
+        Optional<Detalle> detalleEliminado = repoDetalle.findById(detalleExistente.getId());
 
     }
 
