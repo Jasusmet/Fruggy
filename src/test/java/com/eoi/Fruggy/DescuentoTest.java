@@ -48,13 +48,74 @@ class DescuentoTest {
 
         assertEquals(9999L, descuento.getId().longValue());
         assertEquals(true, descuento.getActivo());
-
-
-
-        // Comprobamos que los detalles del descuento grabado coincidan con lo que hemos creado
-
-
+        
     }
+    @Test
+    public void modificarDescuento() {
+        // Creamos un nuevo descuento
+        Descuento descuento = new Descuento();
+        descuento.setId(9999L);
+        descuento.setTipoDescuento(null);
+        descuento.setProducto(null);
+        descuento.setActivo(true);
+        descuento.setFechaFin(null);
+        descuento.setFechaInicio(null);
+        descuento.setPorcentaje(null);
+
+        // Grabar en la tabla
+        repoDescuento.save(descuento);
+
+        // Modificamos el descuento
+        descuento.setTipoDescuento(null);
+        descuento.setProducto(null);
+        descuento.setActivo(false);
+        descuento.setFechaFin(LocalDate.of(2024, 12, 31));
+        descuento.setFechaInicio(LocalDate.of(2024, 1, 1));
+        descuento.setPorcentaje(15.0);
+
+        // Guardamos los cambios en la tabla
+        repoDescuento.save(descuento);
+
+
+        // Verificamos que los cambios se hayan guardado correctamente
+        assertEquals(false, descuento.getActivo());
+        assertEquals(LocalDate.of(2024, 12, 31), descuento.getFechaFin());
+        assertEquals(LocalDate.of(2024, 1, 1), descuento.getFechaInicio());
+        assertEquals(15.0, descuento.getPorcentaje(), 0.0);
+    }
+    @Test
+    public void eliminarDescuento() {
+        // Creamos un nuevo descuento
+        Descuento descuento = new Descuento();
+        descuento.setId(9999L);
+        descuento.setTipoDescuento(null);
+        descuento.setProducto(null);
+        descuento.setActivo(true);
+        descuento.setFechaFin(null);
+        descuento.setFechaInicio(null);
+        descuento.setPorcentaje(null);
+
+        // Guardar en la tabla
+        repoDescuento.save(descuento);
+
+        // Modificamos el descuento
+        descuento.setTipoDescuento(null);
+        descuento.setProducto(null);
+        descuento.setActivo(false);
+        descuento.setFechaFin(LocalDate.of(2024, 12, 31));
+        descuento.setFechaInicio(LocalDate.of(2024, 1, 1));
+        descuento.setPorcentaje(15.0);
+
+        // Guardamos los cambios en la tabla
+        repoDescuento.save(descuento);
+
+        // Ahora, eliminamos el descuento de la tabla
+        repoDescuento.delete(descuento);
+
+        // Verificamos que el descuento haya sido eliminado completamente
+        Descuento descuentoEliminado = repoDescuento.findById(9999L).orElse(null);
+    }
+
 
 
 

@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface RepoDescuento extends JpaRepository<Descuento, Long> {
 
 
-    Optional<Descuento> findByPorcentaje(double number);
+
 }
