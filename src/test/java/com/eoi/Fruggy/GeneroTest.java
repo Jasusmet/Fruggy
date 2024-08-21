@@ -36,21 +36,4 @@ class GeneroTest {
 
     }
 
-    @Test
-    public void modificarGenero() {
-        // buscamos el genero a modificar
-
-        // cambiamos el nombre Alien a Fantasma
-
-        // grabamos el genero en la tabla
-
-
-        // volvemos a cargar la tabla para comprobar si se ha modificado
-
-
-        // comprobamos que el nombre ha cambiado a fantasma
-
-
-
-    }
 }
