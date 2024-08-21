@@ -1,9 +1,7 @@
 package com.eoi.Fruggy;
 
 
-import com.eoi.Fruggy.entidades.Categoria;
-import com.eoi.Fruggy.entidades.Subcategoria;
-import com.eoi.Fruggy.entidades.Supermercado;
+import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.repositorios.RepoCategoria;
 
 import org.junit.jupiter.api.Test;
@@ -27,28 +25,25 @@ class CategoriaTest {
     RepoCategoria repoCategoria;
 
     @Test
-    public void testCategoriaCreation() {
-        Categoria categoria = new Categoria();
-        assertNotNull(categoria);
-    }
+    public void grabarNuevaCategoriaEnTablaCategoria() {
+        // Creamos una nueva categoria
+        Categoria categoria = new Categoria("Español" , "English");
+        // categoria.setTipo_es("Español");
+        // categoria.setTipo_en("English");
 
-    @Test
-    public void testGettersAndSetters() {
-        Categoria categoria = new Categoria();
-        categoria.setId(1L);
-        categoria.setTipo_es("");
-        categoria.setTipo_en("");
+        // Grabar en la tabla
+        repoCategoria.save(categoria);
 
-        Set<Subcategoria> subcategorias = new HashSet<>();
-        categoria.setSubcategorias(subcategorias);
+        // Buscamos la categoria grabada en la tabla
+        Optional<Categoria> cat2 = repoCategoria.findByTipoes("Español");
 
-        assertEquals(1L, categoria.getId());
-        assertEquals("", categoria.getTipo_es());
-        assertEquals("", categoria.getTipo_en());
-        assertEquals(subcategorias, categoria.getSubcategorias());
+        // Comprobamos que, por ejemplo, su nombre, es el mismo que el de la categoria que hemos creado
+        assertEquals("Español", cat2.get(). getTipo_es(), "No coincide el tipo de categoria");
 
 
     }
+
+
 }
 
 

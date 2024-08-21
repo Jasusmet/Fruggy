@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SrvcSupermercado extends AbstractSrvc {
-    protected SrvcSupermercado(RepoSupermercado repoSupermercado) {
-        super(repoSupermercado);
+    protected SrvcSupermercado(RepoSupermercado repoSupermercado) {super(repoSupermercado);
     }
     public Page<Supermercado> obtenerSupermercadosPaginados(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface RepoSupermercado extends JpaRepository<Supermercado, Integer> {
 
-    List<Supermercado> findPais(String pais);
-    List<Supermercado> findNombre(String nombre);
+    List<Supermercado> findByPais(String pais);
+    List<Supermercado> findByNombreSuper(String nombre);
 
 
 }
