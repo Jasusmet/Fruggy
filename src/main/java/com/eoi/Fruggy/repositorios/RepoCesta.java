@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RepoCesta extends JpaRepository<Cesta, Long> {
 
-    List<Cesta> findByUsuario(Usuario usuario);
 
+    List<Cesta> findByUsuario(Usuario usuario);
+    Optional<Cesta> findByNombre(String nombre);
 }
