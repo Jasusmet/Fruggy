@@ -29,29 +29,45 @@ class DetalleTest {
     RepoUsuario repoUsuario;
 
 
+
     @Test
     public void crearDetalleNuevo() {
+
+        // Creamos un nuevo genero
+        Genero genero = new Genero();
+        genero.setId(1L);
+
+
         // Creamos un nuevo detalle
         Detalle detalle = new Detalle();
-        detalle.setNombre("Usuario");
-        detalle.setCodigopostal(Integer.valueOf("00000"));
-        detalle.setGenero(null);
-        detalle.setUsuario(null);
-        detalle.setCalle("Calle de prueba");
-        detalle.setApellido("Apellido de prueba");
-        detalle.setEdad(30);
-        detalle.setMunicipio("Municipio de prueba");
-        detalle.setNombreUsuario("nombreusuario");
-        detalle.setId(null);
+        detalle.setNombre("Ana");
+        detalle.setApellido("García");
+        detalle.setEdad(25);
+        detalle.setCalle("Calle Falsa 123");
+        detalle.setMunicipio("Municipio Ficticio");
+        detalle.setPais("País Imaginario");
+        detalle.setCodigopostal(54321);
+        detalle.setGenero(genero);
 
-        // Guardar el detalle nuevo
+        // Guardar el nuevo detalle
+        repoGenero.save(genero);
         repoDetalle.save(detalle);
 
-        // Buscar el detalle nuevo grabado
-        Optional<Detalle> detalleBuscado = repoDetalle.findByNombre("Usuario");
+        // Verificar que el detalle se haya guardado correctamente
+        assertNotNull(detalle.getId(), "El ID del detalle guardado no debe ser null");
+        assertEquals("Ana", detalle.getNombre(), "El nombre del detalle guardado no coincide");
+        assertEquals("García", detalle.getApellido(), "El apellido del detalle guardado no coincide");
+        assertEquals(25, detalle.getEdad(), "La edad del detalle guardado no coincide");
+        assertEquals("Calle Falsa 123", detalle.getCalle(), "La calle del detalle guardado no coincide");
+        assertEquals("Municipio Ficticio", detalle.getMunicipio(), "El municipio del detalle guardado no coincide");
+        assertEquals("País Imaginario", detalle.getPais(), "El país del detalle guardado no coincide");
+        assertEquals(54321, detalle.getCodigopostal(), "El código postal del detalle guardado no coincide");
+    }
 
-        // Verificar que el detalle se haya guardado y encontrado correctamente
-        assertEquals("Usuario", detalleBuscado.get().getNombre(), "El nombre del detalle no coincide");
+    @Test
+    public void modificarDetalle() {
+
+
     }
 
     }
