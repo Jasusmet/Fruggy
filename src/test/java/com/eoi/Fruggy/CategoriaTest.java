@@ -40,8 +40,8 @@ class CategoriaTest {
         // Comprobamos que, por ejemplo, su nombre, es el mismo que el de la categoria que hemos creado
         assertEquals("Español", cat2.get(). getTipo_es(), "No coincide el tipo de categoria");
 
-
     }
+
     @Test
     public void modificarCategoria() {
         // buscamos la categoria a modificar

@@ -2,13 +2,16 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.Categoria;
 import com.eoi.Fruggy.entidades.Descuento;
+import com.eoi.Fruggy.repositorios.RepoCategoria;
 import com.eoi.Fruggy.repositorios.RepoDescuento;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -26,8 +29,19 @@ class DescuentoTest {
     RepoDescuento repoDescuento;
 
     @Test
-public void test() {
-        assertNotNull(repoDescuento);
+    public void grabarNuevoDescuentoEnTablaDescuento() {
+        // Creamos un nuevo descuento
+
+        // Grabar en la tabla
+
+        // Buscamos el descuento grabado en la tabla
+
+
+        // Comprobamos que los detalles del descuento grabado coincidan con lo que hemos creado
+
 
     }
+
+
+
 }

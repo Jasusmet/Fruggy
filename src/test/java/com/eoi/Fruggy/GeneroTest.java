@@ -1,10 +1,14 @@
 package com.eoi.Fruggy;
 
+import com.eoi.Fruggy.entidades.Cesta;
 import com.eoi.Fruggy.entidades.Genero;
+import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoGenero;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,11 +21,35 @@ class GeneroTest {
 
 
     @Test
-    public void testGettersAndSetters() {
+    public void crearNuevoGenero() {
+        // creamos un nuevo genero
         Genero genero = new Genero();
+        genero.setDescripcion("Alien");
 
-        genero.setDescripcion("");
-        assertEquals("", genero.getDescripcion());
+        // guardamos el nuevo genero
+        repoGenero.save(genero);
+
+        // buscamos que ha sido creado
+        Optional<Genero> generoOptional = repoGenero.findById(genero.getId());
+        assertEquals(genero.getDescripcion(), "Alien");
+
+
+    }
+
+    @Test
+    public void modificarGenero() {
+        // buscamos el genero a modificar
+
+        // cambiamos el nombre Alien a Fantasma
+
+        // grabamos el genero en la tabla
+
+
+        // volvemos a cargar la tabla para comprobar si se ha modificado
+
+
+        // comprobamos que el nombre ha cambiado a fantasma
+
 
 
     }
