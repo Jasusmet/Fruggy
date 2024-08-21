@@ -1,17 +1,60 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Detalles de la Cesta</title>
+    <!-- Incluye Bootstrap CSS si lo necesitas -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
+<div class="container mt-4" th:fragment="detalle-cesta">
+    <!-- Ocultar el ID de la cesta y el ID del usuario -->
+    <input type="hidden" id="cestaId" th:value="${cesta.id}"/>
+    <input type="hidden" id="usuarioId" th:value="${cesta.usuario.id}"/>
 
-<div th:fragment="detalle-cesta">
     <h1>Detalles de la Cesta</h1>
-    <p>ID: <span th:text="${cesta.id}"></span></p>
     <p>Nombre: <span th:text="${cesta.nombre}"></span></p>
-    <p>Usuario: <span th:text="${cesta.usuario.detalle.nombreUsuario} + ' (' + cesta.usuario.email + ')'"></span></p>
-    <a th:href="@{/cestas}">Volver a la lista de cestas</a>
+
+    <h2>Productos en la Cesta</h2>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{admin.product.name}">Nombre del Producto</th>
+            <th th:text="#{admin.product.description}">Descripción</th>
+            <th th:text="#{admin.product.price}">Precio</th>
+            <th th:text="#{admin.product.supermarket}">Supermercado</th>
+            <th th:text="#{admin.product.delete}">Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="producto : ${productos}">
+            <td th:text="${producto.nombreProducto}">Nombre</td>
+            <td th:text="${producto.descripcion}">Descripción</td>
+            <td>
+            <span th:if="${producto.descuentos.size() > 0}">
+                <span th:each="descuento : ${producto.descuentos}">
+                    <span th:if="${descuento.activo}">
+                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                    </span>
+                </span>
+            </span>
+                <span th:if="${producto.descuentos.size() == 0}" th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+            </td>
+            <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">Supermercado</td>
+            <td>
+                <form th:action="@{/cestas/{cestaId}/eliminarProducto(cestaId=${cesta.id})}" method="post">
+                    <input type="hidden" name="productoId" th:value="${producto.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary mt-3" th:href="@{/cestas}">Volver a la lista de cestas</a>
 </div>
 
+<!-- Incluye Bootstrap JS y Popper si lo necesitas -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -68,7 +68,7 @@ public class CestaCtrl {
                                @RequestParam(value = "productoId", required = false) Long productoId) throws Exception {
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("error", "Errores en la creación de la cesta.");
-            return "redirect:/cestas";
+            return "redirect:/cestas/crear";
         }
 
         List<Cesta> cestasUsuario = cestaSrvc.findByUsuario(usuario);
@@ -94,10 +94,21 @@ public class CestaCtrl {
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{id}")
     public String obtenerCesta(@PathVariable Long id, Model model) throws Throwable {
-        Cesta cesta = (Cesta) cestaSrvc.encuentraPorId(id)
+        Cesta cesta = cestaSrvc.encuentraPorId(id)
                 .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
+
+        // Asumiendo que tienes una forma de obtener los productos con detalles
+        List<Producto> productosConDetalles = new ArrayList<>();
+        for (Producto producto : cesta.getProductos()) {
+            // Cargar detalles adicionales como descuentos y supermercado
+            Producto productoConDetalles = productoSrvc.encuentraPorId(producto.getId())
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+            productosConDetalles.add(productoConDetalles);
+        }
+
         model.addAttribute("cesta", cesta);
-        return "/cestas/cesta-detalle";
+        model.addAttribute("productos", productosConDetalles);
+        return "cestas/cesta-detalle";
     }
 
     // Actualizar una cesta (GET)
@@ -153,30 +164,45 @@ public class CestaCtrl {
     }
 
     /// AGREGAR PRODUCTO A CESTA (COOKIES)
-    // No se si agregarlo aqui o en productosCTRL
+    @PostMapping("/agregarProducto")
+//    @PreAuthorize("hasRole('ROLE_USER')")
+    public String agregarProductoACesta(@RequestParam Long productoId,
+                                        @RequestParam(required = false) Long cestaId,
+                                        @RequestParam(required = false) String nuevaCesta,
+                                        @RequestParam Integer cantidad,
+                                        @AuthenticationPrincipal Usuario usuario,
+                                        RedirectAttributes redirectAttributes) throws Exception {
 
-    @PostMapping("/{cestaId}/agregarProducto")
-    public String agregarProductoACesta(@PathVariable Long cestaId,
-                                        @RequestParam Long productoId,
-                                        RedirectAttributes redirectAttributes,
-                                        @AuthenticationPrincipal Usuario usuario) throws Exception {
-        try {
-            Producto producto = productoSrvc.encuentraPorId(productoId)
-                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        Producto producto = productoSrvc.encuentraPorId(productoId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-            Cesta cesta = cestaSrvc.encuentraPorId(cestaId)
-                    .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
-
-            if (!cesta.getUsuario().equals(usuario)) {
-                throw new RuntimeException("No tienes permiso para agregar productos a esta cesta.");
-            }
-
-            cestaSrvc.agregarProductoACesta(cesta.getId(), producto.getId());
-
-            redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        if (cestaId != null) {
+            cestaSrvc.agregarProductoACesta(cestaId, productoId, cantidad, null);
+        } else if (nuevaCesta != null && !nuevaCesta.isEmpty()) {
+            Cesta cesta = new Cesta();
+            cesta.setNombre(nuevaCesta);
+            cesta.setUsuario(usuario);
+            cesta.setFecha(LocalDateTime.now());
+            cesta.addProducto(producto, cantidad, null);
+            cestaSrvc.guardar(cesta);
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Debes seleccionar una cesta existente o crear una nueva.");
+            return "redirect:/productos";
         }
+
+        redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta con éxito.");
         return "redirect:/productos";
+    }
+    @PostMapping("/{cestaId}/eliminarProducto")
+    public String eliminarProductoDeCesta(@PathVariable Long cestaId,
+                                          @RequestParam Long productoId,
+                                          RedirectAttributes redirectAttributes) {
+        try {
+            cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
+            redirectAttributes.addFlashAttribute("success", "Producto eliminado de la cesta con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "No se pudo eliminar el producto de la cesta.");
+        }
+        return "redirect:/cestas/{cestaId}";
     }
 }

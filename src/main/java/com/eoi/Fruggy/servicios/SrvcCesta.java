@@ -7,6 +7,8 @@ import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoCesta;
 import com.eoi.Fruggy.repositorios.RepoDescuento;
 import com.eoi.Fruggy.repositorios.RepoProducto;
+import com.eoi.Fruggy.repositorios.RepoProductoEnCesta;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +19,12 @@ import java.util.Optional;
 public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
 
     private final RepoProducto repoProducto;
+    private final RepoProductoEnCesta repoProductoEnCesta;
 
-    protected SrvcCesta(RepoCesta repoCesta, RepoProducto repoProducto) {
+    protected SrvcCesta(RepoCesta repoCesta, RepoProducto repoProducto, RepoProductoEnCesta repoProductoEnCesta) {
         super(repoCesta);
         this.repoProducto = repoProducto;
+        this.repoProductoEnCesta = repoProductoEnCesta;
     }
 
     public List<Cesta> findByUsuario(Usuario usuario) {
@@ -28,21 +32,31 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
     }
 
     @Transactional
-    public void agregarProductoACesta(Long cestaId, Long productoId) {
-        Optional<Cesta> cestaOptional = getRepo().findById(cestaId);
-        Optional<Producto> productoOptional = repoProducto.findById(productoId);
+    public void agregarProductoACesta(Long cestaId, Long productoId, Integer cantidad, String comentario) {
+        // Buscar cesta por ID
+        Optional<Cesta> cestaOpt = getRepo().findById(cestaId);
+        if (cestaOpt.isPresent()) {
+            Cesta cesta = cestaOpt.get();
+            // Buscar producto por ID
+            Producto producto = repoProducto.findById(productoId)
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        if (cestaOptional.isPresent() && productoOptional.isPresent()) {
-            Cesta cesta = cestaOptional.get();
-            Producto producto = productoOptional.get();
-
-            cesta.getProductos().add(producto);
-            producto.getCestas().add(cesta); // Asegúrate de mantener la relación bidireccional
-
+            // Añadir producto a la cesta
+            cesta.addProducto(producto, cantidad, comentario);
             getRepo().save(cesta);
-            repoProducto.save(producto);
         } else {
-            throw new RuntimeException("Cesta o producto no encontrado");
+            throw new RuntimeException("Cesta no encontrada");
+        }
+    }
+
+    @Transactional
+    public void eliminarProductoDeCesta(Long cestaId, Long productoId) {
+        // Verificar si la cesta existe
+        if (getRepo().existsById(cestaId)) {
+            // Eliminar la relación entre la cesta y el producto
+            repoProductoEnCesta.deleteByCestaIdAndProductoId(cestaId, productoId);
+        } else {
+            throw new EntityNotFoundException("Cesta no encontrada");
         }
     }
 }

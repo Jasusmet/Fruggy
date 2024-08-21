@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Editar Cesta</title>
 </head>
 <body>
-
 <div th:fragment="editar-cesta">
     <h1>Editar Cesta</h1>
     <form th:action="@{/cestas/{id}(id=${cesta.id})}" th:object="${cesta}" method="post">
@@ -23,6 +23,5 @@
     </form>
     <a th:href="@{/cestas}">Cancelar</a>
 </div>
-
 </body>
 </html>

@@ -57,10 +57,6 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "producto")
     private Set<Descuento> descuentos;
 
-    // Relación Cesta
-    @ManyToMany(mappedBy = "productos")
-    private Set<Cesta> cestas = new HashSet<>();
-
     // Relación con Imagen
     @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL)
     private Set<Imagen> imagenes;

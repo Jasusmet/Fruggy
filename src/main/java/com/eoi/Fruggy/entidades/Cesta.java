@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -23,7 +24,7 @@ import java.util.Set;
 public class Cesta implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -33,7 +34,7 @@ public class Cesta implements Serializable {
 
     private String nombre;
 
-    @Column (name ="fecha")
+    @Column(name = "fecha")
     private LocalDateTime fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,11 +45,35 @@ public class Cesta implements Serializable {
     @JoinColumn(name = "precio_id")
     private Precio precio;
 
-    @ManyToMany
-    @JoinTable(
-            name = "cesta_producto",
-            joinColumns = @JoinColumn(name = "cesta_id"),
-            inverseJoinColumns = @JoinColumn(name = "producto_id")
-    )
-    private Set<Producto> productos = new HashSet<>();
+    @OneToMany(mappedBy = "cesta", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ProductoEnCesta> productosEnCesta = new HashSet<>();
+
+    @Column(name = "es_principal")
+    private Boolean esPrincipal = false;
+
+    // Método para agregar productos
+    public void addProducto(Producto producto, Integer cantidad, String comentario) {
+        ProductoEnCesta productoEnCesta = productosEnCesta.stream()
+                .filter(p -> p.getProducto().equals(producto))
+                .findFirst()
+                .orElse(null);
+
+        if (productoEnCesta != null) {
+            productoEnCesta.setCantidad(productoEnCesta.getCantidad() + cantidad);
+            productoEnCesta.setComentario(comentario);
+        } else {
+            productoEnCesta = new ProductoEnCesta();
+            productoEnCesta.setProducto(producto);
+            productoEnCesta.setCantidad(cantidad);
+            productoEnCesta.setComentario(comentario);
+            productoEnCesta.setCesta(this);
+            productosEnCesta.add(productoEnCesta);
+        }
+    }
+
+    public Set<Producto> getProductos() {
+        return productosEnCesta.stream()
+                .map(ProductoEnCesta::getProducto)
+                .collect(Collectors.toSet());
+    }
 }

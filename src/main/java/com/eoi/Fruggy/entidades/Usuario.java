@@ -105,4 +105,29 @@ public class Usuario implements Serializable, UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public Cesta getCesta() {
+        return cestas.stream()
+                .filter(Cesta::getEsPrincipal) // Filtra la cesta que es principal
+                .findFirst()
+                .orElse(null);
+    }
+    public Set<Cesta> getCestas() { // todas las cestas
+        return cestas;
+    }
+    public Cesta findCestaById(Long cestaId) {
+        return cestas.stream()
+                .filter(c -> c.getId().equals(cestaId))
+                .findFirst()
+                .orElse(null);
+    }
+    public void addCesta(Cesta cesta) {
+        if (cestas.size() < 10) {
+            cesta.setUsuario(this);
+            cestas.add(cesta);
+        } else {
+            throw new IllegalStateException("El usuario ya tiene el máximo de 10 cestas.");
+        }
+    }
+
 }

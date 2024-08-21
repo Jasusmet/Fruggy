@@ -72,17 +72,68 @@
                                     <span th:if="${producto.notaMedia != null}"
                                           th:text="${#numbers.formatDecimal(producto.notaMedia, 1, 2)}"></span>
                                     <span th:if="${producto.notaMedia == null}">N/A</span>
+                                </p>
 
-                                    <!-- Botones para agregar a cesta, favoritos y ver detalles -->
-                                    <button class="btn btn-warning" data-bs-toggle="modal"
-                                            data-bs-target="#agregarCestaModal"
-                                            th:data-producto-id="${producto.id}"
-                                            onclick="abrirModal(${producto.id})">
-                                        <i class="fas fa-shopping-basket"></i> Agregar a Cesta
-                                    </button>
+                                <!-- Botón para ver detalles -->
+                                <a th:href="@{/productos/detalles/{id}(id=${producto.id})}"
+                                   class="btn btn-secondary">Ver Detalles</a>
+                                <!-- Botón para agregar a la cesta que abre el modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        th:data-bs-target="'#selectBasketModal' + ${producto.id}">
+                                    Agregar a Cesta
+                                </button>
+                                <div class="modal fade"
+                                     th:id="'selectBasketModal' + ${producto.id}"
+                                     tabindex="-1"
+                                     aria-labelledby="'selectBasketLabel' + ${producto.id}"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="selectBasketLabel">Seleccionar Cesta</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Cerrar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form th:action="@{/cestas/agregarProducto}" method="post">
+                                                    <input type="hidden" name="productoId" th:value="${producto.id}"/>
+                                                    <input type="hidden" name="cantidad" value="1"/>
+                                                    <!-- Cantidad por defecto -->
 
-                                    <a th:href="@{/productos/detalles/{id}(id=${producto.id})}"
-                                       class="btn btn-secondary">Ver Detalles</a>
+                                                    <!-- Lista de cestas disponibles -->
+                                                    <div th:if="${cestas.size() > 0}">
+                                                        <label for="cestaId">Selecciona una cesta:</label>
+                                                        <select id="cestaId" name="cestaId" class="form-select">
+                                                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}"
+                                                                    th:text="${cesta.nombre}"></option>
+                                                        </select>
+                                                    </div>
+
+                                                    <!-- Si no hay cestas, mostrar mensaje y opción para crear una nueva -->
+                                                    <div th:if="${cestas.size() == 0}">
+                                                        <p>No tienes ninguna cesta. Puedes crear una nueva.</p>
+                                                    </div>
+
+                                                    <!-- Crear nueva cesta -->
+                                                    <div class="mt-3">
+                                                        <label for="nuevaCesta">Crear nueva cesta:</label>
+                                                        <input type="text" id="nuevaCesta" name="nuevaCesta"
+                                                               class="form-control"
+                                                               placeholder="Nombre de la nueva cesta"/>
+                                                    </div>
+
+                                                    <!-- Botón para enviar el formulario -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Cancelar
+                                                        </button>
+                                                        <button type="submit" class="btn btn-primary">Guardar</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -114,55 +165,5 @@
         </div>
     </div>
 </section>
-<!-- Modal para seleccionar cesta -->
-<div class="modal fade" id="agregarCestaModal" tabindex="-1" aria-labelledby="agregarCestaModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="agregarCestaModalLabel">Selecciona Cesta</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formAgregarCesta" th:action="@{/cestas/{cestaId}/agregarProducto(cestaId=${cestaId})}"
-                      method="post">
-                    <input type="hidden" id="productoId" name="productoId" value="">
-                    <div class="mb-3">
-                        <label for="cestaId" class="form-label">Selecciona una Cesta:</label>
-                        <select class="form-select" id="cestaId" name="cestaId" required>
-                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}"
-                                    th:text="${cesta.nombre}"></option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Agregar a Cesta</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <a th:href="@{/cestas/crear}" class="btn btn-success">Crear Nueva Cesta</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Script para mostrar modal después de crear una cesta -->
-<script th:if="${mostrarModal}" th:inline="javascript">
-    document.addEventListener("DOMContentLoaded", function () {
-        var modal = new bootstrap.Modal(document.getElementById('agregarCestaModal'));
-        document.getElementById('cestaId').value = [[${cestaId}]];
-        modal.show();
-    });
-</script>
-
-<script>
-    // Definir la función abrirModal
-    function abrirModal(productoId) {
-        document.getElementById('productoId').value = productoId;
-    }
-
-    function mostrarNotificacion(mensaje) {
-        alert(mensaje);
-    }
-</script>
 </body>
 </html>
