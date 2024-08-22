@@ -9,6 +9,7 @@ import com.eoi.Fruggy.servicios.SrvcSupermercado;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
 import com.eoi.Fruggy.servicios.SrvcValSupermercado;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +39,24 @@ public class SupermercadoCtrl {
 
     //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
-    public String listarSupermercados(Model model) {
-        List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
-        model.addAttribute("supermercados", supermercados);
+    public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "nombreSuper") String sortField,
+                                      @RequestParam(defaultValue = "asc") String sortDirection,
+                                      Model model) {
+        Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size, sortField, sortDirection);
+        // Crear una lista de números de página = da fallos sin esto
+        List<Integer> pageNumbers = new ArrayList<>();
+        for (int i = 0; i < paginaSupermercados.getTotalPages(); i++) {
+            pageNumbers.add(i);
+        }
+
+        model.addAttribute("supermercados", paginaSupermercados);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", paginaSupermercados.getTotalPages());
+        model.addAttribute("currentSortField", sortField);
+        model.addAttribute("currentSortDirection", sortDirection);
+        model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
         return "/supermercados/lista-supermercados";
     }
 

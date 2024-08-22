@@ -38,18 +38,23 @@ public class ADMINSupermercadoCtrl {
         this.valSupermercadoSrvc = valSupermercadoSrvc;
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
     public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
+                                      @RequestParam(defaultValue = "nombreSuper") String sortField,
+                                      @RequestParam(defaultValue = "asc") String sortDirection,
                                       Model model) {
-        Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size);
+        Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size, sortField, sortDirection);
         model.addAttribute("supermercados", paginaSupermercados);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaSupermercados.getTotalPages());
+        model.addAttribute("currentSortField", sortField);
+        model.addAttribute("currentSortDirection", sortDirection);
+        model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
 
-        // para comprobar si carga paginas
-        log.info("Total de usuarios: {}", paginaSupermercados.getTotalElements());
+        // para comprobar si carga páginas
+        log.info("Total de supermercados: {}", paginaSupermercados.getTotalElements());
         log.info("Número total de páginas: {}", paginaSupermercados.getTotalPages());
         log.info("Página actual: {}", page);
 
