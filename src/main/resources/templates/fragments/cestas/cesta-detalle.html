@@ -18,13 +18,13 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th th:text="#{admin.product.name}">Nombre del Producto</th>
-            <th th:text="#{admin.product.description}">Descripción</th>
-            <th th:text="#{admin.product.price}">Precio</th>
-            <th th:text="#{admin.product.supermarket}">Supermercado</th>
-            <th th:text="#{admin.product.quantity}">Cantidad</th>
-            <th th:text="#{admin.product.total}">Total</th>
-            <th th:text="#{admin.product.delete}">Eliminar</th>
+            <th th:text="#{basket.product.name}">Nombre del Producto</th>
+            <th th:text="#{basket.product.description}">Descripción</th>
+            <th th:text="#{basket.product.price}">Precio</th>
+            <th th:text="#{basket.product.supermarket}">Supermercado</th>
+            <th th:text="#{basket.product.quantity}">Cantidad</th>
+            <th th:text="#{basket.product.total}">Total</th>
+            <th th:text="#{basket.product.delete}">Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -53,7 +53,17 @@
                            class="form-control form-control-sm" onchange="this.form.submit()"/>
                 </form>
             </td>
-            <td th:text="${#numbers.formatDecimal(productoEnCesta.producto.precios[0].valor * productoEnCesta.cantidad, 1, 2) + ' €'}"></td>
+            <td>
+                <span th:if="${productoEnCesta.producto.descuentos.size() > 0}">
+                    <span th:each="descuento : ${productoEnCesta.producto.descuentos}">
+                        <span th:if="${descuento.activo}">
+                            <span th:text="${#numbers.formatDecimal((productoEnCesta.producto.precios[0].valor * (1 - descuento.porcentaje / 100)) * productoEnCesta.cantidad, 1, 2) + ' €'}"></span>
+                        </span>
+                    </span>
+                </span>
+                <span th:if="${productoEnCesta.producto.descuentos.size() == 0}"
+                      th:text="${#numbers.formatDecimal(productoEnCesta.producto.precios[0].valor * productoEnCesta.cantidad, 1, 2) + ' €'}"></span>
+            </td>
             <td>
                 <form th:action="@{/cestas/{cestaId}/eliminarProducto(cestaId=${cesta.id})}" method="post">
                     <input type="hidden" name="productoId" th:value="${productoEnCesta.producto.id}"/>

@@ -99,10 +99,22 @@ public class CestaCtrl {
 
         // Calcular el total en el controlador
         double total = cesta.getProductosEnCesta().stream()
-                .mapToDouble(pc -> pc.getProducto().getPrecios().stream()
-                        .findFirst()
-                        .map(precio -> precio.getValor() * pc.getCantidad())
-                        .orElse(0.0))
+                .mapToDouble(pc -> {
+                    double precioBase = pc.getProducto().getPrecios().stream()
+                            .findFirst()
+                            .map(Precio::getValor)
+                            .orElse(0.0);
+
+                    // Aplicar descuento si está activo
+                    double descuento = pc.getProducto().getDescuentos().stream()
+                            .filter(desc -> desc.getActivo())
+                            .mapToDouble(desc -> desc.getPorcentaje() / 100.0)
+                            .findFirst()
+                            .orElse(0.0);
+
+                    // Calcular el total por producto considerando el descuento
+                    return (precioBase * (1 - descuento)) * pc.getCantidad();
+                })
                 .sum();
 
         model.addAttribute("cesta", cesta);
