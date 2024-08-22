@@ -50,6 +50,11 @@ public class SupermercadoCtrl {
         for (int i = 0; i < paginaSupermercados.getTotalPages(); i++) {
             pageNumbers.add(i);
         }
+        // Calcular la nota media para cada supermercado
+        for (Supermercado supermercado : paginaSupermercados) {
+            Double notaMedia = valSupermercadoSrvc.calcularNotaMedia(supermercado.getId());
+            supermercado.setNotaMedia(notaMedia);
+        }
 
         model.addAttribute("supermercados", paginaSupermercados);
         model.addAttribute("currentPage", page);

@@ -79,4 +79,7 @@ public class Supermercado implements Serializable {
 
     @Transient // No se almacena en la base de datos
     private List<MultipartFile> imagenesArchivo;
+
+    @Transient // Este campo no se guardará en la base de datos. Es para coger nota media de Valoraciones
+    private Double notaMedia;
 }

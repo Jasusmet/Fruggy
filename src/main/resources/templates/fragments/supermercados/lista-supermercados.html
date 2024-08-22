@@ -28,9 +28,10 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th th:text="#{supermarket.list.nombre}"></th>
+            <th th:text="#{supermarket.list.name}"></th>
             <th th:text="#{supermarket.list.URL}"></th>
-            <th th:text="#{supermarket.list.acciones}"></th>
+            <th th:text="#{supermarket.list.details}"></th>
+            <th th:text="#{supermarket.list.ratings}"></th>
         </tr>
         </thead>
         <tbody>
@@ -40,6 +41,7 @@
             <td>
                 <a th:href="@{'/supermercados/detalles/' + ${supermercado.id}}">Detalles</a>
             </td>
+            <td th:text="${supermercado.notaMedia}"></td>
         </tr>
         </tbody>
     </table>
