@@ -50,20 +50,30 @@ public class ADMINProductoCtrl {
     @GetMapping
     public String listarProductos(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "nombreProducto") String sortField,
+                                  @RequestParam(defaultValue = "asc") String sortDirection,
                                   Model model) {
-        Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
+
+        if ("precios.valor_desc".equals(sortField)) {
+            sortField = "precios.valor";
+            sortDirection = "desc";
+        } else if ("precios.valor".equals(sortField)) {
+            sortDirection = "asc";
+        } else if ("id".equals(sortField)) {
+            sortField = "id";
+        }
+
+        Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size, sortField, sortDirection);
         model.addAttribute("productos", paginaProductos);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaProductos.getTotalPages());
-        // para comprobar si carga paginas
-        log.info("Total de usuarios: {}", paginaProductos.getTotalElements());
-        log.info("Número total de páginas: {}", paginaProductos.getTotalPages());
-        log.info("Página actual: {}", page);
-
+        model.addAttribute("currentSortField", sortField);
+        model.addAttribute("currentSortDirection", sortDirection);
+        model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
         return "/admin/CRUD-Productos";
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
         Producto producto = new Producto();
@@ -108,7 +118,7 @@ public class ADMINProductoCtrl {
         Producto productoGuardado = productosSrvc.guardar(producto);
 
         // Procesar imagenes
-        if (producto.getImagenesArchivo() != null){
+        if (producto.getImagenesArchivo() != null) {
             for (MultipartFile file : producto.getImagenesArchivo()) {
                 if (!file.isEmpty()) {
                     Imagen imagen = imagenSrvc.guardarImagenProducto(file, producto);

@@ -7,6 +7,21 @@
 </head>
 <body>
 <table class="table table-striped mt-3" th:fragment="tablaAdminProductos">
+    <!-- Dropdown para seleccionar el orden -->
+    <form method="get" th:action="@{/admin/productos}" class="form-inline mb-3">
+        <label for="sort">Ordenar por:</label>
+        <select name="sortField" id="sortField" class="form-control ml-2" onchange="this.form.submit()">
+            <option value="id" th:selected="${currentSortField == 'id'}">ID</option>
+            <option value="precios.valor" th:selected="${currentSortField == 'precios.valor'}">Precio (Más Bajo)
+            </option>
+            <option value="precios.valor_desc" th:selected="${currentSortField == 'precios.valor_desc'}">Precio (Más
+                Alto)
+            </option>
+            <option value="nombreProducto" th:selected="${currentSortField == 'nombreProducto'}">Nombre</option>
+        </select>
+        <input type="hidden" name="sortDirection" th:value="${reverseSortDirection}"/>
+    </form>
+
     <thead>
     <tr>
         <th th:text="#{admin.product.id}">ID</th>
@@ -35,9 +50,12 @@
                     </span>
                 </span>
             </span>
-            <span th:if="${producto.descuentos.size() == 0}" th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+            <span th:if="${producto.descuentos.size() == 0}"
+                  th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
         </td>
-        <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">Supermercado</td>
+        <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">
+            Supermercado
+        </td>
         <td th:text="${producto.subcategoria.categoria.getTipo('${idioma}')}">Categoría</td>
         <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
         <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
@@ -62,10 +80,12 @@
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center mt-3">
         <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
-            <a class="page-link" th:href="@{/admin/productos(page=${currentPage - 1}, size=10)}" tabindex="-1">Anterior</a>
+            <a class="page-link" th:href="@{/admin/productos(page=${currentPage - 1}, size=10)}"
+               tabindex="-1">Anterior</a>
         </li>
 
-        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:class="${i == currentPage} ? 'active'">
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:class="${i == currentPage} ? 'active'">
             <a class="page-link" th:href="@{/admin/productos(page=${i}, size=10)}" th:text="${i + 1}"></a>
         </li>
 

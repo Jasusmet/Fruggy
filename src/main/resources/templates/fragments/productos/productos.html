@@ -33,6 +33,30 @@
                 </div>
             </div>
             <!-- Productos -->
+            <div class="col-lg-4 col-md-3">
+                <div class="pull-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                            Ordenar por
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item"
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioAsc')}">Precio
+                                Menor</a></li>
+                            <li><a class="dropdown-item"
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioDesc')}">Precio
+                                Mayor</a></li>
+                            <li><a class="dropdown-item"
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='novedades')}">Novedades</a>
+                            </li>
+                            <li><a class="dropdown-item"
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='mejorPuntuacion')}">Mejor
+                                Puntuación</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <div id="products" class="view-group">
                 <div class="row">
                     <div class="item col-xs-4 col-lg-4" th:each="producto : ${pagina.content}">

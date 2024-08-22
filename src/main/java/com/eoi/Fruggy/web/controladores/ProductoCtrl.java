@@ -40,6 +40,7 @@ public class ProductoCtrl {
     @GetMapping
     public String mostrarCatalogo(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "default") String sort,
                                   Model model, @AuthenticationPrincipal Usuario usuario) {
         Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
         List<Categoria> categorias = categoriaSrvc.buscarEntidades();
@@ -50,7 +51,22 @@ public class ProductoCtrl {
             Double notaMedia = valProductosSrvc.calcularNotaMedia(producto.getId());
             producto.setNotaMedia(notaMedia);
         }
-
+        switch (sort) {
+            case "precioAsc":
+                paginaProductos = productosSrvc.obtenerProductosPorPrecioAscendente(page, size);
+                break;
+            case "precioDesc":
+                paginaProductos = productosSrvc.obtenerProductosPorPrecioDescendente(page, size);
+                break;
+            case "novedades":
+                paginaProductos = productosSrvc.obtenerProductosPorNovedades(page, size);
+                break;
+            case "mejorPuntuacion":
+                paginaProductos = productosSrvc.obtenerProductosPorMejorPuntuacion(page, size);
+                break;
+            default:
+                paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
+        }
         model.addAttribute("pagina", paginaProductos);
         model.addAttribute("cestas", cestas);
         model.addAttribute("categorias", categorias);
