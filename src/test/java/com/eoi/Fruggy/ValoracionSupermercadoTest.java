@@ -3,6 +3,7 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.ValoracionProducto;
 import com.eoi.Fruggy.entidades.ValoracionSupermercado;
 import com.eoi.Fruggy.repositorios.RepoRol;
 import com.eoi.Fruggy.repositorios.RepoValSupermercado;
@@ -28,4 +29,63 @@ class ValoracionSupermercadoTest {
     @Autowired
     RepoValSupermercado repoValSupermercado;
 
+    @Test
+    public void crearValoracionSupermercado() {
+        ValoracionSupermercado valoracionSupermercado = new ValoracionSupermercado();
+        valoracionSupermercado.setNota(null);
+        valoracionSupermercado.setId(10L);
+        valoracionSupermercado.setSupermercado(null);
+        valoracionSupermercado.setUsuario(null);
+        valoracionSupermercado.setComentario(null);
+
+        repoValSupermercado.save(valoracionSupermercado);
+
+        assertEquals(10L, valoracionSupermercado.getId());
+
+    }
+
+
+    @Test
+    public void modificarValoracionSupermercado() {
+        ValoracionSupermercado valoracionSupermercado = new ValoracionSupermercado();
+        valoracionSupermercado.setNota(null);
+        valoracionSupermercado.setId(10L);
+        valoracionSupermercado.setSupermercado(null);
+        valoracionSupermercado.setUsuario(null);
+        valoracionSupermercado.setComentario(null);
+
+        repoValSupermercado.save(valoracionSupermercado);
+
+        valoracionSupermercado.setNota(null);
+        valoracionSupermercado.setId(9L);
+        valoracionSupermercado.setSupermercado(null);
+        valoracionSupermercado.setUsuario(null);
+        valoracionSupermercado.setComentario(null);
+
+        repoValSupermercado.save(valoracionSupermercado);
+
+        assertEquals(9L, valoracionSupermercado.getId());
+
+    }
+
+    @Test
+    public void eliminarValoracionSupermercado() {
+        ValoracionSupermercado valoracionSupermercado = new ValoracionSupermercado();
+        valoracionSupermercado.setNota(null);
+        valoracionSupermercado.setId(10L);
+        valoracionSupermercado.setSupermercado(null);
+        valoracionSupermercado.setUsuario(null);
+        valoracionSupermercado.setComentario(null);
+
+        repoValSupermercado.save(valoracionSupermercado);
+
+        valoracionSupermercado.setNota(null);
+        valoracionSupermercado.setId(9L);
+        valoracionSupermercado.setSupermercado(null);
+        valoracionSupermercado.setUsuario(null);
+        valoracionSupermercado.setComentario(null);
+
+        repoValSupermercado.save(valoracionSupermercado);
+        repoValSupermercado.delete(valoracionSupermercado);
+    }
 }

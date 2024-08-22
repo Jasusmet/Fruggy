@@ -27,5 +27,61 @@ class ValoracionProductoTest {
     @Autowired
     RepoValProducto repoValProducto;
 
+    @Test
+    public void crearValoracionProducto() {
+        ValoracionProducto valoracionProducto = new ValoracionProducto();
+        valoracionProducto.setNota(null);
+        valoracionProducto.setId(10L);
+        valoracionProducto.setProducto(null);
+        valoracionProducto.setUsuario(null);
+        valoracionProducto.setComentario(null);
+
+        repoValProducto.save(valoracionProducto);
+
+        assertEquals(10L, valoracionProducto.getId());
+
+    }
+
+    @Test
+    public void modificarValoracionProducto() {
+        ValoracionProducto valoracionProducto = new ValoracionProducto();
+        valoracionProducto.setNota(null);
+        valoracionProducto.setId(10L);
+        valoracionProducto.setProducto(null);
+        valoracionProducto.setUsuario(null);
+        valoracionProducto.setComentario(null);
+
+        repoValProducto.save(valoracionProducto);
+
+        valoracionProducto.setNota(null);
+        valoracionProducto.setId(9L);
+        valoracionProducto.setProducto(null);
+        valoracionProducto.setUsuario(null);
+        valoracionProducto.setComentario(null);
+
+        repoValProducto.save(valoracionProducto);
+
+        assertEquals(9L, valoracionProducto.getId());
+    }
+    @Test
+    public void eliminarValoracionProducto() {
+        ValoracionProducto valoracionProducto = new ValoracionProducto();
+        valoracionProducto.setNota(null);
+        valoracionProducto.setId(10L);
+        valoracionProducto.setProducto(null);
+        valoracionProducto.setUsuario(null);
+        valoracionProducto.setComentario(null);
+
+        repoValProducto.save(valoracionProducto);
+
+        valoracionProducto.setNota(null);
+        valoracionProducto.setId(9L);
+        valoracionProducto.setProducto(null);
+        valoracionProducto.setUsuario(null);
+        valoracionProducto.setComentario(null);
+
+        repoValProducto.save(valoracionProducto);
+        repoValProducto.delete(valoracionProducto);
+    }
 
 }
