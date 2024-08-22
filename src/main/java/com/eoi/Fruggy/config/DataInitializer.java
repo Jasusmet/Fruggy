@@ -118,7 +118,7 @@ public class DataInitializer {
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.decoration", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cleaning", null, locale), categoria));
                             break;
-                        case "Bébes & Niños":
+                        case "Bebés & Niños":
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.diapers", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.wipes", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.baby_clothes", null, locale), categoria));
@@ -154,7 +154,7 @@ public class DataInitializer {
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.spices", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.vinegar", null, locale), categoria));
                             break;
-                        case "Diéteticos":
+                        case "Dietéticos":
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.cereals", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.gluten_free_products", null, locale), categoria));
                             repoSubcategoria.save(new Subcategoria(messageSource.getMessage("subcategory.nutritional_supplements", null, locale), categoria));
