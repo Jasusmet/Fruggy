@@ -89,5 +89,22 @@ public class SrvcProducto extends AbstractSrvc<Producto, Long, RepoProducto> {
         return repoProducto.findAll(pageable);
     }
 
+    public Page<Producto> buscarProductosPorNombre(String nombreProducto, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Producto> productos = repoProducto.findByNombreProductoContainingIgnoreCase(nombreProducto, pageable);
+
+        // Si no hay productos, página vacía
+        if (productos.isEmpty()) {
+            return Page.empty(pageable); // Devolver una página vacía
+        }
+
+        return productos;
+    }
+    public Page<Producto> buscarProductosPorCategoria(Long categoriaId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repoProducto.findByCategoriaId(categoriaId, pageable);
+    }
+
+
 
 }

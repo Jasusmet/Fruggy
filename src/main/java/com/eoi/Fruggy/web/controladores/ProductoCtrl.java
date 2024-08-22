@@ -41,37 +41,78 @@ public class ProductoCtrl {
     public String mostrarCatalogo(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   @RequestParam(defaultValue = "default") String sort,
+                                  @RequestParam(required = false) String search,
+                                  @RequestParam(required = false) Long categoriaId,
                                   Model model, @AuthenticationPrincipal Usuario usuario) {
-        Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
+
+        Page<Producto> paginaProductos;
+
+        // Si hay una búsqueda por nombre, utilizar el método de búsqueda
+        if (search != null && !search.isEmpty()) {
+            paginaProductos = productosSrvc.buscarProductosPorNombre(search, page, size);
+        } else if (categoriaId != null) {
+            // Si hay un filtro por categoría
+            paginaProductos = productosSrvc.buscarProductosPorCategoria(categoriaId, page, size);
+        } else {
+            // Filtros de ordenación
+            switch (sort) {
+                case "precioAsc":
+                    paginaProductos = productosSrvc.obtenerProductosPorPrecioAscendente(page, size);
+                    break;
+                case "precioDesc":
+                    paginaProductos = productosSrvc.obtenerProductosPorPrecioDescendente(page, size);
+                    break;
+                case "novedades":
+                    paginaProductos = productosSrvc.obtenerProductosPorNovedades(page, size);
+                    break;
+                case "mejorPuntuacion":
+                    paginaProductos = productosSrvc.obtenerProductosPorMejorPuntuacion(page, size);
+                    break;
+                default:
+                    paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
+            }
+        }
+
+        if (paginaProductos.isEmpty()) {
+            model.addAttribute("mensaje", "No existe este producto.");
+        } else {
+            model.addAttribute("mensaje", null);
+        }
+
         List<Categoria> categorias = categoriaSrvc.buscarEntidades();
         List<Cesta> cestas = cestaSrvc.buscarEntidades();
 
-        // Calcular la nota media para cada producto
-        for (Producto producto : paginaProductos) {
-            Double notaMedia = valProductosSrvc.calcularNotaMedia(producto.getId());
-            producto.setNotaMedia(notaMedia);
-        }
-        switch (sort) {
-            case "precioAsc":
-                paginaProductos = productosSrvc.obtenerProductosPorPrecioAscendente(page, size);
-                break;
-            case "precioDesc":
-                paginaProductos = productosSrvc.obtenerProductosPorPrecioDescendente(page, size);
-                break;
-            case "novedades":
-                paginaProductos = productosSrvc.obtenerProductosPorNovedades(page, size);
-                break;
-            case "mejorPuntuacion":
-                paginaProductos = productosSrvc.obtenerProductosPorMejorPuntuacion(page, size);
-                break;
-            default:
-                paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
-        }
         model.addAttribute("pagina", paginaProductos);
         model.addAttribute("cestas", cestas);
         model.addAttribute("categorias", categorias);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaProductos.getTotalPages());
+        model.addAttribute("search", search);
+        model.addAttribute("categoriaId", categoriaId);
+
+        return "/productos/productos";
+    }
+
+    @GetMapping("/categoria/{id}")
+    public String mostrarProductosPorCategoria(@PathVariable Long id,
+                                               @RequestParam(defaultValue = "0") int page,
+                                               @RequestParam(defaultValue = "10") int size,
+                                               Model model) {
+        Page<Producto> productosPorCategoria = productosSrvc.buscarProductosPorCategoria(id, page, size);
+        Categoria categoriaActual = categoriaSrvc.encuentraPorId(id).orElse(null);
+
+        List<Cesta> cestas = cestaSrvc.buscarEntidades();
+        if (cestas == null) {
+            cestas = new ArrayList<>();
+        }
+
+        model.addAttribute("pagina", productosPorCategoria);
+        model.addAttribute("categoriaActual", categoriaActual);
+        model.addAttribute("categorias", categoriaSrvc.buscarEntidades());
+        model.addAttribute("cestas", cestas);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productosPorCategoria.getTotalPages());
+
         return "/productos/productos";
     }
 

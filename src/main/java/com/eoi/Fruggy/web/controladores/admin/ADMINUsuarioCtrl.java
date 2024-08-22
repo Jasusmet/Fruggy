@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,19 +46,52 @@ public class ADMINUsuarioCtrl {
 
     //    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public String listarUsuarios(@RequestParam(defaultValue = "0") int page,
-                                 @RequestParam(defaultValue = "10") int size,
-                                 Model model) {
-        Page <Usuario> paginaUsuarios = usuarioSrvc.obtenerUsuariosPaginados(page,size);
-        model.addAttribute("usuarios", paginaUsuarios);
+    public String listarUsuarios(
+            @RequestParam(value = "email", required = false, defaultValue = "") String email,
+            @RequestParam(value = "activo", required = false) Boolean activo,
+            @RequestParam(value = "sortField", defaultValue = "email") String sortField,
+            @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            Model model) {
+
+        String sortColumn;
+        switch (sortField) {
+            case "id_asc":
+                sortColumn = "id";
+                sortDirection = "asc";
+                break;
+            case "id_desc":
+                sortColumn = "id";
+                sortDirection = "desc";
+                break;
+            case "roles":
+                sortColumn = "roles";
+                break;
+            case "email_asc":
+                sortColumn = "email";
+                sortDirection = "asc";
+                break;
+            case "email_desc":
+                sortColumn = "email";
+                sortDirection = "desc";
+                break;
+            default:
+                sortColumn = "email";
+                sortDirection = "asc";
+                break;
+        }
+
+        Page<Usuario> usuarios = usuarioSrvc.obtenerUsuariosPaginados(page, size, sortColumn, sortDirection, email);
+
+        model.addAttribute("usuarios", usuarios);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", paginaUsuarios.getTotalPages());
-
-
-        // para comprobar si carga paginas
-        log.info("Total de usuarios: {}", paginaUsuarios.getTotalElements());
-        log.info("Número total de páginas: {}", paginaUsuarios.getTotalPages());
-        log.info("Página actual: {}", page);
+        model.addAttribute("totalPages", usuarios.getTotalPages());
+        model.addAttribute("size", size);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("email", email);
+        model.addAttribute("activo", activo);
 
         return "admin/CRUD-Usuarios";
     }
@@ -172,7 +206,7 @@ public class ADMINUsuarioCtrl {
     }
 
     //    @PreAuthorize("hasRole('ADMIN')")
-    // Mostrar cestas de un usuario
+// Mostrar cestas de un usuario
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);

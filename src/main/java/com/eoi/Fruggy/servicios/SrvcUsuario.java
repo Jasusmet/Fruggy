@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,8 +74,21 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         repoUsuario.deleteById((long) id);
     }
 
-    public Page<Usuario> obtenerUsuariosPaginados(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return getRepo().findAll(pageable);
+    public Page<Usuario> obtenerUsuariosPaginados(int page, int size, String sortField, String sortDirection, String email) {
+        Sort sort;
+        if ("roles".equals(sortField)) {
+            // Si ordenamos por roles, puedes necesitar una lógica más avanzada
+            sort = Sort.by(Sort.Direction.fromString(sortDirection), "roles");
+        } else {
+            sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        }
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        if (email != null && !email.isEmpty()) {
+            return repoUsuario.findByEmailContainingIgnoreCase(email, pageable);
+        } else {
+            return repoUsuario.findAll(pageable);
+        }
     }
 }
+

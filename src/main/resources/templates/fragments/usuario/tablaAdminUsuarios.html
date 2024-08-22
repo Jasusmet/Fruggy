@@ -7,6 +7,35 @@
 </head>
 <body>
 <div th:fragment="tablaAdminUsuarios">
+
+    <!-- Filtro y Ordenación -->
+    <div class="d-flex justify-content-between mb-3">
+        <!-- Filtro por Email -->
+        <form method="get" th:action="@{/admin/usuarios}" class="form-inline">
+            <div class="form-group">
+                <label for="emailFilter" class="sr-only">Filtrar por Email</label>
+                <input type="text" name="email" id="emailFilter" class="form-control" placeholder="Filtrar por email"
+                       th:value="${emailFilter}">
+            </div>
+            <button type="submit" class="btn btn-primary ml-2">Buscar</button>
+        </form>
+
+        <!-- Dropdown para Ordenar -->
+        <form method="get" th:action="@{/admin/usuarios}" class="form-inline">
+            <div class="form-group">
+                <label for="sortField" class="sr-only">Ordenar por</label>
+                <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
+                    <option value="id_asc" th:selected="${sortField == 'id_asc'}">Más Antiguos</option>
+                    <option value="id_desc" th:selected="${sortField == 'id_desc'}">Más Nuevos</option>
+                    <option value="roles" th:selected="${sortField == 'roles'}">Por Roles</option>
+                    <option value="email_asc" th:selected="${sortField == 'email_asc'}">Email (A-Z)</option>
+                    <option value="email_desc" th:selected="${sortField == 'email_desc'}">Email (Z-A)</option>
+                </select>
+            </div>
+            <input type="hidden" name="sortDirection" th:value="${reverseSortDirection}"/>
+        </form>
+    </div>
+
     <table class="table table-striped mt-3">
         <thead>
         <tr>
