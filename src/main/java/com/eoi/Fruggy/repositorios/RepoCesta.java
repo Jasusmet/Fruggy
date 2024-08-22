@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface RepoCesta extends JpaRepository<Cesta, Long> {
-
     List<Cesta> findByUsuario(Usuario usuario);
 }

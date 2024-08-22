@@ -5,34 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar Cestas</title>
     <link rel="stylesheet" href="/css/listar-cestas.css">
+    <script>
+        function confirmarEliminacion(event) {
+            if (!confirm("¿Está seguro de que desea eliminar esta cesta?")) {
+                event.preventDefault();
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container" th:fragment="cesta-lista">
-<h1>Mis Cestas</h1>
-<div>
-    <a href="/cestas/crear">Crear Nueva Cesta</a>
-</div>
-<table>
-    <thead>
-    <tr>
-        <th>Nombre de la Cesta</th>
-        <th>Fecha de Creación</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="cesta : ${cestas}">
-        <td th:text="${cesta.nombre}"></td>
-        <td th:text="${cesta.fecha}"></td>
-        <td>
-            <a th:href="@{/cestas/{id}(id=${cesta.id})}">Ver Detalles</a>
-            <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post">
-                <button type="submit">Eliminar</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+    <h1>Mis Cestas</h1>
+    <div>
+        <a href="/cestas/crear">Crear Nueva Cesta</a>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre de la Cesta</th>
+            <th>Fecha de Creación</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cesta : ${cestas}">
+            <td th:text="${cesta.nombre}"></td>
+            <td th:text="${cesta.fecha}"></td>
+            <td>
+                <a th:href="@{/cestas/{id}(id=${cesta.id})}">Ver Detalles</a>
+                <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post" onsubmit="confirmarEliminacion(event)">
+                    <button type="submit" class="btn btn-danger">Eliminar Cesta</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 </body>
 </html>

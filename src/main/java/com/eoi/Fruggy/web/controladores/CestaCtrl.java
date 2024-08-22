@@ -161,20 +161,20 @@ public class CestaCtrl {
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{id}/eliminar")
     public String eliminarCesta(@PathVariable Long id,
-                                @AuthenticationPrincipal Usuario usuario) throws Throwable {
-        Cesta cestaExistente = (Cesta) cestaSrvc.encuentraPorId(id)
-                .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
+                                RedirectAttributes redirectAttributes) {
+        try {
+            Cesta cestaExistente = cestaSrvc.encuentraPorId(id)
+                    .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-        // Verificar si la cesta pertenece al usuario
-        if (!cestaExistente.getUsuario().equals(usuario)) {
-            throw new RuntimeException("No tienes permiso para eliminar esta cesta.");
+            cestaSrvc.eliminarPorId(id);
+            redirectAttributes.addFlashAttribute("success", "Cesta eliminada con éxito.");
+        } catch (Exception e) {
+            e.printStackTrace();  // Esto te ayudará a ver el stack trace completo en los logs
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar la cesta: " + e.getMessage());
         }
-
-        cestaSrvc.eliminarPorId(id);
         return "redirect:/cestas";
     }
 
-    /// AGREGAR PRODUCTO A CESTA (COOKIES)
     @PostMapping("/agregarProducto")
 //    @PreAuthorize("hasRole('ROLE_USER')")
     public String agregarProductoACesta(@RequestParam Long productoId,
@@ -210,12 +210,18 @@ public class CestaCtrl {
                                           @RequestParam Long productoId,
                                           RedirectAttributes redirectAttributes) {
         try {
-            cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
-            redirectAttributes.addFlashAttribute("success", "Producto eliminado de la cesta con éxito.");
+            // Mensaje de confirmación antes de eliminar el producto
+            boolean confirmacion = true;
+            if (confirmacion) {
+                cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
+                redirectAttributes.addFlashAttribute("success", "Producto eliminado de la cesta con éxito.");
+            } else {
+                redirectAttributes.addFlashAttribute("info", "Eliminación de producto cancelada.");
+            }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "No se pudo eliminar el producto de la cesta.");
         }
-        return "redirect:/cestas/{cestaId}";
+        return "redirect:/cestas/" + cestaId;
     }
 
     @PostMapping("/{cestaId}/incrementarProducto")
@@ -251,13 +257,20 @@ public class CestaCtrl {
                                                     RedirectAttributes redirectAttributes) {
         try {
             if (cantidad <= 0) {
-                // Eliminar el producto si la cantidad es cero o negativa
-                cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
+                // Mensaje de confirmación antes de eliminar el producto
+                boolean confirmacion = true;
+
+                if (confirmacion) {
+                    cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
+                    redirectAttributes.addFlashAttribute("success", "Producto eliminado de la cesta con éxito.");
+                } else {
+                    redirectAttributes.addFlashAttribute("info", "Eliminación de producto cancelada.");
+                }
             } else {
                 // Actualizar la cantidad del producto en la cesta
                 cestaSrvc.actualizarCantidadProductoEnCesta(cestaId, productoId, cantidad);
+                redirectAttributes.addFlashAttribute("success", "Cantidad del producto actualizada con éxito.");
             }
-            redirectAttributes.addFlashAttribute("success", "Cantidad del producto actualizada con éxito.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "No se pudo actualizar la cantidad del producto.");
         }

@@ -72,21 +72,19 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
 
     @Transactional
     public void eliminarProductoDeCesta(Long cestaId, Long productoId) {
-        // Buscar la cesta por ID
         Cesta cesta = getRepo().findById(cestaId)
                 .orElseThrow(() -> new EntityNotFoundException("Cesta no encontrada"));
 
-        // Buscar la relación entre la cesta y el producto
         ProductoEnCesta productoEnCesta = repoProductoEnCesta.findByCestaIdAndProductoId(cestaId, productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado en la cesta"));
 
-        // Eliminar la relación
-        cesta.getProductos().remove(productoEnCesta);
-        repoProductoEnCesta.delete(productoEnCesta);
+        cesta.getProductosEnCesta().remove(productoEnCesta);
+        repoProductoEnCesta.delete(productoEnCesta); // Eliminar de la base de datos
 
-        // Guardar los cambios en la cesta
         getRepo().save(cesta);
     }
+
+    @Transactional
     public void actualizarCantidadProductoEnCesta(Long cestaId, Long productoId, Integer cantidad) {
         Cesta cesta = encuentraPorId(cestaId)
                 .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
@@ -99,12 +97,12 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
         if (cantidad <= 0) {
             // Eliminar el producto si la cantidad es cero o negativa
             cesta.getProductosEnCesta().remove(productoEnCesta);
+            repoProductoEnCesta.delete(productoEnCesta);
         } else {
             // Actualizar la cantidad del producto en la cesta
             productoEnCesta.setCantidad(cantidad);
         }
-
         getRepo().save(cesta);
     }
-
 }
+
