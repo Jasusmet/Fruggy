@@ -3,6 +3,7 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.Detalle;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
 import com.eoi.Fruggy.repositorios.RepoDetalle;
@@ -31,9 +32,9 @@ class UsuarioTest {
 
     @Test
     public void crearUsuario() {
+
         Usuario usuario = new Usuario();
         usuario.setActive(null);
-        usuario.setDetalle("Detalle de usuario");
         usuario.setId(100L);
         usuario.setTelefono(null);
         usuario.setEmail("email@email.com");
@@ -41,7 +42,12 @@ class UsuarioTest {
 
         repoUsuario.save(usuario);
 
+        assertEquals(100L, usuario.getId());
+        assertEquals("email@email.com", usuario.getEmail());
+        assertEquals("Nombre", usuario.getDetalle().getNombre());
+        assertEquals(true,usuario.getActive());
 
+        }
 
 
     }
