@@ -37,6 +37,7 @@ public class DataInitializer {
         this.messageSource = messageSource;
     }
 
+    @PostConstruct
     public void init() {
         Locale locale = new Locale("es");
         // Inicialización de roles
@@ -222,74 +223,67 @@ public class DataInitializer {
                 }
             }
             // Crear tipos de descuento
-            TipoDescuento descuentoPorVolumen = new TipoDescuento("Descuento por Volumen", true, LocalDate.now(), LocalDate.now().plusYears(1));
-            TipoDescuento descuentoPorTemporada = new TipoDescuento("Descuento por Temporada", true, LocalDate.now(), LocalDate.now().plusMonths(3));
-            TipoDescuento descuentoFidelidad = new TipoDescuento("Descuento por Fidelidad", true, LocalDate.now(), LocalDate.now().plusMonths(6));
-            TipoDescuento descuentoLanzamiento = new TipoDescuento("Descuento por Lanzamiento", true, LocalDate.now(), LocalDate.now().plusMonths(1));
-            TipoDescuento descuentoLiquidacion = new TipoDescuento("Descuento por Liquidación", true, LocalDate.now(), LocalDate.now().plusMonths(2));
-            TipoDescuento descuentoEspecial = new TipoDescuento("Descuento Especial", true, LocalDate.now(), LocalDate.now().plusMonths(4));
+            if (repoTipoDescuento.count() == 0) {
+                TipoDescuento descuentoPorVolumen = new TipoDescuento("Descuento por Volumen", true, LocalDate.now(), LocalDate.now().plusYears(1));
+                TipoDescuento descuentoPorTemporada = new TipoDescuento("Descuento por Temporada", true, LocalDate.now(), LocalDate.now().plusMonths(3));
+                TipoDescuento descuentoFidelidad = new TipoDescuento("Descuento por Fidelidad", true, LocalDate.now(), LocalDate.now().plusMonths(6));
+                TipoDescuento descuentoLanzamiento = new TipoDescuento("Descuento por Lanzamiento", true, LocalDate.now(), LocalDate.now().plusMonths(1));
+                TipoDescuento descuentoLiquidacion = new TipoDescuento("Descuento por Liquidación", true, LocalDate.now(), LocalDate.now().plusMonths(2));
+                TipoDescuento descuentoEspecial = new TipoDescuento("Descuento Especial", true, LocalDate.now(), LocalDate.now().plusMonths(4));
 
-            repoTipoDescuento.save(descuentoPorVolumen);
-            repoTipoDescuento.save(descuentoPorTemporada);
-            repoTipoDescuento.save(descuentoFidelidad);
-            repoTipoDescuento.save(descuentoLanzamiento);
-            repoTipoDescuento.save(descuentoLiquidacion);
-            repoTipoDescuento.save(descuentoEspecial);
+                repoTipoDescuento.save(descuentoPorVolumen);
+                repoTipoDescuento.save(descuentoPorTemporada);
+                repoTipoDescuento.save(descuentoFidelidad);
+                repoTipoDescuento.save(descuentoLanzamiento);
+                repoTipoDescuento.save(descuentoLiquidacion);
+                repoTipoDescuento.save(descuentoEspecial);
+            }
 
             // Crear descuentos
-            Descuento descuento1 = new Descuento(10.0, LocalDate.now(), LocalDate.now().plusDays(30), true, null, descuentoPorVolumen);
-            Descuento descuento2 = new Descuento(20.0, LocalDate.now(), LocalDate.now().plusDays(15), true, null, descuentoPorTemporada);
-            Descuento descuento3 = new Descuento(5.0, LocalDate.now(), LocalDate.now().plusMonths(6), true, null, descuentoFidelidad);
-            Descuento descuento4 = new Descuento(15.0, LocalDate.now(), LocalDate.now().plusMonths(1), true, null, descuentoLanzamiento);
-            Descuento descuento5 = new Descuento(25.0, LocalDate.now(), LocalDate.now().plusMonths(2), true, null, descuentoLiquidacion);
-            Descuento descuento6 = new Descuento(30.0, LocalDate.now(), LocalDate.now().plusMonths(4), true, null, descuentoEspecial);
+            if (repoDescuento.count() == 0) {
+                TipoDescuento descuentoPorVolumen = repoTipoDescuento.findByTipo("Descuento por Volumen");
+                TipoDescuento descuentoPorTemporada = repoTipoDescuento.findByTipo("Descuento por Temporada");
+                TipoDescuento descuentoFidelidad = repoTipoDescuento.findByTipo("Descuento por Fidelidad");
+                TipoDescuento descuentoLanzamiento = repoTipoDescuento.findByTipo("Descuento por Lanzamiento");
+                TipoDescuento descuentoLiquidacion = repoTipoDescuento.findByTipo("Descuento por Liquidación");
+                TipoDescuento descuentoEspecial = repoTipoDescuento.findByTipo("Descuento Especial");
 
-            repoDescuento.save(descuento1);
-            repoDescuento.save(descuento2);
-            repoDescuento.save(descuento3);
-            repoDescuento.save(descuento4);
-            repoDescuento.save(descuento5);
-            repoDescuento.save(descuento6);
-
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void crearsecuencial() {
-        // Creating and initializing the ArrayList
-        // Declaring object of integer type
-        List<String> productos = Arrays.asList("p1", "p2", "p3", "p2", "p5", "p6", "p2", "p1");
-        String[][] precios = {
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"},
-                {"12/05/2024", "12/05/2024", "1", "5.77"}
+//    public void crearsecuencial() {
+//        // Creating and initializing the ArrayList
+//        // Declaring object of integer type
+//        List<String> productos = Arrays.asList("p1", "p2", "p3", "p2", "p5", "p6", "p2", "p1");
+//        String[][] precios = {
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"},
+//                {"12/05/2024", "12/05/2024", "1", "5.77"}
+//
+//        };
+//        List<String> nombreSuper = Arrays.asList("sup 1", "sup 2", "sup 3", "sup 1", "sup 1", "sup 2", "sup 3", "sup 1");
+//
+//        for (int i = 0; i < productos.size(); ++i) {
+//            for (int j = 0; j < precios[i].length; ++j) {
+    //Guardo la fecha iniciA J = 0
+    //Guardo la fecha FINAL  J = 1
+    //gUARDO ACTIVO J = 2
+    //gUARDO PRECIO J = 3
 
-        };
-        List<String> nombreSuper = Arrays.asList("sup 1", "sup 2", "sup 3", "sup 1", "sup 1", "sup 2", "sup 3", "sup 1");
-
-        for (int i = 0; i < productos.size(); ++i) {
-            for (int j = 0; j < precios[i].length; ++j) {
-                //Guardo la fecha iniciA J = 0
-                //Guardo la fecha FINAL  J = 1
-                //gUARDO ACTIVO J = 2
-                //gUARDO PRECIO J = 3
-
-                //gUARDO EL SUPER nombreSuper[0]
-
-
-            }
-            //uNA VEZ CREADO EL PRECIO CREO EL PRODUCTO AÑADIENDO EL PRECIO
+    //gUARDO EL SUPER nombreSuper[0]
 
 
-        }
-        ;
-
-
-    }
 }
+//uNA VEZ CREADO EL PRECIO CREO EL PRODUCTO AÑADIENDO EL PRECIO
+
+
+//        }
+//        ;

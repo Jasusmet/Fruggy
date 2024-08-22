@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RepoTipoDescuento extends JpaRepository<TipoDescuento, Long> {
+    TipoDescuento findByTipo(String tipo);
 }

@@ -30,29 +30,8 @@ public class SrvcTipodescuento extends AbstractSrvc {
         return repoTipoDescuento.findById(id);
     }
 
-    // Actualizar tipoDescuento en la base de datos
     @Transactional
-    public TipoDescuento actualizarTipoDescuento(TipoDescuento tipoDescuento) {
-        return repoTipoDescuento.save(tipoDescuento);
+    public TipoDescuento encuentraPorTipo(String tipo) {
+        return repoTipoDescuento.findByTipo(tipo);
     }
-
-//    //Asignar tipoDescuento a producto
-//    public void asignarTipoDescuentoAProducto(Producto producto, TipoDescuento tipoDescuento) {
-//        Producto productoExistente = repoProducto.findById(producto.getId()).orElse(null);
-//        TipoDescuento tipoDescuentoExistente = repoTipoDescuento.findById(tipoDescuento.getId()).orElse(null);
-//        if (productoExistente != null && tipoDescuentoExistente != null) {
-//            productoExistente.getTipoDescuentos().add(tipoDescuentoExistente);
-//            repoProducto.save(productoExistente);
-//        }
-//    }
-//
-//    //Quitar tipoDescuento a Producto
-//    public void quitarTipoDescuentoAProducto(Producto producto, TipoDescuento tipoDescuento) {
-//        Producto productoExistente = repoProducto.findById(producto.getId()).orElse(null);
-//        TipoDescuento tipoDescuentoExistente = repoTipoDescuento.findById(tipoDescuento.getId()).orElse(null);
-//        if (productoExistente != null && tipoDescuentoExistente != null) {
-//            productoExistente.getTipoDescuentos().remove(tipoDescuentoExistente);
-//            repoProducto.save(productoExistente);
-//        }
-//    }
 }
