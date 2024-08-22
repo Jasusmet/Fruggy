@@ -98,7 +98,6 @@
                                                 <form th:action="@{/cestas/agregarProducto}" method="post">
                                                     <input type="hidden" name="productoId" th:value="${producto.id}"/>
                                                     <input type="hidden" name="cantidad" value="1"/>
-                                                    <!-- Cantidad por defecto -->
 
                                                     <!-- Lista de cestas disponibles -->
                                                     <div th:if="${cestas.size() > 0}">
@@ -112,14 +111,13 @@
                                                     <!-- Si no hay cestas, mostrar mensaje y opción para crear una nueva -->
                                                     <div th:if="${cestas.size() == 0}">
                                                         <p>No tienes ninguna cesta. Puedes crear una nueva.</p>
-                                                    </div>
-
-                                                    <!-- Crear nueva cesta -->
-                                                    <div class="mt-3">
-                                                        <label for="nuevaCesta">Crear nueva cesta:</label>
-                                                        <input type="text" id="nuevaCesta" name="nuevaCesta"
-                                                               class="form-control"
-                                                               placeholder="Nombre de la nueva cesta"/>
+                                                        <!-- Crear nueva cesta -->
+                                                        <div class="mt-3">
+                                                            <label for="nuevaCesta">Crear nueva cesta:</label>
+                                                            <input type="text" id="nuevaCesta" name="nuevaCesta"
+                                                                   class="form-control"
+                                                                   placeholder="Nombre de la nueva cesta"/>
+                                                        </div>
                                                     </div>
 
                                                     <!-- Botón para enviar el formulario -->
@@ -138,32 +136,33 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Paginación -->
-            <div class="d-flex justify-content-center mt-4">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item" th:if="${pagina.hasPrevious()}">
-                            <a class="page-link" th:href="@{/productos(page=${pagina.number - 1}, size=${pagina.size})}"
-                               aria-label="Anterior">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="i : ${#numbers.sequence(0, pagina.totalPages - 1)}">
-                            <a class="page-link" th:href="@{/productos(page=${i}, size=${pagina.size})}"
-                               th:text="${i + 1}" th:classappend="${i == pagina.number} ? 'active'"></a>
-                        </li>
-                        <li class="page-item" th:if="${pagina.hasNext()}">
-                            <a class="page-link" th:href="@{/productos(page=${pagina.number + 1}, size=${pagina.size})}"
-                               aria-label="Siguiente">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <!-- Paginación -->
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li class="page-item" th:if="${pagina.hasPrevious()}">
+                                <a class="page-link"
+                                   th:href="@{/productos(page=${pagina.number - 1}, size=${pagina.size})}"
+                                   aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:each="i : ${#numbers.sequence(0, pagina.totalPages - 1)}">
+                                <a class="page-link" th:href="@{/productos(page=${i}, size=${pagina.size})}"
+                                   th:text="${i + 1}" th:classappend="${i == pagina.number} ? 'active'"></a>
+                            </li>
+                            <li class="page-item" th:if="${pagina.hasNext()}">
+                                <a class="page-link"
+                                   th:href="@{/productos(page=${pagina.number + 1}, size=${pagina.size})}"
+                                   aria-label="Siguiente">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
 </section>
 </body>
 </html>
