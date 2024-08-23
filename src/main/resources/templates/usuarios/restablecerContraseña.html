@@ -1,31 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html layout:decorate="~{layout/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="es"><head>
 
-<head>
+    <title th:text="#{user.password.reset}">Restablecer Contraseña</title>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet">
+
+</head>
 <body>
-<meta charset="UTF-8">
-<meta name="description" content="Ogani Template">
-<meta name="keywords" content="Ogani, unica, creative, html">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>Mostrar productos</title>
 
-
-<link th:href="@{/css/style.css}" type="text/css" rel="stylesheet">
-
-
-<!-- Page Preloder -->
-<div th:replace="~{fragments/layout/preloader :: preloader}"></div>
-<!--  humberger menu  -->
-<div th:replace="~{fragments/layout/humberger-menu :: humbergerMenu}"></div>
-<!--  header  -->
-<div th:replace="~{fragments/layout/header :: header}"></div>
-<div class="container">
-    <div th:replace="~{fragments/usuario/restablecerContraseña :: restablecer-contraseña}"></div>
+<div class="container mt-4" layout:fragment="content">
+    <div class="container">
+        <div th:replace="~{fragments/usuario/restablecerContraseña:: restablecer-contraseña}"></div>
+    </div>
 </div>
-<!-- Footer Section  -->
-<div th:replace="~{fragments/layout/footer :: footer}"></div>
-
 </body>
-
 </html>

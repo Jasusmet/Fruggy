@@ -72,6 +72,13 @@ public class ProductoCtrl {
                     paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
             }
         }
+        // Calcular la nota media para cada producto
+        if (!paginaProductos.isEmpty()) {
+            paginaProductos.forEach(producto -> {
+                Double notaMedia = valProductosSrvc.calcularNotaMedia(producto.getId());
+                producto.setNotaMedia(notaMedia); // Asegúrate de que hay un setter para notaMedia
+            });
+        }
 
         if (paginaProductos.isEmpty()) {
             model.addAttribute("mensaje", "No existe este producto.");
@@ -139,24 +146,34 @@ public class ProductoCtrl {
                                     @Valid @ModelAttribute("valoracion") ValoracionProducto valoracion,
                                     BindingResult result,
                                     Principal principal,
-                                    Model model) throws Throwable {
+                                    Model model) {
         if (result.hasErrors()) {
-            Producto producto = productosSrvc.encuentraPorId(productoId).orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + productoId));
+            Producto producto = productosSrvc.encuentraPorId(productoId)
+                    .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + productoId));
             List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(productoId);
             model.addAttribute("valoraciones", valoraciones);
             model.addAttribute("producto", producto);
-            return "redirect:/productos/detalles";
+            return "productos/detalles-producto";
         }
 
         String username = principal.getName();
         Usuario usuario = usuarioSrvc.getRepo().findByEmail(username);
         valoracion.setUsuario(usuario);
 
-        Producto producto = (Producto) productosSrvc.encuentraPorId(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + productoId));
+        Producto producto = productosSrvc.encuentraPorId(productoId)
+                .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + productoId));
         valoracion.setProducto(producto);
 
-        valProductosSrvc.guardar(valoracion);
+        try {
+            valProductosSrvc.guardar(valoracion);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(productoId);
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("producto", producto);
+            return "productos/detalles-producto";
+        }
+
         return "redirect:/productos/detalles/" + productoId;
     }
 }

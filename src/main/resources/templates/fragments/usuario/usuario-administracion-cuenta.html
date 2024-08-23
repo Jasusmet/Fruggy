@@ -29,7 +29,7 @@
             <a href="#" th:href="@{/usuario/administracion/editar/{id}(id=${usuario.id})}" class="btn btn-primary">Editar
                 Cuenta</a>
         </div>
-        <  <!-- Botón de baja con confirmación -->
+          <!-- Botón de baja con confirmación -->
         <form th:action="@{/usuario/administracion/baja}" method="post"
               onsubmit="return confirm('¿Está seguro que desea darse de baja?');">
             <button type="submit" class="btn btn-danger">Dar de Baja</button>
@@ -55,7 +55,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <form th:action="@{/usuario/administracion/baja}" method="post">
-                    <button type="submit" class="btn btn-danger">Confirmar Baja</button>
+                    <button type="submit" class="btn btn-danger">Confirmar Baja </button>
                 </form>
             </div>
         </div>

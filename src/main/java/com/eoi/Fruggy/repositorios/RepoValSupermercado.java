@@ -10,4 +10,5 @@ import java.util.List;
 public interface RepoValSupermercado extends JpaRepository<ValoracionSupermercado, Long> {
     List<ValoracionSupermercado> findBySupermercadoId(Long supermercadoId);
 
+    boolean existsBySupermercadoIdAndUsuarioId(Long supermercadoId, Long usuarioId);
 }

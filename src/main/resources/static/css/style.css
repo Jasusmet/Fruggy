@@ -1,22 +1,19 @@
 @import "preloader.css";
 @import "header.css";
-@import "footer.css";
-@import "sidebar.css";
-@import "categories.css";
 @import "hero.css";
+@import "footer.css";
 @import "featured.css";
+@import "mediaQueries.css";
 @import "nice-select.css";
 @import "elegant-icons.css";
-@import "styleusers.css";
-@import "breadcrumb.css";
-
-@import "mediaQueries.css";
 
 html, body {
     height: 100%;
     font-family: "Cairo", sans-serif;
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
+    overflow-x: hidden; /* Previene el desplazamiento horizontal en toda la página */
+
 }
 
 h1, h6 {
@@ -56,92 +53,215 @@ a:hover, a:focus {
     color: lightgreen;
 }
 
-.humberger__menu__wrapper {
-    display: none;
+/*---------------------
+  General Styles
+-----------------------*/
+body {
+    font-family: 'Cairo', sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa;
 }
 
-.humberger__open {
-    display: none;
+.container {
+    max-width: 1200px; /* Ajusta el ancho máximo del contenedor */
+    margin: 0 auto;
+    padding: 0 15px; /* Espaciado a los lados para evitar el desbordamiento */
+}
+
+.section-title h2 {
+    font-size: 2rem;
+    color: #00FF00;
+    font-weight: 700;
 }
 
 /*---------------------
-  Latest Product
+  Product Section
 -----------------------*/
-
-.latest-product {
-    padding-top: 80px;
-    padding-bottom: 0;
+.product {
+    padding: 30px 0;
+    overflow-x: hidden; /* Previene el scroll horizontal */
 }
 
-.latest-product__text h4 {
-    font-weight: 700;
-    color: #1c1c1c;
-    margin-bottom: 45px;
+.filter__item {
+    margin-bottom: 30px;
 }
 
-.latest-product__slider.owl-carousel .owl-nav {
-    position: absolute;
-    right: 20px;
-    top: -75px;
-}
-
-.latest-product__slider.owl-carousel .owl-nav button {
-    height: 30px;
-    width: 30px;
-    background: #f3f6fa;
-    border: 1px solid #e6e6e6;
-    font-size: 14px;
-    color: #636363;
-    margin-right: 10px;
-    line-height: 30px;
-    text-align: center;
-}
-
-.latest-product__slider.owl-carousel .owl-nav button span {
-    font-weight: 700;
-}
-
-.latest-product__slider.owl-carousel .owl-nav button:last-child {
-    margin-right: 0;
-}
-
-.latest-product__item {
-    margin-bottom: 20px;
-    overflow: hidden;
-    display: block;
-}
-
-.latest-product__item__pic {
-    float: left;
-    margin-right: 26px;
-}
-
-.latest-product__item__pic img {
-    height: 110px;
-    width: 110px;
-}
-
-.latest-product__item__text {
-    overflow: hidden;
-    padding-top: 10px;
-}
-
-.latest-product__item__text h6 {
-    color: #252525;
-    margin-bottom: 8px;
-}
-
-.latest-product__item__text span {
+.filter__found h6 {
     font-size: 18px;
-    display: block;
-    color: #252525;
-    font-weight: 700;
+    color: #333;
+    font-weight: 500;
+}
+
+.btn-group {
+    margin-top: 10px;
 }
 
 /*---------------------
-  Form BLog
+  Botón "Ordenar por"
 -----------------------*/
+.btn-primary {
+    background-color: #00FF00; /* Color de fondo verde */
+    border-color: #00FF00; /* Borde verde */
+    color: #ffffff; /* Texto blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+    transition: background-color 0.3s, border-color 0.3s; /* Transición suave */
+    display: flex;
+    align-items: center; /* Alinea los elementos en el centro */
+    justify-content: center; /* Centra el texto y el ícono */
+}
 
+.btn-primary:hover {
+    background-color: #00cc00; /* Fondo verde más oscuro al pasar el ratón */
+    border-color: #00cc00; /* Borde verde más oscuro */
+}
+
+/*---------------------
+  Dropdown Toggle (botón de desplegable)
+-----------------------*/
+.dropdown-toggle::after {
+    display: none; /* Oculta el ícono de flecha por defecto */
+}
+
+/*---------------------
+  Menú desplegable
+-----------------------*/
+.dropdown-menu {
+    border: 1px solid #ddd; /* Borde gris claro para el menú desplegable */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    display: none; /* Oculto por defecto */
+}
+
+.dropdown-item {
+    padding: 10px 15px; /* Espaciado interno */
+    font-size: 16px; /* Tamaño de fuente */
+    color: #333; /* Color del texto */
+    transition: background-color 0.3s; /* Transición suave */
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5; /* Fondo gris claro al pasar el ratón */
+}
+
+/* Mostrar el menú desplegable al hacer clic */
+.show {
+    display: block !important; /* Asegura que el menú se muestre cuando esté activo */
+}
+
+.item {
+    margin-bottom: 30px;
+}
+
+.thumbnail {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.img-event {
+    text-align: center;
+    padding: 15px;
+    background: #fff;
+}
+
+.img-thumbnail {
+    max-width: 100%; /* Ajusta el tamaño máximo al 100% del contenedor */
+    height: auto;
+    max-height: 200px; /* Ajusta la altura máxima de la imagen */
+    margin-left: 0; /* Asegúrate de que no haya margen izquierdo */
+    object-fit: contain; /* Ajusta el contenido de la imagen para que se ajuste */
+}
+
+.card-body {
+    padding: 15px;
+}
+
+.card-text {
+    font-size: 14px;
+    color: #555;
+}
+
+.card-text strong {
+    color: #333;
+}
+
+.btn {
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.btn-primary {
+    background-color: #00FF00;
+    border-color: #00FF00;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #00cc00;
+    border-color: #00cc00;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.modal-content {
+    border-radius: 5px;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd;
+}
+
+.pagination {
+    margin-top: 20px;
+}
+
+.page-link {
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #007bff;
+}
+
+.page-link:hover {
+    background-color: #e9ecef;
+}
+
+.page-item.active .page-link {
+    background-color: #00FF00;
+    border-color: #00FF00;
+    color: #fff;
+}
+
+/* Hide dropdown on small screens */
+@media (max-width: 768px) {
+    #categoryMenu {
+        display: block;
+    }
+}
+
+
+/*---------------------
+  Form Blog
+-----------------------*/
 .from-blog {
     padding-top: 50px;
     padding-bottom: 50px;
@@ -158,7 +278,6 @@ a:hover, a:focus {
 /*---------------------
   Breadcrumb
 -----------------------*/
-
 .breadcrumb-section {
     display: flex;
     align-items: center;
@@ -174,7 +293,6 @@ a:hover, a:focus {
 .breadcrumb__option a {
     display: inline-block;
     font-size: 16px;
-
     color: #ffffff;
     font-weight: 700;
     margin-right: 20px;
@@ -197,6 +315,9 @@ a:hover, a:focus {
     color: #ffffff;
 }
 
+/*---------------------
+  Price Range
+-----------------------*/
 .price-range-wrap .range-slider {
     margin-top: 20px;
 }
@@ -251,55 +372,40 @@ a:hover, a:focus {
     border-radius: 0;
 }
 
-.price-range-wrap
-.price-range
-.ui-slider-range.ui-corner-all.ui-widget-header:last-child {
-    background: #dd2222;
-}
-
-/* Estilo para el menú desplegable */
+/*---------------------
+  Dropdown Menu
+-----------------------*/
 #categoryMenu {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: absolute;
     background-color: white;
     border: 1px solid #ccc;
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    z-index: 1000;
 }
 
 .dropdown-menu {
-    display: none; /* Asegúrate de que se oculta inicialmente */
-    position: absolute; /* Para que el menú aparezca sobre otros elementos */
-    z-index: 1000; /* Para que el menú esté por encima de otros elementos */
+    display: none;
+    position: absolute;
+    z-index: 1000;
 }
 
-/* General Container Styles */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* Section Title Styles */
-.section-title h2 {
-    font-size: 2.5rem; /* Ajustar el tamaño del título */
-    color: #00FF00; /* Verde */
-    font-weight: 700;
-}
-
-/* User Creation Form Styles */
+/*---------------------
+  User Creation Form
+-----------------------*/
 .user__creation__form {
     background-color: #f8f9fa;
     border-radius: 8px;
-    padding: 30px; /* Ajustar el padding interno del formulario */
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+    padding: 30px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
 .form-control, .form-select {
-    border-radius: 8px; /* Bordes más redondeados */
+    border-radius: 8px;
     border: 1px solid #ccc;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: border-color 0.3s;
-    padding: 12px; /* Ajustar el padding interno de los campos */
-    font-size: 1rem; /* Ajustar el tamaño de la fuente */
+    padding: 12px;
+    font-size: 1rem;
 }
 
 .form-control:focus, .form-select:focus {
@@ -312,9 +418,9 @@ a:hover, a:focus {
     background-color: #00FF00;
     border-color: #00FF00;
     color: #fff;
-    padding: 12px 20px; /* Ajustar el padding del botón */
-    border-radius: 8px; /* Bordes más redondeados */
-    font-size: 1rem; /* Ajustar el tamaño de la fuente del botón */
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
@@ -323,11 +429,13 @@ a:hover, a:focus {
     border-color: #00cc00;
 }
 
-/* Alert Styles */
+/*---------------------
+  Alerts
+-----------------------*/
 .alert {
-    padding: 15px; /* Ajustar el padding interno de las alertas */
-    border-radius: 8px; /* Bordes más redondeados */
-    margin-top: 15px; /* Ajustar el margen superior */
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
 }
 
 .alert-danger {
@@ -340,33 +448,125 @@ a:hover, a:focus {
     margin: 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .user__creation__form {
-        padding: 20px; /* Ajustar el padding para pantallas más pequeñas */
-    }
-
-    .section-title h2 {
-        font-size: 2rem; /* Ajustar el tamaño del título para pantallas más pequeñas */
-    }
-
-    .form-control, .form-select {
-        font-size: 0.9rem; /* Ajustar el tamaño de la fuente para pantallas más pequeñas */
-    }
-
-    .btn-primary {
-        font-size: 0.9rem; /* Ajustar el tamaño de la fuente del botón para pantallas más pequeñas */
-    }
-
-    .header {
-        padding: 8px 0; /* Reducir padding en pantallas más pequeñas */
-    }
-
-    .header__logo img {
-        height: 50px; /* Ajustar tamaño del logo en pantallas más pequeñas */
-    }
-
-    .header__menu ul li a {
-        font-size: 12px; /* Ajustar tamaño de la fuente del menú en pantallas más pequeñas */
-    }
+.form-inline {
+    justify-content: flex-end;
+    padding-bottom: 1rem;
 }
+
+.form-inline .form-control {
+    width: 150px; /* Reduce el ancho del select */
+    border-radius: 0.25rem;
+    border-color: #ced4da;
+    box-shadow: none;
+}
+
+.form-inline .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+/* Opcional: Ajustes adicionales para el margen si es necesario */
+.form-inline .form-group {
+    margin-bottom: 0;
+}
+
+/* Estilo para la tabla */
+.table {
+    background-color: #ffffff; /* Fondo blanco para la tabla */
+    border-collapse: collapse; /* Colapsa los bordes para un aspecto uniforme */
+    border-radius: 0.25rem; /* Bordes redondeados para un look moderno */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde */
+}
+
+.table thead th {
+    background-color: #007bff; /* Azul para el encabezado */
+    color: #ffffff; /* Texto blanco en el encabezado */
+    padding: 10px; /* Espaciado interno */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #ddd; /* Línea de separación entre filas */
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1; /* Fondo gris claro al pasar el ratón */
+}
+
+.table tbody td {
+    padding: 10px; /* Espaciado interno en celdas */
+}
+
+.table a {
+    color: #007bff; /* Color azul para los enlaces en la tabla */
+}
+
+.table a:hover {
+    color: #0056b3; /* Azul más oscuro para los enlaces al pasar el ratón */
+    text-decoration: underline; /* Subrayado al pasar el ratón */
+}
+
+/* Estilo para la tabla */
+.table {
+    background-color: #ffffff; /* Fondo blanco para la tabla */
+    border-collapse: collapse; /* Colapsa los bordes para un aspecto uniforme */
+    border-radius: 0.25rem; /* Bordes redondeados para un look moderno */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde */
+}
+
+.table thead th {
+    background-color: steelblue; /* Azul utilizado en el hero */
+    color: #ffffff; /* Texto blanco en el encabezado */
+    padding: 10px; /* Espaciado interno */
+    font-weight: bold; /* Texto en negrita */
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #ddd; /* Línea de separación entre filas */
+}
+
+.table tbody tr:hover {
+    background-color: #f5f5f5; /* Fondo gris claro al pasar el ratón */
+}
+
+.table tbody td {
+    padding: 10px; /* Espaciado interno en celdas */
+}
+
+.table a {
+    color: steelblue; /* Color azul para los enlaces en la tabla */
+}
+
+.table a:hover {
+    color: #323F5B; /* Azul más oscuro para los enlaces al pasar el ratón */
+    text-decoration: underline; /* Subrayado al pasar el ratón */
+}
+
+/* Estilo para los botones de paginación */
+.pagination {
+    margin-top: 20px; /* Espaciado superior */
+}
+
+.pagination .page-link {
+    border-radius: 0.25rem; /* Bordes redondeados para los botones de paginación */
+    padding: 10px 15px; /* Espaciado interno */
+    color: steelblue; /* Texto azul para los botones de paginación */
+    border: 1px solid steelblue; /* Borde azul para los botones de paginación */
+}
+
+.pagination .page-link:hover {
+    background-color: #f5f5f5; /* Fondo gris claro al pasar el ratón */
+}
+
+.pagination .page-item.active .page-link {
+    background-color: steelblue; /* Fondo azul para el botón de paginación activo */
+    border-color: steelblue; /* Borde azul para el botón de paginación activo */
+    color: #ffffff; /* Texto blanco para el botón activo */
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; /* Texto gris para los botones desactivados */
+    pointer-events: none; /* Desactiva la interacción */
+    pointer-events: none; /* Desactiva la interacción */
+}
+

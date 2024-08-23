@@ -2,7 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <section class="product spad" th:fragment="productos">
@@ -15,77 +17,56 @@
                             <h6><span th:text="${pagina.numberOfElements}"></span> Productos en esta página</h6>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-3">
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                <!-- Botón para desplegar categorías -->
-                                <div id="categoryMenu" class="dropdown-menu" style="display: none;">
-                                    <div th:each="categoria : ${categorias}">
-                                        <a class="dropdown-item"
-                                           th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
-                                           th:text="${categoria.getTipo('${idioma}')}"></a>
-                                    </div>
-                                    <p th:if="${categorias.size() == 0}">No hay categorías disponibles.</p>
-                                </div>
-                            </div>
+                    <div class="col-lg-4 col-md-5">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                Ordenar por
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item"
+                                       th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioAsc')}">Precio
+                                    Menor</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioDesc')}">Precio
+                                    Mayor</a></li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='novedades')}">Novedades</a>
+                                </li>
+                                <li><a class="dropdown-item"
+                                       th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='mejorPuntuacion')}">Mejor
+                                    Puntuación</a></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Productos -->
-            <div class="col-lg-4 col-md-3">
-                <div class="pull-right">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                            Ordenar por
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioAsc')}">Precio
-                                Menor</a></li>
-                            <li><a class="dropdown-item"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioDesc')}">Precio
-                                Mayor</a></li>
-                            <li><a class="dropdown-item"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='novedades')}">Novedades</a>
-                            </li>
-                            <li><a class="dropdown-item"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='mejorPuntuacion')}">Mejor
-                                Puntuación</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <div id="products" class="view-group">
                 <div class="row">
-                    <div class="item col-xs-4 col-lg-4" th:each="producto : ${pagina.content}">
+                    <div class="item col-xs-12 col-lg-4" th:each="producto : ${pagina.content}">
                         <div class="thumbnail card">
                             <div class="img-event">
                                 <h5 th:text="${producto.nombreProducto}">Nombre del Producto</h5>
-                                <ul>
-                                    <li th:each="imagen : ${producto.imagenes}">
-                                        <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
-                                             class="img-thumbnail" style="max-width: 200px; max-height: 150px;"/>
-                                    </li>
+                                <ul th:each="imagen : ${producto.imagenes}">
+                                    <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
+                                         class="img-thumbnail"/>
                                 </ul>
                             </div>
                             <div class="card-body">
                                 <p class="card-text">
-                                    <strong>Descripción:</strong> <span
-                                        th:text="${producto.descripcion}"></span><br/>
+                                    <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span><br/>
                                     <strong>Marca:</strong> <span th:text="${producto.marca}">Marca</span><br/>
                                     <strong>Precio:</strong>
                                     <span th:if="${producto.descuentos.size() > 0}">
-                                            <span th:each="descuento : ${producto.descuentos}">
-                                                <span th:if="${descuento.activo}">
-                                                    <span th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2)} + ' €'"></span><br/>
-                                                    <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - (descuento.porcentaje / 100)), 1, 2)} + ' € (' + descuento.porcentaje + '% descuento)'"></span>
-                                                </span>
+                                        <span th:each="descuento : ${producto.descuentos}">
+                                            <span th:if="${descuento.activo}">
+                                                <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% descuento)'}"></span>
                                             </span>
                                         </span>
+                                    </span>
                                     <span th:if="${producto.descuentos.size() == 0}"
-                                          th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2)} + ' €'">Precio</span>
+                                          th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
                                     <br>
                                     <strong>Supermercado:</strong>
                                     <span th:if="${producto.precios.size() > 0 && producto.precios[0].supermercado != null}"
@@ -188,6 +169,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>
 </body>
 </html>

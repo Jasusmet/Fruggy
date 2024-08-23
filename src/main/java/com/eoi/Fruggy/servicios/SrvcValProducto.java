@@ -26,5 +26,13 @@ public class SrvcValProducto extends AbstractSrvc<ValoracionProducto, Long, Repo
                 .average()
                 .orElse(0);
     }
+    public ValoracionProducto guardar(ValoracionProducto valoracion) {
+        // Verificar si ya existe una valoración del usuario para el producto
+        if (getRepo().existsByUsuarioAndProducto(valoracion.getUsuario(), valoracion.getProducto())) {
+            throw new RuntimeException("Ya has dejado una valoración para este producto.");
+        }
+        return getRepo().save(valoracion);
+    }
+
 
 }

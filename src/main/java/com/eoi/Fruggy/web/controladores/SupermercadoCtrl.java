@@ -97,18 +97,28 @@ public class SupermercadoCtrl {
             List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(supermercadoId);
             model.addAttribute("supermercado", supermercado);
             model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("error", "Error al guardar la valoración. Verifica los datos e intenta nuevamente.");
             return "supermercados/detalles-supermercado";
         }
 
         String username = principal.getName();
         Usuario usuario = usuarioSrvc.getRepo().findByEmail(username);
-        valoracion.setUsuario(usuario);
 
+        valoracion.setUsuario(usuario);
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + supermercadoId));
         valoracion.setSupermercado(supermercado);
 
-        valSupermercadoSrvc.guardar(valoracion);
+        try {
+            valSupermercadoSrvc.guardar(valoracion);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", e.getMessage());
+            List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(supermercadoId);
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("supermercado", supermercado);
+            return "supermercados/detalles-supermercado";
+        }
+
         return "redirect:/supermercados/detalles/" + supermercadoId;
     }
 }

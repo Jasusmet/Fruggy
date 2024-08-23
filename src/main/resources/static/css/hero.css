@@ -1,41 +1,42 @@
 /*---------------------
   Hero
 -----------------------*/
-/* MENU arriba donde sale TODAS CATEGORIAS,etc */
+
+/* Contenedor principal del Hero */
 .hero {
     padding-bottom: 50px;
+    background: linear-gradient(-90deg, #8FC5FF 15%, #6ADEDE 40%, #39A240 85%);
+    background-size: 200% 200%;
+    animation: ani_gradient 15.2s ease infinite;
 }
 
-.hero.hero-normal {
-    padding-bottom: 30px;
+@keyframes ani_gradient {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    100% {
+        background-position: 0% 0%;
+    }
 }
 
-.hero.hero-normal .hero__categories {
+/* Categorías */
+.hero__categories {
     position: relative;
 }
 
-.hero.hero-normal .hero__categories ul {
-    display: none; /* Mantener oculta por defecto */
-    position: absolute;
-    left: 0;
-    top: 46px;
-    width: 100%;
-    z-index: 9;
-    background: #ffffff;
-    border: 1px solid #ebebeb;
-    padding: 10px;
-}
-
-.hero.hero-normal .hero__search {
-    margin-bottom: 0;
-}
-
-/* PRODUCTOS LISTA HEADER */
 .hero__categories__all {
     background: steelblue;
-    position: relative;
     padding: 10px 25px 10px 40px;
     cursor: pointer;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
 }
 
 .hero__categories__all:hover {
@@ -43,100 +44,124 @@
 }
 
 .hero__categories__all i {
-    font-size: 16px; /* Sin espacio entre el número y la unidad */
-    color: #ffffff;
+    font-size: 16px;
     margin-right: 10px;
 }
 
 .hero__categories__all span {
     font-size: 18px;
     font-weight: 700;
-    color: #ffffff;
 }
 
+/* Menú desplegable de categorías */
 .hero__categories ul {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
     border: 1px solid #ebebeb;
-    padding-left: 0; /* Espaciado ajustado */
-    padding-top: 10px;
-    padding-bottom: 12px;
+    padding: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .hero__categories ul li {
-    list-style: none; /* Sin viñetas */
+    list-style: none;
 }
 
 .hero__categories ul li a {
     font-size: 16px;
     color: #1c1c1c;
-    line-height: 39px;
+    line-height: 1.5;
     display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: color 0.3s, background-color 0.3s;
 }
 
 .hero__categories ul li a:hover {
-    color: steelblue; /* Cambia el color al pasar el mouse */
-    text-decoration: underline; /* Subrayado */
+    color: steelblue;
+    background-color: #f5f5f5;
 }
 
-/* BUSCAR */
+/* Búsqueda */
 .hero__search {
-    overflow: hidden;
-    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 .hero__search__form {
-    width: 610px;
-    height: 50px;
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
     border: 1px solid #ebebeb;
-    position: relative;
-    float: left;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #ffffff;
 }
 
-.hero__search__form form .hero__search__categories {
-    width: 30%;
-    float: left;
+.hero__search__form form {
+    display: flex;
+    width: 100%;
+}
+
+.hero__search__categories {
+    flex: 1;
     font-size: 16px;
     color: #1c1c1c;
     font-weight: 700;
-    padding-left: 18px;
-    padding-top: 11px;
-    position: relative;
+    padding: 15px;
+    border-right: 1px solid #ebebeb;
 }
 
-.hero__search__form form .hero__search__categories:after {
+.hero__search__categories span {
     position: absolute;
-    right: 0;
-    top: 14px;
-    height: 20px;
-    width: 1px;
-    background: #000000;
-    opacity: 0.1;
-    content: "";
+    right: 15px;
+    top: 15px;
 }
 
-.hero__search__form form .hero__search__categories span {
-    position: absolute;
-    right: 14px;
-    top: 14px;
-}
-
-.hero__search__form form input {
-    width: 70%;
+.hero__search__form input {
+    flex: 3;
     border: none;
-    height: 48px;
+    height: 50px;
     font-size: 16px;
     color: #b2b2b2;
     padding-left: 20px;
+    border-right: 1px solid #ebebeb;
 }
 
-.hero__search__form form input::placeholder {
+.hero__search__form input::placeholder {
     color: #b2b2b2;
 }
 
-.hero__search__form form button {
-    position: absolute;
-    right: 0;
-    top: -1px;
+.hero__search__form button {
+    flex: 1;
     height: 50px;
+    background-color: steelblue;
+    color: #ffffff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-/* Otras clases de estilo... */
+.hero__search__form button:hover {
+    background-color: #323F5B;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .hero__search__form {
+        flex-direction: column;
+    }
+
+    .hero__search__categories {
+        border-right: none;
+        border-bottom: 1px solid #ebebeb;
+    }
+
+    .hero__search__form input {
+        border-bottom: 1px solid #ebebeb;
+    }
+}

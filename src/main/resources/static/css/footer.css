@@ -1,34 +1,46 @@
+/*---------------------
+  Footer Styles
+-----------------------*/
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
 footer.footer {
     background-color: lightgreen;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+    padding: 30px 0;
+    position: relative; /* Ajusta la posición para el footer */
 }
 
 .footer {
     background: #f3f6fa;
     padding-top: 70px;
-    padding-bottom: 0;
+    padding-bottom: 30px; /* Ajusta el padding inferior para mejor apariencia */
 }
 
-.footer__about {
+.footer__about, .footer__widget {
     margin-bottom: 30px;
 }
 
-.footer__about ul li {
+.footer__about ul li, .footer__widget ul li a {
     font-size: 16px;
     color: #1c1c1c;
     line-height: 36px;
     list-style: none;
+    text-decoration: none;
 }
 
 .footer__about__logo {
     margin-bottom: 15px;
 }
 
-.footer__about__logo a {
-    display: inline-block;
-}
-
 .footer__widget {
-    margin-bottom: 30px;
     overflow: hidden;
 }
 
@@ -41,6 +53,8 @@ footer.footer {
 .footer__widget ul {
     width: 50%;
     float: left;
+    padding: 0; /* Elimina el padding */
+    margin: 0; /* Elimina el margen */
 }
 
 .footer__widget ul li {
@@ -65,12 +79,14 @@ footer.footer {
 }
 
 .footer__widget form input {
-    width: 100%;
+    width: calc(100% - 120px); /* Ajusta el ancho del input para espacio del botón */
     font-size: 16px;
     padding-left: 20px;
     color: #1c1c1c;
     height: 46px;
     border: 1px solid #ededed;
+    border-radius: 4px; /* Agrega bordes redondeados */
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
 }
 
 .footer__widget form input::placeholder {
@@ -83,6 +99,11 @@ footer.footer {
     top: 0;
     padding: 0 26px;
     height: 100%;
+    background-color: #00FF00; /* Cambia el color del botón */
+    border: none; /* Elimina el borde */
+    color: #fff;
+    border-radius: 4px; /* Bordes redondeados para el botón */
+    cursor: pointer;
 }
 
 .footer__widget .footer__widget__social a {
@@ -96,11 +117,11 @@ footer.footer {
     line-height: 38px;
     text-align: center;
     background: #ffffff;
-    -webkit-transition: all, 0.3s;
-    -moz-transition: all, 0.3s;
-    -ms-transition: all, 0.3s;
-    -o-transition: all, 0.3s;
-    transition: all, 0.3s;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
     margin-right: 10px;
 }
 
@@ -130,4 +151,21 @@ footer.footer {
 
 .footer__copyright__payment {
     float: right;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .footer__widget ul {
+        width: 100%; /* Ajusta el ancho de los enlaces en pantallas pequeñas */
+        float: none; /* Elimina el float en pantallas pequeñas */
+        margin-bottom: 20px;
+    }
+
+    .footer__widget form input {
+        width: calc(100% - 90px); /* Ajusta el ancho del input en pantallas pequeñas */
+    }
+
+    .footer__widget form button {
+        width: 90px; /* Ajusta el ancho del botón en pantallas pequeñas */
+    }
 }
