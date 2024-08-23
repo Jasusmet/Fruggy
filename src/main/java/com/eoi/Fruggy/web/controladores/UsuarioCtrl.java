@@ -9,16 +9,22 @@ import com.eoi.Fruggy.servicios.SrvcDetalle;
 import com.eoi.Fruggy.servicios.SrvcGenero;
 import com.eoi.Fruggy.servicios.SrvcRol;
 import com.eoi.Fruggy.servicios.SrvcUsuario;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -92,7 +98,7 @@ public class UsuarioCtrl {
         usuario.setDetalle(detalle);  // Asegúrate de que se asigna el detalle guardado
         usuarioSrvc.guardar(usuario);
 
-        return "redirect:/admin/usuarios"; // Redirige a la lista de usuarios
+        return "redirect:/"; // Redirige a inicio
     }
 
 
@@ -131,27 +137,30 @@ public class UsuarioCtrl {
                                 BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) throws Exception {
         if (bindingResult.hasErrors()) {
-            // Manejo de errores
+            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "usuarios/editarUsuario";
         }
 
-        Optional<Usuario> usuarioOpt = usuarioSrvc.encuentraPorId(id);
-        if (usuarioOpt.isPresent()) {
-            Usuario usuarioExistente = usuarioOpt.get();
-            // Actualizar otros campos
-            Detalle detalle = usuario.getDetalle();
-            detalle.setId(usuarioExistente.getDetalle().getId());
-            if (detalle.getGenero() != null && detalle.getGenero().getId() != null) {
-                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
-                generoOptional.ifPresent(detalle::setGenero);
+        Detalle detalle = usuario.getDetalle();
+        if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
+            Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
+            if (generoOptional.isPresent()) {
+                detalle.setGenero(generoOptional.get());
+            } else {
+                model.addAttribute("error", "Genero no encontrado");
+                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                return "usuarios/editarUsuario";
             }
-            detalle = detalleSrvc.merge(detalle);
-            usuarioExistente.setDetalle(detalle);
-            usuarioSrvc.guardar(usuarioExistente);
-            return "redirect:/usuario/administracion";
         } else {
-            return "redirect:/login";
+            model.addAttribute("error", "Genero no seleccionado");
+            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            return "usuarios/editarUsuario";
         }
+
+        usuario.setId(id);
+        usuarioSrvc.guardar(usuario);
+
+        return "redirect:/usuario/administracion";
     }
 
     @PostMapping("usuario/administracion/baja")
@@ -159,14 +168,20 @@ public class UsuarioCtrl {
         Optional<Usuario> usuarioOpt = Optional.ofNullable(usuarioSrvc.getRepo().findByEmail(userDetails.getUsername()));
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            usuario.setActive(false);
-            usuarioSrvc.guardar(usuario);
-            System.out.println("Usuario desactivado: " + usuario.getEmail());
-            return "redirect:/logout";
+            usuarioSrvc.eliminarPorId(usuario.getId());
+            return "redirect:/";
         } else {
-            System.out.println("Usuario no encontrado");
             return "redirect:/login";
         }
+    }
+    //Al borrar cuenta se va hace un logout y va la pagina de incio.
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/"; // Redirige a la página de inicio después del logout
     }
 
     @GetMapping("/{id}/cestas")
