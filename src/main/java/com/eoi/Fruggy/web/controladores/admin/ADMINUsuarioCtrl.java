@@ -46,14 +46,7 @@ public class ADMINUsuarioCtrl {
 
     @PreAuthorize("hasRole('Administrator')")
     @GetMapping
-    public String listarUsuarios(
-            @RequestParam(value = "email", required = false, defaultValue = "") String email,
-            @RequestParam(value = "activo", required = false) Boolean activo,
-            @RequestParam(value = "sortField", defaultValue = "email") String sortField,
-            @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            Model model) {
+    public String listarUsuarios(@RequestParam(value = "email", required = false, defaultValue = "") String email, @RequestParam(value = "activo", required = false) Boolean activo, @RequestParam(value = "sortField", defaultValue = "email") String sortField, @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
 
         String sortColumn;
         switch (sortField) {
@@ -113,8 +106,7 @@ public class ADMINUsuarioCtrl {
 
     @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario,
-                          BindingResult bindingResult, Model model) throws Exception {
+    public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
             model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());

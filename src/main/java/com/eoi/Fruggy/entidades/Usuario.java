@@ -63,13 +63,13 @@ public class Usuario implements Serializable, UserDetails {
     private Set<Rol> roles = new HashSet<>();
 
     // Relación con Imagen
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Imagen> imagenes;
 
     @OneToMany(mappedBy = "usuario")
     private Set<Donacion> donaciones;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Cesta> cestas;
 
     @Override

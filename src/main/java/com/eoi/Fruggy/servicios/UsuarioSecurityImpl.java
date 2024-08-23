@@ -4,6 +4,9 @@ package com.eoi.Fruggy.servicios;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
+import com.eoi.Fruggy.web.controladores.admin.ADMINProductoCtrl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Service
 public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
@@ -24,6 +28,8 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final Logger log = LoggerFactory.getLogger(UsuarioSecurityImpl.class);
+
 
 
     @Override
@@ -41,10 +47,10 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Rol rol : usuario.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + rol.getRolNombre()));
+            grantedAuthorities.add(new SimpleGrantedAuthority(rol.getRolNombre()));
+            log.info("Rol encontrado: {}", rol.getRolNombre()); // Log para verificar los roles
         }
 
-        // Aquí estamos envolviendo el usuario en un objeto UserDetails
         return new org.springframework.security.core.userdetails.User(
                 usuario.getEmail(),
                 usuario.getPassword(),

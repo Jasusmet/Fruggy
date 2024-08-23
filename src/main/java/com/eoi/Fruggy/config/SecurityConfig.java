@@ -80,7 +80,10 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.disable())
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(customizer -> customizer
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/img/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
@@ -88,8 +91,13 @@ public class SecurityConfig {
                         .requestMatchers("/lib/**").permitAll()
                         .requestMatchers("/scss/**").permitAll()
                         .requestMatchers("/imagenes/**").permitAll()
-                        .requestMatchers("/index").permitAll()
-                        .anyRequest().permitAll() // Permitir acceso a todas las demás solicitudes
+                        .requestMatchers("/inicio").permitAll() // Permitir acceso a /inicio
+                        .requestMatchers("/registro", "/registro/guardar", "/usuario/administracion/**").permitAll()
+                        .requestMatchers("/productos").permitAll() // Permitir acceso a /productos
+                        .requestMatchers("/supermercados").permitAll() // Permitir acceso a /supermercados
+                        .requestMatchers("/").permitAll() // Permitir acceso a la raíz
+                        .requestMatchers("/admin/**").hasRole("Administrator")
+                        .anyRequest().authenticated() // Asegura que cualquier otra petición requiera autenticación
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
