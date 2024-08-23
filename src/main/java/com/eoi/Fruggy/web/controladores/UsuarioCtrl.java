@@ -98,7 +98,7 @@ public class UsuarioCtrl {
         usuario.setDetalle(detalle);  // Asegúrate de que se asigna el detalle guardado
         usuarioSrvc.guardar(usuario);
 
-        return "redirect:/"; // Redirige a inicio
+        return "redirect:/login"; // Redirige a login
     }
 
 
@@ -174,6 +174,7 @@ public class UsuarioCtrl {
             return "redirect:/login";
         }
     }
+
     //Al borrar cuenta se va hace un logout y va la pagina de incio.
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -184,14 +185,4 @@ public class UsuarioCtrl {
         return "redirect:/"; // Redirige a la página de inicio después del logout
     }
 
-    @GetMapping("/{id}/cestas")
-    public String listarCestas(@PathVariable Long id, Model model) {
-        Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
-        if (usuarioOptional.isPresent()) {
-            model.addAttribute("usuario", usuarioOptional.get());
-            model.addAttribute("cestas", usuarioOptional.get().getCestas());
-            return "usuarios/cestas";
-        }
-        return "redirect:/usuarios";
-    }
 }

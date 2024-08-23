@@ -21,7 +21,7 @@
                         <i class="fa fa-bars"></i>
                         <span>Categorías</span>
                     </div>
-                    <ul id="categoryMenu" style="display: none;">
+                    <ul id="categoryMenu">
                         <li th:each="categoria : ${categorias}">
                             <a th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
                                th:text="${categoria.getTipo('${idioma}')}">Categoria Nombre</a>
