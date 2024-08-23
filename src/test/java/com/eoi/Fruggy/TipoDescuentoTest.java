@@ -2,6 +2,7 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.Precio;
 import com.eoi.Fruggy.entidades.Subcategoria;
 import com.eoi.Fruggy.entidades.TipoDescuento;
 import com.eoi.Fruggy.repositorios.RepoTipoDescuento;
@@ -90,9 +91,7 @@ class TipoDescuentoTest {
         repoTipoDescuento.save(tipoDescuento);
         repoTipoDescuento.delete(tipoDescuento);
 
-
-
-
+        TipoDescuento tipoDescuentoEliminado = repoTipoDescuento.findById(90L).orElse(null);
 
 
     }

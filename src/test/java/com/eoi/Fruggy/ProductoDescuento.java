@@ -25,6 +25,20 @@ class ProductoDescuentoTest {
     @Autowired
     RepoProducto repoProducto;
 
+    @Test
+
+    public void crearProductoDescuentoNuevo (){
+
+        ProductoDescuento productoDescuento = new ProductoDescuento();
+        productoDescuento.setDescuento(null);
+        productoDescuento.setId(10L);
+        productoDescuento.setProducto(null);
+
+        // repoProducto.save(productoDescuento);
+
+       // assertEquals(100L, productoDescuento.getId());
+    }
+
 }
 
 

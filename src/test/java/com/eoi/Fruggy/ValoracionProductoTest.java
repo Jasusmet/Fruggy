@@ -3,6 +3,7 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.Precio;
 import com.eoi.Fruggy.entidades.ValoracionProducto;
 import com.eoi.Fruggy.repositorios.RepoValProducto;
 
@@ -82,6 +83,8 @@ class ValoracionProductoTest {
 
         repoValProducto.save(valoracionProducto);
         repoValProducto.delete(valoracionProducto);
+
+        ValoracionProducto valoracionProductoEliminado = repoValProducto.findById(99L).orElse(null);
     }
 
 }

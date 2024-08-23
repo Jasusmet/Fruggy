@@ -2,6 +2,7 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.Precio;
 import com.eoi.Fruggy.entidades.Subcategoria;
 import com.eoi.Fruggy.entidades.Supermercado;
 import com.eoi.Fruggy.repositorios.RepoSupermercado;
@@ -109,6 +110,8 @@ class SupermercadoTest {
         repoSupermercado.save(supermercado);
 
         repoSupermercado.delete(supermercado);
+
+        Supermercado supermercadoEliminado = repoSupermercado.findById(8).orElse(null);
 
 
     }

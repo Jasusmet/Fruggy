@@ -3,6 +3,7 @@ package com.eoi.Fruggy;
 
 
 
+import com.eoi.Fruggy.entidades.Precio;
 import com.eoi.Fruggy.entidades.ValoracionProducto;
 import com.eoi.Fruggy.entidades.ValoracionSupermercado;
 import com.eoi.Fruggy.repositorios.RepoRol;
@@ -87,5 +88,7 @@ class ValoracionSupermercadoTest {
 
         repoValSupermercado.save(valoracionSupermercado);
         repoValSupermercado.delete(valoracionSupermercado);
+
+        ValoracionSupermercado valoracionSupermercadoEliminado = repoValSupermercado.findById(9L).orElse(null);
     }
 }
