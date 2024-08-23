@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<body>
+<meta charset="UTF-8">
+<meta name="description" content="Ogani Template">
+<meta name="keywords" content="Ogani, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Mostrar productos</title>
+
+
+<link th:href="@{/css/style.css}" type="text/css" rel="stylesheet">
+
+
+<!-- Page Preloder -->
+<div th:replace="~{fragments/layout/preloader :: preloader}"></div>
+<!--  humberger menu  -->
+<div th:replace="~{fragments/layout/humberger-menu :: humbergerMenu}"></div>
+<!--  header  -->
+<div th:replace="~{fragments/layout/header :: header}"></div>
+<div class="container">
+    <div th:replace="~{fragments/usuario/editar-usuario :: editar-usuario}"></div>
+</div>
+<!-- Footer Section  -->
+<div th:replace="~{fragments/layout/footer :: footer}"></div>
+
+</body>
+
+</html>

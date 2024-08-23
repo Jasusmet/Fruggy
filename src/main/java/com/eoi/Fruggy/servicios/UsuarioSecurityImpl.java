@@ -36,13 +36,20 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = repoUsuario.findByEmail(email);
         if (usuario == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado" + email);
+            throw new UsernameNotFoundException("Usuario no encontrado: " + email);
         }
+
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Rol rol : usuario.getRoles()) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(rol.getRolNombre()));
+            grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + rol.getRolNombre()));
         }
-        return usuario;
+
+        // Aquí estamos envolviendo el usuario en un objeto UserDetails
+        return new org.springframework.security.core.userdetails.User(
+                usuario.getEmail(),
+                usuario.getPassword(),
+                grantedAuthorities
+        );
     }
 }
 

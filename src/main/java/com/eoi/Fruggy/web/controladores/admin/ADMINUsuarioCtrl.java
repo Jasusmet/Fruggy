@@ -44,7 +44,7 @@ public class ADMINUsuarioCtrl {
         this.generoSrvc = generoSrvc;
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping
     public String listarUsuarios(
             @RequestParam(value = "email", required = false, defaultValue = "") String email,
@@ -96,7 +96,7 @@ public class ADMINUsuarioCtrl {
         return "admin/CRUD-Usuarios";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/agregar")
     public String agregarUsuario(Model model) {
         Usuario usuario = new Usuario();
@@ -111,7 +111,7 @@ public class ADMINUsuarioCtrl {
         return "admin/crear-usuario";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario,
                           BindingResult bindingResult, Model model) throws Exception {
@@ -153,7 +153,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -169,7 +169,7 @@ public class ADMINUsuarioCtrl {
         }
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/editar/{id}")
     public String guardarEdicion(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -205,7 +205,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios"; // Redirigir a la lista de usuarios después de guardar
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
 // Mostrar cestas de un usuario
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
@@ -218,6 +218,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/usuarios";
     }
 
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable Long id) {
         usuarioSrvc.eliminarPorId(id);

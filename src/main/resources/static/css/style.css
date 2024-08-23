@@ -253,7 +253,6 @@ a:hover, a:focus {
 
 .price-range-wrap
 .price-range
-
 .ui-slider-range.ui-corner-all.ui-widget-header:last-child {
     background: #dd2222;
 }
@@ -266,8 +265,108 @@ a:hover, a:focus {
     border: 1px solid #ccc;
     z-index: 1000; /* Asegura que esté por encima de otros elementos */
 }
+
 .dropdown-menu {
     display: none; /* Asegúrate de que se oculta inicialmente */
     position: absolute; /* Para que el menú aparezca sobre otros elementos */
     z-index: 1000; /* Para que el menú esté por encima de otros elementos */
+}
+
+/* General Container Styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Section Title Styles */
+.section-title h2 {
+    font-size: 2.5rem; /* Ajustar el tamaño del título */
+    color: #00FF00; /* Verde */
+    font-weight: 700;
+}
+
+/* User Creation Form Styles */
+.user__creation__form {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 30px; /* Ajustar el padding interno del formulario */
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+}
+
+.form-control, .form-select {
+    border-radius: 8px; /* Bordes más redondeados */
+    border: 1px solid #ccc;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s;
+    padding: 12px; /* Ajustar el padding interno de los campos */
+    font-size: 1rem; /* Ajustar el tamaño de la fuente */
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #00FF00;
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 0, 0.25);
+}
+
+.btn-primary {
+    background-color: #00FF00;
+    border-color: #00FF00;
+    color: #fff;
+    padding: 12px 20px; /* Ajustar el padding del botón */
+    border-radius: 8px; /* Bordes más redondeados */
+    font-size: 1rem; /* Ajustar el tamaño de la fuente del botón */
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #00cc00;
+    border-color: #00cc00;
+}
+
+/* Alert Styles */
+.alert {
+    padding: 15px; /* Ajustar el padding interno de las alertas */
+    border-radius: 8px; /* Bordes más redondeados */
+    margin-top: 15px; /* Ajustar el margen superior */
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+.alert-danger p {
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user__creation__form {
+        padding: 20px; /* Ajustar el padding para pantallas más pequeñas */
+    }
+
+    .section-title h2 {
+        font-size: 2rem; /* Ajustar el tamaño del título para pantallas más pequeñas */
+    }
+
+    .form-control, .form-select {
+        font-size: 0.9rem; /* Ajustar el tamaño de la fuente para pantallas más pequeñas */
+    }
+
+    .btn-primary {
+        font-size: 0.9rem; /* Ajustar el tamaño de la fuente del botón para pantallas más pequeñas */
+    }
+
+    .header {
+        padding: 8px 0; /* Reducir padding en pantallas más pequeñas */
+    }
+
+    .header__logo img {
+        height: 50px; /* Ajustar tamaño del logo en pantallas más pequeñas */
+    }
+
+    .header__menu ul li a {
+        font-size: 12px; /* Ajustar tamaño de la fuente del menú en pantallas más pequeñas */
+    }
 }

@@ -6,34 +6,64 @@
 </head>
 <body>
 <div class="container" th:fragment="usuario-administracion-cuenta">
-    <h1>Administración de Usuario</h1>
-    <div>
-        <h2>Editar Detalles</h2>
-        <form th:action="@{/usuario/editar}" th:object="${usuario}" method="post">
-            <!-- Campos del formulario para editar detalles -->
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" th:field="*{detalle.nombre}" />
-            </div>
-            <div class="form-group">
-                <label for="apellido">Apellido:</label>
-                <input type="text" class="form-control" id="apellido" th:field="*{detalle.apellido}" />
-            </div>
-            <div class="form-group">
-                <label for="genero">Género:</label>
-                <select class="form-control" id="genero" th:field="*{detalle.genero.id}">
-                    <option th:each="genero : ${generos}" th:value="${genero.id}" th:text="${genero.nombre}"></option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-        </form>
-    </div>
-    <div>
-        <h2>Dar de Baja la Cuenta</h2>
-        <form th:action="@{/usuario/baja}" method="post">
-            <button type="submit" class="btn btn-danger">Dar de Baja</button>
-        </form>
+    <h1>Administración de Cuenta</h1>
+    <div class="card mt-4">
+        <div class="card-header">
+            Datos del Usuario
+        </div>
+        <div class="card-body">
+
+            <p><strong>Email:</strong> <span th:text="${usuario.email}">Correo del usuario</span></p>
+            <p><strong>Nombre:</strong> <span th:text="${usuario.detalle.nombre}">Nombre del usuario</span></p>
+            <p><strong>Apellido:</strong> <span th:text="${usuario.detalle.apellido}">Apellido del usuario</span></p>
+            <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}">Teléfono del usuario</span></p>
+            <p><strong>Edad:</strong> <span th:text="${usuario.detalle.edad}">Edad del usuario</span></p>
+            <p><strong>Género:</strong> <span th:text="${usuario.detalle.genero.descripcion}">Género del usuario</span>
+            </p>
+            <p><strong>Dirección:</strong></p>
+            <p><strong>Calle:</strong> <span th:text="${usuario.detalle.calle}">Calle del usuario</span></p>
+            <p><strong>Municipio:</strong> <span th:text="${usuario.detalle.municipio}">Municipio del usuario</span></p>
+            <p><strong>País:</strong> <span th:text="${usuario.detalle.pais}">País del usuario</span></p>
+            <p><strong>Código Postal:</strong> <span
+                    th:text="${usuario.detalle.codigopostal}">Código Postal del usuario</span></p>
+            <a href="#" th:href="@{/usuario/administracion/editar/{id}(id=${usuario.id})}" class="btn btn-primary">Editar
+                Cuenta</a>
+        </div>
+        <button class="btn btn-danger" onclick="confirmarBaja()">Dar de Baja</button>
     </div>
 </div>
+
+
+<!-- Modal para confirmar la baja -->
+<div class="modal fade" id="confirmarBajaModal" tabindex="-1" role="dialog" aria-labelledby="confirmarBajaModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmarBajaModalLabel">Confirmar Baja</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que quiere darse de baja? No podrá volver atrás.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <form th:action="@{/usuario/administracion/baja}" method="post">
+                    <button type="submit" class="btn btn-danger">Confirmar Baja</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function confirmarBaja() {
+        $('#confirmarBajaModal').modal('show');
+    }
+</script>
 </body>
 </html>

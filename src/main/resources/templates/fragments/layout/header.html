@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="w3.org/1999/xhtml">
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <title>Header</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
 <body>
 <!-- Header Section Begin -->
-<header class="header" th:fragment="header">
+<header class="header">
     <div class="header__top">
         <div class="container">
             <div class="row">
@@ -17,23 +23,22 @@
                 <div class="col-lg-6">
                     <div class="header__top__right">
                         <div class="header__top__right__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
                         </div>
                         <div class="header__top__right__language">
                             <img src="/img/language.english.png" alt="">
-                            <div th:text="#{language}">Español</div>
+                            <div>Español</div>
                             <span class="arrow_carrot-down"></span>
                             <ul>
-                                <li><a href="?lang=es" th:text="#{spanish}">Español</a></li>
-                                <li><a href="?lang=en" th:text="#{english}">English</a></li>
+                                <li><a href="?lang=es">Español</a></li>
+                                <li><a href="?lang=en">English</a></li>
                             </ul>
                         </div>
                         <div class="header__top__right__auth">
-                            <a href="/registro/editar"><i class="fa fa-user"></i> <span th:text="#{header.user.admin}">Administración Usuario</span></a>
-                            <!-- Botón de logout -->
-                            <a href="/logout"><i class="fa fa-sign-out"></i> <span th:text="#{header.logout}">Logout</span></a>
+                            <a href="/usuario/administracion"><i class="fa fa-user"></i> Administración Usuario</a>
+                            <a href="/logout"><i class="fa fa-sign-out-alt"></i> Logout</a>
                         </div>
                     </div>
                 </div>
@@ -51,31 +56,30 @@
                 <nav class="header__menu">
                     <ul>
                         <!-- Menú desplegable para roles de administrador -->
-                        <li sec:authorize="hasRole('ADMIN')">
-                            <a href="#" th:text="#{admi.administrador}"></a>
+                        <li>
+                            <a href="#">Administrador</a>
                             <ul class="header__menu__dropdown">
-                                <li><a th:href="@{/admin/usuarios}" th:text="#{gestion.user}"></a></li>
-                                <li><a th:href="@{/admin/productos}" th:text="#{administrar.productos}"></a></li>
-                                <li><a th:href="@{/admin/supermercados}" th:text="#{administrar.supermercado}"></a></li>
+                                <li><a href="/admin/usuarios">Usuarios</a></li>
+                                <li><a href="/admin/productos">Productos</a></li>
+                                <li><a href="/admin/supermercados">Supermercados</a></li>
                             </ul>
                         </li>
 
                         <!-- Enlaces de navegación adicionales -->
-                        <li><a th:href="@{/productos}">Productos</a></li>
+                        <li><a href="/productos">Productos</a></li>
                         <li>
-                            <a th:href="@{/supermercados}" th:text="#{supermarket}">Supermercados</a>
+                            <a href="/supermercados">Supermercados</a>
                             <ul class="header__menu__dropdown">
-                                <li><a th:href="@{/supermercados/carrefour}" th:text="#{supermarket.carrefour}">Carrefour</a></li>
-                                <li><a th:href="@{/supermercados/mercadona}" th:text="#{supermarket.mercadona}">Mercadona</a></li>
-                                <li><a th:href="@{/supermercados/dia}" th:text="#{supermarket.dia}">Día</a></li>
-                                <li><a th:href="@{/supermercados/lidl}" th:text="#{supermarket.lidl}">Lidl</a></li>
-                                <li><a th:href="@{/supermercados/supeco}" th:text="#{supermarket.supeco}">Supeco</a></li>
-                                <li><a th:href="@{/supermercados/hipercor}" th:text="#{supermarket.hipercor}">Hipercor</a></li>
+                                <li><a href="/supermercados/carrefour">Carrefour</a></li>
+                                <li><a href="/supermercados/mercadona">Mercadona</a></li>
+                                <li><a href="/supermercados/dia">Día</a></li>
+                                <li><a href="/supermercados/lidl">Lidl</a></li>
+                                <li><a href="/supermercados/supeco">Supeco</a></li>
+                                <li><a href="/supermercados/hipercor">Hipercor</a></li>
                             </ul>
                         </li>
                     </ul>
                 </nav>
-
             </div>
         </div>
         <div class="humberger__open">

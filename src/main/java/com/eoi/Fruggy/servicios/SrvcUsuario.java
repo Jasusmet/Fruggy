@@ -46,7 +46,6 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
             usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         }
-        // Actualizar los roles si están presentes
         if (usuario.getRoles() != null) {
             usuario.setRoles(new HashSet<>(usuario.getRoles()));
         }

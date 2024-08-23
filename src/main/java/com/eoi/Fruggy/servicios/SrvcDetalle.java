@@ -12,4 +12,8 @@ public class SrvcDetalle extends AbstractSrvc <Detalle, Long, RepoDetalle> {
     protected SrvcDetalle(RepoDetalle repoDetalle) {
         super(repoDetalle);
     }
+
+    public Detalle merge(Detalle detalle) {
+        return repoDetalle.save(detalle);  //  Guardar entidades existentes
+    }
 }

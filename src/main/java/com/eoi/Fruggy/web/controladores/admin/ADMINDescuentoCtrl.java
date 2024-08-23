@@ -39,7 +39,7 @@ public class ADMINDescuentoCtrl {
         this.precioSrvc = precioSrvc;
     }
 
-//    @PreAuthorize("hasRole('ADMIN')") // Solo los usuarios con rol ADMIN pueden acceder a este método
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/editar/{id}")
     public String verDescuento(@PathVariable("id") Long id, Model model) {
         Optional<Descuento> descuento = descuentoSrvc.encuentraPorId(id);
@@ -55,7 +55,7 @@ public class ADMINDescuentoCtrl {
         }
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/descuento-actualizado/{id}")
     public String verDescuentoActualizado(@PathVariable("id") Long id, Model model) {
         Optional<Descuento> descuentoActualizado = descuentoSrvc.encuentraPorId(id);
@@ -77,11 +77,8 @@ public class ADMINDescuentoCtrl {
     }
 
 
-private Date convertToDate(LocalDate localDate) {
-    return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-}
+    private Date convertToDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
 }
 
-// mirar https://www.thymeleaf.org/doc/articles/springsecurity.html
-//Principal principal
-// https://stackoverflow.com/questions/47927962/accessing-userdetails-object-from-controller-in-spring-using-spring-security

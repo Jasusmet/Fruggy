@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,7 +47,7 @@ public class ADMINProductoCtrl {
 
 
     // Mostrar lista de productos
-//    @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('Administrator')")
     @GetMapping
     public String listarProductos(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
@@ -73,7 +74,7 @@ public class ADMINProductoCtrl {
         return "/admin/CRUD-Productos";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN')")
+            @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
         Producto producto = new Producto();
@@ -91,7 +92,7 @@ public class ADMINProductoCtrl {
     }
 
     //  formulario de creación de producto
-//    @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute("producto") Producto producto,
                                   BindingResult result,
@@ -140,7 +141,7 @@ public class ADMINProductoCtrl {
     }
 
     // Mostrar formulario para editar un producto
-//    @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -161,8 +162,7 @@ public class ADMINProductoCtrl {
     }
 
     // post de edición de producto
-//    @PreAuthorize("hasRole('ADMIN')")
-    // Método para editar un producto
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/editar/{id}")
     public String guardarEdicionProducto(@PathVariable Long id,
                                          @Valid @ModelAttribute("producto") Producto producto,
@@ -170,7 +170,7 @@ public class ADMINProductoCtrl {
                                          @RequestParam("precio") String precioValor,
                                          @RequestParam("subcategoria.id") Long subcategoriaId,
                                          @RequestParam("supermercado.id") Long supermercadoId,
-                                         @RequestParam("imagenesArchivo") MultipartFile imagenesArchivo
+                                         @RequestParam(value = "imagenesArchivo", required = false) MultipartFile imagenesArchivo
     ) throws Exception {
         if (result.hasErrors()) {
             return "/admin/crear-producto";
@@ -190,19 +190,19 @@ public class ADMINProductoCtrl {
         // Save the product first to ensure it has an ID
         Producto productoGuardado = productosSrvc.guardar(producto);
 
+        // Eliminar la imagen existente si la hay
+        Set<Imagen> imagenesExistentes = imagenSrvc.buscarPorProducto(productoGuardado);
+        for (Imagen imagen : imagenesExistentes) {
+            imagenSrvc.eliminarPorId(imagen.getId());
+        }
+
         // Procesa la nueva imagen subida
         if (imagenesArchivo != null && !imagenesArchivo.isEmpty()) {
-            // Eliminar la imagen existente si la hay
-            Set<Imagen> imagenesExistentes = imagenSrvc.buscarPorProducto(producto);
-            for (Imagen imagen : imagenesExistentes) {
-                imagenSrvc.eliminarPorId(imagen.getId());
-            }
-
-            // Guardar la nueva imagen
-            Imagen nuevaImagen = imagenSrvc.guardarImagenProducto(imagenesArchivo, producto);
-            nuevaImagen.setProductos(producto);
+            Imagen nuevaImagen = imagenSrvc.guardarImagenProducto(imagenesArchivo, productoGuardado);
+            nuevaImagen.setProductos(productoGuardado);
             imagenSrvc.guardar(nuevaImagen);
         }
+
         // Update the price
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
         Optional<Precio> precioExistenteOpt = precioSrvc.encuentraPorId(productoGuardado.getId());
@@ -224,7 +224,7 @@ public class ADMINProductoCtrl {
     }
 
     // Eliminar un producto
-//    @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         Set<Precio> precios = precioSrvc.buscarTodosSet(); // Asegúrate de que esto devuelve un Set<Precio>
@@ -239,7 +239,7 @@ public class ADMINProductoCtrl {
 
     // DESCUENTOS
     // Mostrar formulario para agregar descuento a un producto
-//    @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/descuento/{id}")
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -252,7 +252,7 @@ public class ADMINProductoCtrl {
     }
 
     // Post para agregar descuento a un producto
-//    @PreAuthorize("hasRole('ADMIN')")
+        @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/descuento/{id}")
     public String agregarDescuento(@PathVariable Long id,
                                    @RequestParam("tipoDescuentoId") Long tipoDescuentoId,

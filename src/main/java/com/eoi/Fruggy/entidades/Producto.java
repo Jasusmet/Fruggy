@@ -21,13 +21,12 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "productos")
-
 public class Producto implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // hay que cambiar en todas las entidades a Long sustituyendo a  long
+    private Long id; // Utiliza Long en lugar de long
 
     @NotBlank(message = "El nombre del producto es obligatorio.")
     @Size(max = 45, message = "El nombre del producto no puede tener más de 45 caracteres.")
@@ -47,19 +46,18 @@ public class Producto implements Serializable {
     private Boolean activo = true;
 
     @JsonManagedReference
-    @OneToMany (mappedBy = "producto", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "producto", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Precio> precios = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "subcategoria_id")
     private Subcategoria subcategoria;
 
-    @OneToMany(mappedBy = "producto")
-    private Set<Descuento> descuentos;
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Descuento> descuentos = new HashSet<>();
 
-    // Relación con Imagen
-    @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL)
-    private Set<Imagen> imagenes;
+    @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Imagen> imagenes = new HashSet<>();
 
     @Transient // No se almacena en la base de datos
     private List<MultipartFile> imagenesArchivo;
@@ -68,4 +66,3 @@ public class Producto implements Serializable {
     private Double notaMedia;
 
 }
-
