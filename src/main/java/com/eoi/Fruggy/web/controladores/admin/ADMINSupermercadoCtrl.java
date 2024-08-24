@@ -161,7 +161,7 @@ public class ADMINSupermercadoCtrl {
     }
 
     @PreAuthorize("hasRole('Administrator')")
-    @GetMapping("/eliminar/{id}")
+    @PostMapping("/eliminar/{id}")
     public String eliminarSupermercado(@PathVariable("id") Long id, Model model) {
         supermercadoSrvc.eliminarPorId(id);
         return "redirect:/admin/supermercados";
