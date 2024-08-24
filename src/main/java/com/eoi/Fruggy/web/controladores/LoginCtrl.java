@@ -28,7 +28,7 @@ public class LoginCtrl {
         if (error != null) {
             model.addAttribute("error", true);
         }
-        return "login";
+        return "/login/login";
     }
 
     @PostMapping("/login")
@@ -48,15 +48,7 @@ public class LoginCtrl {
             model.addAttribute("error", true); // Usuario no encontrado
             System.out.println("Usuario no encontrado: " + email);
         }
-        return "login"; // Vuelve a la vista de login sin redirigir
-    }
-
-    @GetMapping("/login/crear-usuario")
-    public String showCrearUsuarioForm(Model model, @RequestParam(value = "error", required = false) String error) {
-        if (error != null) {
-            model.addAttribute("error", true);
-        }
-        return "adminUsuarios";
+        return "/login/login"; // Vuelve a la vista de login sin redirigir
     }
 
     @GetMapping("/login/recuperar-contraseña")
