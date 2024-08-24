@@ -1,33 +1,30 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalles del Supermercado</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
 <div class="container mt-4" th:fragment="detalles-supermercado">
-    <h1>Detalles del Supermercado</h1>
-    <div>
-        <p><strong>Nombre:</strong> <span th:text="${supermercado.nombreSuper}"></span></p>
-        <p><strong>URL:</strong> <a th:href="${supermercado.url}" th:text="${supermercado.url}"></a></p>
-        <h2>Imágenes</h2>
-        <div class="row">
-            <div class="col">
-                <ul>
-                    <li th:each="imagen : ${imagenes}">
-                        <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Supermercado"
-                             class="img-thumbnail" style="max-width: 200px; max-height: 150px;"/>
-                    </li>
-                </ul>
+    <!-- Sección principal del supermercado -->
+    <div class="row">
+        <!-- Información del supermercado a la izquierda -->
+        <div class="col-md-6">
+            <h1 th:text="${supermercado.nombreSuper}">Nombre del Supermercado</h1>
+            <p><strong>URL:</strong> <a th:href="${supermercado.url}" th:text="${supermercado.url}"></a></p>
+            <p><strong>Horario:</strong> <span th:text="${supermercado.horario}"></span></p>
+            <p><strong>Calle:</strong> <span th:text="${supermercado.calle}"></span></p>
+            <p><strong>Municipio:</strong> <span th:text="${supermercado.municipio}"></span></p>
+            <p><strong>País:</strong> <span th:text="${supermercado.pais}"></span></p>
+            <p><strong>Código Postal:</strong> <span th:text="${supermercado.codigopostal}"></span></p>
+        </div>
+
+        <!-- Imágenes del supermercado a la derecha -->
+        <div class="col-md-6">
+            <div class="supermarket-image-container">
+                <div th:each="imagen : ${imagenes}" class="image-item">
+                    <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Supermercado"
+                         class="supermarket-image"/>
+                </div>
             </div>
         </div>
-        <p><strong>Horario:</strong> <span th:text="${supermercado.horario}"></span></p>
-        <p><strong>Calle:</strong> <span th:text="${supermercado.calle}"></span></p>
-        <p><strong>Municipio:</strong> <span th:text="${supermercado.municipio}"></span></p>
-        <p><strong>País:</strong> <span th:text="${supermercado.pais}"></span></p>
-        <p><strong>Código Postal:</strong> <span th:text="${supermercado.codigopostal}"></span></p>
+    </div>
 
+    <!-- Sección de valoraciones -->
+    <div class="mt-4">
         <h2>Valoraciones</h2>
         <div th:if="${not #lists.isEmpty(valoraciones)}">
             <ul class="list-group">
@@ -41,8 +38,10 @@
         <div th:if="${#lists.isEmpty(valoraciones)}">
             <p>No hay valoraciones disponibles para este supermercado.</p>
         </div>
+    </div>
 
-        <!-- Formulario para agregar una valoración -->
+    <!-- Formulario para agregar una valoración -->
+    <div class="mt-4">
         <h2>Deja tu valoración</h2>
         <form th:action="@{/supermercados/detalles/{supermercadoId}/guardar(supermercadoId=${supermercado.id})}"
               method="post"
@@ -60,11 +59,12 @@
             <button type="submit" class="btn btn-primary">Enviar Valoración</button>
         </form>
     </div>
+
     <!-- Mostrar mensaje de error si existe -->
     <div th:if="${error}" class="alert alert-danger mt-3" role="alert">
         <span th:text="${error}"></span>
     </div>
+
+    <!-- Botón para volver a la lista de supermercados -->
     <a th:href="@{/supermercados}" class="btn btn-secondary mt-3">Volver a la lista de supermercados</a>
 </div>
-</body>
-</html>

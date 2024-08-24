@@ -98,7 +98,9 @@
 
                             <div class="card-body">
                                 <p class="card-text">
-                                    <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span><br/>
+                                <p class="product-description">
+                                    <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span>
+                                </p>
                                     <strong>Marca:</strong> <span th:text="${producto.marca}"></span><br/>
                                     <strong>Precio:</strong>
                                     <span th:if="${producto.descuentos.size() > 0}">

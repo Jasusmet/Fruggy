@@ -25,7 +25,7 @@ public class Producto implements Serializable {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Utiliza Long en lugar de long
 
     @NotBlank(message = "El nombre del producto es obligatorio.")
