@@ -1,81 +1,118 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalles del Producto</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
 <div class="container mt-4" th:fragment="detalles-producto">
-    <!-- Título del producto -->
-    <h1 th:text="${producto.nombreProducto}">Nombre del Producto</h1>
+    <!-- Sección principal del producto -->
+    <div class="row">
+        <!-- Imagen y título del producto a la izquierda -->
+        <div class="col-md-6 product-images">
+            <!-- Título del producto -->
+            <h1 th:text="${producto.nombreProducto}">Nombre del Producto</h1>
 
-    <!-- Imágenes del producto -->
-    <div class="product-images">
-        <div th:each="imagen : ${producto.imagenes}">
-            <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
-                 class="img-fluid"
-                 th:alt="${producto.nombreProducto}"/>
+            <!-- Imágenes del producto -->
+            <div class="product-images">
+                <div th:each="imagen : ${producto.imagenes}">
+                    <img th:src="@{'/imagenes/' + ${imagen.rutaImagen}}" alt="Imagen del Producto"
+                         class="img-fluid product-img"
+                         th:alt="${producto.nombreProducto}"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Información del producto a la derecha -->
+        <div class="col-md-6 product-details">
+            <div class="product-details">
+                <p><strong>Marca:</strong> <span th:text="${producto.marca}"></span></p>
+                <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+
+                <!-- Información sobre el precio -->
+                <p><strong>Precio:</strong>
+                    <span th:if="${producto.descuentos.size() > 0}">
+                        <span th:each="descuento : ${producto.descuentos}">
+                            <span th:if="${descuento.activo}">
+                                <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                            </span>
+                        </span>
+                    </span>
+                    <span th:if="${producto.descuentos.size() == 0}"
+                          th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+                </p>
+
+                <!-- Nombre del supermercado -->
+                <p><strong>Supermercado:</strong> <span th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
+
+                <!-- Nota media del producto -->
+                <h2>Nota Media</h2>
+                <p th:text="${producto.notaMedia != null ? #numbers.formatDecimal(producto.notaMedia, 1, 1) : 'N/A'}"></p>
+            </div>
         </div>
     </div>
 
-    <!-- Información básica del producto -->
-    <p><strong>Marca:</strong> <span th:text="${producto.marca}"></span></p>
-    <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
-
-    <!-- Información sobre el precio -->
-    <p><strong>Precio:</strong>
-        <span th:if="${producto.descuentos.size() > 0}">
-            <span th:each="descuento : ${producto.descuentos}">
-                <span th:if="${descuento.activo}">
-                    <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
-                </span>
-            </span>
-        </span>
-        <span th:if="${producto.descuentos.size() == 0}"
-              th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
-    </p>
-
-    <!-- Nombre del supermercado -->
-    <p><strong>Supermercado:</strong> <span th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
-
-    <!-- Nota media del producto -->
-    <h2>Nota Media</h2>
-    <p th:text="${notaMedia != null ? #numbers.formatDecimal(notaMedia, 1, 1) : 'N/A'}"></p>
-
-    <!-- Formulario para dejar una valoración -->
-    <h2>Deja tu valoración</h2>
-    <form th:action="@{/productos/valoraciones/{productoId}/guardar(productoId=${producto.id})}" method="post">
-        <div class="form-group">
-            <label for="comentario">Comentario:</label>
-            <textarea id="comentario" name="comentario" class="form-control" required></textarea>
+    <!-- Sección de precios similares -->
+    <div class="container mt-4">
+        <h2>Precios Similares</h2>
+        <div class="row">
+            <div th:each="similarProducto : ${productosSimilares}" class="col-md-3 mb-4">
+                <div class="card similar-product-card">
+                    <img th:src="@{'/imagenes/' + ${similarProducto.imagenes[0].rutaImagen}}"
+                         class="card-img-top similar-product-img"
+                         alt="Imagen del Producto">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${similarProducto.nombreProducto}"></h5>
+                        <p class="card-text">
+                            <strong>Precio:</strong>
+                            <span th:if="${similarProducto.descuentos.size() > 0}">
+                                <span th:each="descuento : ${similarProducto.descuentos}">
+                                    <span th:if="${descuento.activo}">
+                                        <span th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                                    </span>
+                                </span>
+                            </span>
+                            <span th:if="${similarProducto.descuentos.size() == 0}"
+                                  th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor, 1, 2) + ' €'}"></span>
+                        </p>
+                        <a th:href="@{/productos/detalles/{id}(id=${similarProducto.id})}" class="btn btn-primary">Ver Detalles</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="nota">Nota (0 a 5):</label>
-            <input type="number" id="nota" name="nota" class="form-control" min="0" max="5" step="0.1" required/>
-        </div>
-        <button type="submit" class="btn btn-primary">Enviar Valoración</button>
-    </form>
+    </div>
 
     <!-- Sección de valoraciones -->
-    <div>
+    <div class="review-list mt-4">
         <h2>Valoraciones</h2>
-        <ul>
+        <ul class="list-unstyled">
             <li th:each="valoracion : ${valoraciones}">
-                <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
-                <br/>
-                <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
-                <br/>
-                <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
+                <div class="review">
+                    <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
+                    <br/>
+                    <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
+                    <br/>
+                    <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
+                </div>
+                <hr/>
             </li>
         </ul>
     </div>
+
+    <!-- Formulario para dejar una valoración -->
+    <div class="rating-form mt-4">
+        <h2>Deja tu valoración</h2>
+        <form th:action="@{/productos/valoraciones/{productoId}/guardar(productoId=${producto.id})}" method="post">
+            <div class="form-group">
+                <label for="comentario">Comentario:</label>
+                <textarea id="comentario" name="comentario" class="form-control" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="nota">Nota (0 a 5):</label>
+                <input type="number" id="nota" name="nota" class="form-control" min="0" max="5" step="0.1" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar Valoración</button>
+        </form>
+    </div>
+
     <!-- Mostrar mensaje de error si existe -->
     <div th:if="${error}" class="alert alert-danger mt-3" role="alert">
         <span th:text="${error}"></span>
     </div>
+
     <!-- Botón para volver al catálogo -->
     <a th:href="@{/productos}" class="btn btn-secondary mt-3">Volver al Catálogo</a>
 </div>
-</body>
-</html>

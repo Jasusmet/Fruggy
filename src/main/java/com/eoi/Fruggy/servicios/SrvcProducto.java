@@ -106,5 +106,8 @@ public class SrvcProducto extends AbstractSrvc<Producto, Long, RepoProducto> {
     }
 
 
-
+    public List<Producto> buscarProductosSimilares(Long subcategoriaId, Long productoId) {
+        // Lógica para buscar productos similares en la misma subcategoría, excluyendo el producto actual
+        return repoProducto.findBySubcategoriaIdAndIdNot(subcategoriaId, productoId);
+    }
 }

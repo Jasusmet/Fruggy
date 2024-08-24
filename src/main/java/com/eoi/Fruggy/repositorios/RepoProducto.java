@@ -16,5 +16,5 @@ public interface RepoProducto extends JpaRepository<Producto, Long> {
 
     @Query("SELECT p FROM Producto p WHERE p.subcategoria.categoria.id = :categoriaId")
     Page<Producto> findByCategoriaId(Long categoriaId, Pageable pageable);
-
+    List<Producto> findBySubcategoriaIdAndIdNot(Long subcategoriaId, Long productoId);
 }

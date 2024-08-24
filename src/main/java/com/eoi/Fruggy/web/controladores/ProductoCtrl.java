@@ -131,11 +131,17 @@ public class ProductoCtrl {
 
         // Calcular la nota media
         Double notaMedia = valProductosSrvc.calcularNotaMedia(productoId);
+        producto.setNotaMedia(notaMedia); // Asignar notaMedia al producto
+
+        // Obtener productos similares por subcategoría
+        List<Producto> productosSimilares = productosSrvc.buscarProductosSimilares(producto.getSubcategoria().getId(), productoId);
 
         model.addAttribute("producto", producto);
         model.addAttribute("valoraciones", valoraciones);
         model.addAttribute("notaMedia", notaMedia);
         model.addAttribute("valoracion", new ValoracionProducto());
+        model.addAttribute("productosSimilares", productosSimilares);
+
         return "productos/detalles-producto";
     }
 

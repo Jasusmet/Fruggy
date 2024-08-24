@@ -59,6 +59,9 @@ public class Producto implements Serializable {
     @OneToMany(mappedBy = "productos", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Imagen> imagenes = new HashSet<>();
 
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ValoracionProducto> valoraciones = new HashSet<>();
+
     @Transient // No se almacena en la base de datos
     private List<MultipartFile> imagenesArchivo;
 
