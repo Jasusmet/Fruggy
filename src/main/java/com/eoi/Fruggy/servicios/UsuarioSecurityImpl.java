@@ -51,11 +51,7 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
             log.info("Rol encontrado: {}", rol.getRolNombre()); // Log para verificar los roles
         }
 
-        return new org.springframework.security.core.userdetails.User(
-                usuario.getEmail(),
-                usuario.getPassword(),
-                grantedAuthorities
-        );
+        return usuario;
     }
 }
 

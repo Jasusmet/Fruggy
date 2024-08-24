@@ -98,9 +98,7 @@
 
                             <div class="card-body">
                                 <p class="card-text">
-                                <p class="product-description">
-                                    <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span>
-                                </p>
+                                    <strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span><br/>
                                     <strong>Marca:</strong> <span th:text="${producto.marca}"></span><br/>
                                     <strong>Precio:</strong>
                                     <span th:if="${producto.descuentos.size() > 0}">
@@ -147,35 +145,28 @@
                                                         aria-label="Cerrar"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <form th:action="@{/cestas/agregarProducto}" method="post">
+                                                <form th:action="@{/cestas/agregarProducto}" method="post"
+                                                      id="selectBasketForm">
                                                     <input type="hidden" name="productoId" th:value="${producto.id}"/>
                                                     <input type="hidden" name="cantidad" value="1"/>
 
-                                                    <!-- Lista de cestas disponibles -->
-                                                    <div th:if="${cestas.size() > 0}">
-                                                        <label for="cestaId">Selecciona una cesta:</label>
-                                                        <select id="cestaId" name="cestaId" class="form-select">
+                                                    <!-- Lista de cestas -->
+                                                    <div class="mb-3">
+                                                        <label for="cesta" class="form-label">Selecciona una
+                                                            cesta:</label>
+                                                        <select id="cesta" name="cestaId" class="form-select">
                                                             <option th:each="cesta : ${cestas}" th:value="${cesta.id}"
-                                                                    th:text="${cesta.nombre}"></option>
+                                                                    th:text="${cesta.nombre}">Nombre de la Cesta
+                                                            </option>
                                                         </select>
                                                     </div>
-                                                    <div th:if="${cestas.size() == 0}">
-                                                        <p>No tienes cestas disponibles. Por favor, crea una cesta antes
-                                                            de añadir productos.</p>
-                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Añadir</button>
                                                 </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                    Cerrar
-                                                </button>
-                                                <button type="submit" class="btn btn-primary" form="selectBasketForm">
-                                                    Añadir
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -183,28 +174,38 @@
             </div>
 
             <!-- Paginación -->
-            <div class="col-lg-12">
-                <ul class="pagination">
-                    <li th:if="${pagina.hasPrevious()}" class="page-item">
-                        <a class="page-link"
-                           th:href="@{/productos(page=${pagina.number - 1}, size=${pagina.size}, sort=${sort})}"
-                           aria-label="Anterior">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li th:each="i : ${#numbers.sequence(0, pagina.totalPages - 1)}" class="page-item">
-                        <a class="page-link" th:href="@{/productos(page=${i}, size=${pagina.size}, sort=${sort})}"
-                           th:text="${i + 1}"></a>
-                    </li>
-                    <li th:if="${pagina.hasNext()}" class="page-item">
-                        <a class="page-link"
-                           th:href="@{/productos(page=${pagina.number + 1}, size=${pagina.size}, sort=${sort})}"
-                           aria-label="Siguiente">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${pagina.hasPrevious()}">
+                            <a class="page-link"
+                               th:href="@{/productos(page=${pagina.number - 1}, size=${pagina.size}, sort=${currentSort})}">Anterior</a>
+                        </li>
+                        <li class="page-item disabled" th:unless="${pagina.hasPrevious()}">
+                            <span class="page-link">Anterior</span>
+                        </li>
+                        <li class="page-item" th:if="${pagina.hasNext()}">
+                            <a class="page-link"
+                               th:href="@{/productos(page=${pagina.number + 1}, size=${pagina.size}, sort=${currentSort})}">Siguiente</a>
+                        </li>
+                        <li class="page-item disabled" th:unless="${pagina.hasNext()}">
+                            <span class="page-link">Siguiente</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var modals = document.querySelectorAll('.modal');
+        modals.forEach(function (modal) {
+            var bootstrapModal = new bootstrap.Modal(modal);
+            modal.addEventListener('shown.bs.modal', function () {
+                console.log('Modal mostrado:', modal.id);
+            });
+        });
+    });
+</script>

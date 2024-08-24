@@ -69,7 +69,7 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuario")
     private Set<Donacion> donaciones;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Cesta> cestas;
 
     @Override
@@ -112,15 +112,18 @@ public class Usuario implements Serializable, UserDetails {
                 .findFirst()
                 .orElse(null);
     }
+
     public Set<Cesta> getCestas() { // todas las cestas
         return cestas;
     }
+
     public Cesta findCestaById(Long cestaId) {
         return cestas.stream()
                 .filter(c -> c.getId().equals(cestaId))
                 .findFirst()
                 .orElse(null);
     }
+
     public void addCesta(Cesta cesta) {
         if (cestas.size() < 10) {
             cesta.setUsuario(this);

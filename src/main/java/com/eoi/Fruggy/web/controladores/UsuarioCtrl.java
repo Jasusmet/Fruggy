@@ -184,5 +184,4 @@ public class UsuarioCtrl {
         }
         return "redirect:/"; // Redirige a la página de inicio después del logout
     }
-
 }

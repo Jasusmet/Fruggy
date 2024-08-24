@@ -10,7 +10,7 @@
 
 /* Categorías */
 .hero__categories {
-    position: relative;
+    position: relative; /* Asegura que el menú desplegable se posicione correctamente */
 }
 
 .hero__categories__all {
@@ -49,6 +49,7 @@
     padding: 10px 0;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1050; /* Asegura que el menú desplegable esté por encima de otros elementos */
 }
 
 .hero__categories ul li {

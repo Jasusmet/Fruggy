@@ -1,98 +1,47 @@
-/* Preloder
-precarga de la pagina, se puede cambiar color o poner imagen,etc*/
-
 #preloder {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 999999;
+    z-index: 999999; /* Asegúrate de que el z-index sea suficientemente alto para cubrir todo */
     background: white;
 }
 
 .loader {
-    width: 40px;
-    height: 40px;
-    position: absolute;* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-    section {
-        height: 100vh;
-        display: grid;
-        place-items: center;
-        background: #111;
-    }
-
-    .loader {
-        height: 100px;
-        width: 100px;
-        border: 10px solid rgba(0,0,0,0.6);
-        border-top-color: #3E8E41;
-        border-radius: 50%;
-        animation: rotate 1.3s infinite linear;
-    }
-
-    @keyframes rotate {
-        from{transform: rotate(0deg)}
-        to{transform:rotate(360deg)}
-    }
+    width: 100px;
+    height: 100px;
+    border: 10px solid rgba(0, 0, 0, 0.6);
+    border-top-color: #3E8E41;
+    border-radius: 50%;
+    animation: rotate 1.3s infinite linear;
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -13px;
-    margin-left: -13px;
-    border-radius: 60px;
-    animation: loader 0.8s linear infinite;
-    -webkit-animation: loader 0.8s backwards;
+    margin-top: -50px; /* Ajusta el margen para centrar el loader */
+    margin-left: -50px;
 }
 
-/*Circulito loader, he cambiado a colores de empresa!*/
+/* Animación */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
 @keyframes loader {
     0% {
-        -webkit-transform: rotate(0deg);
         transform: rotate(0deg);
         border: 4px solid #249BC8;
         border-left-color: transparent;
     }
-
     50% {
-        -webkit-transform: rotate(180deg);
         transform: rotate(180deg);
         border: 4px solid #3CC032;
         border-left-color: transparent;
     }
-
     100% {
-        -webkit-transform: rotate(360deg);
         transform: rotate(360deg);
         border: 4px solid #f44336;
         border-left-color: transparent;
-    }
-}
-
-@-webkit-keyframes loader {
-
-    0% {
-        -webkit-transform: rotate(0deg);
-        border: 4px solid #249BC8;
-        border-left-color: transparent;
-    }
-
-    50% {
-        -webkit-transform: rotate(180deg);
-        border: 4px solid #3CC032;
-        border-left-color: transparent;
-    }
-
-    100% {
-        -webkit-transform: rotate(360deg);
-        border: 4px solid #f44336;
-        border-left-color: transparent;
-
-
     }
 }

@@ -1,7 +1,7 @@
-@import "preloader.css";
 @import "header.css";
 @import "hero.css";
 @import "footer.css";
+@import "bootstrap.min.css";
 @import "mediaQueries.css";
 
 html, body {
@@ -10,6 +10,7 @@ html, body {
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
     overflow-x: hidden; /* Previene el desplazamiento horizontal en toda la página */
+
 }
 
 h1, h6 {
@@ -69,97 +70,6 @@ body {
     color: #00FF00;
     font-weight: 700;
 }
-
-/* Estilo del modal */
-.modal-content {
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-}
-
-.modal-header {
-    border-bottom: 1px solid #ddd; /* Borde inferior para la cabecera del modal */
-}
-
-.modal-footer {
-    border-top: 1px solid #ddd; /* Borde superior para el pie del modal */
-}
-
-/*---------------------
-  Product Section
------------------------*/
-.product {
-    padding: 20px 0;
-    overflow-x: hidden; /* Previene el scroll horizontal */
-}
-
-.item {
-    margin-bottom: 30px; /* Espacio entre tarjetas de productos */
-}
-
-.product-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-/* Estilos para el contenedor de productos */
-.view-group {
-    margin-top: 20px;
-}
-
-.thumbnail {
-    border: 1px solid #ddd; /* Borde ligero */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-    transition: transform 0.3s ease; /* Transición suave para el hover */
-}
-
-.thumbnail:hover {
-    transform: scale(1.02); /* Escala ligeramente al pasar el ratón */
-}
-
-.product-image-container {
-    height: 300px; /* Altura fija para el contenedor de imágenes */
-    width: 100%; /* Ancho completo del contenedor */
-    overflow: hidden; /* Oculta cualquier desbordamiento de imagen */
-    display: flex;
-    align-items: center; /* Centra la imagen verticalmente */
-    justify-content: center; /* Centra la imagen horizontalmente */
-    background-color: #f8f9fa; /* Fondo opcional para el contenedor */
-}
-
-/* Ajustar imagen de producto */
-.product-image-container img {
-    height: 100%; /* Ocupa el 100% de la altura del contenedor */
-    width: auto; /* Mantiene la proporción de la imagen */
-    object-fit: cover; /* Cubre el contenedor recortando el exceso */
-}
-
-/* Recorte solo en la descripción del producto */
-.product-description {
-    max-height: 60px; /* Ajusta esto según la altura deseada para el recorte */
-    overflow: hidden; /* Oculta el texto que excede el contenedor */
-    text-overflow: ellipsis; /* Añade puntos suspensivos al final del texto recortado */
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Número de líneas visibles antes de cortar */
-    -webkit-box-orient: vertical;
-}
-
-/* Otros estilos para mantener el diseño limpio */
-.filter__item {
-    margin-bottom: 30px;
-}
-
-.filter__found h6 {
-    font-size: 18px;
-    color: #333;
-    font-weight: 500;
-}
-
-.btn-group {
-    margin-top: 10px;
-}
-
 /*---------------------
   Product Details
 -----------------------*/
@@ -313,6 +223,7 @@ body {
 .row {
     display: flex;
     flex-wrap: wrap; /* Permite que las columnas se ajusten en pantallas pequeñas */
+    z-index: 1;
 }
 
 .col-md-6 {
@@ -402,8 +313,6 @@ body {
     object-fit: cover; /* Asegura que la imagen cubra el contenedor */
     border-radius: 8px; /* Bordes redondeados para las imágenes */
 }
-
-
 /*---------------------
   Responsive Adjustments
 -----------------------*/

@@ -1,18 +1,12 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Administración de Usuario</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
+
 <body>
-<div class="container" th:fragment="usuario-administracion-cuenta">
+<div class="container mt-4" th:fragment="usuario-administracion-cuenta">
     <h1>Administración de Cuenta</h1>
-    <div class="card mt-4">
+    <div class="card">
         <div class="card-header">
             Datos del Usuario
         </div>
         <div class="card-body">
-
             <p><strong>Email:</strong> <span th:text="${usuario.email}">Correo del usuario</span></p>
             <p><strong>Nombre:</strong> <span th:text="${usuario.detalle.nombre}">Nombre del usuario</span></p>
             <p><strong>Apellido:</strong> <span th:text="${usuario.detalle.apellido}">Apellido del usuario</span></p>
@@ -26,17 +20,20 @@
             <p><strong>País:</strong> <span th:text="${usuario.detalle.pais}">País del usuario</span></p>
             <p><strong>Código Postal:</strong> <span
                     th:text="${usuario.detalle.codigopostal}">Código Postal del usuario</span></p>
-            <a href="#" th:href="@{/usuario/administracion/editar/{id}(id=${usuario.id})}" class="btn btn-primary">Editar
-                Cuenta</a>
+
+            <div class="d-flex justify-content-between">
+                <a href="#" th:href="@{/usuario/administracion/editar/{id}(id=${usuario.id})}" class="btn btn-primary">Editar
+                    Cuenta</a>
+
+                <!-- Botón de baja con confirmación -->
+                <form th:action="@{/usuario/administracion/baja}" method="post" class="ml-auto"
+                      onsubmit="return confirm('¿Está seguro que desea darse de baja?');">
+                    <button type="submit" class="btn btn-danger">Dar de Baja</button>
+                </form>
+            </div>
         </div>
-          <!-- Botón de baja con confirmación -->
-        <form th:action="@{/usuario/administracion/baja}" method="post"
-              onsubmit="return confirm('¿Está seguro que desea darse de baja?');">
-            <button type="submit" class="btn btn-danger">Dar de Baja</button>
-        </form>
     </div>
 </div>
-
 
 <!-- Modal para confirmar la baja -->
 <div class="modal fade" id="confirmarBajaModal" tabindex="-1" role="dialog" aria-labelledby="confirmarBajaModalLabel"
@@ -55,7 +52,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <form th:action="@{/usuario/administracion/baja}" method="post">
-                    <button type="submit" class="btn btn-danger">Confirmar Baja </button>
+                    <button type="submit" class="btn btn-danger">Confirmar Baja</button>
                 </form>
             </div>
         </div>
@@ -69,5 +66,3 @@
         $('#confirmarBajaModal').modal('show');
     }
 </script>
-</body>
-</html>

@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalles de la Cesta</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-</head>
-<body>
+
 <div class="container mt-4" th:fragment="detalle-cesta">
     <!-- Ocultar el ID de la cesta y el ID del usuario -->
     <input type="hidden" id="cestaId" th:value="${cesta.id}"/>
@@ -90,6 +83,3 @@
     <a class="btn btn-secondary mt-3" th:href="@{/cestas}">Volver a la lista de cestas</a>
 </div>
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>

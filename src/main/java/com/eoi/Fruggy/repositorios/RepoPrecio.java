@@ -10,6 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface RepoPrecio extends JpaRepository<Precio, Long> {
-
    List <Precio>  findFirstByProductoIdAndActivoTrue(Long productoId);
 }
