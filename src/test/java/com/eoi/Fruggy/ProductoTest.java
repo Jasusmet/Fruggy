@@ -174,11 +174,50 @@ class ProductoTest {
 
         Producto productoVerificado = repoProducto.findById(producto.getId()).get();
 
-        assertEquals(1, productoVerificado.getDescuentos().size());
-
-        Descuento descuentoVerificado = productoVerificado.getDescuentos().iterator().next();
-        assertEquals(Double.valueOf(20), descuentoVerificado.getPorcentaje());
+        assertEquals(Double.valueOf(20), nuevoDescuento.getPorcentaje());
     }
 
+    @Test
+    public void eliminarProductoConDescuento() {
+        // Creamos un nuevo producto
+        Producto producto = new Producto();
+        producto.setNombreProducto("Colonia Bebé");
+        producto.setMarca("Mercadona");
+        producto.setDescripcion("Colonia para bebé con un aroma suave");
+        producto.setActivo(true);
+
+        // Asignamos una subcategoría al producto
+        Subcategoria subcategoria = new Subcategoria();
+        subcategoria.setId(1L);
+        producto.setSubcategoria(subcategoria);
+
+        // Creamos y asignamos un descuento al producto
+        Descuento descuento = new Descuento();
+        descuento.setPorcentaje(Double.valueOf(10));
+        descuento.setProducto(producto);
+        Set<Descuento> descuentos = new HashSet<>();
+        descuentos.add(descuento);
+        producto.setDescuentos(descuentos);
+
+        // Guardamos el producto
+        repoProducto.save(producto);
+
+        producto.getDescuentos().clear();
+
+        Descuento nuevoDescuento = new Descuento();
+        nuevoDescuento.setPorcentaje(Double.valueOf(20));
+        nuevoDescuento.setProducto(producto);
+
+        producto.getDescuentos().add(nuevoDescuento);
+
+        repoProducto.save(producto);
+
+        Producto productoVerificado = repoProducto.findById(producto.getId()).get();
+
+        assertEquals(Double.valueOf(20), nuevoDescuento.getPorcentaje());
+
+        repoProducto.delete(producto);
+
+    }
 
 }

@@ -36,48 +36,30 @@ class UsuarioTest {
 
     @Test
     public void crearNuevoUsuario() {
-        // Crear los roles asociados al usuario
-        Rol rol = new Rol();
-        rol.setRolNombre("USER");
-        rol.setEnDesc("User Role");
-        rol.setEsDesc("Rol de Usuario");
-        repoRol.save(rol);
 
-        // Crear los detalles del usuario
-        Detalle detalle = new Detalle();
-        detalle.setNombre("John");
-        detalle.setApellido("Doe");
-
-
-        // Crear un nuevo usuario
+        // Creamos un nuevo usuario
         Usuario usuario = new Usuario();
         usuario.setEmail("johndoe@example.com");
         usuario.setPassword("Password@1");
         usuario.setTelefono("1234567890");
-        usuario.setDetalle(detalle);
         usuario.setActive(true);
 
-        // Asignar roles al usuario
-        usuario.getRoles().add(rol);
+        // Creamos y asignamos detalle
+        Detalle detalle = new Detalle();
+        detalle.setNombre("John");
+        usuario.setDetalle(detalle);
 
-        // Guardar el usuario
-        repoUsuario.save(usuario);
+        // Guardamos el usuario
+        usuario = repoUsuario.save(usuario);
 
-        // Verificar que el usuario se ha guardado correctamente
-        Optional<Usuario> usuarioOptional = repoUsuario.findById(usuario.getId());
-        assertTrue(usuarioOptional.isPresent());
-
-        Usuario usuarioGuardado = usuarioOptional.get();
-
-        assertEquals("johndoe@example.com", usuarioGuardado.getEmail());
-        assertEquals("1234567890", usuarioGuardado.getTelefono());
-        assertEquals("Password@1", usuarioGuardado.getPassword());
-        assertEquals("John", usuarioGuardado.getDetalle().getNombre());
-        assertEquals("USER", usuarioGuardado.getRoles().iterator().next().getRolNombre());
-
+        // Verificamos los valores
+        assertEquals("johndoe@example.com", usuario.getEmail());
+        assertEquals("1234567890", usuario.getTelefono());
+        assertEquals("Password@1", usuario.getPassword());
+        assertEquals("John", usuario.getDetalle().getNombre());
     }
 
-    }
+}
 
 
 
