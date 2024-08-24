@@ -5,23 +5,7 @@
 /* Contenedor principal del Hero */
 .hero {
     padding-bottom: 50px;
-    background: linear-gradient(-90deg, #8FC5FF 15%, #6ADEDE 40%, #39A240 85%);
-    background-size: 200% 200%;
-    animation: ani_gradient 15.2s ease infinite;
-}
-
-@keyframes ani_gradient {
-    0% {
-        background-position: 0% 0%;
-    }
-
-    50% {
-        background-position: 100% 100%;
-    }
-
-    100% {
-        background-position: 0% 0%;
-    }
+    background-color: #4CAF50; /* Cambia este color a uno que se adapte mejor al estilo de tu página */
 }
 
 /* Categorías */

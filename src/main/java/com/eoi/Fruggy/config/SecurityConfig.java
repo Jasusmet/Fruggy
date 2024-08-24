@@ -53,8 +53,8 @@ public class SecurityConfig {
                         .requestMatchers("/imagenes/**").permitAll()
                         .requestMatchers("/inicio").permitAll() // Permitir acceso a /inicio
                         .requestMatchers("/registro", "/registro/guardar", "/usuario/administracion/**").permitAll()
-                        .requestMatchers("/productos").permitAll() // Permitir acceso a /productos
-                        .requestMatchers("/supermercados").permitAll() // Permitir acceso a /supermercados
+                        .requestMatchers("/productos/**").permitAll() // Permitir acceso a /productos
+                        .requestMatchers("/supermercados/**").permitAll() // Permitir acceso a /supermercados
                         .requestMatchers("/").permitAll() // Permitir acceso a la raíz
                         .anyRequest().authenticated() // Asegura que cualquier otra petición requiera autenticación
                 )
