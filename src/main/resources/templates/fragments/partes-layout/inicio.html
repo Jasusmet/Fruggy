@@ -1,45 +1,111 @@
-
-<!-- Carousel of Newest Products -->
-<div class="container mt-5" th:fragment="inicio">
-    <h2 class="text-center mb-4">Productos Más Nuevos</h2>
-    <div id="newProductsCarousel" class="carousel slide">
-        <div class="carousel-inner">
-            <!-- Carousel items generated from the server -->
-            <div class="carousel-item active" th:each="producto, iterStat : ${productosNuevos}">
-                <div class="d-block w-100">
-                    <div class="card">
-                        <img th:src="@{'/imagenes/' + ${producto.imagenes[0].rutaImagen}}" class="card-img-top" alt="Imagen del Producto">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h5>
-                            <p class="card-text" th:text="${producto.descripcion}">Descripción del Producto</p>
-                            <p class="card-text">
-                                <strong>Precio:</strong> <span th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
-                            </p>
-                            <a th:href="@{/productos/detalles/{id}(id=${producto.id})}" class="btn btn-secondary">Ver Detalles</a>
+<!DOCTYPE html>
+<html lang="es">
+<div class="container" th:fragment="inicio">
+    <section id="recentProducts" class="container my-5">
+        <h2>Productos Más Recientes</h2>
+        <div id="recentProductsCarousel" class="carousel slide">
+            <div class="carousel-inner">
+                <!-- Aquí se generarán los items del carrusel mediante Thymeleaf -->
+                <div class="carousel-item active">
+                    <div class="d-flex">
+                        <!-- Producto 1 -->
+                        <div class="card" style="width: 18rem;">
+                            <img th:src="@{'/imagenes/' + ${productosNuevos[0].imagenes[0].rutaImagen}}"
+                                 class="card-img-top" alt="Imagen del Producto">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${productosNuevos[0].nombreProducto}"></h5>
+                                <p class="card-text">
+                                    <strong>Precio:</strong> <span
+                                        th:text="${#numbers.formatDecimal(productosNuevos[0].precios[0].valor, 1, 2) + ' €'}"></span><br>
+                                    <strong>Supermercado:</strong> <span
+                                        th:text="${productosNuevos[0].precios[0].supermercado.nombreSuper}">Nombre del Supermercado</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Producto 2 -->
+                        <div class="card" style="width: 18rem;">
+                            <img th:src="@{'/imagenes/' + ${productosNuevos[1].imagenes[0].rutaImagen}}"
+                                 class="card-img-top" alt="Imagen del Producto">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${productosNuevos[1].nombreProducto}"></h5>
+                                <p class="card-text">
+                                    <strong>Precio:</strong> <span
+                                        th:text="${#numbers.formatDecimal(productosNuevos[1].precios[0].valor, 1, 2) + ' €'}"></span><br>
+                                    <strong>Supermercado:</strong> <span
+                                        th:text="${productosNuevos[1].precios[0].supermercado.nombreSuper}">Nombre del Supermercado</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!-- Producto 3 -->
+                        <div class="card" style="width: 18rem;">
+                            <img th:src="@{'/imagenes/' + ${productosNuevos[2].imagenes[0].rutaImagen}}"
+                                 class="card-img-top" alt="Imagen del Producto">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${productosNuevos[2].nombreProducto}"></h5>
+                                <p class="card-text">
+                                    <strong>Precio:</strong> <span
+                                        th:text="${#numbers.formatDecimal(productosNuevos[2].precios[0].valor, 1, 2) + ' €'}"></span><br>
+                                    <strong>Supermercado:</strong> <span
+                                        th:text="${productosNuevos[2].precios[0].supermercado.nombreSuper}">Nombre del Supermercado</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <a class="carousel-control-prev" href="#recentProductsCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </a>
+            <a class="carousel-control-next" href="#recentProductsCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </a>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#newProductsCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#newProductsCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+    </section>
+
+    <!-- Sección de Ubicación -->
+    <section id="location" class="container my-5">
+        <h2>¿Dónde Estamos?</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Estamos ubicados en el corazón de la ciudad. Puedes encontrarnos en:</p>
+                <address>
+                    <strong>Nombre de la Empresa</strong><br>
+                    Calle Ejemplo, 123<br>
+                    Ciudad, País<br>
+                    <a href="mailto:info@empresa.com">info@empresa.com</a><br>
+                    Tel: +123 456 789
+                </address>
+            </div>
+            <div class="col-md-6">
+                <div id="map" style="height: 400px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Descripción -->
+    <section id="description" class="container my-5">
+        <h2>Sobre Nosotros</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+            commodo consequat.</p>
+    </section>
 </div>
 
-<!-- List of Lowest Priced Products -->
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Productos con el Precio Más Bajo</h2>
-    <ul class="list-group">
-        <!-- List items generated from the server -->
-        <li class="list-group-item" th:each="producto : ${productosPrecioBajo}">
-            <span th:text="${producto.nombreProducto}"></span> - <span th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
-        </li>
-    </ul>
-</div>
-
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+<!-- Bootstrap JS -->
+<script>
+    function initMap() {
+        var location = {lat: 37.2614, lng: -6.9457}; // Coordenadas para Huelva, España
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: location
+        });
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    }
+</script>

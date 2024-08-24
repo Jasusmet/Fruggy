@@ -1,0 +1,93 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Estilos para el carrusel */
+#homeCarousel .carousel-item img {
+    height: 70vh;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.carousel-caption h5 {
+    font-size: 2rem;
+}
+
+.carousel-caption p {
+    font-size: 1.25rem;
+}
+
+/* Estilos para la sección de ubicación */
+#location address {
+    line-height: 1.6;
+}
+
+#map {
+    width: 100%;
+}
+
+/* Estilos para la sección de descripción */
+#description {
+    text-align: center;
+}
+
+#description h2 {
+    margin-bottom: 20px;
+}
+
+#description p {
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+/* Estilos para el carrusel de productos recientes */
+/* Estilo del carrusel para hacerlo más pequeño */
+#recentProductsCarousel .carousel-item {
+    padding: 15px;
+}
+
+#recentProductsCarousel .card {
+    width: 100%; /* Ajusta el ancho de las tarjetas */
+    margin: 0 auto;
+}
+
+#recentProductsCarousel .card-img-top {
+    height: 150px; /* Ajusta la altura de las imágenes */
+    object-fit: cover;
+}
+
+/* Ajustes para el contenedor del carrusel */
+.carousel-inner {
+    display: flex;
+}
+
+/* Estilo de las flechas del carrusel */
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+    background-color: transparent; /* Fondo transparente para el área de control */
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    background-color: transparent; /* Fondo transparente para los íconos */
+    width: 30px; /* Ajusta el tamaño del ícono */
+    height: 30px; /* Ajusta el tamaño del ícono */
+    background-size: 100%; /* Asegura que el ícono ocupe todo el área */
+    color: steelblue;
+}
+
+/* Flecha anterior */
+.carousel-control-prev-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="steelblue" viewBox="0 0 24 24"><path d="M14.12 6.71L9.29 11.54l-4.83-4.83a1 1 0 0 0-1.42 1.42l5.5 5.5a1 1 0 0 0 1.42 0l5.5-5.5a1 1 0 0 0-1.42-1.42l-4.83 4.83 4.83-4.83a1 1 0 0 0-1.42-1.42z"/></svg>');
+}
+
+/* Flecha siguiente */
+.carousel-control-next-icon {
+    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="steelblue" viewBox="0 0 24 24"><path d="M9.88 17.29l4.83-4.83 4.83 4.83a1 1 0 0 0 1.42-1.42l-5.5-5.5a1 1 0 0 0-1.42 0l-5.5 5.5a1 1 0 0 0 1.42 1.42z"/></svg>');
+}
+
