@@ -75,8 +75,6 @@ public class ADMINDescuentoCtrl {
             return "error";
         }
     }
-
-
     private Date convertToDate(LocalDate localDate) {
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
