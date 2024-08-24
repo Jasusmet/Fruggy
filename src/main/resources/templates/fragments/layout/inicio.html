@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{page.title}">Productos</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    <script src="/js/toggleCategories.js" defer></script>
+
+</head>
+<body>
+<!-- Carousel of Newest Products -->
+<div class="container mt-5" th:fragment="inicio">
+    <h2 class="text-center mb-4">Productos Más Nuevos</h2>
+    <div id="newProductsCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <!-- Carousel items generated from the server -->
+            <div class="carousel-item active" th:each="producto, iterStat : ${productosNuevos}">
+                <div class="d-block w-100">
+                    <div class="card">
+                        <img th:src="@{'/imagenes/' + ${producto.imagenes[0].rutaImagen}}" class="card-img-top" alt="Imagen del Producto">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${producto.nombreProducto}">Nombre del Producto</h5>
+                            <p class="card-text" th:text="${producto.descripcion}">Descripción del Producto</p>
+                            <p class="card-text">
+                                <strong>Precio:</strong> <span th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+                            </p>
+                            <a th:href="@{/productos/detalles/{id}(id=${producto.id})}" class="btn btn-secondary">Ver Detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#newProductsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#newProductsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+
+<!-- List of Lowest Priced Products -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Productos con el Precio Más Bajo</h2>
+    <ul class="list-group">
+        <!-- List items generated from the server -->
+        <li class="list-group-item" th:each="producto : ${productosPrecioBajo}">
+            <span th:text="${producto.nombreProducto}"></span> - <span th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
