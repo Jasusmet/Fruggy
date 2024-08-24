@@ -107,36 +107,78 @@ class ProductoTest {
 
     @Test
     public void crearProductoConDescuento() {
-        // Crear un nuevo producto
+        // Creamos un nuevo producto
         Producto producto = new Producto();
         producto.setNombreProducto("Colonia Bebé");
         producto.setMarca("Mercadona");
         producto.setDescripcion("Colonia para bebé con un aroma suave");
         producto.setActivo(true);
 
-        // Asignar una subcategoría al producto (suponiendo que ya existe en la base de datos)
+        // Asignamos una subcategoría al producto
         Subcategoria subcategoria = new Subcategoria();
-        subcategoria.setId(1L); // Asignar un ID válido de una subcategoría existente
+        subcategoria.setId(1L);
         producto.setSubcategoria(subcategoria);
 
-        // Crear y asignar un descuento al producto
+        // Creamos y asignamos un descuento al producto
         Descuento descuento = new Descuento();
-        descuento.setPorcentaje(Double.valueOf(10)); // 10% de descuento
+        descuento.setPorcentaje(Double.valueOf(10));
         descuento.setProducto(producto);
         Set<Descuento> descuentos = new HashSet<>();
         descuentos.add(descuento);
         producto.setDescuentos(descuentos);
 
-        // Guardar el producto
+        // Guardamos el producto
         repoProducto.save(producto);
 
-        // Verificar que el producto se ha guardado correctamente
+        // Verificamos que el producto se ha guardado correctamente
         assertNotNull(producto.getId());
         assertEquals("Colonia Bebé", producto.getNombreProducto());
         assertEquals("Mercadona", producto.getMarca());
         assertEquals(1, producto.getDescuentos().size());
     }
 
+    @Test
+    public void modificarProductoConDescuento() {
+        // Creamos un nuevo producto
+        Producto producto = new Producto();
+        producto.setNombreProducto("Colonia Bebé");
+        producto.setMarca("Mercadona");
+        producto.setDescripcion("Colonia para bebé con un aroma suave");
+        producto.setActivo(true);
+
+        // Asignamos una subcategoría al producto
+        Subcategoria subcategoria = new Subcategoria();
+        subcategoria.setId(1L);
+        producto.setSubcategoria(subcategoria);
+
+        // Creamos y asignamos un descuento al producto
+        Descuento descuento = new Descuento();
+        descuento.setPorcentaje(Double.valueOf(10));
+        descuento.setProducto(producto);
+        Set<Descuento> descuentos = new HashSet<>();
+        descuentos.add(descuento);
+        producto.setDescuentos(descuentos);
+
+        // Guardamos el producto
+        repoProducto.save(producto);
+
+        producto.getDescuentos().clear();
+
+        Descuento nuevoDescuento = new Descuento();
+        nuevoDescuento.setPorcentaje(Double.valueOf(20));
+        nuevoDescuento.setProducto(producto);
+
+        producto.getDescuentos().add(nuevoDescuento);
+
+        repoProducto.save(producto);
+
+        Producto productoVerificado = repoProducto.findById(producto.getId()).get();
+
+        assertEquals(1, productoVerificado.getDescuentos().size());
+
+        Descuento descuentoVerificado = productoVerificado.getDescuentos().iterator().next();
+        assertEquals(Double.valueOf(20), descuentoVerificado.getPorcentaje());
+    }
 
 
 }
