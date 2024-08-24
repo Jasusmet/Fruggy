@@ -28,7 +28,7 @@ class RolTest {
     @Test
 
     public void crearNuevoRol(){
-            // Crear un nuevo rol
+     // Crear un nuevo rol
      Rol rol = new Rol();
       rol.setRolNombre("invitado");
 

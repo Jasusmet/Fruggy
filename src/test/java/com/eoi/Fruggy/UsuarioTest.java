@@ -33,6 +33,8 @@ class UsuarioTest {
 
     @Autowired
     private RepoRol repoRol;
+    @Autowired
+    private RepoDetalle repoDetalle;
 
     @Test
     public void crearNuevoUsuario() {
@@ -44,10 +46,10 @@ class UsuarioTest {
         usuario.setTelefono("1234567890");
         usuario.setActive(true);
 
-        // Creamos y asignamos detalle
-        Detalle detalle = new Detalle();
-        detalle.setNombre("John");
-        usuario.setDetalle(detalle);
+        // Creamos un nuevo detalle
+        Detalle newDetalle = new Detalle();
+        newDetalle.setNombre("Nombre");  // Asignamos el nombre correcto
+        usuario.setDetalle(newDetalle);
 
         // Guardamos el usuario
         usuario = repoUsuario.save(usuario);
@@ -56,8 +58,9 @@ class UsuarioTest {
         assertEquals("johndoe@example.com", usuario.getEmail());
         assertEquals("1234567890", usuario.getTelefono());
         assertEquals("Password@1", usuario.getPassword());
-        assertEquals("John", usuario.getDetalle().getNombre());
+        assertEquals("Nombre", usuario.getDetalle().getNombre());
     }
+
 
 }
 
