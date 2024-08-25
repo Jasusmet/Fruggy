@@ -76,11 +76,15 @@
                 </address>
             </div>
             <div class="col-md-6">
-                <div id="map" class="map-container"></div>
+                <div class="map-container">
+                    <a href="https://www.google.es/maps/place/Av.+de+Andaluc%C3%ADa,+34,+21006+Huelva/@37.264643,-6.9393149,17.25z/data=!4m6!3m5!1s0xd11d01e1d0065df:0xd595a14b70905a40!8m2!3d37.2648733!4d-6.9378509!16s%2Fg%2F11c23p337d?hl=es&entry=ttu&g_ep=EgoyMDI0MDgyMS4wIKXMDSoASAFQAw%3D%3D"
+                       target="_blank">
+                        <img src="/img/mapa.png" alt="Mapa" class="img-fluid"/>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
-
 
     <!-- Sección de Descripción -->
     <section id="description" class="container my-5">
@@ -92,31 +96,4 @@
         <p>Nos dedicamos a proporcionarte una experiencia de compra sencilla y conveniente. Con Fruggy, puedes estar
             seguro de que siempre obtendrás el mejor valor por tu dinero.</p>
     </section>
-
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var map = L.map('map').setView([37.2614, -6.9457], 13); // Adjust zoom level
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([37.2614, -6.9457]).addTo(map)
-                .bindPopup('Ubicación de la empresa.')
-                .openPopup();
-
-            // Ajusta el tamaño del mapa después de que se haya cargado
-            setTimeout(function () {
-                map.invalidateSize();
-            }, 500); // Retraso para asegurar que el contenedor está completamente renderizado
-
-            // Ajustar el tamaño del mapa en caso de redimensionamiento de ventana
-            window.addEventListener('resize', function () {
-                map.invalidateSize();
-            });
-        });
-    </script>
 </div>

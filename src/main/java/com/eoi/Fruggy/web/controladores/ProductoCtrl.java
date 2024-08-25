@@ -37,9 +37,10 @@ public class ProductoCtrl {
 
     @GetMapping
     public String mostrarCatalogo(@RequestParam(defaultValue = "0") int page,
-                                  @RequestParam(defaultValue = "10") int size,
+                                  @RequestParam(defaultValue = "9") int size,
                                   @RequestParam(defaultValue = "default") String sort,
                                   @RequestParam(required = false) String search,
+                                  @RequestParam(required = false) String marca,
                                   @RequestParam(required = false) Long categoriaId,
                                   Model model, @AuthenticationPrincipal Usuario usuario) {
 
@@ -47,6 +48,8 @@ public class ProductoCtrl {
 
         if (search != null && !search.isEmpty()) {
             paginaProductos = productosSrvc.buscarProductosPorNombre(search, page, size);
+        } else if (marca != null && !marca.isEmpty()) {
+            paginaProductos = productosSrvc.buscarProductosPorMarca(marca, page, size);
         } else if (categoriaId != null) {
             paginaProductos = productosSrvc.buscarProductosPorCategoria(categoriaId, page, size);
         } else {
@@ -80,6 +83,7 @@ public class ProductoCtrl {
         model.addAttribute("categorias", categoriaSrvc.buscarEntidades());
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
+        model.addAttribute("marca", marca);
         model.addAttribute("categoriaId", categoriaId);
 
         return "productos/productos";

@@ -101,11 +101,17 @@ public class SrvcProducto extends AbstractSrvc<Producto, Long, RepoProducto> {
 
         return productos;
     }
+
     public Page<Producto> buscarProductosPorCategoria(Long categoriaId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return repoProducto.findByCategoriaId(categoriaId, pageable);
     }
 
+    public Page<Producto> buscarProductosPorMarca(String marca, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Producto> productos = repoProducto.findByMarcaContainingIgnoreCase(marca, pageable);
+        return productos.isEmpty() ? Page.empty(pageable) : productos;
+    }
 
     public List<Producto> buscarProductosSimilares(Long subcategoriaId, Long productoId) {
         // Lógica para buscar productos similares en la misma subcategoría, excluyendo el producto actual
