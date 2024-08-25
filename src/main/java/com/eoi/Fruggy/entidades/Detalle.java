@@ -14,7 +14,8 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "detalles")
+@Table(name = "detalles",
+        uniqueConstraints = @UniqueConstraint(columnNames = "nombreUsuario")) // Asegura la unicidad del nombreUsuario
 
 public class Detalle implements Serializable {
 

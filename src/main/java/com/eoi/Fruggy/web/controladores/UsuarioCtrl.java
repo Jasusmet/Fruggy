@@ -56,58 +56,66 @@ public class UsuarioCtrl {
 
     @PostMapping("/registro/guardar")
     public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario,
-                          BindingResult bindingResult, Model model) throws Exception {
+                          BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             return "usuarios/registroUsuario";
         }
 
-        // Verificar existencia del email
-        if (usuarioSrvc.getRepo().findByEmail(usuario.getEmail()).isPresent()) {
-            model.addAttribute("error", "El correo electrónico ya está en uso.");
-            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-            return "usuarios/registroUsuario";
-        }
-
-        // Validaciones y guardado del usuario
-        Detalle detalle = usuario.getDetalle();
-        if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
-            Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
-            if (generoOptional.isPresent()) {
-                detalle.setGenero(generoOptional.get());
-            } else {
-                model.addAttribute("error", "Género no encontrado");
+        try {
+            // Verificar existencia del email
+            if (usuarioSrvc.getRepo().findByEmail(usuario.getEmail()).isPresent()) {
+                model.addAttribute("error", "El correo electrónico ya está en uso.");
                 model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
                 model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
                 return "usuarios/registroUsuario";
             }
-        } else {
-            model.addAttribute("error", "Género no seleccionado");
+
+            // Validaciones y guardado del usuario
+            Detalle detalle = usuario.getDetalle();
+            if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
+                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
+                if (generoOptional.isPresent()) {
+                    detalle.setGenero(generoOptional.get());
+                } else {
+                    model.addAttribute("error", "Género no encontrado");
+                    model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                    model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+                    return "usuarios/registroUsuario";
+                }
+            } else {
+                model.addAttribute("error", "Género no seleccionado");
+                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+                return "usuarios/registroUsuario";
+            }
+
+            detalle = detalleSrvc.guardar(detalle);
+
+            Set<Rol> roles = new HashSet<>();
+            Optional<Rol> rolUser = rolSrvc.buscarRolPorNombre("ROLE_USER");
+            if (rolUser.isPresent()) {
+                roles.add(rolUser.get());
+                usuario.setRoles(roles);
+            } else {
+                model.addAttribute("error", "Rol de usuario no encontrado");
+                return "usuarios/registroUsuario";
+            }
+
+            usuario.setActive(true);
+            usuario.setDetalle(detalle);
+            usuarioSrvc.guardar(usuario);
+        } catch (Exception e) {
+            model.addAttribute("error", "El nombre de usuario ya está en uso. Intenta con otro.");
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             return "usuarios/registroUsuario";
         }
 
-        detalle = detalleSrvc.guardar(detalle);
-
-        Set<Rol> roles = new HashSet<>();
-        Optional<Rol> rolUser = rolSrvc.buscarRolPorNombre("ROLE_USER");
-        if (rolUser.isPresent()) {
-            roles.add(rolUser.get());
-            usuario.setRoles(roles);
-        } else {
-            model.addAttribute("error", "Rol de usuario no encontrado");
-            return "usuarios/registroUsuario";
-        }
-
-        usuario.setActive(true);
-        usuario.setDetalle(detalle);
-        usuarioSrvc.guardar(usuario);
-
         return "redirect:/login";
     }
+
 
     @GetMapping("usuario/administracion")
     public String administracionCuenta(Model model, @AuthenticationPrincipal UserDetails userDetails) {
@@ -141,30 +149,36 @@ public class UsuarioCtrl {
     @PostMapping("usuario/administracion/editar/{id}")
     public String editarUsuario(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario,
                                 BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails,
-                                Model model) throws Exception {
+                                Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "usuarios/editarUsuario";
         }
 
-        Detalle detalle = usuario.getDetalle();
-        if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
-            Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
-            if (generoOptional.isPresent()) {
-                detalle.setGenero(generoOptional.get());
+        try {
+            Detalle detalle = usuario.getDetalle();
+            if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
+                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
+                if (generoOptional.isPresent()) {
+                    detalle.setGenero(generoOptional.get());
+                } else {
+                    model.addAttribute("error", "Género no encontrado");
+                    model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                    return "usuarios/editarUsuario";
+                }
             } else {
-                model.addAttribute("error", "Género no encontrado");
+                model.addAttribute("error", "Género no seleccionado");
                 model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
                 return "usuarios/editarUsuario";
             }
-        } else {
-            model.addAttribute("error", "Género no seleccionado");
+
+            usuario.setId(id);
+            usuarioSrvc.guardar(usuario);
+        } catch (Exception e) {
+            model.addAttribute("error", "El nombre de usuario ya está en uso. Intenta con otro.");
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "usuarios/editarUsuario";
         }
-
-        usuario.setId(id);
-        usuarioSrvc.guardar(usuario);
 
         return "redirect:/usuario/administracion";
     }
