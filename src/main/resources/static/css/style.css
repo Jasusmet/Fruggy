@@ -71,6 +71,7 @@ body {
     color: #00FF00;
     font-weight: 700;
 }
+
 /*---------------------
   Product Details
 -----------------------*/
@@ -314,6 +315,34 @@ body {
     object-fit: cover; /* Asegura que la imagen cubra el contenedor */
     border-radius: 8px; /* Bordes redondeados para las imágenes */
 }
+
+/* Estilo para el contenedor del checkbox */
+.checkbox-container {
+    align-items: center; /* Alinea verticalmente el checkbox y la etiqueta */
+    margin-bottom: 15px; /* Espacio debajo del contenedor */
+    position: relative; /* Posicionamiento relativo para controlar el comportamiento del scroll */
+}
+
+/* Estilo para el checkbox */
+.checkbox-container input[type="checkbox"] {
+    margin-left: 10px; /* Espacio a la izquierda del checkbox */
+    /* Puedes ajustar la posición del checkbox si es necesario */
+}
+
+/* Estilo para la etiqueta */
+.checkbox-container label {
+    margin-right: 10px; /* Espacio a la derecha de la etiqueta */
+}
+
+/* Opcional: Estilo para mantener el checkbox en la parte superior si es necesario */
+.sticky-checkbox-container {
+    position: sticky;
+    top: 0; /* Mantén el contenedor en la parte superior cuando se haga scroll */
+    background-color: #f8f9fa; /* Fondo opcional para que se destaque sobre el contenido al hacer scroll */
+    padding: 10px; /* Espaciado interno para separar el checkbox de los bordes */
+    z-index: 10; /* Asegúrate de que el contenedor esté por encima de otros elementos */
+}
+
 /*---------------------
   Responsive Adjustments
 -----------------------*/
@@ -325,5 +354,10 @@ body {
     .product-description {
         max-height: 80px; /* Ajusta la altura máxima en móviles */
         -webkit-line-clamp: 4; /* Aumenta el número de líneas visibles */
+    }
+
+    .checkbox-container {
+        flex-direction: row; /* Mantén el checkbox y su etiqueta en una fila */
+        justify-content: flex-start; /* Alinea los elementos al inicio */
     }
 }

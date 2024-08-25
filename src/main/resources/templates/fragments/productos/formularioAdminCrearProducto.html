@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${producto.id == null ? 'Agregar Producto' : 'Editar Producto'}"></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">aa
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    aa
 </head>
 <body>
 <div class="container mt-4" th:fragment="formularioAdminCrearProducto">
@@ -28,9 +29,9 @@
             <textarea class="form-control" id="descripcion" th:field="*{descripcion}" required></textarea>
         </div>
 
-        <div class="mb-3">
+        <div class="checkbox-container">
             <label for="activo" class="form-check-label">Activo</label>
-            <input type="checkbox" class="form-check-input" id="activo" th:field="*{activo}">
+            <input type="checkbox" class="form-check-input" id="activo" name="activo" value="true" checked="checked">
         </div>
 
         <div class="mb-3">
@@ -47,7 +48,8 @@
             <label for="categoria" class="form-label">Categoría</label>
             <select class="form-control" id="categoria" name="categoria.id" required>
                 <option value="">Selecciona una categoría</option>
-                <option th:each="categoria : ${categorias}" th:value="${categoria.id}" th:text="${categoria.getTipo('${idioma}')}"></option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
+                        th:text="${categoria.getTipo('${idioma}')}"></option>
             </select>
         </div>
 
@@ -55,7 +57,8 @@
             <label for="subcategoria" class="form-label">Subcategoría</label>
             <select class="form-control" id="subcategoria" name="subcategoria.id" required>
                 <option value="">Selecciona una subcategoría</option>
-                <option th:each="subcategoria : ${subcategorias}" th:value="${subcategoria.id}" th:text="${subcategoria.tipo}"></option>
+                <option th:each="subcategoria : ${subcategorias}" th:value="${subcategoria.id}"
+                        th:text="${subcategoria.tipo}"></option>
             </select>
         </div>
 

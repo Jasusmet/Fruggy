@@ -93,12 +93,10 @@
     </section>
 </div>
 
-<!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
-<!-- Bootstrap JS -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 <script>
-    function initMap() {
-        var location = {lat: 37.2614, lng: -6.9457}; // Coordenadas para Huelva, España
+    document.addEventListener("DOMContentLoaded", function () {
+        var location = {lat: 37.2614, lng: -6.9457};
         var map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
             center: location
@@ -107,5 +105,5 @@
             position: location,
             map: map
         });
-    }
+    });
 </script>

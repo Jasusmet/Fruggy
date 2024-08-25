@@ -20,7 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true,
         securedEnabled = true,
-        jsr250Enabled = true) // Activa la seguridad basada en anotaciones a nivel de método, permitiendo el uso de anotaciones como @PreAuthorize, @Secured, y @RolesAllowed.
+        jsr250Enabled = true)
+// Activa la seguridad basada en anotaciones a nivel de método, permitiendo el uso de anotaciones como @PreAuthorize, @Secured, y @RolesAllowed.
 @Configuration
 public class SecurityConfig {
 
@@ -51,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/lib/**").permitAll()
                         .requestMatchers("/scss/**").permitAll()
                         .requestMatchers("/imagenes/**").permitAll()
+                        .requestMatchers("/language/**").permitAll()
                         .requestMatchers("/inicio").permitAll() // Permitir acceso a /inicio
                         .requestMatchers("/registro", "/registro/guardar", "/usuario/administracion/**").permitAll()
                         .requestMatchers("/productos/**").permitAll() // Permitir acceso a /productos
