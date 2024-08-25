@@ -2,8 +2,11 @@ package com.eoi.Fruggy.web.controladores;
 
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,35 +29,28 @@ public class LoginCtrl {
     @GetMapping("/login")
     public String showLoginForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
-            model.addAttribute("error", true);
+            model.addAttribute("error", "Invalid username or password.");
         }
         return "/login/login";
-    }
-
-    @PostMapping("/login")
-    public String processLogin(@RequestParam String email, @RequestParam String password, Model model) {
-        Optional<Usuario> optionalUsuario = Optional.ofNullable(repoUsuario.findByEmail(email));
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            System.out.println("Usuario encontrado: " + usuario.getEmail());
-            System.out.println("Contraseña del usuario: " + usuario.getPassword());
-            if (bCryptPasswordEncoder.matches(password, usuario.getPassword())) {
-                return "redirect:/"; // Redirige a la página principal
-            } else {
-                model.addAttribute("error", true); // Contraseña incorrecta
-                System.out.println("Contraseña incorrecta para el usuario: " + usuario.getEmail());
-            }
-        } else {
-            model.addAttribute("error", true); // Usuario no encontrado
-            System.out.println("Usuario no encontrado: " + email);
-        }
-        return "/login/login"; // Vuelve a la vista de login sin redirigir
     }
 
     @GetMapping("/login/recuperar-contraseña")
     public String showRecuperarContraseñaForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
-            model.addAttribute("error", true);
+            model.addAttribute("error", "An error occurred during password recovery.");
+        }
+        return "recuperar-contraseña";
+    }
+
+    @PostMapping("/login/recuperar-contraseña")
+    public String recuperarContraseña(@RequestParam String email, Model model) {
+        Optional<Optional<Usuario>> optionalUsuario = Optional.ofNullable(repoUsuario.findByEmail(email));
+        if (optionalUsuario.isPresent()) {
+            Optional<Usuario> usuario = optionalUsuario.get();
+            // Aquí debes implementar el proceso de recuperación de contraseña, por ejemplo, enviar un correo electrónico con un enlace para restablecer la contraseña.
+            model.addAttribute("message", "A password reset link has been sent to your email.");
+        } else {
+            model.addAttribute("error", "No user found with the given email address.");
         }
         return "recuperar-contraseña";
     }

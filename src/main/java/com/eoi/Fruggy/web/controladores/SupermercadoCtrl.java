@@ -11,6 +11,7 @@ import com.eoi.Fruggy.servicios.SrvcValSupermercado;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
@@ -37,7 +39,6 @@ public class SupermercadoCtrl {
         this.imagenSrvc = imagenSrvc;
     }
 
-    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
@@ -45,11 +46,13 @@ public class SupermercadoCtrl {
                                       @RequestParam(defaultValue = "asc") String sortDirection,
                                       Model model) {
         Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size, sortField, sortDirection);
-        // Crear una lista de números de página = da fallos sin esto
+
+        // Crear una lista de números de página
         List<Integer> pageNumbers = new ArrayList<>();
         for (int i = 0; i < paginaSupermercados.getTotalPages(); i++) {
             pageNumbers.add(i);
         }
+
         // Calcular la nota media para cada supermercado
         for (Supermercado supermercado : paginaSupermercados) {
             Double notaMedia = valSupermercadoSrvc.calcularNotaMedia(supermercado.getId());
@@ -62,10 +65,10 @@ public class SupermercadoCtrl {
         model.addAttribute("currentSortField", sortField);
         model.addAttribute("currentSortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
+
         return "/supermercados/lista-supermercados";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detalles/{id}")
     public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
@@ -83,13 +86,11 @@ public class SupermercadoCtrl {
         return "supermercados/detalles-supermercado";
     }
 
-    //FUNCIONA PERO HAY QUE HACER UN LOGIN PARA VER SI ES CORRECTO.
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/detalles/{supermercadoId}/guardar")
     public String guardarValoracion(@PathVariable Long supermercadoId,
                                     @Valid @ModelAttribute("valoracion") ValoracionSupermercado valoracion,
                                     BindingResult result,
-                                    Principal principal,
+                                    @AuthenticationPrincipal Usuario usuario,
                                     Model model) throws Throwable {
         if (result.hasErrors()) {
             Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
@@ -101,10 +102,19 @@ public class SupermercadoCtrl {
             return "supermercados/detalles-supermercado";
         }
 
-        String username = principal.getName();
-        Usuario usuario = usuarioSrvc.getRepo().findByEmail(username);
+        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuario);
+        if (usuarioOptional.isEmpty()) {
+            model.addAttribute("error", "Usuario no autenticado.");
+            Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
+                    .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + supermercadoId));
+            List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(supermercadoId);
+            model.addAttribute("supermercado", supermercado);
+            model.addAttribute("valoraciones", valoraciones);
+            return "supermercados/detalles-supermercado";
+        }
 
-        valoracion.setUsuario(usuario);
+        valoracion.setUsuario(usuarioOptional.get());
+
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + supermercadoId));
         valoracion.setSupermercado(supermercado);

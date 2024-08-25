@@ -28,8 +28,26 @@ body {
     line-height: 1.6;
 }
 
+#location .col-md-6 {
+    padding: 0; /* Ajusta según sea necesario */
+    position: relative; /* Asegura que el mapa se ajuste correctamente dentro del contenedor */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde */
+}
+
+/* Estilos para el mapa */
 #map {
-    width: 100%;
+    width: 100%; /* Ajusta el ancho del mapa al contenedor */
+    height: 400px; /* Ajusta la altura del mapa */
+    border: 1px solid #ddd; /* Opcional: Añade un borde alrededor del mapa */
+    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho y altura total */
+}
+
+.map-container {
+    width: 100%; /* Asegura que el mapa ocupe el ancho completo del contenedor */
+    height: 400px; /* Ajusta la altura según sea necesario */
+    border: 1px solid #ddd; /* Opcional: borde para ayudar a visualizar el contenedor */
+    border-radius: 8px; /* Opcional: bordes redondeados */
+    overflow: hidden; /* Asegura que no haya desbordamiento */
 }
 
 /* Estilos para la sección de descripción */
@@ -47,7 +65,6 @@ body {
 }
 
 /* Estilos para el carrusel de productos recientes */
-/* Estilo del carrusel para hacerlo más pequeño */
 #recentProductsCarousel .carousel-item {
     padding: 15px;
 }
@@ -81,16 +98,15 @@ body {
 }
 
 .carousel-control-prev-icon {
-    width: 40px;
-    height: 40px;
-    background-color: steelblue;
     background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="black" viewBox="0 0 24 24"><path d="M14.12 6.71L9.29 11.54l-4.83-4.83a1 1 0 0 0-1.42 1.42l5.5 5.5a1 1 0 0 0 1.42 0l5.5-5.5a1 1 0 0 0-1.42-1.42l-4.83 4.83 4.83-4.83a1 1 0 0 0-1.42-1.42z"/></svg>');
 }
 
 .carousel-control-next-icon {
-    width: 40px;
-    height: 40px;
-    background-color: steelblue;
     background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="black" viewBox="0 0 24 24"><path d="M9.88 17.29l4.83-4.83 4.83 4.83a1 1 0 0 0 1.42-1.42l-5.5-5.5a1 1 0 0 0-1.42 0l-5.5 5.5a1 1 0 0 0 1.42 1.42z"/></svg>');
 }
 
+@media (max-width: 767px) {
+    .map-container {
+        height: 300px; /* Ajusta la altura para dispositivos móviles */
+    }
+}

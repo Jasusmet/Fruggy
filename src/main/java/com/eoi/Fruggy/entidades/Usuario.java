@@ -25,7 +25,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "usuarios")
+@Table(name = "usuarios", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 
 public class Usuario implements Serializable, UserDetails {
 

@@ -4,6 +4,8 @@ import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,16 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-
-@Controller()
+@Controller
 @RequestMapping("/admin/usuarios")
 public class ADMINUsuarioCtrl {
 
@@ -113,11 +112,21 @@ public class ADMINUsuarioCtrl {
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "admin/crear-usuario";
         }
+
+        // Verificar si el email ya está en uso
+        Optional<Usuario> existingUser = usuarioSrvc.getRepo().findByEmail(usuario.getEmail());
+        if (existingUser.isPresent()) {
+            model.addAttribute("error", "El correo electrónico ya está en uso.");
+            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            return "admin/crear-usuario";
+        }
+
         // Asignar el género del detalle
         Detalle detalle = usuario.getDetalle();
 
         // Verificar que detalle y genero no sean null
-        if (detalle.getGenero() != null && detalle.getGenero().getId() != null) {
+        if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
             Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
             if (generoOptional.isPresent()) {
                 detalle.setGenero(generoOptional.get());
@@ -133,6 +142,7 @@ public class ADMINUsuarioCtrl {
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "admin/crear-usuario";
         }
+
         // Crear y asignar el detalle al usuario
         if (detalle != null) {
             detalle = detalleSrvc.guardar(detalle); // Guardar el detalle primero
@@ -142,6 +152,7 @@ public class ADMINUsuarioCtrl {
         }
 
         // Guardar el usuario
+        usuario.setDetalle(detalle);
         usuarioSrvc.guardar(usuario);
         return "redirect:/admin/usuarios";
     }
@@ -154,7 +165,6 @@ public class ADMINUsuarioCtrl {
             model.addAttribute("usuario", usuarioOptional.get());
             model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-//            model.addAttribute("imagenes", imagenSrvc.buscarEntidadesSet());
             return "admin/modificar-usuario";
         } else {
             model.addAttribute("error", "Usuario no encontrado");
@@ -169,6 +179,15 @@ public class ADMINUsuarioCtrl {
             model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "admin/modificar-usuario"; // Regresa a la vista de edición
+        }
+
+        // Verificar si el email ya está en uso (excepto para el usuario actual)
+        Optional<Usuario> existingUser = usuarioSrvc.getRepo().findByEmail(usuario.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(id)) {
+            model.addAttribute("error", "El correo electrónico ya está en uso.");
+            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            return "admin/modificar-usuario"; // Regresa a la vista de edición si hay un error
         }
 
         Detalle detalle = usuario.getDetalle();
@@ -194,12 +213,12 @@ public class ADMINUsuarioCtrl {
 
         // Establecer el ID del usuario para la edición
         usuario.setId(id);
+        usuario.setDetalle(detalle);
         usuarioSrvc.guardar(usuario);
         return "redirect:/admin/usuarios"; // Redirigir a la lista de usuarios después de guardar
     }
 
     @PreAuthorize("hasRole('Administrator')")
-// Mostrar cestas de un usuario
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -218,4 +237,3 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios"; // Redirige de vuelta a la lista de usuarios
     }
 }
-

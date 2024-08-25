@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
@@ -36,7 +35,6 @@ public class ProductoCtrl {
         this.precioSrvc = precioSrvc;
     }
 
-    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String mostrarCatalogo(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
@@ -123,10 +121,10 @@ public class ProductoCtrl {
         return "/productos/productos";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detalles/{id}")
     public String verDetallesProducto(@PathVariable("id") Long productoId, Model model) throws Throwable {
-        Producto producto = productosSrvc.encuentraPorId(productoId).orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + productoId));
+        Producto producto = productosSrvc.encuentraPorId(productoId)
+                .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + productoId));
         List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(productoId);
 
         // Calcular la nota media
@@ -145,13 +143,11 @@ public class ProductoCtrl {
         return "productos/detalles-producto";
     }
 
-    // hay que añadir el usuario loggeado para que un usuario solo pueda hacer una reseña y que nos muestre quien ha dejado el comentario.
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/valoraciones/{productoId}/guardar")
     public String guardarValoracion(@PathVariable Long productoId,
                                     @Valid @ModelAttribute("valoracion") ValoracionProducto valoracion,
                                     BindingResult result,
-                                    Principal principal,
+                                    @AuthenticationPrincipal Usuario usuario,
                                     Model model) {
         if (result.hasErrors()) {
             Producto producto = productosSrvc.encuentraPorId(productoId)
@@ -162,9 +158,19 @@ public class ProductoCtrl {
             return "productos/detalles-producto";
         }
 
-        String username = principal.getName();
-        Usuario usuario = usuarioSrvc.getRepo().findByEmail(username);
-        valoracion.setUsuario(usuario);
+        // Obtén el usuario autenticado utilizando Optional
+        Optional<Usuario> usuarioOptional = Optional.ofNullable(usuario);
+        if (usuarioOptional.isEmpty()) {
+            model.addAttribute("error", "Usuario no autenticado.");
+            Producto producto = productosSrvc.encuentraPorId(productoId)
+                    .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + productoId));
+            List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(productoId);
+            model.addAttribute("valoraciones", valoraciones);
+            model.addAttribute("producto", producto);
+            return "productos/detalles-producto";
+        }
+
+        valoracion.setUsuario(usuarioOptional.get());
 
         Producto producto = productosSrvc.encuentraPorId(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + productoId));
