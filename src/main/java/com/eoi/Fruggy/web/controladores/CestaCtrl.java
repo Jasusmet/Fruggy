@@ -176,7 +176,6 @@ public class CestaCtrl {
     }
 
     @PostMapping("/agregarProducto")
-//    @PreAuthorize("hasRole('ROLE_USER')")
     public String agregarProductoACesta(@RequestParam Long productoId,
                                         @RequestParam(required = false) Long cestaId,
                                         @RequestParam(required = false) String nuevaCesta,
@@ -188,7 +187,10 @@ public class CestaCtrl {
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
         if (cestaId != null) {
+            Cesta cesta = cestaSrvc.encuentraPorId(cestaId)
+                    .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
             cestaSrvc.agregarProductoACesta(cestaId, productoId, cantidad, null);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Producto añadido a la cesta '" + cesta.getNombre() + "'.");
         } else if (nuevaCesta != null && !nuevaCesta.isEmpty()) {
             Cesta cesta = new Cesta();
             cesta.setNombre(nuevaCesta);
@@ -196,12 +198,12 @@ public class CestaCtrl {
             cesta.setFecha(LocalDateTime.now());
             cesta.addProducto(producto, cantidad, null);
             cestaSrvc.guardar(cesta);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Producto añadido a la nueva cesta '" + cesta.getNombre() + "'.");
         } else {
-            redirectAttributes.addFlashAttribute("error", "Debes seleccionar una cesta existente o crear una nueva.");
+            redirectAttributes.addFlashAttribute("mensajeError", "Debes seleccionar una cesta existente o crear una nueva.");
             return "redirect:/productos";
         }
 
-        redirectAttributes.addFlashAttribute("success", "Producto agregado a la cesta con éxito.");
         return "redirect:/productos";
     }
 

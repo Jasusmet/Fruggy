@@ -1,4 +1,11 @@
 <section class="product spad" th:fragment="productos">
+    <!-- Sección para mostrar mensajes -->
+    <div th:if="${mensajeExito}" class="alert alert-success" role="alert">
+        <span th:text="${mensajeExito}"></span>
+    </div>
+    <div th:if="${mensajeError}" class="alert alert-danger" role="alert">
+        <span th:text="${mensajeError}"></span>
+    </div>
     <div class="container">
         <div class="row">
             <div class="filter__item">
@@ -124,6 +131,7 @@
                                         <div class="btn-container">
                                             <!-- Botón para añadir a la cesta -->
                                             <button type="button" class="btn btn-icon" data-bs-toggle="modal"
+                                                    onclick="checkAuthentication('${userAuthenticated}')"
                                                     th:data-bs-target="'#selectBasketModal' + ${producto.id}">
                                                 <i class="fa fa-cart-plus"></i>
                                             </button>
@@ -186,6 +194,27 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal para usuario no autenticado -->
+                        <div class="modal fade" id="authRequiredModal" tabindex="-1" aria-labelledby="authRequiredLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="authRequiredLabel">Inicia sesión para continuar</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Cerrar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Para añadir productos a tu cesta, debes estar registrado o iniciar
+                                            sesión.</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="/login" class="btn btn-primary">Iniciar sesión</a>
+                                        <a href="/registro" class="btn btn-secondary">Registrarse</a>
                                     </div>
                                 </div>
                             </div>
