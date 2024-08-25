@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public interface RepoProducto extends JpaRepository<Producto, Long> {
     Page<Producto> findByNombreProductoContainingIgnoreCase(String nombreProducto, Pageable pageable);
-
     @Query("SELECT p FROM Producto p WHERE p.subcategoria.categoria.id = :categoriaId")
     Page<Producto> findByCategoriaId(Long categoriaId, Pageable pageable);
     List<Producto> findBySubcategoriaIdAndIdNot(Long subcategoriaId, Long productoId);

@@ -2,6 +2,7 @@ package com.eoi.Fruggy.servicios;
 
 import com.eoi.Fruggy.entidades.Cesta;
 import com.eoi.Fruggy.entidades.Producto;
+import com.eoi.Fruggy.entidades.ProductoEnCesta;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoCesta;
 import com.eoi.Fruggy.repositorios.RepoProducto;

@@ -1,4 +1,8 @@
 <div class="container" th:fragment="inicio">
+    <!-- Catchphrase -->
+    <section id="catchphrase" class="container my-5 text-center catchphrase-section">
+        <h1>Explora lo Mejor en Productos y Ofertas</h1>
+    </section>
     <section id="recentProducts" class="container my-5">
         <h2>Productos Más Recientes</h2>
         <div id="recentProductsCarousel" class="carousel slide" data-ride="carousel">
@@ -81,18 +85,20 @@
     <!-- Sección de Descripción -->
     <section id="description" class="container my-5">
         <h2>Sobre Nosotros</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
-            et dolore
-            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea
-            commodo consequat.</p>
+        <p>Bienvenido a Fruggy, tu comparador de precios confiable. En Fruggy, nuestro objetivo es ayudarte a encontrar
+            las mejores ofertas en productos que te interesan. Comparamos precios de diversos supermercados y tiendas
+            para que puedas hacer tus compras de manera más económica y eficiente. Nuestra plataforma te permite acceder
+            a información detallada sobre precios, promociones y disponibilidad de productos en tiempo real.</p>
+        <p>Nos dedicamos a proporcionarte una experiencia de compra sencilla y conveniente. Con Fruggy, puedes estar
+            seguro de que siempre obtendrás el mejor valor por tu dinero.</p>
     </section>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var map = L.map('map').setView([37.2614, -6.9457], 15); // Coordenadas para Huelva, España
+            var map = L.map('map').setView([37.2614, -6.9457], 13); // Adjust zoom level
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -103,8 +109,14 @@
                 .openPopup();
 
             // Ajusta el tamaño del mapa después de que se haya cargado
-            map.invalidateSize();
-        });
+            setTimeout(function () {
+                map.invalidateSize();
+            }, 500); // Retraso para asegurar que el contenedor está completamente renderizado
 
+            // Ajustar el tamaño del mapa en caso de redimensionamiento de ventana
+            window.addEventListener('resize', function () {
+                map.invalidateSize();
+            });
+        });
     </script>
 </div>

@@ -30,5 +30,7 @@ public class ProductoEnCesta {
     @Column(length = 255)
     private String comentario;
 
+    private Integer orden;
+
 }
 

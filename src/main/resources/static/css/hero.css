@@ -6,6 +6,7 @@
 .hero {
     padding-bottom: 50px;
     background-color: #4CAF50; /* Cambia este color a uno que se adapte mejor al estilo de tu página */
+    margin-bottom: 30px; /* Espacio externo inferior */
 }
 
 /* Categorías */

@@ -223,6 +223,7 @@ body {
 }
 
 .row {
+    margin-top: 30px; /* Espacio superior para la fila */
     display: flex;
     flex-wrap: wrap; /* Permite que las columnas se ajusten en pantallas pequeñas */
     z-index: 1;
@@ -291,6 +292,28 @@ body {
 }
 
 /*---------------------
+  Table details
+-----------------------*/
+/* Ajuste de las celdas para que el texto largo se trunque */
+.table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Ajusta este valor según tus necesidades */
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+/* Específico para la columna de descripción */
+.table td.descripcion {
+    max-width: 250px; /* Ajusta este valor según tus necesidades */
+}
+
+/* Alineación de todo el contenido de la tabla a la izquierda */
+.table th, .table td {
+    text-align: left;
+}
+
+/*---------------------
   Supermarket details
 -----------------------*/
 
@@ -341,6 +364,33 @@ body {
     background-color: #f8f9fa; /* Fondo opcional para que se destaque sobre el contenido al hacer scroll */
     padding: 10px; /* Espaciado interno para separar el checkbox de los bordes */
     z-index: 10; /* Asegúrate de que el contenedor esté por encima de otros elementos */
+}
+
+
+.filter__options {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre el label y los botones */
+}
+
+.filter__label {
+    font-weight: bold;
+    margin-right: 15px; /* Espacio entre el label y el primer botón */
+}
+
+.filter__buttons {
+    display: flex;
+    gap: 15px; /* Espacio entre los botones */
+}
+
+.filter__btn {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.filter__btn:hover {
+    text-decoration: underline;
 }
 
 /*---------------------

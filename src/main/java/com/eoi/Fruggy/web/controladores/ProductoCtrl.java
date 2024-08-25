@@ -45,14 +45,11 @@ public class ProductoCtrl {
 
         Page<Producto> paginaProductos;
 
-        // Si hay una búsqueda por nombre, utilizar el método de búsqueda
         if (search != null && !search.isEmpty()) {
             paginaProductos = productosSrvc.buscarProductosPorNombre(search, page, size);
         } else if (categoriaId != null) {
-            // Si hay un filtro por categoría
             paginaProductos = productosSrvc.buscarProductosPorCategoria(categoriaId, page, size);
         } else {
-            // Filtros de ordenación
             switch (sort) {
                 case "precioAsc":
                     paginaProductos = productosSrvc.obtenerProductosPorPrecioAscendente(page, size);
@@ -70,32 +67,22 @@ public class ProductoCtrl {
                     paginaProductos = productosSrvc.obtenerProductosPaginados(page, size);
             }
         }
-        // Calcular la nota media para cada producto
+
         if (!paginaProductos.isEmpty()) {
             paginaProductos.forEach(producto -> {
                 Double notaMedia = valProductosSrvc.calcularNotaMedia(producto.getId());
-                producto.setNotaMedia(notaMedia); // Asegúrate de que hay un setter para notaMedia
+                producto.setNotaMedia(notaMedia);
             });
         }
 
-        if (paginaProductos.isEmpty()) {
-            model.addAttribute("mensaje", "No existe este producto.");
-        } else {
-            model.addAttribute("mensaje", null);
-        }
-
-        List<Categoria> categorias = categoriaSrvc.buscarEntidades();
-        List<Cesta> cestas = cestaSrvc.buscarEntidades();
-
         model.addAttribute("pagina", paginaProductos);
-        model.addAttribute("cestas", cestas);
-        model.addAttribute("categorias", categorias);
+        model.addAttribute("cestas", cestaSrvc.buscarEntidades());
+        model.addAttribute("categorias", categoriaSrvc.buscarEntidades());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", paginaProductos.getTotalPages());
         model.addAttribute("search", search);
         model.addAttribute("categoriaId", categoriaId);
 
-        return "/productos/productos";
+        return "productos/productos";
     }
 
     @GetMapping("/categoria/{id}")

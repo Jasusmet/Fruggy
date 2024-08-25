@@ -30,44 +30,45 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
 
     @Transactional
     public void agregarProductoACesta(Long cestaId, Long productoId, Integer cantidad, String comentario) {
-        // Buscar la cesta por ID
         Cesta cesta = getRepo().findById(cestaId)
                 .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-        // Buscar el producto por ID
         Producto producto = repoProducto.findById(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
-        // Buscar si el producto ya está en la cesta (dentro de ProductoEnCesta)
         Optional<ProductoEnCesta> productoEnCestaOpt = cesta.getProductosEnCesta().stream()
                 .filter(pc -> pc.getProducto().getId().equals(productoId))
                 .findFirst();
 
         if (productoEnCestaOpt.isPresent()) {
             ProductoEnCesta productoEnCesta = productoEnCestaOpt.get();
-            // Si el producto ya existe en la cesta, actualizar la cantidad
             int nuevaCantidad = productoEnCesta.getCantidad() + cantidad;
             if (nuevaCantidad > 0) {
                 productoEnCesta.setCantidad(nuevaCantidad);
             } else {
-                // Si la cantidad se reduce a cero o menos, eliminar el producto de la cesta
                 cesta.getProductosEnCesta().remove(productoEnCesta);
                 repoProductoEnCesta.delete(productoEnCesta);
             }
         } else {
-            // Si el producto no está en la cesta, agregarlo
             if (cantidad > 0) {
                 ProductoEnCesta productoEnCesta = new ProductoEnCesta();
                 productoEnCesta.setCesta(cesta);
                 productoEnCesta.setProducto(producto);
                 productoEnCesta.setCantidad(cantidad);
-                productoEnCesta.setComentario(comentario);
-
+                productoEnCesta.setOrden(getNextOrden(cesta)); // Asignar el siguiente valor de orden
                 cesta.getProductosEnCesta().add(productoEnCesta);
             } else {
                 throw new RuntimeException("La cantidad debe ser mayor que cero para agregar un producto a la cesta.");
             }
         }
+        getRepo().save(cesta);
+    }
+
+    private Integer getNextOrden(Cesta cesta) {
+        return cesta.getProductosEnCesta().stream()
+                .mapToInt(ProductoEnCesta::getOrden)
+                .max()
+                .orElse(0) + 1;
     }
 
     @Transactional
@@ -104,5 +105,7 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
         }
         getRepo().save(cesta);
     }
+
+
 }
 

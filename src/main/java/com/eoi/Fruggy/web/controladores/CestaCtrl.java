@@ -259,7 +259,6 @@ public class CestaCtrl {
             if (cantidad <= 0) {
                 // Mensaje de confirmación antes de eliminar el producto
                 boolean confirmacion = true;
-
                 if (confirmacion) {
                     cestaSrvc.eliminarProductoDeCesta(cestaId, productoId);
                     redirectAttributes.addFlashAttribute("success", "Producto eliminado de la cesta con éxito.");
