@@ -38,16 +38,16 @@
                         <li><a class="dropdown-item" href="?lang=en" th:text="#{language.english}">Inglés</a></li>
                     </ul>
                 </li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()"><a href="/login" class="nav-link text-white"
+                <li class="nav-item"><a href="/login" class="nav-link text-white"
                                                                            th:text="#{login}">Iniciar sesión</a></li>
-                <li class="nav-item" sec:authorize="!isAuthenticated()"><a href="/login/sign-up"
+                <li class="nav-item"><a href="/login/sign-up"
                                                                            class="nav-link text-white"
                                                                            th:text="#{login.signUp}">Registrarse</a>
                 </li>
-                <li class="nav-item" sec:authorize="isAuthenticated()"><a th:href="@{/logout}"
+                <li class="nav-item"><a th:href="@{/logout}"
                                                                           class="nav-link text-white"
                                                                           th:text="#{logout}">Cerrar sesión</a></li>
-                <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                <li class="nav-item dropdown">
                     <a class="nav-link text-white dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false" th:text="#{admin}">
                         Administrador
