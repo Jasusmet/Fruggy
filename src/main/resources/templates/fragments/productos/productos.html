@@ -140,10 +140,9 @@
                                                class="btn btn-secondary">Ver Detalles</a>
                                         </div>
 
-                                        <div class="modal fade"
-                                             th:id="'selectBasketModal' + ${producto.id}"
-                                             tabindex="-1"
-                                             aria-labelledby="'selectBasketLabel' + ${producto.id}"
+                                        <!-- Modal para añadir a cesta -->
+                                        <div class="modal fade" th:id="'selectBasketModal' + ${producto.id}"
+                                             tabindex="-1" aria-labelledby="'selectBasketLabel' + ${producto.id}"
                                              aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -168,11 +167,8 @@
                                                                             th:text="${cesta.nombre}"></option>
                                                                 </select>
                                                             </div>
-
-                                                            <!-- Si no hay cestas, mostrar mensaje y opción para crear una nueva -->
                                                             <div th:if="${cestas.size() == 0}">
                                                                 <p>No tienes ninguna cesta. Puedes crear una nueva.</p>
-                                                                <!-- Crear nueva cesta -->
                                                                 <div class="mt-3">
                                                                     <label for="nuevaCesta">Crear nueva cesta:</label>
                                                                     <input type="text" id="nuevaCesta" name="nuevaCesta"

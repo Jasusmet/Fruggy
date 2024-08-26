@@ -1,5 +1,6 @@
 package com.eoi.Fruggy.servicios;
 
+import com.eoi.Fruggy.entidades.Cesta;
 import com.eoi.Fruggy.entidades.Producto;
 import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
@@ -31,6 +32,10 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public Optional<Usuario> findByEmail(String email) {
+        return repoUsuario.findByEmail(email);
     }
 
     public List<Usuario> buscarEntidades() {

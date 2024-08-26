@@ -13,16 +13,21 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.thymeleaf.model.IModel;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/cestas")
@@ -182,13 +187,18 @@ public class CestaCtrl {
                                         @RequestParam Integer cantidad,
                                         @AuthenticationPrincipal Usuario usuario,
                                         RedirectAttributes redirectAttributes) throws Exception {
-
         Producto producto = productoSrvc.encuentraPorId(productoId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
         if (cestaId != null) {
             Cesta cesta = cestaSrvc.encuentraPorId(cestaId)
                     .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
+
+            if (!cesta.getUsuario().equals(usuario)) {
+                redirectAttributes.addFlashAttribute("mensajeError", "No tienes permiso para agregar productos a esta cesta.");
+                return "redirect:/productos";
+            }
+
             cestaSrvc.agregarProductoACesta(cestaId, productoId, cantidad, null);
             redirectAttributes.addFlashAttribute("mensajeExito", "Producto añadido a la cesta '" + cesta.getNombre() + "'.");
         } else if (nuevaCesta != null && !nuevaCesta.isEmpty()) {
