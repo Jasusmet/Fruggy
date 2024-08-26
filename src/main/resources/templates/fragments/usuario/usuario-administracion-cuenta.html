@@ -7,19 +7,19 @@
             Datos del Usuario
         </div>
         <div class="card-body">
-            <p><strong>Email:</strong> <span th:text="${usuario.email}">Correo del usuario</span></p>
-            <p><strong>Nombre:</strong> <span th:text="${usuario.detalle.nombre}">Nombre del usuario</span></p>
-            <p><strong>Apellido:</strong> <span th:text="${usuario.detalle.apellido}">Apellido del usuario</span></p>
-            <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}">Teléfono del usuario</span></p>
-            <p><strong>Edad:</strong> <span th:text="${usuario.detalle.edad}">Edad del usuario</span></p>
-            <p><strong>Género:</strong> <span th:text="${usuario.detalle.genero.descripcion}">Género del usuario</span>
+            <p><strong>Email:</strong> <span th:text="${usuario.email}"></span></p>
+            <p><strong>Nombre:</strong> <span th:text="${usuario.detalle.nombre}"></span></p>
+            <p><strong>Apellido:</strong> <span th:text="${usuario.detalle.apellido}"></span></p>
+            <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+            <p><strong>Edad:</strong> <span th:text="${usuario.detalle.edad}"></span></p>
+            <p><strong>Género:</strong> <span th:text="${usuario.detalle.genero.descripcion}"></span>
             </p>
             <p><strong>Dirección:</strong></p>
-            <p><strong>Calle:</strong> <span th:text="${usuario.detalle.calle}">Calle del usuario</span></p>
-            <p><strong>Municipio:</strong> <span th:text="${usuario.detalle.municipio}">Municipio del usuario</span></p>
-            <p><strong>País:</strong> <span th:text="${usuario.detalle.pais}">País del usuario</span></p>
+            <p><strong>Calle:</strong> <span th:text="${usuario.detalle.calle}"></span></p>
+            <p><strong>Municipio:</strong> <span th:text="${usuario.detalle.municipio}"></span></p>
+            <p><strong>País:</strong> <span th:text="${usuario.detalle.pais}"></span></p>
             <p><strong>Código Postal:</strong> <span
-                    th:text="${usuario.detalle.codigopostal}">Código Postal del usuario</span></p>
+                    th:text="${usuario.detalle.codigopostal}"></span></p>
 
             <div class="d-flex justify-content-between">
                 <a href="#" th:href="@{/usuario/administracion/editar/{id}(id=${usuario.id})}" class="btn btn-primary">Editar
