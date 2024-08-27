@@ -68,7 +68,7 @@
                             <span th:if="${similarProducto.descuentos.size() == 0}"
                                   th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor, 1, 2) + ' €'}"></span>
                         </p>
-                        <a th:href="@{/productos/detalles/{id}(id=${similarProducto.id})}" class="btn btn-primary">Ver Detalles</a>
+                        <a th:href="@{/productos/detalles/{id}(id=${similarProducto.id})}" class="btn btn-primary" th:text="#{admi.detalle}">Ver Detalles</a>
                     </div>
                 </div>
             </div>
@@ -81,11 +81,11 @@
         <ul class="list-unstyled">
             <li th:each="valoracion : ${valoraciones}">
                 <div class="review">
-                    <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
+                    <strong th:text="${valoracion.usuario.email}">Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
                     <br/>
-                    <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
+                    <strong th:text="${valoracion.nota}">Nota:</strong> <span th:text="${valoracion.nota}"></span>
                     <br/>
-                    <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
+                    <strong th:text="#{valoracion.comentario}">Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
                 </div>
                 <hr/>
             </li>
