@@ -13,7 +13,7 @@
         <input type="hidden" th:field="*{id}"/>
 
         <div class="mb-3">
-            <label for="nombreSuper" class="form-label">Nombre</label>
+            <label for="nombreSuper" class="form-label" th:text="#{table.name}"></label>
             <input type="text" id="nombreSuper" th:field="*{nombreSuper}" class="form-control" required>
             <div th:if="${#fields.hasErrors('nombreSuper')}" class="text-danger">
                 <span th:errors="*{nombreSuper}">Error de validación</span>
@@ -21,7 +21,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="url" class="form-label">URL</label>
+            <label for="url" class="form-label" th:text="#{supermarket.list.URL}"></label>
             <input type="text" id="url" th:field="*{url}" class="form-control">
             <div th:if="${#fields.hasErrors('url')}" class="text-danger">
                 <span th:errors="*{url}">Error de validación</span>
@@ -29,7 +29,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="imagenes" class="form-label">Subir Imágenes</label>
+            <label for="imagenes" class="form-label" th:text="#{subir.imagenes}"></label>
             <input type="file" id="imagenes" th:field="*{imagenesArchivo}" class="form-control" multiple required>
             <div th:if="${#fields.hasErrors('imagenesArchivo')}" class="text-danger">
                 <span th:errors="*{imagenesArchivo}">Error de validación</span>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="horario" class="form-label">Horario</label>
+            <label for="horario" class="form-label" th:text="#{admi.horario}"></label>
             <input type="text" id="horario" th:field="*{horario}" class="form-control">
             <div th:if="${#fields.hasErrors('horario')}" class="text-danger">
                 <span th:errors="*{horario}">Error de validación</span>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="calle" class="form-label">Calle</label>
+            <label for="calle" class="form-label" th:text="#{usuario.detalle.calle}"></label>
             <input type="text" id="calle" th:field="*{calle}" class="form-control">
             <div th:if="${#fields.hasErrors('calle')}" class="text-danger">
                 <span th:errors="*{calle}">Error de validación</span>
@@ -53,7 +53,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="municipio" class="form-label">Municipio</label>
+            <label for="municipio" class="form-label"th:text="#{usuario.detalle.municipio}"></label>
             <input type="text" id="municipio" th:field="*{municipio}" class="form-control">
             <div th:if="${#fields.hasErrors('municipio')}" class="text-danger">
                 <span th:errors="*{municipio}">Error de validación</span>
@@ -61,7 +61,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="pais" class="form-label">País</label>
+            <label for="pais" class="form-label"th:text="#{usuario.detalle.pais}"></label>
             <input type="text" id="pais" th:field="*{pais}" class="form-control">
             <div th:if="${#fields.hasErrors('pais')}" class="text-danger">
                 <span th:errors="*{pais}">Error de validación</span>
@@ -69,14 +69,14 @@
         </div>
 
         <div class="mb-3">
-            <label for="codigoPostal" class="form-label">Código Postal</label>
+            <label for="codigoPostal" class="form-label"th:text="#{usuario.detalle.codigopostal}"></label>
             <input type="number" id="codigoPostal" th:field="*{codigopostal}" class="form-control">
             <div th:if="${#fields.hasErrors('codigopostal')}" class="text-danger">
                 <span th:errors="*{codigopostal}">Error de validación</span>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary" th:text="#{admi.guardar}">Guardar</button>
     </form>
 </div>
 </body>

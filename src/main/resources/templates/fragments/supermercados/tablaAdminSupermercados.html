@@ -10,10 +10,10 @@
     <!-- Filtros y ordenación -->
     <form action="#" method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="sortField" class="mr-2">Ordenar por:</label>
+            <label for="sortField" class="mr-2" th:text="#{filter.sort.by}" ></label>
             <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
-                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}">Nombre (A-Z)</option>
-                <option value="id" th:selected="${currentSortField == 'id'}">Más Nuevos</option>
+                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}" th:text="#{supermarket.nombre}" >Nombre (A-Z)</option>
+                <option value="id" th:selected="${currentSortField == 'id'}" th:text="#{supermarket.nuevos}">Más Nuevos</option>
             </select>
         </div>
         <div class="form-group">
@@ -27,12 +27,12 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>URL</th>
-            <th>Horario</th>
-            <th>Dirección</th>
-            <th>Editar</th>
-            <th>Eliminar</th>
+            <th th:text="#{supermarket.list.name}"></th>
+            <th th:text="#{supermarket.list.URL}"></th>
+            <th th:text="#{supermarket.list.URL}"></th>
+            <th th:text="#{supermarket.list.direccion}">Dirección</th>
+            <th th:text="#{supermarket.list.editar}">Editar</th>
+            <th th:text="#{supermarket.list.eliminar}">Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -45,7 +45,7 @@
             </td>
             <td>
                 <a th:href="@{/admin/supermercados/editar/{id}(id=${supermercado.id})}"
-                   class="btn btn-warning">Editar</a>
+                   class="btn btn-warning" th:text="#{supermarket.list.editar}" ></a>
             </td>
             <td>
                 <form th:action="@{/admin/supermercados/eliminar/{id}(id=${supermercado.id})}" method="post"

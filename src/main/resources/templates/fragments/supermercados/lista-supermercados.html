@@ -11,10 +11,11 @@
     <!-- Filtros y ordenación -->
     <form action="#" method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="sortField" class="mr-2">Ordenar por:</label>
+            <label for="sortField" class="mr-2" th:text="#{supermarket.ordenar}">Ordenar por:</label>
             <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
-                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}">Nombre (A-Z)</option>
-                <option value="id" th:selected="${currentSortField == 'id'}">Más Nuevos</option>
+                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}" th:text="#{supermarket.nombre}">Nombre (A-Z)</option>
+                <option value="id" th:selected="${currentSortField == 'id'}" th:text="#{supermarket.nuevos}">Más Nuevos</option>
+
             </select>
         </div>
         <div class="form-group">
@@ -51,7 +52,9 @@
         <ul class="pagination">
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${currentPage - 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}">Anterior</a>
+                   th:href="@{'/supermercados?page=' + ${currentPage - 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
+                   th:text="#{supermarket.anterior}">Anterior</a>
+
             </li>
             <li class="page-item" th:each="pageNum : ${pageNumbers}">
                 <a class="page-link"
@@ -60,7 +63,9 @@
             </li>
             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${currentPage + 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}">Siguiente</a>
+                   th:href="@{'/supermercados?page=' + ${currentPage + 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
+                   th:text="#{supermarket.siguiente}">Siguiente</a>
+
             </li>
         </ul>
     </div>
@@ -72,3 +77,4 @@
 </div>
 </body>
 </html>
+
