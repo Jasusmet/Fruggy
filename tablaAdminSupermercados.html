@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Supermercados</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+<div th:fragment="tablaAdminSupermercados">
+    <!-- Filtros y ordenación -->
+    <form action="#" method="get" class="form-inline mb-3">
+        <div class="form-group mr-2">
+            <label for="sortField" class="mr-2" th:text="#{filter.sort.by}" ></label>
+            <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
+                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}" th:text="#{supermarket.nombre}" >Nombre (A-Z)</option>
+                <option value="id" th:selected="${currentSortField == 'id'}" th:text="#{supermarket.nuevos}">Más Nuevos</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="sortDirection" th:value="${reverseSortDirection}">
+            <input type="hidden" name="page" th:value="${currentPage}">
+            <input type="hidden" name="size" th:value="10">
+        </div>
+    </form>
+
+    <!-- Tabla de supermercados -->
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{supermarket.list.name}"></th>
+            <th th:text="#{supermarket.list.URL}"></th>
+            <th th:text="#{supermarket.list.URL}"></th>
+            <th th:text="#{supermarket.list.direccion}">Dirección</th>
+            <th th:text="#{supermarket.list.editar}">Editar</th>
+            <th th:text="#{supermarket.list.eliminar}">Eliminar</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="supermercado : ${supermercados.content}">
+            <td th:text="${supermercado.nombreSuper}">Nombre</td>
+            <td th:text="${supermercado.url}">URL</td>
+            <td th:text="${supermercado.horario}">Horario</td>
+            <td th:text="${supermercado.calle + ', ' + supermercado.municipio + ', ' + supermercado.pais + ', ' + supermercado.codigopostal}">
+                Dirección
+            </td>
+            <td>
+                <a th:href="@{/admin/supermercados/editar/{id}(id=${supermercado.id})}"
+                   class="btn btn-warning" th:text="#{supermarket.list.editar}" ></a>
+            </td>
+            <td>
+                <form th:action="@{/admin/supermercados/eliminar/{id}(id=${supermercado.id})}" method="post"
+                      onsubmit="return confirm('¿Estás seguro de eliminar este supermercado?');">
+                    <input type="submit" class="btn btn-danger" value="Eliminar"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Controles de paginación -->
+<div>
+    <ul class="pagination">
+        <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/admin/supermercados(page=${currentPage - 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+               th:disabled="${currentPage == 0}">Anterior</a>
+        </li>
+        <li class="page-item" th:each="i : ${#numbers.range(0, totalPages - 1)}">
+            <a class="page-link"
+               th:href="@{/admin/supermercados(page=${i}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+               th:class="${i == currentPage} ? 'active'">[[${i + 1}]]</a>
+        </li>
+        <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link"
+               th:href="@{/admin/supermercados(page=${currentPage + 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+               th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
+        </li>
+    </ul>
+</div>
+
+<div th:if="${supermercados.content == null or #lists.isEmpty(supermercados.content)}">
+    <p>La lista de supermercados está vacía</p>
+</div>
+</body>
+</html>
