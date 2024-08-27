@@ -12,10 +12,9 @@
                 <div class="form-group">
                     <label for="emailFilter" class="sr-only">Filtrar por Email</label>
                     <input type="text" name="email" id="emailFilter" class="form-control"
-                           placeholder="Filtrar por email"
-                           value="Buscar por email">
+                           th:placeholder="#{search.email}" th:value="#{search.email}">
                 </div>
-                <button type="submit" class="btn btn-primary ml-2">Buscar</button>
+                <button type="submit" class="btn btn-primary ml-2" th:text="#{button.search}">Buscar</button>
             </form>
         </div>
         <!-- Dropdown para Ordenar -->
@@ -23,11 +22,11 @@
             <div class="form-group">
                 <label for="sortField" class="sr-only">Ordenar por</label>
                 <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
-                    <option value="id_asc" th:selected="${sortField == 'id_asc'}">Más Antiguos</option>
-                    <option value="id_desc" th:selected="${sortField == 'id_desc'}">Más Nuevos</option>
-                    <option value="roles" th:selected="${sortField == 'roles'}">Por Roles</option>
-                    <option value="email_asc" th:selected="${sortField == 'email_asc'}">Email (A-Z)</option>
-                    <option value="email_desc" th:selected="${sortField == 'email_desc'}">Email (Z-A)</option>
+                    <option value="id_asc" th:text="#{sort.option.oldest}" th:selected="${sortField == 'id_asc'}">Más Antiguos</option>
+                    <option value="id_desc" th:selected="${sortField == 'id_desc'}" th:text="#{sort.option.newest}">Más Nuevos</option>
+                    <option value="roles" th:selected="${sortField == 'roles'}" th:text="#{sort.option.roles}">Por Roles</option>
+                    <option value="email_asc" th:selected="${sortField == 'email_asc'}" th:text="#{sort.option.emailAsc}">Email (A-Z)</option>
+                    <option value="email_desc" th:selected="${sortField == 'email_desc'}" th:text="#{sort.option.emailDesc}">Email (Z-A)</option>
                 </select>
             </div>
             <input type="hidden" name="sortDirection" th:value="${reverseSortDirection}"/>
@@ -36,12 +35,13 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>Email</th>
-            <th>Activo</th>
-            <th>Teléfono</th>
-            <th>Roles</th>
-            <th>Editar</th>
-            <th>Eliminar</th>
+            <th th:text="#{table.header.email}">Email</th>
+            <th th:text="#{table.header.active}">Activo</th>
+            <th th:text="#{table.header.phone}">Teléfono</th>
+            <th th:text="#{table.header.roles}">Roles</th>
+            <th th:text="#{table.header.edit}">Editar</th>
+            <th th:text="#{table.header.delete}">Eliminar</th>
+
         </tr>
         </thead>
         <tbody>
@@ -55,12 +55,12 @@
                 </ul>
             </td>
             <td>
-                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-warning">Editar</a>
+                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{button.edit}">Editar</a>
             </td>
             <td>
                 <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" method="post"
                       onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
-                    <input type="submit" class="btn btn-danger" value="Eliminar"/>
+                    <input type="submit" class="btn btn-danger" th:value="#{button.delete}" />
                 </form>
             </td>
         </tr>

@@ -112,18 +112,18 @@
 
                         </div>
 
-                            <!-- Botón de guardar -->
-                            <div class="col-lg-12 mb-3">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
-                            </div>
+                        <!-- Botón de guardar -->
+                        <div class="col-lg-12 mb-3">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
-                    </form>
-                    <div th:if="${error}" class="alert alert-danger" role="alert">
-                        <span th:text="${error}">Error al crear usuario</span>
-                    </div>
+                </div>
+                </form>
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}">Error al crear usuario</span>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 </body>
