@@ -19,8 +19,8 @@
         <!-- Información del producto a la derecha -->
         <div class="col-md-6 product-details">
             <div class="product-details">
-                <p><strong>Marca:</strong> <span th:text="${producto.marca}"></span></p>
-                <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+                <p><strong th:text="#{producto.marca}">Marca:</strong> <span th:text="${producto.marca}"></span></p>
+                <p><strong th:text="#{producto.descripcion}">Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
 
                 <!-- Información sobre el precio -->
                 <p><strong>Precio:</strong>
