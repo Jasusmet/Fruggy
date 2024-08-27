@@ -33,9 +33,9 @@
         </thead>
         <tbody>
         <tr th:each="producto : ${productos.content}">
-            <td th:text="${producto.id}">ID</td>
-            <td th:text="${producto.nombreProducto}">Nombre</td>
-            <td th:text="${producto.descripcion}">Descripción</td>
+            <td th:text="#{producto.id}">ID</td>
+            <td th:text="#{producto.nombreProducto}">Nombre</td>
+            <td th:text="#{producto.descripcion}">Descripción</td>
             <td>
             <span th:if="${producto.descuentos.size() > 0}">
                 <span th:each="descuento : ${producto.descuentos}">
