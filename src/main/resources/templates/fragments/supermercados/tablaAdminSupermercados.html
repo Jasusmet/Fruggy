@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Supermercados</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet"/>
-</head>
-<body>
 <div th:fragment="tablaAdminSupermercados">
     <!-- Filtros y ordenación -->
     <form action="#" method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="sortField" class="mr-2">Ordenar por:</label>
+            <label for="sortField" class="mr-2" th:text="#{supermarket.sort.label}">Ordenar por:</label>
             <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
-                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}">Nombre (A-Z)</option>
-                <option value="id" th:selected="${currentSortField == 'id'}">Más Nuevos</option>
+                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}"
+                        th:text="#{supermarket.sort.name}">Nombre (A-Z)
+                </option>
+                <option value="id" th:selected="${currentSortField == 'id'}"
+                        th:text="#{supermarket.sort.id}">Más Nuevos
+                </option>
             </select>
         </div>
         <div class="form-group">
@@ -27,12 +23,12 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>URL</th>
-            <th>Horario</th>
-            <th>Dirección</th>
-            <th>Editar</th>
-            <th>Eliminar</th>
+            <th th:text="#{supermarket.list.name}">Nombre</th>
+            <th th:text="#{supermarket.list.URL}">URL</th>
+            <th th:text="#{supermarket.details.schedule}">Horario</th>
+            <th th:text="#{supermarket.address}">Dirección</th>
+            <th th:text="#{supermarket.edit}">Editar</th>
+            <th th:text="#{supermarket.delete}">Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -45,12 +41,12 @@
             </td>
             <td>
                 <a th:href="@{/admin/supermercados/editar/{id}(id=${supermercado.id})}"
-                   class="btn btn-warning">Editar</a>
+                   class="btn btn-warning" th:text="#{supermarket.edit}">Editar</a>
             </td>
             <td>
                 <form th:action="@{/admin/supermercados/eliminar/{id}(id=${supermercado.id})}" method="post"
                       onsubmit="return confirm('¿Estás seguro de eliminar este supermercado?');">
-                    <input type="submit" class="btn btn-danger" value="Eliminar"/>
+                    <input type="submit" class="btn btn-danger" th:value="#{supermarket.delete}"/>
                 </form>
             </td>
         </tr>
@@ -64,7 +60,7 @@
         <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
             <a class="page-link"
                th:href="@{/admin/supermercados(page=${currentPage - 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:disabled="${currentPage == 0}">Anterior</a>
+               th:text="#{supermarket.pagination.previous}" th:disabled="${currentPage == 0}">Anterior</a>
         </li>
         <li class="page-item" th:each="i : ${#numbers.range(0, totalPages - 1)}">
             <a class="page-link"
@@ -74,13 +70,11 @@
         <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
             <a class="page-link"
                th:href="@{/admin/supermercados(page=${currentPage + 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
+               th:text="#{supermarket.pagination.next}" th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
         </li>
     </ul>
 </div>
 
 <div th:if="${supermercados.content == null or #lists.isEmpty(supermercados.content)}">
-    <p>La lista de supermercados está vacía</p>
+    <p th:text="#{supermarket.emptyList}">La lista de supermercados está vacía</p>
 </div>
-</body>
-</html>

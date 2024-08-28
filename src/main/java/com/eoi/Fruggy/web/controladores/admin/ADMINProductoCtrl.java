@@ -47,34 +47,41 @@ public class ADMINProductoCtrl {
 
 
     // Mostrar lista de productos
-        @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping
     public String listarProductos(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
-                                  @RequestParam(defaultValue = "nombreProducto") String sortField,
+                                  @RequestParam(defaultValue = "id") String sortField,
                                   @RequestParam(defaultValue = "asc") String sortDirection,
                                   Model model) {
 
+        // Ajustar el campo de ordenación y la dirección de acuerdo con los parámetros proporcionados
         if ("precios.valor_desc".equals(sortField)) {
             sortField = "precios.valor";
             sortDirection = "desc";
         } else if ("precios.valor".equals(sortField)) {
             sortDirection = "asc";
         } else if ("id".equals(sortField)) {
+            // Asegúrate de que se ordene por ID por defecto si no se especifica otro campo
             sortField = "id";
         }
 
+        // Obtener la página de productos ordenada según el campo y la dirección especificados
         Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size, sortField, sortDirection);
+
+        // Añadir atributos al modelo
         model.addAttribute("productos", paginaProductos);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaProductos.getTotalPages());
         model.addAttribute("currentSortField", sortField);
         model.addAttribute("currentSortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
+
+        // Devolver la vista
         return "/admin/CRUD-Productos";
     }
 
-            @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
         Producto producto = new Producto();
@@ -92,7 +99,7 @@ public class ADMINProductoCtrl {
     }
 
     //  formulario de creación de producto
-        @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute("producto") Producto producto,
                                   BindingResult result,
@@ -141,7 +148,7 @@ public class ADMINProductoCtrl {
     }
 
     // Mostrar formulario para editar un producto
-        @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -224,7 +231,7 @@ public class ADMINProductoCtrl {
     }
 
     // Eliminar un producto
-        @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         Set<Precio> precios = precioSrvc.buscarTodosSet(); // Asegúrate de que esto devuelve un Set<Precio>
@@ -239,7 +246,7 @@ public class ADMINProductoCtrl {
 
     // DESCUENTOS
     // Mostrar formulario para agregar descuento a un producto
-        @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/descuento/{id}")
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -252,7 +259,7 @@ public class ADMINProductoCtrl {
     }
 
     // Post para agregar descuento a un producto
-        @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping("/descuento/{id}")
     public String agregarDescuento(@PathVariable Long id,
                                    @RequestParam("tipoDescuentoId") Long tipoDescuentoId,

@@ -1,14 +1,14 @@
 <div class="container mt-4" th:fragment="editar-usuario">
-    <h1 th:text="#{edit.user.title}">Editar Usuario</h1>
+    <h1 th:text="#{edit.user.title}">Edit User</h1>
     <form th:action="@{/usuario/administracion/editar/{id}(id=${usuario.id})}"
           th:object="${usuario}" method="post">
         <input type="hidden" th:field="*{email}"/>
         <div class="row">
             <!-- Campo de nombre -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="nombre" class="form-label" th:text="#{edit.user.firstName}">Nombre</label>
-                <input type="text" id="nombre" th:field="*{detalle.nombre}" class="form-control" placeholder="Nombre"
-                       required>
+                <label for="nombre" class="form-label" th:text="#{edit.user.firstName}">First Name</label>
+                <input type="text" id="nombre" th:field="*{detalle.nombre}" class="form-control"
+                       th:placeholder="#{edit.user.firstNamePlaceholder}" required>
                 <div th:if="${#fields.hasErrors('detalle.nombre')}" class="alert alert-danger">
                     <p th:each="err : ${#fields.errors('detalle.nombre')}" th:text="${err}"></p>
                 </div>
@@ -16,9 +16,9 @@
 
             <!-- Campo de apellido -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="apellido" class="form-label" th:text="#{edit.user.lastName}">Apellido</label>
+                <label for="apellido" class="form-label" th:text="#{edit.user.lastName}">Last Name</label>
                 <input type="text" id="apellido" th:field="*{detalle.apellido}" class="form-control"
-                       placeholder="Apellido" required>
+                       th:placeholder="#{edit.user.lastNamePlaceholder}" required>
                 <div th:if="${#fields.hasErrors('detalle.apellido')}" class="alert alert-danger">
                     <p th:each="err : ${#fields.errors('detalle.apellido')}" th:text="${err}"></p>
                 </div>
@@ -26,9 +26,9 @@
 
             <!-- Campo de contraseña -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="password" class="form-label" th:text="#{edit.user.password}">Contraseña</label>
+                <label for="password" class="form-label" th:text="#{edit.user.password}">Password</label>
                 <input type="password" id="password" th:field="*{password}" class="form-control"
-                       placeholder="Contraseña" required>
+                       th:placeholder="#{edit.user.passwordPlaceholder}" required>
                 <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger">
                     <p th:each="err : ${#fields.errors('password')}" th:text="${err}"></p>
                 </div>
@@ -36,9 +36,9 @@
 
             <!-- Campo de edad -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="edad" class="form-label" th:text="#{edit.user.age}">Edad</label>
-                <input type="number" id="edad" th:field="*{detalle.edad}" class="form-control" placeholder="Edad"
-                       required>
+                <label for="edad" class="form-label" th:text="#{edit.user.age}">Age</label>
+                <input type="number" id="edad" th:field="*{detalle.edad}" class="form-control"
+                       th:placeholder="#{edit.user.agePlaceholder}" required>
                 <div th:if="${#fields.hasErrors('detalle.edad')}" class="alert alert-danger">
                     <p th:each="err : ${#fields.errors('detalle.edad')}" th:text="${err}"></p>
                 </div>
@@ -46,8 +46,9 @@
 
             <!-- Campo de teléfono -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="telefono" class="form-label" th:text="#{edit.user.phone}">Teléfono</label>
-                <input type="tel" id="telefono" th:field="*{telefono}" class="form-control" placeholder="Teléfono">
+                <label for="telefono" class="form-label" th:text="#{edit.user.phone}">Phone</label>
+                <input type="tel" id="telefono" th:field="*{telefono}" class="form-control"
+                       th:placeholder="#{edit.user.phonePlaceholder}">
                 <div th:if="${#fields.hasErrors('telefono')}" class="alert alert-danger">
                     <p th:each="err : ${#fields.errors('telefono')}" th:text="${err}"></p>
                 </div>
@@ -55,43 +56,45 @@
 
             <!-- Campo de calle -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="calle" class="form-label" th:text="#{edit.user.street}">Calle</label>
-                <input type="text" id="calle" th:field="*{detalle.calle}" class="form-control" placeholder="Calle">
+                <label for="calle" class="form-label" th:text="#{edit.user.street}">Street</label>
+                <input type="text" id="calle" th:field="*{detalle.calle}" class="form-control"
+                       th:placeholder="#{edit.user.streetPlaceholder}">
             </div>
 
             <!-- Campo de municipio -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="municipio" class="form-label" th:text="#{edit.user.town}">Municipio</label>
+                <label for="municipio" class="form-label" th:text="#{edit.user.town}">Town</label>
                 <input type="text" id="municipio" th:field="*{detalle.municipio}" class="form-control"
-                       placeholder="Municipio">
+                       th:placeholder="#{edit.user.townPlaceholder}">
             </div>
 
             <!-- Campo de país -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="pais" class="form-label" th:text="#{edit.user.country}">País</label>
-                <input type="text" id="pais" th:field="*{detalle.pais}" class="form-control" placeholder="País">
+                <label for="pais" class="form-label" th:text="#{edit.user.country}">Country</label>
+                <input type="text" id="pais" th:field="*{detalle.pais}" class="form-control"
+                       th:placeholder="#{edit.user.countryPlaceholder}">
             </div>
 
             <!-- Campo de código postal -->
             <div class="col-lg-6 col-md-6 mb-3">
-                <label for="codigoPostal" class="form-label" th:text="#{edit.user.zipCode}">Código Postal</label>
+                <label for="codigoPostal" class="form-label" th:text="#{edit.user.zipCode}">ZIP Code</label>
                 <input type="number" id="codigoPostal" th:field="*{detalle.codigopostal}" class="form-control"
-                       placeholder="Código Postal">
+                       th:placeholder="#{edit.user.zipCodePlaceholder}">
             </div>
 
             <!-- Selección de Género -->
             <div class="mb-3">
-                <label for="generoId" class="form-label" th:text="#{edit.user.gender}">Género</label>
+                <label for="generoId" class="form-label" th:text="#{edit.user.gender}">Gender</label>
                 <select id="generoId" th:field="*{detalle.genero.id}" class="form-select" required>
-                    <option value="" disabled selected th:text="#{edit.user.selectGender}">Seleccione un género</option>
+                    <option value="" disabled selected th:text="#{edit.user.selectGender}">Select a gender</option>
                     <option th:each="genero : ${generos}"
                             th:value="${genero.id}"
                             th:text="${genero.descripcion}"></option>
                 </select>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary" th:text="#{edit.user.save}">Guardar Cambios</button>
-        <a href="#" th:href="@{/usuario/administracion}" class="btn btn-secondary" th:text="#{edit.user.cancel}">Cancelar</a>
+        <button type="submit" class="btn btn-primary" th:text="#{edit.user.save}">Save Changes</button>
+        <a href="#" th:href="@{/usuario/administracion}" class="btn btn-secondary"
+           th:text="#{edit.user.cancel}">Cancel</a>
     </form>
 </div>
-

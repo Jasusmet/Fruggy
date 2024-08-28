@@ -1,17 +1,21 @@
-
 <div class="container mt-4" th:fragment="tablaAdminProductos">
     <table class="table table-striped mt-3">
         <!-- Dropdown para seleccionar el orden -->
         <form method="get" th:action="@{/admin/productos}" class="form-inline mb-3">
-            <label for="sort">Ordenar por:</label>
+            <label for="sort" th:text="#{admin.product.sort}">Sort by:</label>
             <select name="sortField" id="sortField" class="form-control ml-2" onchange="this.form.submit()">
-                <option value="id" th:selected="${currentSortField == 'id'}">ID</option>
-                <option value="precios.valor" th:selected="${currentSortField == 'precios.valor'}">Precio (Más Bajo)
+                <option value="id" th:selected="${currentSortField == null || currentSortField == 'id'}"
+                        th:text="#{admin.product.id}">ID
                 </option>
-                <option value="precios.valor_desc" th:selected="${currentSortField == 'precios.valor_desc'}">Precio (Más
-                    Alto)
+                <option value="precios.valor" th:selected="${currentSortField == 'precios.valor'}"
+                        th:text="#{admin.product.priceLow}">Price (Lowest)
                 </option>
-                <option value="nombreProducto" th:selected="${currentSortField == 'nombreProducto'}">Nombre</option>
+                <option value="precios.valor_desc" th:selected="${currentSortField == 'precios.valor_desc'}"
+                        th:text="#{admin.product.priceHigh}">Price (Highest)
+                </option>
+                <option value="nombreProducto" th:selected="${currentSortField == 'nombreProducto'}"
+                        th:text="#{admin.product.name}">Name
+                </option>
             </select>
             <input type="hidden" name="sortDirection" th:value="${reverseSortDirection}"/>
         </form>
@@ -19,47 +23,47 @@
         <thead>
         <tr>
             <th th:text="#{admin.product.id}">ID</th>
-            <th th:text="#{admin.product.name}">Nombre</th>
-            <th th:text="#{admin.product.description}">Descripción</th>
-            <th th:text="#{admin.product.price}">Precio</th>
-            <th th:text="#{admin.product.supermarket}">Supermercado</th>
-            <th th:text="#{admin.product.category}">Categoría</th>
-            <th th:text="#{admin.product.subcategory}">Subcategoría</th>
-            <th th:text="#{admin.product.active}">Activo</th>
-            <th th:text="#{admin.product.discounts}">Descuentos</th>
-            <th th:text="#{admin.product.edit}">Editar</th>
-            <th th:text="#{admin.product.delete}">Eliminar</th>
+            <th th:text="#{admin.product.name}">Name</th>
+            <th th:text="#{admin.product.description}">Description</th>
+            <th th:text="#{admin.product.price}">Price</th>
+            <th th:text="#{admin.product.supermarket}">Supermarket</th>
+            <th th:text="#{admin.product.category}">Category</th>
+            <th th:text="#{admin.product.subcategory}">Subcategory</th>
+            <th th:text="#{admin.product.active}">Active</th>
+            <th th:text="#{admin.product.discounts}">Discounts</th>
+            <th th:text="#{admin.product.edit}">Edit</th>
+            <th th:text="#{admin.product.delete}">Delete</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="producto : ${productos.content}">
             <td th:text="${producto.id}">ID</td>
-            <td th:text="${producto.nombreProducto}">Nombre</td>
-            <td th:text="${producto.descripcion}">Descripción</td>
+            <td th:text="${producto.nombreProducto}">Name</td>
+            <td th:text="${producto.descripcion}">Description</td>
             <td>
-            <span th:if="${producto.descuentos.size() > 0}">
-                <span th:each="descuento : ${producto.descuentos}">
-                    <span th:if="${descuento.activo}">
-                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                <span th:if="${producto.descuentos.size() > 0}">
+                    <span th:each="descuento : ${producto.descuentos}">
+                        <span th:if="${descuento.activo}">
+                            <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
+                        </span>
                     </span>
                 </span>
-            </span>
                 <span th:if="${producto.descuentos.size() == 0}"
                       th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
             </td>
             <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">
-                Supermercado
+                Supermarket
             </td>
-            <td th:text="${producto.subcategoria.categoria.getTipo('${idioma}')}">Categoría</td>
-            <td th:text="${producto.subcategoria.tipo}">Subcategoría</td>
-            <td th:text="${producto.activo} ? 'Sí' : 'No'">Activo</td>
+            <td th:text="${producto.subcategoria.categoria.getTipo('${idioma}')}">Category</td>
+            <td th:text="${producto.subcategoria.tipo}">Subcategory</td>
+            <td th:text="${producto.activo} ? 'Sí' : 'No'">Active</td>
             <td>
                 <a th:href="@{'/admin/productos/descuento/' + ${producto.id}}" class="btn btn-outline-success"
-                   th:text="#{admin.product.discounts}">Descuentos</a>
+                   th:text="#{admin.product.discounts}">Discounts</a>
             </td>
             <td>
                 <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning"
-                   th:text="#{admin.product.edit}">Editar</a>
+                   th:text="#{admin.product.edit}">Edit</a>
             </td>
             <td>
                 <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post"
@@ -75,7 +79,7 @@
         <ul class="pagination justify-content-center mt-3">
             <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
                 <a class="page-link" th:href="@{/admin/productos(page=${currentPage - 1}, size=10)}"
-                   tabindex="-1">Anterior</a>
+                   th:text="#{admin.product.previous}" tabindex="-1">Previous</a>
             </li>
 
             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
@@ -84,7 +88,8 @@
             </li>
 
             <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin/productos(page=${currentPage + 1}, size=10)}">Siguiente</a>
+                <a class="page-link" th:href="@{/admin/productos(page=${currentPage + 1}, size=10)}"
+                   th:text="#{admin.product.next}">Next</a>
             </li>
         </ul>
     </nav>

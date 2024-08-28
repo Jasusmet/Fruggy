@@ -1,36 +1,27 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Agregar Descuento</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet"/>
-</head>
-<body>
 <div th:fragment="agregar-descuento">
-    <h2>Agregar Descuento</h2>
+    <h2 th:text="#{form.discount.title}">Agregar Descuento</h2>
     <form th:action="@{'/admin/productos/descuento/' + ${producto.id}}" method="post">
         <div>
-            <label for="tipoDescuento">Tipo de Descuento:</label>
+            <label for="tipoDescuento" th:text="#{form.discount.type}">Tipo de Descuento:</label>
             <select name="tipoDescuentoId" id="tipoDescuento">
-                <option th:each="tipoDescuento : ${tiposDescuento}" th:value="${tipoDescuento.id}" th:text="${tipoDescuento.tipo}"></option>
+                <option th:each="tipoDescuento : ${tiposDescuento}" th:value="${tipoDescuento.id}"
+                        th:text="${tipoDescuento.tipo}"></option>
             </select>
         </div>
         <div>
-            <label for="porcentaje">Porcentaje:</label>
+            <label for="porcentaje" th:text="#{form.discount.percentage}">Porcentaje:</label>
             <input type="number" name="porcentaje" id="porcentaje" step="0.01" min="0" max="100" required>
         </div>
         <div>
-            <label for="fechaInicio">Fecha de Inicio:</label>
+            <label for="fechaInicio" th:text="#{form.discount.start_date}">Fecha de Inicio:</label>
             <input type="date" name="fechaInicio" id="fechaInicio" required>
         </div>
         <div>
-            <label for="fechaFin">Fecha de Fin:</label>
+            <label for="fechaFin" th:text="#{form.discount.end_date}">Fecha de Fin:</label>
             <input type="date" name="fechaFin" id="fechaFin" required>
         </div>
         <div>
-            <button type="submit">Agregar Descuento</button>
+            <button type="submit" th:text="#{form.discount.submit}">Agregar Descuento</button>
         </div>
     </form>
 </div>
-</body>
-</html>
