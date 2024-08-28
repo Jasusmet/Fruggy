@@ -4,7 +4,7 @@
         <!-- Imagen y título del producto a la izquierda -->
         <div class="col-md-6 product-images">
             <!-- Título del producto -->
-            <h1 th:text="${producto.nombreProducto}">Nombre del Producto</h1>
+            <h1 th:text="${producto.nombreProducto}"></h1>
 
             <!-- Imágenes del producto -->
             <div class="product-images">
@@ -19,11 +19,12 @@
         <!-- Información del producto a la derecha -->
         <div class="col-md-6 product-details">
             <div class="product-details">
-                <p><strong>Marca:</strong> <span th:text="${producto.marca}"></span></p>
-                <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}"></span></p>
+                <p><strong th:text="#{producto.details.brand}"></strong> <span th:text="${producto.marca}"></span></p>
+                <p><strong th:text="#{producto.details.description}"></strong> <span
+                        th:text="${producto.descripcion}"></span></p>
 
                 <!-- Información sobre el precio -->
-                <p><strong>Precio:</strong>
+                <p><strong th:text="#{producto.details.price}"></strong>
                     <span th:if="${producto.descuentos.size() > 0}">
                         <span th:each="descuento : ${producto.descuentos}">
                             <span th:if="${descuento.activo}">
@@ -36,18 +37,19 @@
                 </p>
 
                 <!-- Nombre del supermercado -->
-                <p><strong>Supermercado:</strong> <span th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
+                <p><strong th:text="#{producto.details.supermarket}"></strong> <span
+                        th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
 
                 <!-- Nota media del producto -->
-                <h2>Nota Media</h2>
-                <p th:text="${producto.notaMedia != null ? #numbers.formatDecimal(producto.notaMedia, 1, 1) : 'N/A'}"></p>
+                <h2 th:text="#{producto.details.averageRating}"></h2>
+                <p th:text="${producto.notaMedia != null ? #numbers.formatDecimal(producto.notaMedia, 1, 1) : '#{producto.details.noRating}'}"></p>
             </div>
         </div>
     </div>
 
     <!-- Sección de precios similares -->
     <div class="container mt-4">
-        <h2>Productos Similares</h2>
+        <h2 th:text="#{producto.details.similarProducts}"></h2>
         <div class="row">
             <div th:each="similarProducto : ${productosSimilares}" class="col-md-3 mb-4">
                 <div class="card similar-product-card">
@@ -57,7 +59,7 @@
                     <div class="card-body">
                         <h5 class="card-title" th:text="${similarProducto.nombreProducto}"></h5>
                         <p class="card-text">
-                            <strong>Precio:</strong>
+                            <strong th:text="#{producto.details.price}"></strong>
                             <span th:if="${similarProducto.descuentos.size() > 0}">
                                 <span th:each="descuento : ${similarProducto.descuentos}">
                                     <span th:if="${descuento.activo}">
@@ -68,7 +70,8 @@
                             <span th:if="${similarProducto.descuentos.size() == 0}"
                                   th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor, 1, 2) + ' €'}"></span>
                         </p>
-                        <a th:href="@{/productos/detalles/{id}(id=${similarProducto.id})}" class="btn btn-primary">Ver Detalles</a>
+                        <a th:href="@{/productos/detalles/{id}(id=${similarProducto.id})}" class="btn btn-primary"
+                           th:text="#{producto.details.viewDetails}"></a>
                     </div>
                 </div>
             </div>
@@ -77,15 +80,17 @@
 
     <!-- Sección de valoraciones -->
     <div class="review-list mt-4">
-        <h2>Valoraciones</h2>
+        <h2 th:text="#{producto.details.reviews}"></h2>
         <ul class="list-unstyled">
             <li th:each="valoracion : ${valoraciones}">
                 <div class="review">
-                    <strong>Usuario:</strong> <span th:text="${valoracion.usuario.email}"></span>
+                    <strong th:text="#{producto.details.comment}"></strong> <span
+                        th:text="${valoracion.usuario.email}"></span>
                     <br/>
-                    <strong>Nota:</strong> <span th:text="${valoracion.nota}"></span>
+                    <strong th:text="#{producto.details.rating}"></strong> <span th:text="${valoracion.nota}"></span>
                     <br/>
-                    <strong>Comentario:</strong> <span th:text="${valoracion.comentario}"></span>
+                    <strong th:text="#{producto.details.comment}"></strong> <span
+                        th:text="${valoracion.comentario}"></span>
                 </div>
                 <hr/>
             </li>
@@ -94,17 +99,17 @@
 
     <!-- Formulario para dejar una valoración -->
     <div class="rating-form mt-4">
-        <h2>Deja tu valoración</h2>
+        <h2 th:text="#{producto.details.leaveReview}"></h2>
         <form th:action="@{/productos/valoraciones/{productoId}/guardar(productoId=${producto.id})}" method="post">
             <div class="form-group">
-                <label for="comentario">Comentario:</label>
+                <label for="comentario" th:text="#{producto.details.comment}"></label>
                 <textarea id="comentario" name="comentario" class="form-control" required></textarea>
             </div>
             <div class="form-group">
-                <label for="nota">Nota (0 a 5):</label>
+                <label for="nota" th:text="#{producto.details.rating}"></label>
                 <input type="number" id="nota" name="nota" class="form-control" min="0" max="5" step="0.1" required/>
             </div>
-            <button type="submit" class="btn btn-primary">Enviar Valoración</button>
+            <button type="submit" class="btn btn-primary" th:text="#{producto.details.submitReview}"></button>
         </form>
     </div>
 
@@ -114,5 +119,5 @@
     </div>
 
     <!-- Botón para volver al catálogo -->
-    <a th:href="@{/productos}" class="btn btn-secondary mt-3">Volver al Catálogo</a>
+    <a th:href="@{/productos}" class="btn btn-secondary mt-3" th:text="#{producto.details.backToCatalog}"></a>
 </div>

@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="#{supermarket.list.header}"></title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
 <div class="container mt-4" th:fragment="lista-supermercados">
     <h1 th:text="#{supermarket.list.header}"></h1>
     <!-- Filtros y ordenación -->
     <form action="#" method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="sortField" class="mr-2">Ordenar por:</label>
+            <label for="sortField" class="mr-2" th:text="#{sort.field}">Ordenar por:</label>
             <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
-                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}">Nombre (A-Z)</option>
-                <option value="id" th:selected="${currentSortField == 'id'}">Más Nuevos</option>
+                <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}"
+                        th:text="#{sort.field.name}"></option>
+                <option value="id" th:selected="${currentSortField == 'id'}" th:text="#{sort.field.id}"></option>
             </select>
         </div>
         <div class="form-group">
@@ -39,7 +32,8 @@
             <td th:text="${supermercado.nombreSuper}"></td>
             <td><a th:href="${supermercado.url}" th:text="${supermercado.url}"></a></td>
             <td>
-                <a th:href="@{'/supermercados/detalles/' + ${supermercado.id}}">Detalles</a>
+                <a th:href="@{'/supermercados/detalles/' + ${supermercado.id}}"
+                   th:text="#{supermarket.list.details}"></a>
             </td>
             <td th:text="${supermercado.notaMedia}"></td>
         </tr>
@@ -51,24 +45,25 @@
         <ul class="pagination">
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${currentPage - 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}">Anterior</a>
+                   th:href="@{'/supermercados?page=' + ${currentPage - 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
+                   th:text="#{pagination.previous}"></a>
             </li>
             <li class="page-item" th:each="pageNum : ${pageNumbers}">
                 <a class="page-link"
                    th:href="@{'/supermercados?page=' + ${pageNum} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
-                   th:classappend="${pageNum == currentPage} ? 'active'">[[${pageNum + 1}]]</a>
+                   th:classappend="${pageNum == currentPage} ? 'active'"
+                   th:text="${pageNum + 1}"></a>
             </li>
             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${currentPage + 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}">Siguiente</a>
+                   th:href="@{'/supermercados?page=' + ${currentPage + 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
+                   th:text="#{pagination.next}"></a>
             </li>
         </ul>
     </div>
 
     <!-- Mensaje si no hay supermercados -->
     <div th:if="${supermercados.content.isEmpty()}">
-        <p>La lista de supermercados está vacía.</p>
+        <p th:text="#{pagination.noSupermarkets}"></p>
     </div>
 </div>
-</body>
-</html>

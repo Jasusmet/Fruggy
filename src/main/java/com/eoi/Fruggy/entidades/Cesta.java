@@ -10,7 +10,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -46,7 +48,7 @@ public class Cesta implements Serializable {
     private Precio precio;
 
     @OneToMany(mappedBy = "cesta", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductoEnCesta> productosEnCesta = new HashSet<>();
+    private List<ProductoEnCesta> productosEnCesta = new ArrayList<>();
 
     @Column(name = "es_principal")
     private Boolean esPrincipal = false;

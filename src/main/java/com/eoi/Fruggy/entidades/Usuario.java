@@ -15,10 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -133,4 +130,16 @@ public class Usuario implements Serializable, UserDetails {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id); // Usa el ID para comparar usuarios
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // Usa el ID para calcular el hash
+    }
 }
