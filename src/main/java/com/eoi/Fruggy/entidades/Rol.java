@@ -27,10 +27,10 @@ public class Rol implements Serializable {
     @Column(name = "rol_nombre", unique = true, nullable = false)
     private String rolNombre;
 
-    @Column(name = "es_desc", unique = true, nullable = false)
+    @Column(name = "es_desc", nullable = false)
     private String esDesc;
 
-    @Column(name = "en_desc", unique = true, nullable = false)
+    @Column(name = "en_desc", nullable = false)
     private String enDesc;
 
     @ManyToMany(mappedBy = "roles")

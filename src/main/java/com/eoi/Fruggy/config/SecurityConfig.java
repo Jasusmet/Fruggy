@@ -57,6 +57,7 @@ public class SecurityConfig {
                         .requestMatchers("/registro", "/registro/guardar", "/usuario/administracion/**").permitAll()
                         .requestMatchers("/productos/**").permitAll() // Permitir acceso a /productos
                         .requestMatchers("/supermercados/**").permitAll() // Permitir acceso a /supermercados
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_Administrador")
                         .requestMatchers("/").permitAll() // Permitir acceso a la raíz
                         .anyRequest().authenticated() // Asegura que cualquier otra petición requiera autenticación
                 )

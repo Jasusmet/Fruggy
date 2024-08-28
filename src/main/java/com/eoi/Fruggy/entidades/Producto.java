@@ -29,8 +29,8 @@ public class Producto implements Serializable {
     private Long id; // Utiliza Long en lugar de long
 
     @NotBlank(message = "El nombre del producto es obligatorio.")
-    @Size(max = 45, message = "El nombre del producto no puede tener más de 45 caracteres.")
-    @Column(name = "nombreProducto", length = 45)
+    @Size(max = 255, message = "El nombre del producto no puede tener más de 255 caracteres.")
+    @Column(name = "nombreProducto", length = 255)
     private String nombreProducto;
 
     @NotBlank(message = "La marca es obligatoria.")

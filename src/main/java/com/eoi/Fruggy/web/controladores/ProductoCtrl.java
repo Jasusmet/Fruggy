@@ -3,6 +3,7 @@ package com.eoi.Fruggy.web.controladores;
 import com.eoi.Fruggy.entidades.*;
 import com.eoi.Fruggy.servicios.*;
 import jakarta.validation.Valid;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -33,6 +34,10 @@ public class ProductoCtrl {
         this.categoriaSrvc = categoriaSrvc;
         this.usuarioSrvc = usuarioSrvc;
         this.precioSrvc = precioSrvc;
+    }
+    private String obtenerIdiomaActual() {
+        Locale locale = LocaleContextHolder.getLocale();
+        return locale.getLanguage();
     }
 
     @GetMapping
@@ -78,6 +83,7 @@ public class ProductoCtrl {
                 producto.setNotaMedia(notaMedia);
             });
         }
+        String idioma = obtenerIdiomaActual();
 
         model.addAttribute("pagina", paginaProductos);
         model.addAttribute("cestas", cestaSrvc.findByUsuario(usuario));
@@ -86,6 +92,7 @@ public class ProductoCtrl {
         model.addAttribute("search", search);
         model.addAttribute("marca", marca);
         model.addAttribute("categoriaId", categoriaId);
+        model.addAttribute("idioma", idioma);
 
         return "productos/productos";
     }
@@ -102,6 +109,8 @@ public class ProductoCtrl {
         if (cestas == null) {
             cestas = new ArrayList<>();
         }
+        String idioma = obtenerIdiomaActual();
+
 
         model.addAttribute("pagina", productosPorCategoria);
         model.addAttribute("categoriaActual", categoriaActual);
@@ -109,6 +118,7 @@ public class ProductoCtrl {
         model.addAttribute("cestas", cestas);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productosPorCategoria.getTotalPages());
+        model.addAttribute("idioma", idioma);
 
         return "/productos/productos";
     }
@@ -118,6 +128,7 @@ public class ProductoCtrl {
         Producto producto = productosSrvc.encuentraPorId(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + productoId));
         List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(productoId);
+
 
         // Calcular la nota media
         Double notaMedia = valProductosSrvc.calcularNotaMedia(productoId);

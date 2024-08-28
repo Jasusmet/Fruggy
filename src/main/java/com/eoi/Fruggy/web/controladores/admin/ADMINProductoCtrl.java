@@ -47,7 +47,7 @@ public class ADMINProductoCtrl {
 
 
     // Mostrar lista de productos
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping
     public String listarProductos(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
@@ -81,14 +81,15 @@ public class ADMINProductoCtrl {
         return "/admin/CRUD-Productos";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
         Producto producto = new Producto();
         List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
         List<Categoria> categorias = categoriasSrvc.buscarEntidades();
         List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
-        String idioma = LocaleContextHolder.getLocale().getLanguage();
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
 
         model.addAttribute("producto", producto);
         model.addAttribute("subcategorias", subcategorias);
@@ -99,7 +100,7 @@ public class ADMINProductoCtrl {
     }
 
     //  formulario de creación de producto
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute("producto") Producto producto,
                                   BindingResult result,
@@ -148,7 +149,7 @@ public class ADMINProductoCtrl {
     }
 
     // Mostrar formulario para editar un producto
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/editar/{id}")
     public String editarProducto(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -169,7 +170,7 @@ public class ADMINProductoCtrl {
     }
 
     // post de edición de producto
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/editar/{id}")
     public String guardarEdicionProducto(@PathVariable Long id,
                                          @Valid @ModelAttribute("producto") Producto producto,
@@ -231,7 +232,7 @@ public class ADMINProductoCtrl {
     }
 
     // Eliminar un producto
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
         Set<Precio> precios = precioSrvc.buscarTodosSet(); // Asegúrate de que esto devuelve un Set<Precio>
@@ -246,7 +247,7 @@ public class ADMINProductoCtrl {
 
     // DESCUENTOS
     // Mostrar formulario para agregar descuento a un producto
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/descuento/{id}")
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
@@ -259,7 +260,7 @@ public class ADMINProductoCtrl {
     }
 
     // Post para agregar descuento a un producto
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/descuento/{id}")
     public String agregarDescuento(@PathVariable Long id,
                                    @RequestParam("tipoDescuentoId") Long tipoDescuentoId,

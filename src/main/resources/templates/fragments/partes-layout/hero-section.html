@@ -10,8 +10,12 @@
                     </div>
                     <ul id="categoryMenu">
                         <li th:each="categoria : ${categorias}">
-                            <a th:href="@{/productos/categoria/{id}(id=${categoria.id})}"
-                               th:text="${categoria.getTipo('${idioma}')}">Category Name</a>
+                            <a th:href="@{/productos/categoria/{id}(id=${categoria.id})}">
+                                <th:block th:switch="${idioma}">
+                                    <span th:case="'es'" th:text="${categoria.tipo_es}">Category Name</span>
+                                    <span th:case="'en'" th:text="${categoria.tipo_en}">Category Name</span>
+                                </th:block>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -24,7 +28,8 @@
                                    th:placeholder="#{search.placeholder}"
                                    th:value="${search}">
                             <button type="submit" class="site-btn"
-                                    th:text="#{search.button}">Search</button>
+                                    th:text="#{search.button}">Search
+                            </button>
                         </form>
                     </div>
                 </div>

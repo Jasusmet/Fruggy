@@ -41,8 +41,12 @@
             <label for="categoria" class="form-label" th:text="#{form.product.category}">Category</label>
             <select class="form-control" id="categoria" name="categoria.id" required>
                 <option value="" th:text="#{form.product.select_category}">Select a category</option>
-                <option th:each="categoria : ${categorias}" th:value="${categoria.id}"
-                        th:text="${categoria.getTipo('${idioma}')}"></option>
+                <option th:each="categoria : ${categorias}" th:value="${categoria.id}">
+                    <th:block th:switch="${idioma}">
+                        <span th:case="'es'" th:text="${categoria.tipo_es}">Español</span>
+                        <span th:case="'en'" th:text="${categoria.tipo_en}">English</span>
+                    </th:block>
+                </option>
             </select>
         </div>
 
@@ -50,8 +54,12 @@
             <label for="subcategoria" class="form-label" th:text="#{form.product.subcategory}">Subcategory</label>
             <select class="form-control" id="subcategoria" name="subcategoria.id" required>
                 <option value="" th:text="#{form.product.select_subcategory}">Select a subcategory</option>
-                <option th:each="subcategoria : ${subcategorias}" th:value="${subcategoria.id}"
-                        th:text="${subcategoria.tipo}"></option>
+                <option th:each="subcategoria : ${subcategorias}" th:value="${subcategoria.id}">
+                    <th:block th:switch="${idioma}">
+                        <span th:case="'es'" th:text="${subcategoria.tipo_es}">Español</span>
+                        <span th:case="'en'" th:text="${subcategoria.tipo_en}">English</span>
+                    </th:block>
+                </option>
             </select>
         </div>
 

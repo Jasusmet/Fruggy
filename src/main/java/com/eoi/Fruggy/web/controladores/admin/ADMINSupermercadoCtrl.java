@@ -38,7 +38,7 @@ public class ADMINSupermercadoCtrl {
         this.valSupermercadoSrvc = valSupermercadoSrvc;
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping
     public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
@@ -61,14 +61,14 @@ public class ADMINSupermercadoCtrl {
         return "admin/CRUD-Supermercados";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/agregar")
     public String agregarSupermercado(Model model) {
         model.addAttribute("supermercado", new Supermercado());
         return "admin/crear-supermercado";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/guardar")
     public String guardarSupermercado(@Valid @ModelAttribute Supermercado supermercado, BindingResult bindingResult, Model model) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -90,7 +90,7 @@ public class ADMINSupermercadoCtrl {
         return "redirect:/admin/supermercados";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/editar/{id}")
     public String editarSupermercado(@PathVariable("id") Long id, Model model) {
         Optional<Supermercado> supermercadoOptional = supermercadoSrvc.encuentraPorId(id);
@@ -109,7 +109,7 @@ public class ADMINSupermercadoCtrl {
     }
 
     //IMAGENES
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/{id}/agregar-imagen")
     public String agregarImagen(@PathVariable("id") Long id, @RequestParam("imagen") MultipartFile file, Model model) {
         try {
@@ -130,7 +130,7 @@ public class ADMINSupermercadoCtrl {
     }
 
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/actualizar")
     public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado,
                                          BindingResult bindingResult,
@@ -160,7 +160,7 @@ public class ADMINSupermercadoCtrl {
         return "redirect:/admin/supermercados";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/eliminar/{id}")
     public String eliminarSupermercado(@PathVariable("id") Long id, Model model) {
         supermercadoSrvc.eliminarPorId(id);

@@ -63,7 +63,7 @@
                         <li><a href="/" th:text="#{menu.home}">Inicio</a></li>
                         <li><a href="/productos" th:text="#{menu.products}">Productos</a></li>
                         <li><a href="/supermercados" th:text="#{menu.supermarkets}">Supermercados</a></li>
-                        <li class="header__menu__item" sec:authorize="hasRole('Administrator')">
+                        <li class="header__menu__item" sec:authorize="hasRole('ROLE_Administrador')">
                             <a href="#" th:text="#{role.admin.desc}">Administrador</a>
                             <ul class="header__menu__dropdown list-unstyled">
                                 <li><a href="/admin/usuarios" th:text="#{admin.users}">Usuarios</a></li>

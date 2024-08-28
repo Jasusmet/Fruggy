@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
-public class SrvcCategoria extends AbstractSrvc <Categoria, Long, RepoCategoria> {
+public class SrvcCategoria extends AbstractSrvc<Categoria, Long, RepoCategoria> {
 
     @Autowired
     protected SrvcCategoria(RepoCategoria repoCategoria) {

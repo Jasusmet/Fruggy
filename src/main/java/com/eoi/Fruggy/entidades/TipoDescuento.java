@@ -22,29 +22,33 @@ import java.util.Set;
 public class TipoDescuento implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "tipo", nullable = false)
-    private String tipo;
+    @Column(name = "tipo_es", length = 255)
+    private String tipo_es;
 
-    @Column (name ="fechaInicio", nullable = false)
+    @Column(name = "tipo_en", length = 255)
+    private String tipo_en;
+
+    @Column(name = "fechaInicio", nullable = false)
     private LocalDate fechaInicio;
 
-    @Column (name ="fechaFin", nullable = false)
+    @Column(name = "fechaFin", nullable = false)
     private LocalDate fechaFin;
 
-    @Column (name ="activo", nullable = false)
+    @Column(name = "activo", nullable = false)
     private Boolean activo;
 
     @OneToMany(mappedBy = "tipoDescuento")
     private Set<Descuento> descuentos;
 
-    public TipoDescuento(String descuentoPorVolumen, boolean activo, LocalDate now, LocalDate localDate) {
-        this.tipo = descuentoPorVolumen;
-        this.activo = activo;
+    public TipoDescuento(String tipoDescuento_es, String tipoDescuento_en, boolean b, LocalDate now, LocalDate localDate) {
+        this.tipo_es = tipoDescuento_es;
+        this.tipo_en = tipoDescuento_en;
         this.fechaInicio = now;
         this.fechaFin = localDate;
+        this.activo = b;
     }
 }

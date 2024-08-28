@@ -44,7 +44,7 @@ public class ADMINUsuarioCtrl {
         this.generoSrvc = generoSrvc;
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping
     public String listarUsuarios(@RequestParam(value = "email", required = false, defaultValue = "") String email, @RequestParam(value = "activo", required = false) Boolean activo, @RequestParam(value = "sortField", defaultValue = "email") String sortField, @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
 
@@ -89,7 +89,7 @@ public class ADMINUsuarioCtrl {
         return "admin/CRUD-Usuarios";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/agregar")
     public String agregarUsuario(Model model) {
         Usuario usuario = new Usuario();
@@ -104,7 +104,7 @@ public class ADMINUsuarioCtrl {
         return "admin/crear-usuario";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -167,7 +167,7 @@ public class ADMINUsuarioCtrl {
     }
 
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -237,7 +237,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios"; // Redirigir a la lista de usuarios después de guardar
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
         Optional<Usuario> usuarioOptional = usuarioSrvc.encuentraPorId(id);
@@ -249,7 +249,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/usuarios";
     }
 
-    @PreAuthorize("hasRole('Administrator')")
+    @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable Long id) {
         usuarioSrvc.eliminarPorId(id);

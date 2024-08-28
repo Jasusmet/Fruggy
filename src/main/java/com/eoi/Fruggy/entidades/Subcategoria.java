@@ -28,8 +28,11 @@ public class Subcategoria implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (name ="tipo", length = 255)
-    private String tipo;
+    @Column(name = "tipo_es", length = 255)
+    private String tipo_es;
+
+    @Column(name = "tipo_en", length = 255)
+    private String tipo_en;
 
     @JsonBackReference
     @OneToMany(mappedBy = "subcategoria")
@@ -40,8 +43,11 @@ public class Subcategoria implements Serializable {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    public Subcategoria(String tipo, Categoria categoria) {
-        this.tipo = tipo;
+    public Subcategoria(String subcategorias_es, String subcategorias_en, Categoria categoria) {
+        this.tipo_es = subcategorias_es;
+        this.tipo_en = subcategorias_en;
         this.categoria = categoria;
     }
+
+
 }
