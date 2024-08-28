@@ -79,7 +79,7 @@ public class ProductoCtrl {
         }
 
         model.addAttribute("pagina", paginaProductos);
-        model.addAttribute("cestas", cestaSrvc.buscarEntidades());
+        model.addAttribute("cestas", cestaSrvc.findByUsuario(usuario));
         model.addAttribute("categorias", categoriaSrvc.buscarEntidades());
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
