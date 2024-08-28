@@ -194,8 +194,6 @@ public class CestaCtrl {
             Cesta cesta = cestaSrvc.encuentraPorId(cestaId)
                     .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-            System.out.println("Usuario autenticado: " + usuario);
-            System.out.println("Usuario de la cesta: " + cesta.getUsuario());
             // Verifica si la cesta pertenece al usuario
             if (!cesta.getUsuario().equals(usuario)) {
                 redirectAttributes.addFlashAttribute("mensajeError", "No tienes permiso para agregar productos a esta cesta.");

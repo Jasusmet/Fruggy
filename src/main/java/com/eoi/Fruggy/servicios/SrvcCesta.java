@@ -55,20 +55,12 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
                 productoEnCesta.setCesta(cesta);
                 productoEnCesta.setProducto(producto);
                 productoEnCesta.setCantidad(cantidad);
-                productoEnCesta.setOrden(getNextOrden(cesta)); // Asignar el siguiente valor de orden
                 cesta.getProductosEnCesta().add(productoEnCesta);
             } else {
                 throw new RuntimeException("La cantidad debe ser mayor que cero para agregar un producto a la cesta.");
             }
         }
         getRepo().save(cesta);
-    }
-
-    private Integer getNextOrden(Cesta cesta) {
-        return cesta.getProductosEnCesta().stream()
-                .mapToInt(ProductoEnCesta::getOrden)
-                .max()
-                .orElse(0) + 1;
     }
 
     @Transactional

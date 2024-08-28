@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{header.login}">Iniciar Sesión</title>
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-</head>
-<body>
 
 <div class="login-container" th:fragment="login">
     <form class="login-form" action="/login" method="post">
@@ -16,30 +7,28 @@
             </a>
         </div>
 
-        <h2>Iniciar sesión</h2>
+        <h2 th:text="#{login.title}">Iniciar sesión</h2>
 
         <div class="input-group">
-            <label for="email">Correo electrónico:</label>
-            <input type="email" id="email" name="username" required placeholder="Introduce tu correo electrónico">
+            <label for="email" th:text="#{login.email}">Correo electrónico:</label>
+            <input type="email" id="email" name="username" required th:placeholder="#{login.email}" placeholder="Introduce tu correo electrónico">
         </div>
 
         <div class="input-group">
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required placeholder="Introduce tu contraseña">
+            <label for="password" th:text="#{login.password}">Contraseña:</label>
+            <input type="password" id="password" name="password" required th:placeholder="#{login.password}" placeholder="Introduce tu contraseña">
         </div>
 
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit" th:text="#{login.submit}">Iniciar sesión</button>
 
         <div class="links">
-            <a href="/login/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
-            <a href="/registro">Registrarse</a>
+            <a th:href="@{/registro}" th:text="#{login.register}">Registrarse</a>
         </div>
         <div class="language-switcher">
-            <a th:href="@{${#httpServletRequest.requestURI}?lang=es}" class="language-button">Español</a>
-            <a th:href="@{${#httpServletRequest.requestURI}?lang=en}" class="language-button">English</a>
+            <a th:href="@{/language/es(redirect=${currentUrl})}" th:text="#{language.spanish}" class="language-button">Español</a>
+            <a th:href="@{/language/en(redirect=${currentUrl})}" th:text="#{language.english}" class="language-button">English</a>
         </div>
+
     </form>
 </div>
 
-</body>
-</html>
