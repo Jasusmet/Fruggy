@@ -44,6 +44,7 @@ public class ProductoCtrl {
                                   @RequestParam(required = false) Long categoriaId,
                                   Model model, @AuthenticationPrincipal Usuario usuario) {
 
+
         Page<Producto> paginaProductos;
 
         if (search != null && !search.isEmpty()) {

@@ -12,24 +12,27 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-4">
                         <div class="filter__found">
-                            <h6><span th:text="${pagina.numberOfElements}"></span> Productos en esta página</h6>
-                        </div>
+                            <span th:text="${pagina.numberOfElements}"></span>
+                            <span th:text="#{product.pageProducts}"></span></div>
                     </div>
                     <div class="col-lg-4 col-md-5">
                         <div class="filter__options">
-                            <span class="filter__label">Ordenar por:</span>
+                            <span class="filter__label" th:text="#{product.sortBy}"></span>
                             <div class="filter__buttons">
                                 <a class="filter__btn"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioAsc')}">Precio
-                                    Menor</a>
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioAsc')}"
+                                   th:text="#{product.sortPriceAsc}">Precio Menor</a>
                                 <a class="filter__btn"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioDesc')}">Precio
-                                    Mayor</a>
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='precioDesc')}"
+                                   th:text="#{product.sortPriceDesc}"></a>
                                 <a class="filter__btn"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='novedades')}">Novedades</a>
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='novedades')}"
+                                   th:text="#{product.sortNewArrivals}"></a>
+
                                 <a class="filter__btn"
-                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='mejorPuntuacion')}">Mejor
-                                    Puntuación</a>
+                                   th:href="@{/productos(page=${currentPage}, size=${pagina.size}, sort='mejorPuntuacion')}"
+                                   th:text="#{product.sortBestRated}"></a>
+
                             </div>
                         </div>
                     </div>
@@ -55,7 +58,7 @@
                                                         <h5 class="modal-title"
                                                             th:text="${producto.nombreProducto}"></h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Cerrar"></button>
+                                                                aria-label="#{product.close}"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <p><strong>Descripción:</strong> <span

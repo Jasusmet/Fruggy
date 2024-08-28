@@ -40,12 +40,12 @@ public class Categoria implements Serializable {
     }
 
     public String getTipo(String idioma) {
-        if ("es".equalsIgnoreCase(idioma)) {
-            return tipo_es;
-        } else if ("en".equalsIgnoreCase(idioma)) {
-            return tipo_en;
-        } else {
-            return tipo_es; // idioma por defecto
+        switch (idioma.toLowerCase()) {
+            case "en":
+                return tipo_en;
+            case "es":
+            default:
+                return tipo_es;
         }
     }
 }

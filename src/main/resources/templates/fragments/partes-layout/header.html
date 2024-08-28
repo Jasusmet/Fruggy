@@ -4,7 +4,7 @@
             <div class="row justify-content-between">
                 <div class="col-lg-6 d-flex align-items-center">
                     <i class="fa fa-envelope mr-2"></i>
-                    <span>fruggy@gmail.com</span>
+                    <span th:text="#{contact.email}">fruggy@gmail.com</span>
                     <div class="header__top__right__social ml-3">
                         <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
@@ -18,24 +18,30 @@
                         <span class="arrow_carrot-down"></span>
                         <ul class="list-unstyled">
                             <!-- Enlace para cambiar a Español -->
-                            <li><a th:href="@{/language/es(redirect=${currentUrl})}" th:text="#{language.spanish}">Español</a>
+                            <li>
+                                <a th:href="@{/language/es(redirect=${currentUrl})}" th:text="#{language.spanish}">Español</a>
                             </li>
                             <!-- Enlace para cambiar a Inglés -->
-                            <li><a th:href="@{/language/en(redirect=${currentUrl})}" th:text="#{language.english}">English</a>
+                            <li>
+                                <a th:href="@{/language/en(redirect=${currentUrl})}" th:text="#{language.english}">English</a>
                             </li>
                         </ul>
                     </div>
                     <div class="header__top__right__auth d-flex align-items-center">
-                        <a href="/usuario/administracion" class="mr-3" sec:authorize="isAuthenticated()"><i
-                                class="fa fa-user"></i> Mi cuenta </a>
-                        <a href="/cestas" class="mr-3" sec:authorize="isAuthenticated()"><i
-                                class="fa fa-shopping-basket"></i> Mis Cestas</a>
-                        <a href="/logout" class="mr-3" sec:authorize="isAuthenticated()"><i
-                                class="fa fa-sign-out-alt"></i> Logout</a>
-                        <a href="/login" sec:authorize="!isAuthenticated()"><i class="fa fa-sign-in-alt"></i> Iniciar
-                            sesión</a>
+                        <a href="/usuario/administracion" class="mr-3" sec:authorize="isAuthenticated()">
+                            <i class="fa fa-user"></i> <span th:text="#{header.my_account}">Mi cuenta</span>
+                        </a>
+                        <a href="/cestas" class="mr-3" sec:authorize="isAuthenticated()">
+                            <i class="fa fa-shopping-basket"></i> <span th:text="#{header.my_baskets}">Mis Cestas</span>
+                        </a>
+                        <a href="/logout" class="mr-3" sec:authorize="isAuthenticated()">
+                            <i class="fa fa-sign-out-alt"></i> <span th:text="#{header.logout}">Logout</span>
+                        </a>
+                        <a href="/login" sec:authorize="!isAuthenticated()">
+                            <i class="fa fa-sign-in-alt"></i> <span th:text="#{header.login}">Iniciar sesión</span>
+                        </a>
                         <a href="/registro" sec:authorize="!isAuthenticated()">
-                            <i class="fa fa-user-plus"></i> Registrarse
+                            <i class="fa fa-user-plus"></i> <span th:text="#{header.register}">Registrarse</span>
                         </a>
                     </div>
                 </div>
@@ -54,15 +60,15 @@
             <div class="col-lg-9">
                 <nav class="header__menu">
                     <ul class="list-unstyled mb-0 d-flex">
-                        <li><a href="/" th:text="#{home}">Inicio</a></li>
+                        <li><a href="/" th:text="#{menu.home}">Inicio</a></li>
                         <li><a href="/productos" th:text="#{menu.products}">Productos</a></li>
-                        <li><a href="/supermercados" th:text="#{supermarket}">Supermercados</a></li>
+                        <li><a href="/supermercados" th:text="#{menu.supermarkets}">Supermercados</a></li>
                         <li class="header__menu__item" sec:authorize="hasRole('Administrator')">
-                            <a href="#" th:text="#{role.admin.es.desc}">Administrador</a>
+                            <a href="#" th:text="#{role.admin.desc}">Administrador</a>
                             <ul class="header__menu__dropdown list-unstyled">
-                                <li><a href="/admin/usuarios" th:text="#{user.usuarios}">Usuarios</a></li>
-                                <li><a href="/admin/productos" th:text="#{menu.products}">Productos</a></li>
-                                <li><a href="/admin/supermercados" th:text="#{supermarket}">Supermercados</a></li>
+                                <li><a href="/admin/usuarios" th:text="#{admin.users}">Usuarios</a></li>
+                                <li><a href="/admin/productos" th:text="#{admin.products}">Productos</a></li>
+                                <li><a href="/admin/supermercados" th:text="#{admin.supermarkets}">Supermercados</a></li>
                             </ul>
                         </li>
                     </ul>
