@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/style.css}" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div th:fragment="tablaAdminUsuarios">
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            <!-- Filtro por Email -->
+            <form method="get" action="/admin/usuarios" class="form-inline mx-auto">
+                <div class="form-group">
+                    <label for="emailFilter" class="sr-only">Filtrar por Email</label>
+                    <input type="text" name="email" id="emailFilter" class="form-control"
+                           th:placeholder="#{search.email}" th:value="#{search.email}">
+                </div>
+                <button type="submit" class="btn btn-primary ml-2" th:text="#{button.search}">Buscar</button>
+            </form>
+        </div>
+        <!-- Dropdown para Ordenar -->
+        <form method="get" th:action="@{/admin/usuarios}" id="sortForm" class="form-inline">
+            <div class="form-group">
+                <label for="sortField" class="sr-only">Ordenar por</label>
+                <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
+                    <option value="id_asc" th:text="#{sort.option.oldest}" th:selected="${sortField == 'id_asc'}">Más Antiguos</option>
+                    <option value="id_desc" th:selected="${sortField == 'id_desc'}" th:text="#{sort.option.newest}">Más Nuevos</option>
+                    <option value="roles" th:selected="${sortField == 'roles'}" th:text="#{sort.option.roles}">Por Roles</option>
+                    <option value="email_asc" th:selected="${sortField == 'email_asc'}" th:text="#{sort.option.emailAsc}">Email (A-Z)</option>
+                    <option value="email_desc" th:selected="${sortField == 'email_desc'}" th:text="#{sort.option.emailDesc}">Email (Z-A)</option>
+                </select>
+            </div>
+            <input type="hidden" name="sortDirection" th:value="${reverseSortDirection}"/>
+        </form>
+    </div>
+    <table class="table table-striped mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{table.header.email}">Email</th>
+            <th th:text="#{table.header.active}">Activo</th>
+            <th th:text="#{table.header.phone}">Teléfono</th>
+            <th th:text="#{table.header.roles}">Roles</th>
+            <th th:text="#{table.header.edit}">Editar</th>
+            <th th:text="#{table.header.delete}">Eliminar</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios.content}">
+            <td th:text="${usuario.email}">Email</td>
+            <td th:text="${usuario.active} ? 'Activo' : 'Inactivo'">Activo</td>
+            <td th:text="${usuario.telefono}">Teléfono</td>
+            <td>
+                <ul>
+                    <li th:each="rol : ${usuario.roles}" th:text="${rol.rolNombre}">Rol</li>
+                </ul>
+            </td>
+            <td>
+                <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" class="btn btn-warning" th:text="#{button.edit}">Editar</a>
+            </td>
+            <td>
+                <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" method="post"
+                      onsubmit="return confirm('¿Estás seguro de eliminar este usuario?');">
+                    <input type="submit" class="btn btn-danger" th:value="#{button.delete}" />
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:if="${usuarios == null or #lists.isEmpty(usuarios.content)}">
+        <p>La lista de usuarios está vacía</p>
+    </div>
+    <!-- Paginación -->
+    <div th:if="${totalPages > 1}" class="d-flex justify-content-center mt-4">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item" th:if="${currentPage > 0}">
+                    <a class="page-link" th:href="@{/admin/usuarios(page=${currentPage - 1})}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+                    <a class="page-link" th:href="@{/admin/usuarios(page=${i})}"
+                       th:text="${i + 1}" th:classappend="${i == currentPage} ? 'active'"></a>
+                </li>
+                <li class="page-item" th:if="${currentPage < totalPages - 1}">
+                    <a class="page-link" th:href="@{/admin/usuarios(page=${currentPage + 1})}" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

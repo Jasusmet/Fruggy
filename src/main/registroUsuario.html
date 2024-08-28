@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Usuario</title>
+    <link rel="stylesheet" href="path/to/bootstrap.min.css"> <!-- Asegúrate de incluir Bootstrap -->
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container" th:fragment="registro-usuario">
+    <section class="user-creation spad">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-title text-center mb-5">
+                        <h2>Crear Usuario</h2>
+                    </div>
+                    <div class="user__creation__form shadow p-4 bg-light rounded" id="usuarioForm">
+                        <form th:action="@{/registro/guardar}" method="post" th:object="${usuario}">
+                            <div class="row">
+                                <!-- Columna izquierda -->
+                                <div class="col-lg-6">
+                                    <!-- Campo de email -->
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{email}" class="form-control"
+                                               placeholder="Correo Electrónico" required>
+                                        <div th:if="${#fields.hasErrors('email')}" class="alert alert-danger">
+                                            <p th:each="err : ${#fields.errors('email')}" th:text="${err}"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo de contraseña -->
+                                    <div class="mb-3">
+                                        <input type="password" th:field="*{password}" class="form-control"
+                                               placeholder="Contraseña" required>
+                                        <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger">
+                                            <p th:each="err : ${#fields.errors('password')}" th:text="${err}"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo de teléfono -->
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{telefono}" class="form-control"
+                                               placeholder="Teléfono">
+                                        <div th:if="${#fields.hasErrors('telefono')}" class="alert alert-danger">
+                                            <p th:each="err : ${#fields.errors('telefono')}" th:text="${err}"></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo de nombre de usuario -->
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{detalle.nombreUsuario}" class="form-control"
+                                               placeholder="Nombre de Usuario" required>
+                                    </div>
+
+                                    <!-- Campo de nombre -->
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{detalle.nombre}" class="form-control"
+                                               placeholder="Nombre" required>
+                                    </div>
+
+                                    <!-- Campo de apellido -->
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{detalle.apellido}" class="form-control"
+                                               placeholder="Apellido" required>
+                                    </div>
+                                </div>
+
+                                <!-- Columna derecha -->
+                                <div class="col-lg-6">
+                                    <!-- Campo de edad -->
+                                    <div class="mb-3">
+                                        <input type="number" th:field="*{detalle.edad}" class="form-control"
+                                               placeholder="Edad" required>
+                                    </div>
+
+                                    <!-- Campos de dirección -->
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{detalle.calle}" class="form-control"
+                                               placeholder="Calle">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{detalle.municipio}" class="form-control"
+                                               placeholder="Municipio">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="text" th:field="*{detalle.pais}" class="form-control"
+                                               placeholder="País">
+                                    </div>
+                                    <div class="mb-3">
+                                        <input type="number" th:field="*{detalle.codigopostal}" class="form-control"
+                                               placeholder="Código Postal">
+                                    </div>
+
+                                    <!-- Selección de Género -->
+                                    <div class="mb-3">
+                                        <label for="generoId" class="form-label">Género</label>
+                                        <select id="generoId" th:field="*{detalle.genero.id}" class="form-select"
+                                                required>
+                                            <option value="" disabled selected>Seleccione un género</option>
+                                            <option th:each="genero : ${generos}"
+                                                    th:value="${genero.id}"
+                                                    th:text="${genero.descripcion}"></option>
+                                        </select>
+                                        <div th:if="${#fields.hasErrors('detalle.genero.id')}"
+                                             class="alert alert-danger mt-2">
+                                            <p th:each="err : ${#fields.errors('detalle.genero.id')}"
+                                               th:text="${err}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campos ocultos -->
+                            <input type="hidden" th:field="*{roles}" value="ROLE_USER"/>
+                            <input type="hidden" th:field="*{active}" value="true"/>
+
+                            <!-- Botón de guardar -->
+                            <div class="col-lg-12 text-center mt-4">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                        <div th:if="${error}" class="alert alert-danger mt-3" role="alert">
+                            <span th:text="${error}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
