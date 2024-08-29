@@ -2,11 +2,23 @@ document.addEventListener('DOMContentLoaded', function () {
     let categoriaSelect = document.getElementById('categoria');
     let subcategoriaSelect = document.getElementById('subcategoria');
 
-    categoriaSelect.addEventListener('change', function () {
-        let categoriaId = this.value;
+    // Función para obtener el idioma desde una fuente global o `localStorage`
+    function getCurrentLanguage() {
+        // Supongamos que `window.currentLanguage` o `localStorage.getItem('language')` contiene el idioma actual
+        return window.currentLanguage || 'es'; // 'es' es el idioma por defecto
+    }
 
-        // Define la URL de la API
-        const apiUrl = '/api/subcategorias?categoriaId=' + categoriaId;
+    function actualizarSubcategorias() {
+        let categoriaId = categoriaSelect.value;
+        let idioma = getCurrentLanguage(); // Obtén el idioma actual
+
+        if (!categoriaId) {
+            subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
+            return;
+        }
+
+        // Define la URL de la API con el idioma actual
+        const apiUrl = `/api/subcategorias?categoriaId=${categoriaId}&idioma=${idioma}`;
 
         // Realiza una solicitud GET
         fetch(apiUrl)
@@ -17,9 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                // Verifica la estructura de los datos
-                console.log(data);
-
                 // Limpia las subcategorías actuales
                 subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
 
@@ -27,12 +36,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 data.forEach(subcategoria => {
                     let option = document.createElement('option');
                     option.value = subcategoria.id;
-                    option.textContent = subcategoria.tipo_es; // Usa el campo en español o el que prefieras
+                    // Usa el campo según el idioma seleccionado
+                    option.textContent = idioma === 'en' ? subcategoria.tipo_en : subcategoria.tipo_es;
                     subcategoriaSelect.appendChild(option);
                 });
             })
             .catch(error => {
                 console.error('Error:', error);
             });
-    });
+    }
+
+    // Evento cuando cambia la categoría
+    categoriaSelect.addEventListener('change', actualizarSubcategorias);
+
+    // Inicializar subcategorías en carga de la página si ya hay una categoría seleccionada
+    actualizarSubcategorias();
 });
