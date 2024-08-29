@@ -11,6 +11,7 @@ import com.eoi.Fruggy.servicios.SrvcUsuario;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,9 +50,14 @@ public class UsuarioCtrl {
         Detalle detalle = new Detalle();
         detalle.setGenero(new Genero());
         usuario.setDetalle(detalle);
+
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
+
         model.addAttribute("usuario", usuario);
         model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
         model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+        model.addAttribute("idioma", idioma);
         return "usuarios/registroUsuario";
     }
 
@@ -63,34 +70,36 @@ public class UsuarioCtrl {
             return "usuarios/registroUsuario";
         }
 
-        try {
-            // Verificar existencia del email
-            if (usuarioSrvc.getRepo().findByEmail(usuario.getEmail()).isPresent()) {
-                model.addAttribute("error", "El correo electrónico ya está en uso.");
-                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-                model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-                return "usuarios/registroUsuario";
-            }
+        // Validación del email
+        if (usuarioSrvc.getRepo().findByEmail(usuario.getEmail()).isPresent()) {
+            model.addAttribute("error", "El correo electrónico ya está en uso.");
+            model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+            return "usuarios/registroUsuario";
+        }
 
-            // Validaciones y guardado del usuario
-            Detalle detalle = usuario.getDetalle();
-            if (detalle != null && detalle.getGenero() != null && detalle.getGenero().getId() != null) {
-                Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
-                if (generoOptional.isPresent()) {
-                    detalle.setGenero(generoOptional.get());
-                } else {
-                    model.addAttribute("error", "Género no encontrado");
-                    model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
-                    model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
-                    return "usuarios/registroUsuario";
-                }
-            } else {
+        // Validaciones adicionales
+        Detalle detalle = usuario.getDetalle();
+        if (detalle != null) {
+            if (detalle.getGenero() == null || detalle.getGenero().getId() == null) {
                 model.addAttribute("error", "Género no seleccionado");
                 model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
                 model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
                 return "usuarios/registroUsuario";
             }
 
+            Optional<Genero> generoOptional = generoSrvc.encuentraPorId(detalle.getGenero().getId());
+            if (generoOptional.isPresent()) {
+                detalle.setGenero(generoOptional.get());
+            } else {
+                model.addAttribute("error", "Género no encontrado");
+                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+                return "usuarios/registroUsuario";
+            }
+        }
+
+        try {
             detalle = detalleSrvc.guardar(detalle);
 
             Set<Rol> roles = new HashSet<>();
@@ -107,7 +116,7 @@ public class UsuarioCtrl {
             usuario.setDetalle(detalle);
             usuarioSrvc.guardar(usuario);
         } catch (Exception e) {
-            model.addAttribute("error", "El nombre de usuario ya está en uso. Intenta con otro.");
+            model.addAttribute("error", "Error al guardar el usuario. Intenta con otro nombre de usuario.");
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
             return "usuarios/registroUsuario";
@@ -116,13 +125,16 @@ public class UsuarioCtrl {
         return "redirect:/login";
     }
 
-
     @GetMapping("usuario/administracion")
     public String administracionCuenta(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Optional<Usuario> usuarioOpt = usuarioSrvc.getRepo().findByEmail(userDetails.getUsername());
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
         if (usuarioOpt.isPresent()) {
             model.addAttribute("usuario", usuarioOpt.get());
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            model.addAttribute("roles", rolSrvc.buscarEntidadesSet());
+            model.addAttribute("idioma", idioma);
             return "usuarios/usuario-administracion-cuenta";
         }
         return "redirect:/login";
@@ -131,6 +143,9 @@ public class UsuarioCtrl {
     @GetMapping("usuario/administracion/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Optional<Usuario> usuarioOpt = usuarioSrvc.encuentraPorId(id);
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
+
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
 
@@ -141,6 +156,7 @@ public class UsuarioCtrl {
 
             model.addAttribute("usuario", usuario);
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            model.addAttribute("idioma", idioma);
             return "usuarios/editarUsuario";
         }
         return "redirect:/login"; // Si el usuario no se encuentra, redirigir al login
@@ -150,8 +166,12 @@ public class UsuarioCtrl {
     public String editarUsuario(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario,
                                 BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails,
                                 Model model) {
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+            model.addAttribute("idioma", idioma);
             return "usuarios/editarUsuario";
         }
 
@@ -164,18 +184,29 @@ public class UsuarioCtrl {
                 } else {
                     model.addAttribute("error", "Género no encontrado");
                     model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                    model.addAttribute("idioma", idioma);
                     return "usuarios/editarUsuario";
                 }
             } else {
                 model.addAttribute("error", "Género no seleccionado");
                 model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                model.addAttribute("idioma", idioma);
+                return "usuarios/editarUsuario";
+            }
+
+            // Verificar si el nombre de usuario ya está en uso, excluyendo el usuario actual
+            Optional<Detalle> existingDetalle = detalleSrvc.findByNombreUsuarioExcludingId(usuario.getDetalle().getNombreUsuario(), usuario.getDetalle().getId());
+            if (existingDetalle.isPresent()) {
+                model.addAttribute("error", "El nombre de usuario ya está en uso.");
+                model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
+                model.addAttribute("idioma", idioma);
                 return "usuarios/editarUsuario";
             }
 
             usuario.setId(id);
             usuarioSrvc.guardar(usuario);
         } catch (Exception e) {
-            model.addAttribute("error", "El nombre de usuario ya está en uso. Intenta con otro.");
+            model.addAttribute("error", "Error al guardar la edición del usuario. Inténtalo de nuevo.");
             model.addAttribute("generos", generoSrvc.buscarEntidadesSet());
             return "usuarios/editarUsuario";
         }

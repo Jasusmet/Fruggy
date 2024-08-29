@@ -68,6 +68,13 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         usuario.setRoles(rolesSet);
         return guardar(usuario);
     }
+    public void guardarEdicion(Usuario usuario) throws Exception {
+        Optional<Usuario> existingUser = repoUsuario.findByEmail(usuario.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(usuario.getId())) {
+            throw new Exception("El correo electrónico ya está en uso.");
+        }
+        repoUsuario.save(usuario);
+    }
 
     public Set<Rol> obtenerRolesPorUsuario(Long usuarioId) {
         Optional<Usuario> usuario = encuentraPorId(usuarioId);

@@ -48,7 +48,7 @@
             <div class="col-lg-6 col-md-6 mb-3">
                 <label for="telefono" class="form-label" th:text="#{edit.user.phone}">Phone</label>
                 <input type="tel" id="telefono" th:field="*{telefono}" class="form-control"
-                       th:placeholder="#{edit.user.phonePlaceholder}">
+                       th:placeholder="#{phone_placeholder}">
                 <div th:if="${#fields.hasErrors('telefono')}" class="alert alert-danger">
                     <p th:each="err : ${#fields.errors('telefono')}" th:text="${err}"></p>
                 </div>
@@ -84,17 +84,22 @@
 
             <!-- Selección de Género -->
             <div class="mb-3">
-                <label for="generoId" class="form-label" th:text="#{edit.user.gender}">Gender</label>
+                <label for="generoId" class="form-label" th:text="#{gender_label}">Gender</label>
                 <select id="generoId" th:field="*{detalle.genero.id}" class="form-select" required>
-                    <option value="" disabled selected th:text="#{edit.user.selectGender}">Select a gender</option>
+                    <option value="" disabled selected th:text="#{select_gender}">Select a gender</option>
                     <option th:each="genero : ${generos}"
                             th:value="${genero.id}"
-                            th:text="${genero.descripcion}"></option>
+                            th:text="${#fields.hasErrors('detalle.genero.id') ? 'error' : (idioma == 'es' ? genero.esDesc : genero.enDesc)}">
+                    </option>
                 </select>
+                <div th:if="${#fields.hasErrors('detalle.genero.id')}" class="alert alert-danger">
+                    <p th:each="err : ${#fields.errors('detalle.genero.id')}" th:text="${err}"></p>
+                </div>
             </div>
+            <button type="submit" class="btn btn-primary" th:text="#{edit.user.save}">Save Changes</button>
+            <a href="#" th:href="@{/usuario/administracion}" class="btn btn-secondary"
+               th:text="#{edit.user.cancel}">Cancel</a>
         </div>
-        <button type="submit" class="btn btn-primary" th:text="#{edit.user.save}">Save Changes</button>
-        <a href="#" th:href="@{/usuario/administracion}" class="btn btn-secondary"
-           th:text="#{edit.user.cancel}">Cancel</a>
     </form>
+
 </div>

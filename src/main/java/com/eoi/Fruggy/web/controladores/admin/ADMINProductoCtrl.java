@@ -53,6 +53,7 @@ public class ADMINProductoCtrl {
                                   @RequestParam(defaultValue = "10") int size,
                                   @RequestParam(defaultValue = "id") String sortField,
                                   @RequestParam(defaultValue = "asc") String sortDirection,
+                                  @RequestParam(defaultValue = "") String search,
                                   Model model) {
 
         // Ajustar el campo de ordenación y la dirección de acuerdo con los parámetros proporcionados

@@ -44,7 +44,8 @@ public class Usuario implements Serializable, UserDetails {
     @Column(name = "password", length = 250)
     private String password;
 
-    @Column(name = "telefono", length = 30)
+    @Size(max = 15, message = "El teléfono no puede tener más de 15 caracteres.")
+    @Column(name = "telefono", length = 15)
     private String telefono;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

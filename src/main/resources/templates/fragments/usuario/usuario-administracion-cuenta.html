@@ -13,8 +13,9 @@
                     th:text="${usuario.telefono}"></span></p>
             <p><strong th:text="#{account.management.age}">Edad:</strong> <span
                     th:text="${usuario.detalle.edad}"></span></p>
-            <p><strong th:text="#{account.management.gender}">Género:</strong> <span
-                    th:text="${usuario.detalle.genero.descripcion}"></span></p>
+            <p> <strong th:text="#{account.management.gender}">Género:</strong>
+                <span th:text="${usuario.detalle.genero != null ? (idioma == 'es' ? usuario.detalle.genero.esDesc : usuario.detalle.genero.enDesc) : 'en'}"></span>
+            </p>
             <p><strong th:text="#{account.management.address}">Dirección:</strong></p>
             <p><strong th:text="#{account.management.street}">Calle:</strong> <span
                     th:text="${usuario.detalle.calle}"></span></p>

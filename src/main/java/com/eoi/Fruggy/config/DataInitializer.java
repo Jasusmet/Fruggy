@@ -59,9 +59,15 @@ public class DataInitializer {
 
         // Inicialización de géneros
         if (repoGenero.count() == 0) {
-            repoGenero.save(new Genero(messageSource.getMessage("gender.male", null, locale)));
-            repoGenero.save(new Genero(messageSource.getMessage("gender.female", null, locale)));
-            repoGenero.save(new Genero(messageSource.getMessage("gender.other", null, locale)));
+            repoGenero.save(new Genero(
+                    messageSource.getMessage("gender.es.male", null, locale),
+                    messageSource.getMessage("gender.en.male", null, locale)));
+            repoGenero.save(new Genero(
+                    messageSource.getMessage("gender.es.female", null, locale),
+                    messageSource.getMessage("gender.en.female", null, locale)));
+            repoGenero.save(new Genero(
+                    messageSource.getMessage("gender.es.other", null, locale),
+                    messageSource.getMessage("gender.en.other", null, locale)));
         }
 
         try {

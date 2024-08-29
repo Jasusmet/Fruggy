@@ -20,18 +20,22 @@ import java.util.Set;
 public class Genero implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "descripcion")
-    private String descripcion;
+    @Column(name = "es_desc", nullable = false)
+    private String esDesc;
+
+    @Column(name = "en_desc", nullable = false)
+    private String enDesc;
 
     @OneToMany(mappedBy = "genero")
     private Set<Detalle> detalles;
 
-    public Genero(String descripcion) {
-        this.descripcion = descripcion;
+    public Genero(String es, String en) {
+        this.esDesc = es;
+        this.enDesc = en;
         this.detalles = new HashSet<>();
-        }
+    }
 }

@@ -55,14 +55,7 @@
             </div>
         </div>
 
-        <!-- Campo para Nombre de Usuario -->
-        <div class="mb-3">
-            <label for="nombreUsuario" class="form-label" th:text="#{form.username}">Username</label>
-            <input type="text" th:field="*{detalle.nombreUsuario}" id="nombreUsuario" class="form-control" required>
-            <div th:if="${#fields.hasErrors('detalle.nombreUsuario')}" class="text-danger">
-                <span th:errors="*{detalle.nombreUsuario}">Error de validación</span>
-            </div>
-        </div>
+        <!-- Eliminar el campo nombreUsuario del formulario -->
 
         <div class="mb-3">
             <label for="apellido" class="form-label" th:text="#{form.lastname}">Last Name</label>
@@ -112,15 +105,18 @@
             </div>
         </div>
 
+        <!-- Selección de Género -->
         <div class="mb-3">
-            <label for="genero" class="form-label" th:text="#{form.gender}">Gender</label>
-            <select th:field="*{detalle.genero.id}" class="form-control" required>
-                <option value="" disabled selected th:text="#{form.selectGender}">Select a gender</option>
-                <option th:each="genero : ${generos}" th:value="${genero.id}" th:text="${genero.descripcion}">Gender
+            <label for="generoId" class="form-label" th:text="#{gender_label}">Gender</label>
+            <select id="generoId" th:field="*{detalle.genero.id}" class="form-select" required>
+                <option value="" disabled selected th:text="#{select_gender}">Select a gender</option>
+                <option th:each="genero : ${generos}"
+                        th:value="${genero.id}"
+                        th:text="${#fields.hasErrors('detalle.genero.id') ? 'error' : (idioma == 'es' ? genero.esDesc : genero.enDesc)}">
                 </option>
             </select>
-            <div th:if="${#fields.hasErrors('detalle.genero')}" class="text-danger">
-                <span th:errors="*{detalle.genero}">Error de validación</span>
+            <div th:if="${#fields.hasErrors('detalle.genero.id')}" class="alert alert-danger">
+                <p th:each="err : ${#fields.errors('detalle.genero.id')}" th:text="${err}"></p>
             </div>
         </div>
 

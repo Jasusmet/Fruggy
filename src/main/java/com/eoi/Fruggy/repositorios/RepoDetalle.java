@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface RepoDetalle extends JpaRepository<Detalle, Long> {
-    Optional<Detalle> findByNombre(String nombre);
-
+    Optional<Detalle> findByNombreUsuario(String nombreUsuario);
+    Optional<Detalle> findByNombreUsuarioAndIdNot(String nombreUsuario, Long id);
 }

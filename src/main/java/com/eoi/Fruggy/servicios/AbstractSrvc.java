@@ -70,5 +70,6 @@ public abstract class AbstractSrvc<E, ID, REPO extends JpaRepository<E, ID>> {
         return repo;
     }
 
+
 }
 
