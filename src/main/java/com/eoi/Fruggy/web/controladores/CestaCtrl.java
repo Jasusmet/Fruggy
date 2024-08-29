@@ -25,9 +25,11 @@ import org.thymeleaf.model.IModel;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/cestas")
@@ -51,7 +53,15 @@ public class CestaCtrl {
     @GetMapping
     public String listarCestas(@AuthenticationPrincipal Usuario usuario, Model model) {
         List<Cesta> cestas = cestaSrvc.findByUsuario(usuario);
-        model.addAttribute("cestas", cestas);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        List<Cesta> cestasFormateadas = cestas.stream()
+                .map(cesta -> {
+                    cesta.setFechaFormateada(cesta.getFecha().format(formatter)); // Asumimos que Cesta tiene este método
+                    return cesta;
+                })
+                .collect(Collectors.toList());
+
+        model.addAttribute("cestas", cestasFormateadas);
         model.addAttribute("usuario", usuario);
         return "cestas/cesta-lista";
     }

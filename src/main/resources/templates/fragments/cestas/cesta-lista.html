@@ -16,7 +16,7 @@
             <tbody>
             <tr th:each="cesta : ${cestas}">
                 <td th:text="${cesta.nombre}"></td>
-                <td th:text="${cesta.fecha}"></td>
+                <td th:text="${cesta.fechaFormateada}"></td>
                 <td>
                     <a th:href="@{/cestas/{id}(id=${cesta.id})}" class="btn btn-info btn-sm"
                        th:text="#{basket.view.details}">Ver Detalles</a>

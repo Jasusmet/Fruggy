@@ -68,6 +68,8 @@ public class ADMINProductoCtrl {
 
         // Obtener la página de productos ordenada según el campo y la dirección especificados
         Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size, sortField, sortDirection);
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
 
         // Añadir atributos al modelo
         model.addAttribute("productos", paginaProductos);
@@ -76,6 +78,7 @@ public class ADMINProductoCtrl {
         model.addAttribute("currentSortField", sortField);
         model.addAttribute("currentSortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
+        model.addAttribute("idioma",idioma);
 
         // Devolver la vista
         return "/admin/CRUD-Productos";
@@ -156,7 +159,8 @@ public class ADMINProductoCtrl {
         List<Subcategoria> subcategorias = subcategoriasSrvc.buscarEntidades();
         List<Categoria> categorias = categoriasSrvc.buscarEntidades();
         List<Supermercado> supermercados = supermercadoSrvc.buscarEntidades();
-        String idioma = LocaleContextHolder.getLocale().getLanguage();
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
 
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
@@ -252,9 +256,12 @@ public class ADMINProductoCtrl {
     public String mostrarFormularioDescuento(@PathVariable Long id, Model model) {
         Optional<Producto> producto = productosSrvc.encuentraPorId(id);
         List<TipoDescuento> tiposDescuento = tipoDescuentoSrvc.buscarEntidades();
+        Locale locale = LocaleContextHolder.getLocale();
+        String idioma = locale.getLanguage();
         if (producto.isPresent()) {
             model.addAttribute("producto", producto.get());
             model.addAttribute("tiposDescuento", tiposDescuento);
+            model.addAttribute("idioma", idioma);
         }
         return "/admin/agregar-descuento";
     }

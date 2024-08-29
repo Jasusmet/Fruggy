@@ -71,9 +71,11 @@
                                                             <span th:if="${producto.descuentos.size() > 0}">
                                                                 <span th:each="descuento : ${producto.descuentos}">
                                                                     <span th:if="${descuento.activo}">
-                                                                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% descuento)'}"></span>
-                                                                    </span>
-                                                                </span>
+                                                                        <!-- Precio con descuento -->
+                                                                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' €'}"></span>
+                                                                        <!-- Texto del descuento con porcentaje -->
+                                                                        <span th:text="' (' + ${descuento.porcentaje} + ' ' + #{product.discount} + ')'"></span>
+                                                                 </span>
                                                             </span>
                                                             <span th:if="${producto.descuentos.size() == 0}"
                                                                   th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
@@ -113,7 +115,10 @@
                                             <span th:if="${producto.descuentos.size() > 0}">
                                                 <span th:each="descuento : ${producto.descuentos}">
                                                     <span th:if="${descuento.activo}">
-                                                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% descuento)'}"></span>
+                                                        <!-- Precio con descuento -->
+                                                                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' €'}"></span>
+                                                        <!-- Texto del descuento con porcentaje -->
+                                                                        <span th:text="' (' + ${descuento.porcentaje} + ' ' + #{product.discount} + ')'"></span>
                                                     </span>
                                                 </span>
                                             </span>
@@ -162,6 +167,7 @@
                                                             <input type="hidden" name="productoId"
                                                                    th:value="${producto.id}"/>
                                                             <input type="hidden" name="cantidad" value="1"/>
+
 
                                                             <!-- Lista de cestas disponibles -->
                                                             <div th:if="${cestas.size() > 0}">

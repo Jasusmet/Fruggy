@@ -124,7 +124,7 @@ public class ProductoCtrl {
     }
 
     @GetMapping("/detalles/{id}")
-    public String verDetallesProducto(@PathVariable("id") Long productoId, Model model) throws Throwable {
+    public String verDetallesProducto(@PathVariable("id") Long productoId, Model model, @AuthenticationPrincipal Usuario usuario) throws Throwable {
         Producto producto = productosSrvc.encuentraPorId(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + productoId));
         List<ValoracionProducto> valoraciones = valProductosSrvc.obtenerValoracionesPorProducto(productoId);
@@ -142,6 +142,7 @@ public class ProductoCtrl {
         model.addAttribute("notaMedia", notaMedia);
         model.addAttribute("valoracion", new ValoracionProducto());
         model.addAttribute("productosSimilares", productosSimilares);
+        model.addAttribute("cestas", cestaSrvc.findByUsuario(usuario));
 
         return "productos/detalles-producto";
     }

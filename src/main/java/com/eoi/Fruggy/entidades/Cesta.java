@@ -38,6 +38,8 @@ public class Cesta implements Serializable {
 
     @Column(name = "fecha")
     private LocalDateTime fecha;
+    @Transient
+    private String fechaFormateada;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id")

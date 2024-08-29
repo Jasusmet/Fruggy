@@ -54,8 +54,13 @@
             <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">
                 Supermarket
             </td>
-            <td th:text="${producto.subcategoria.categoria.getTipo('${idioma}')}">Category</td>
-            <td th:text="${producto.subcategoria.tipo}">Subcategory</td>
+            </td>
+            <td th:text="${producto.subcategoria != null ? (idioma == 'es' ? producto.subcategoria.categoria.tipo_es : producto.subcategoria.categoria.tipo_en) : 'No disponible'}">
+                Category
+            </td>
+            <td th:text="${producto.subcategoria != null ? (idioma == 'es' ? producto.subcategoria.tipo_es : producto.subcategoria.tipo_en) : 'No disponible'}">
+                Subcategory
+            </td>
             <td th:text="${producto.activo} ? 'Sí' : 'No'">Active</td>
             <td>
                 <a th:href="@{'/admin/productos/descuento/' + ${producto.id}}" class="btn btn-outline-success"

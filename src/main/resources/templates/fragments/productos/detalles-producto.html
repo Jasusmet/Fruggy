@@ -28,8 +28,10 @@
                     <span th:if="${producto.descuentos.size() > 0}">
                         <span th:each="descuento : ${producto.descuentos}">
                             <span th:if="${descuento.activo}">
-                                <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
-                            </span>
+                                <!-- Precio con descuento -->
+                                <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' €'}"></span>
+                                <!-- Texto del descuento con porcentaje -->
+                                <span th:text="' (' + ${descuento.porcentaje} + ' ' + #{product.discount} + ')'"></span>                            </span>
                         </span>
                     </span>
                     <span th:if="${producto.descuentos.size() == 0}"
@@ -39,6 +41,65 @@
                 <!-- Nombre del supermercado -->
                 <p><strong th:text="#{producto.details.supermarket}"></strong> <span
                         th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
+                <!-- Botón para añadir a la cesta -->
+                <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
+                        th:data-bs-target="'#selectBasketModal' + ${producto.id}"
+                        th:text="#{product.addToBasket}"></button>
+
+                <!-- Modal para añadir a cesta -->
+                <div class="modal fade" th:id="'selectBasketModal' + ${producto.id}"
+                     tabindex="-1" aria-labelledby="'selectBasketLabel' + ${producto.id}"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="selectBasketLabel"
+                                    th:text="#{product.selectBasket}">Seleccionar
+                                    Cesta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="#{product.close}"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/cestas/agregarProducto}" method="post">
+                                    <input type="hidden" name="productoId"
+                                           th:value="${producto.id}"/>
+                                    <input type="hidden" name="cantidad" value="1"/>
+
+                                    <!-- Lista de cestas disponibles -->
+                                    <div th:if="${cestas.size() > 0}">
+                                        <label for="cestaId" th:text="#{product.selectBasket}">Selecciona
+                                            una cesta:</label>
+                                        <select id="cestaId" name="cestaId" class="form-select">
+                                            <option th:each="cesta : ${cestas}"
+                                                    th:value="${cesta.id}"
+                                                    th:text="${cesta.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${cestas.size() == 0}">
+                                        <p th:text="#{product.noBasket}"></p>
+                                        <div class="mt-3">
+                                            <label for="nuevaCesta"
+                                                   th:text="#{product.createNewBasket}"></label>
+                                            <input type="text" id="nuevaCesta" name="nuevaCesta"
+                                                   class="form-control"
+                                                   placeholder="Nombre de la nueva cesta"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón para enviar el formulario -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal"
+                                                th:text="#{product.cancel}"></button>
+                                        <button type="submit" class="btn btn-primary"
+                                                th:text="#{product.save}"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Nota media del producto -->
                 <h2 th:text="#{producto.details.averageRating}"></h2>
@@ -57,23 +118,81 @@
                          class="card-img-top similar-product-img"
                          alt="Imagen del Producto">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${similarProducto.nombreProducto}"></h5>
+                        <h5 class="card-title">
+                            <span th:text="${similarProducto.nombreProducto}"></span>
+                        </h5>
                         <p class="card-text">
                             <strong th:text="#{producto.details.price}"></strong>
                             <span th:if="${similarProducto.descuentos.size() > 0}">
-                                <span th:each="descuento : ${similarProducto.descuentos}">
-                                    <span th:if="${descuento.activo}">
-                                        <span th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
-                                    </span>
+                            <span th:each="descuento : ${similarProducto.descuentos}">
+                                <span th:if="${descuento.activo}">
+                                    <span th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
                                 </span>
                             </span>
+                        </span>
                             <span th:if="${similarProducto.descuentos.size() == 0}"
                                   th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor, 1, 2) + ' €'}"></span>
                         </p>
                         <a th:href="@{/productos/detalles/{id}(id=${similarProducto.id})}" class="btn btn-primary"
                            th:text="#{producto.details.viewDetails}"></a>
+                        <!-- Ícono para añadir a la cesta -->
+                        <button type="button" class="btn btn-link p-0 ms-3" data-bs-toggle="modal"
+                                th:data-bs-target="'#selectBasketModalSimilar' + ${similarProducto.id}"
+                                title="Añadir a la cesta">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
                     </div>
                 </div>
+
+                <!-- Modal para añadir a cesta en productos similares -->
+                <div class="modal fade" th:id="'selectBasketModalSimilar' + ${similarProducto.id}" tabindex="-1"
+                     aria-labelledby="'selectBasketLabelSimilar' + ${similarProducto.id}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="selectBasketLabelSimilar"
+                                    th:text="#{product.selectBasket}">Seleccionar Cesta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="#{producto.details.close}"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/cestas/agregarProducto}" method="post">
+                                    <input type="hidden" name="productoId" th:value="${similarProducto.id}"/>
+                                    <input type="hidden" name="cantidad" value="1"/>
+
+                                    <!-- Lista de cestas disponibles -->
+                                    <div th:if="${cestas.size() > 0}">
+                                        <label for="cestaIdSimilar" th:text="#{product.selectBasket}">Selecciona
+                                            una cesta:</label>
+                                        <select id="cestaIdSimilar" name="cestaId" class="form-select">
+                                            <option th:each="cesta : ${cestas}" th:value="${cesta.id}"
+                                                    th:text="${cesta.nombre}"></option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${cestas.size() == 0}">
+                                        <p th:text="#{product.noBasket}"></p>
+                                        <div class="mt-3">
+                                            <label for="nuevaCestaSimilar"
+                                                   th:text="#{product.createNewBasket}"></label>
+                                            <input type="text" id="nuevaCestaSimilar" name="nuevaCesta"
+                                                   class="form-control"
+                                                   placeholder="Nombre de la nueva cesta"/>
+                                        </div>
+                                    </div>
+
+                                    <!-- Botón para enviar el formulario -->
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                                th:text="#{product.cancel}"></button>
+                                        <button type="submit" class="btn btn-primary"
+                                                th:text="#{product.save}"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

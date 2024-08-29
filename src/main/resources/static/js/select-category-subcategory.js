@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', function () {
     categoriaSelect.addEventListener('change', function () {
         let categoriaId = this.value;
 
-        // Define the API URL
+        // Define la URL de la API
         const apiUrl = '/api/subcategorias?categoriaId=' + categoriaId;
 
-        // Make a GET request
+        // Realiza una solicitud GET
         fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
@@ -17,19 +17,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                let subcategorias = data;
+                // Verifica la estructura de los datos
+                console.log(data);
 
                 // Limpia las subcategorías actuales
                 subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
 
                 // Añade nuevas subcategorías
-                subcategorias.forEach(subcategoria => {
+                data.forEach(subcategoria => {
                     let option = document.createElement('option');
                     option.value = subcategoria.id;
-                    option.textContent = subcategoria.tipo;
+                    option.textContent = subcategoria.tipo_es; // Usa el campo en español o el que prefieras
                     subcategoriaSelect.appendChild(option);
                 });
-
             })
             .catch(error => {
                 console.error('Error:', error);

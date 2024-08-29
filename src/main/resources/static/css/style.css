@@ -12,7 +12,6 @@ html, body {
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
     overflow-x: hidden; /* Previene el desplazamiento horizontal en toda la página */
-
 }
 
 h1, h6 {
@@ -22,24 +21,23 @@ h1, h6 {
 }
 
 h1 {
-    font-size: 70px;
+    font-size: 2.5rem; /* Tamaño de fuente más ajustado para la página */
 }
 
 h6 {
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 p {
-    font-size: 16px;
-    font-family: "Cairo", sans-serif;
+    font-size: 1rem;
     color: #6f6f6f;
-    font-weight: 400;
-    line-height: 26px;
-    margin: 0 0 15px 0;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
 }
 
 img {
     max-width: 100%;
+    height: auto;
 }
 
 input:focus, select:focus, button:focus, textarea:focus {
@@ -52,19 +50,14 @@ a:hover, a:focus {
     color: lightgreen;
 }
 
-/*---------------------
-  General Styles
------------------------*/
 body {
-    font-family: 'Cairo', sans-serif;
-    line-height: 1.6;
     background-color: #f8f9fa;
 }
 
 .container {
-    max-width: 1200px; /* Ajusta el ancho máximo del contenedor */
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px; /* Espaciado a los lados para evitar el desbordamiento */
+    padding: 0 15px;
 }
 
 .section-title h2 {
@@ -76,384 +69,330 @@ body {
 /*---------------------
   Product Details
 -----------------------*/
-
-.product-images,
-.product-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Alinea verticalmente al centro */
+.product-images {
+    margin-bottom: 1rem;
 }
 
 .product-img {
     max-width: 100%;
     height: auto;
+    border-radius: 8px;
 }
 
-/* Ajustar el estilo del producto en detalles */
-
-.product h1 {
-    font-size: 1.5rem; /* Tamaño de fuente más pequeño para el título */
-    margin-bottom: 10px;
+.product-details {
+    margin-top: 1rem;
 }
 
 .product-details p {
-    font-size: 0.875rem; /* Tamaño de fuente más pequeño para los detalles */
-    margin-bottom: 8px; /* Espaciado entre párrafos reducido */
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
 }
 
-/* Detalles del precio */
-
 .product-details p strong {
-    color: #007bff; /* Color azul para etiquetas */
+    color: #007bff;
 }
 
 .product-details .product-price {
-    font-size: 1.5rem; /* Tamaño de fuente para el precio */
-    color: #00FF00; /* Color verde para precios con descuento */
-    font-weight: bold; /* Texto en negrita para el precio */
+    font-size: 1.5rem;
+    color: #00FF00;
+    font-weight: bold;
 }
-
-/* Estilo de la tarjeta de productos similares */
 
 .similar-product-card {
     border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra más sutil */
-    margin-bottom: 15px; /* Espaciado inferior reducido */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
     background-color: #ffffff;
     transition: transform 0.3s;
 }
 
 .similar-product-card:hover {
-    transform: scale(1.02); /* Escala ligeramente la tarjeta al pasar el ratón */
+    transform: scale(1.02);
 }
 
 .similar-product-img {
-    height: 150px; /* Altura más pequeña para las imágenes de productos similares */
+    height: 150px;
     object-fit: cover;
 }
 
 .card-body {
-    padding: 15px; /* Espaciado interno */
+    padding: 1rem;
 }
 
-/* Estilo para las valoraciones */
-
 .review-list {
-    margin-top: 20px;
+    margin-top: 2rem;
 }
 
 .review-list h2 {
-    font-size: 1.5rem; /* Tamaño de fuente grande para el título de valoraciones */
-    margin-bottom: 15px; /* Espaciado debajo del título */
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .review {
-    border-bottom: 1px solid #ddd; /* Línea de separación entre valoraciones */
-    padding-bottom: 10px; /* Espaciado inferior */
-    margin-bottom: 10px; /* Espaciado inferior entre valoraciones */
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .review strong {
-    color: #333; /* Color del texto para las etiquetas */
+    color: #333;
 }
 
 .review p {
-    margin: 5px 0; /* Espaciado entre líneas de valoración */
+    margin: 0.5rem 0;
 }
 
-/* Estilo del formulario de valoración */
-
 .rating-form {
-    margin-top: 30px;
-    background-color: #ffffff; /* Fondo blanco para el formulario */
-    padding: 20px; /* Espaciado interno */
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    margin-top: 2rem;
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .rating-form h2 {
-    font-size: 1.5rem; /* Tamaño de fuente grande para el título del formulario */
-    margin-bottom: 15px; /* Espaciado debajo del título */
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .rating-form .form-group {
-    margin-bottom: 15px; /* Espaciado inferior para cada grupo de formulario */
+    margin-bottom: 1rem;
 }
 
 .rating-form label {
-    font-weight: bold; /* Texto en negrita para etiquetas */
+    font-weight: bold;
 }
 
 .rating-form textarea, .rating-form input {
-    border-radius: 8px; /* Bordes redondeados para campos del formulario */
-    border: 1px solid #ccc; /* Borde gris claro */
-    padding: 10px; /* Espaciado interno */
-    width: 100%; /* Ancho completo del contenedor */
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    width: 100%;
 }
 
 .rating-form textarea {
-    height: 100px; /* Altura fija para el área de texto */
+    height: 100px;
 }
 
 .rating-form input[type="number"] {
-    max-width: 100px; /* Ancho máximo para el campo de número */
+    max-width: 100px;
 }
 
-/* Estilo del botón de enviar en el formulario de valoración */
-
 .rating-form .btn-primary {
-    background-color: #00FF00; /* Verde para el botón de enviar */
-    border-color: #00FF00; /* Mismo verde para el borde */
-    color: #fff; /* Texto blanco en el botón */
-    padding: 12px 20px; /* Espaciado interno del botón */
-    border-radius: 8px; /* Bordes redondeados del botón */
-    font-size: 1rem; /* Tamaño de fuente del botón */
-    transition: background-color 0.3s, border-color 0.3s; /* Transición suave */
+    background-color: #00FF00;
+    border-color: #00FF00;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .rating-form .btn-primary:hover {
-    background-color: #00cc00; /* Verde más oscuro al pasar el ratón */
-    border-color: #00cc00; /* Borde verde más oscuro */
+    background-color: #00cc00;
+    border-color: #00cc00;
 }
 
-/* Mensaje de error */
-
 .alert-danger {
-    margin-top: 20px; /* Espaciado superior */
+    margin-top: 2rem;
 }
 
 .row {
-    margin-top: 30px; /* Espacio superior para la fila */
+    margin-top: 2rem;
     display: flex;
-    flex-wrap: wrap; /* Permite que las columnas se ajusten en pantallas pequeñas */
-    z-index: 1;
+    flex-wrap: wrap;
 }
 
 .col-md-6 {
-    flex: 1;
-    padding: 15px; /* Espaciado interno */
+    padding: 1rem;
 }
 
-/*---------------------
-  Botón "Ordenar por"
------------------------*/
-
 .btn-primary {
-    background-color: #007bff; /* Azul similar al botón de categorías */
-    border-color: #007bff; /* Mismo tono de azul para el borde */
-    color: #ffffff; /* Texto blanco */
-    padding: 10px 20px;
-    font-size: 16px;
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, border-color 0.3s;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
-    border-color: #0056b3; /* Borde azul más oscuro */
+    background-color: #0056b3;
+    border-color: #0056b3;
 }
 
 .btn-icon {
-    background-color: #007bff; /* Color de fondo azul */
+    background-color: #007bff;
     border: none;
     color: #fff;
-    padding: 10px 15px;
+    padding: 0.75rem;
     border-radius: 50%;
-    font-size: 16px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .btn-primary .btn-icon {
-    margin-right: 5px; /* Espaciado a la derecha del ícono */
-}
-
-.btn-primary .btn-text {
-    display: flex;
-    align-items: center;
+    margin-right: 0.5rem;
 }
 
 .btn-icon:hover {
-    background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+    background-color: #0056b3;
 }
 
 .btn-secondary {
-    background-color: #6c757d; /* Color gris para el botón secundario */
+    background-color: #6c757d;
     border: none;
     color: #fff;
-    padding: 10px 15px;
+    padding: 0.75rem;
     border-radius: 5px;
     transition: background-color 0.3s;
 }
 
 .btn-secondary:hover {
-    background-color: #5a6268; /* Gris más oscuro al pasar el ratón */
+    background-color: #5a6268;
 }
 
-/* Ajustes generales para el contenedor del producto */
 .thumbnail.card {
     display: flex;
     flex-direction: column;
-    height: 450px; /* Altura fija para uniformidad */
-    max-width: 300px; /* Ancho máximo de la tarjeta */
+    height: 450px;
+    max-width: 300px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 1.5rem;
     background-color: #ffffff;
     transition: transform 0.3s;
     overflow: hidden;
-    padding: 15px; /* Espaciado interno ajustado */
-    box-sizing: border-box; /* Incluye el padding y border en el tamaño total */
-    position: relative; /* Necesario para el posicionamiento absoluto del contenido */
+    padding: 1rem;
+    box-sizing: border-box;
+    position: relative;
 }
 
-/* Ajustes para la imagen del producto */
 .product-image {
-    width: 100%; /* Ajusta la imagen al ancho del contenedor */
-    height: 200px; /* Altura fija para la imagen */
-    object-fit: cover; /* Ajusta la imagen para cubrir el área sin distorsión */
-    margin-bottom: 15px; /* Espaciado entre la imagen y el texto */
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 1rem;
 }
 
-/* Ajustes para la descripción del producto */
 .card-text {
-    font-size: 0.875rem; /* Tamaño de fuente adecuado */
-    line-height: 1.4; /* Espaciado entre líneas */
-    margin-bottom: 15px; /* Espaciado entre la descripción y los botones */
+    font-size: 0.875rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
 }
 
-/* Contenedor específico para la descripción con recorte */
 .product-description {
-    display: block; /* Asegura que el contenido ocupa su espacio */
-    max-height: 60px; /* Ajusta la altura máxima de la descripción visible */
-    overflow: hidden; /* Oculta el contenido que excede el área */
-    text-overflow: ellipsis; /* Añade puntos suspensivos al final del texto */
+    max-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Número máximo de líneas a mostrar */
-    -webkit-box-orient: vertical; /* Orientación del contenedor flex vertical */
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 
-/* Ajustes para los botones */
 .btn-container {
     display: flex;
-    justify-content: space-between; /* Espaciado entre los botones */
-    margin-top: auto; /* Empuja los botones hacia el fondo */
+    justify-content: space-between;
+    margin-top: auto;
 }
 
-/* Ajustes específicos para los botones */
 .btn-icon {
     padding: 0.5rem 1rem;
 }
 
-/*---------------------
-  Table details
------------------------*/
-
 .table-responsive {
-    overflow-x: auto; /* Permite el desplazamiento horizontal si el contenido es más ancho que el contenedor */
+    overflow-x: auto;
 }
 
 .table {
-    width: 100%; /* Asegura que la tabla use todo el ancho disponible */
-    table-layout: fixed; /* Controla el tamaño de las columnas */
+    width: 100%;
+    table-layout: fixed;
 }
 
-/* Ajuste de las celdas para que el texto largo se trunque */
 .table td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 150px; /* Ajusta este valor según tus necesidades */
+    max-width: 150px;
     text-align: left;
 }
 
 .table td.descripcion {
-    max-width: 250px; /* Ajusta este valor según tus necesidades */
+    max-width: 250px;
 }
 
-/* Alineación de todo el contenido de la tabla a la izquierda */
 .table th, .table td {
     text-align: left;
 }
 
-
-/*---------------------
-  Supermarket details
------------------------*/
-
-/* Estilo para imágenes del supermercado en la página de detalles */
 .supermarket-image-container {
-    height: 500px; /* Altura específica para las imágenes del supermercado */
-    width: 100%; /* Ancho completo del contenedor */
-    overflow: hidden; /* Oculta cualquier desbordamiento de imagen */
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
     display: flex;
-    align-items: center; /* Centra la imagen verticalmente */
-    justify-content: center; /* Centra la imagen horizontalmente */
-    background-color: #f8f9fa; /* Fondo opcional para el contenedor */
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
 }
 
 .supermarket-image-container .image-item {
-    margin-bottom: 15px; /* Espaciado entre imágenes */
+    margin-bottom: 1rem;
 }
 
 .supermarket-image {
-    width: auto; /* Mantiene la proporción de la imagen */
-    height: 100%; /* Ocupa el 100% de la altura del contenedor */
-    object-fit: cover; /* Asegura que la imagen cubra el contenedor */
-    border-radius: 8px; /* Bordes redondeados para las imágenes */
+    width: auto;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
 }
 
-/* Estilo para el contenedor del checkbox */
 .checkbox-container {
-    align-items: center; /* Alinea verticalmente el checkbox y la etiqueta */
-    margin-bottom: 15px; /* Espacio debajo del contenedor */
-    position: relative; /* Posicionamiento relativo para controlar el comportamiento del scroll */
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
 }
 
-/* Estilo para el checkbox */
 .checkbox-container input[type="checkbox"] {
-    margin-left: 10px; /* Espacio a la izquierda del checkbox */
-    /* Puedes ajustar la posición del checkbox si es necesario */
+    margin-left: 0.5rem;
 }
 
-/* Estilo para la etiqueta */
 .checkbox-container label {
-    margin-right: 10px; /* Espacio a la derecha de la etiqueta */
+    margin-right: 0.5rem;
 }
 
-/* Opcional: Estilo para mantener el checkbox en la parte superior si es necesario */
 .sticky-checkbox-container {
     position: sticky;
-    top: 0; /* Mantén el contenedor en la parte superior cuando se haga scroll */
-    background-color: #f8f9fa; /* Fondo opcional para que se destaque sobre el contenido al hacer scroll */
-    padding: 10px; /* Espaciado interno para separar el checkbox de los bordes */
-    z-index: 10; /* Asegúrate de que el contenedor esté por encima de otros elementos */
+    top: 0;
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    z-index: 10;
 }
-
 
 .filter__options {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espacio entre el label y los botones */
+    gap: 1rem;
 }
 
 .filter__label {
     font-weight: bold;
-    margin-right: 15px; /* Espacio entre el label y el primer botón */
+    margin-right: 1rem;
 }
 
 .filter__buttons {
     display: flex;
-    gap: 15px; /* Espacio entre los botones */
+    gap: 1rem;
 }
 
 .filter__btn {
     color: #007bff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 1rem;
 }
 
 .filter__btn:hover {
@@ -464,17 +403,27 @@ body {
   Responsive Adjustments
 -----------------------*/
 @media (max-width: 767px) {
-    .section-title h2 {
-        font-size: 1.5rem; /* Tamaño de fuente reducido en dispositivos móviles */
+    .container {
+        padding: 0 10px;
     }
 
-    .product-description {
-        max-height: 80px; /* Ajusta la altura máxima en móviles */
-        -webkit-line-clamp: 4; /* Aumenta el número de líneas visibles */
+    .product-details .product-price {
+        font-size: 1.25rem;
     }
 
-    .checkbox-container {
-        flex-direction: row; /* Mantén el checkbox y su etiqueta en una fila */
-        justify-content: flex-start; /* Alinea los elementos al inicio */
+    .review-list h2 {
+        font-size: 1.25rem;
+    }
+
+    .rating-form textarea {
+        height: 80px;
+    }
+
+    .thumbnail.card {
+        max-width: 100%;
+    }
+
+    .supermarket-image-container {
+        height: auto;
     }
 }
