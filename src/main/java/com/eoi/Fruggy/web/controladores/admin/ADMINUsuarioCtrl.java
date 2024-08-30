@@ -30,15 +30,13 @@ public class ADMINUsuarioCtrl {
     private final SrvcDetalle detalleSrvc;
     private final SrvcRol rolSrvc;
     private final SrvcImagen imagenSrvc;
-    private final SrvcDonacion donacionSrvc;
     private final SrvcGenero generoSrvc;
 
-    public ADMINUsuarioCtrl(SrvcUsuario usuarioSrvc, SrvcDetalle detalleSrvc, SrvcRol rolSrvc, SrvcImagen imagenSrvc, SrvcDonacion donacionSrvc, SrvcGenero generoSrvc) {
+    public ADMINUsuarioCtrl(SrvcUsuario usuarioSrvc, SrvcDetalle detalleSrvc, SrvcRol rolSrvc, SrvcImagen imagenSrvc, SrvcGenero generoSrvc) {
         this.usuarioSrvc = usuarioSrvc;
         this.detalleSrvc = detalleSrvc;
         this.rolSrvc = rolSrvc;
         this.imagenSrvc = imagenSrvc;
-        this.donacionSrvc = donacionSrvc;
         this.generoSrvc = generoSrvc;
     }
 

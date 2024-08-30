@@ -39,6 +39,7 @@ public class DataInitializer {
         this.messageSource = messageSource;
     }
 
+    //Este método inicializa datos básicos en la base de datos si no existen.
     @PostConstruct
     public void init() {
         Locale locale = new Locale("es");
@@ -73,37 +74,53 @@ public class DataInitializer {
         try {
             // Cargar categorías
             if (repoCategoria.count() == 0) {
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.snacks", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.snacks", null, locale),
                         messageSource.getMessage("category.en.snacks", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.household", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.household", null, locale),
                         messageSource.getMessage("category.en.household", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.babies_kids", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.babies_kids", null, locale),
                         messageSource.getMessage("category.en.babies_kids", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.drinks", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.drinks", null, locale),
                         messageSource.getMessage("category.en.drinks", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.coffee_tea", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.coffee_tea", null, locale),
                         messageSource.getMessage("category.en.coffee_tea", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.chocolates_sweets", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.chocolates_sweets", null, locale),
                         messageSource.getMessage("category.en.chocolates_sweets", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.canned_goods", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.canned_goods", null, locale),
                         messageSource.getMessage("category.en.canned_goods", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.dietary", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.dietary", null, locale),
                         messageSource.getMessage("category.en.dietary", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.drugstore", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.drugstore", null, locale),
                         messageSource.getMessage("category.en.drugstore", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.fresh_meats", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.fresh_meats", null, locale),
                         messageSource.getMessage("category.en.fresh_meats", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.dairy_eggs", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.dairy_eggs", null, locale),
                         messageSource.getMessage("category.en.dairy_eggs", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.pets", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.pets", null, locale),
                         messageSource.getMessage("category.en.pets", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.leisure_culture", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.leisure_culture", null, locale),
                         messageSource.getMessage("category.en.leisure_culture", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.bakery", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.bakery", null, locale),
                         messageSource.getMessage("category.en.bakery", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.pasta_rice_legumes", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.pasta_rice_legumes", null, locale),
                         messageSource.getMessage("category.en.pasta_rice_legumes", null, locale)));
-                repoCategoria.save(new Categoria(messageSource.getMessage("category.es.perfumery_pharmacy", null, locale),
+                repoCategoria.save(new Categoria(
+                        messageSource.getMessage("category.es.perfumery_pharmacy", null, locale),
                         messageSource.getMessage("category.en.perfumery_pharmacy", null, locale)));
             }
             List<Categoria> categorias = repoCategoria.findAll();
@@ -473,8 +490,7 @@ public class DataInitializer {
                     }
                 }
             }
-            // Crear tipos de descuento
-            // Cargar tipos de descuento si no existen
+            // Iniciar tipos de descuento
             try {
                 if (repoTipoDescuento.count() == 0) {
                     TipoDescuento descuentoPorVolumen = new TipoDescuento(

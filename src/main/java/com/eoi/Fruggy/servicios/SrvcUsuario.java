@@ -88,7 +88,6 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
     public Page<Usuario> obtenerUsuariosPaginados(int page, int size, String sortField, String sortDirection, String email) {
         Sort sort;
         if ("roles".equals(sortField)) {
-            // Si ordenamos por roles, puedes necesitar una lógica más avanzada
             sort = Sort.by(Sort.Direction.fromString(sortDirection), "roles");
         } else {
             sort = Sort.by(Sort.Direction.fromString(sortDirection), sortField);

@@ -38,7 +38,6 @@ public class UsuarioSecurityImpl implements IUsuarioSrvc, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Directamente obtén el Optional del repositorio
         Usuario usuario = repoUsuario.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
 

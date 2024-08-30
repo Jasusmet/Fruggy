@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+ // Esta clase define las reglas de acceso y autenticación para diferentes rutas de la aplicación.
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true,
         securedEnabled = true,
@@ -27,7 +28,7 @@ public class SecurityConfig {
 
     @Autowired
     @Qualifier("usuarioSecurityImpl")
-    private UsuarioSecurityImpl userDetailsService;
+    private UsuarioSecurityImpl userDetailsService;// Servicio de usuario personalizado para la autenticación.
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,12 +38,13 @@ public class SecurityConfig {
         auth.authenticationProvider(authenticationProvider());
     }
 
+    //Define la configuración de seguridad para el perfil de desarrollo.
     @Bean
     @Profile("desarrollo")
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .cors(cors -> cors.disable())
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // Desactiva la protección CSRF y CORS.
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/js/**").permitAll()
@@ -58,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/productos/**").permitAll() // Permitir acceso a /productos
                         .requestMatchers("/supermercados/**").permitAll() // Permitir acceso a /supermercados
                         .requestMatchers("/admin/**").hasAuthority("ROLE_Administrador")
-                        .requestMatchers("/").permitAll() // Permitir acceso a la raíz
+                        .requestMatchers("/").permitAll()
                         .anyRequest().authenticated() // Asegura que cualquier otra petición requiera autenticación
                 )
                 .formLogin(form -> form
@@ -77,6 +79,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // Define la configuración de seguridad para el perfil local.
     @Bean
     @Profile("local")
     public SecurityFilterChain securityFilterChainLocal(HttpSecurity http) throws Exception {
@@ -118,7 +121,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Para autenticar a los usuarios.
+    // Para autenticar a los usuarios. Crea un proveedor de autenticación basado en el servicio de detalles de usuario.
     private AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
@@ -128,6 +131,6 @@ public class SecurityConfig {
 
     @Bean
     static GrantedAuthorityDefaults grantedAuthorityDefaults() {
-        return new GrantedAuthorityDefaults("ROLE_"); // Incluye el prefijo "ROLE_"
+        return new GrantedAuthorityDefaults("ROLE_"); // Incluye el prefijo "ROLE_" para los roles de usuario.
     }
 }

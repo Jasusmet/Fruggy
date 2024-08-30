@@ -13,6 +13,5 @@ public class DateConversion {
     public static void main(String[] args) {
         LocalDate localDate = LocalDate.now();
         Date date = convertToDate(localDate);
-        System.out.println(date);
     }
 }

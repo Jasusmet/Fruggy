@@ -49,14 +49,13 @@ public class CestaCtrl {
     }
 
     //Listar cestas usuarios
-//        @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping
     public String listarCestas(@AuthenticationPrincipal Usuario usuario, Model model) {
         List<Cesta> cestas = cestaSrvc.findByUsuario(usuario);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         List<Cesta> cestasFormateadas = cestas.stream()
                 .map(cesta -> {
-                    cesta.setFechaFormateada(cesta.getFecha().format(formatter)); // Asumimos que Cesta tiene este método
+                    cesta.setFechaFormateada(cesta.getFecha().format(formatter));
                     return cesta;
                 })
                 .collect(Collectors.toList());
@@ -148,7 +147,6 @@ public class CestaCtrl {
     }
 
     // Actualizar una cesta (POST)
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{id}")
     public String actualizarCesta(@PathVariable Long id,
                                   @Valid @ModelAttribute Cesta cestaActualizada,
@@ -173,7 +171,6 @@ public class CestaCtrl {
     }
 
     // Eliminar una cesta (POST)
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping("/{id}/eliminar")
     public String eliminarCesta(@PathVariable Long id,
                                 RedirectAttributes redirectAttributes) {

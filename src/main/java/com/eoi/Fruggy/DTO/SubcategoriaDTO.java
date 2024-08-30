@@ -5,6 +5,7 @@ public class SubcategoriaDTO {
     private String tipo_es;
     private String tipo_en;
 
+     // Utilizado para transferir datos de subcategorías entre capas de la aplicación.
     public SubcategoriaDTO() {
     }
 
@@ -22,6 +23,7 @@ public class SubcategoriaDTO {
         this.id = id;
     }
 
+    //Obtiene el nombre de la subcategoría en español.
     public String getTipo_es() {
         return tipo_es;
     }
@@ -30,6 +32,7 @@ public class SubcategoriaDTO {
         this.tipo_es = tipo_es;
     }
 
+    //Obtiene el nombre de la subcategoría en ingles.
     public String getTipo_en() {
         return tipo_en;
     }

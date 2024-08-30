@@ -37,10 +37,12 @@
             <input type="file" id="imagenes" th:field="*{imagenesArchivo}" class="form-control" multiple required>
         </div>
 
+        <!-- Selección de categoría del producto -->
         <div class="mb-3">
             <label for="categoria" class="form-label" th:text="#{form.product.category}">Category</label>
             <select class="form-control" id="categoria" name="categoria.id" required>
                 <option value="" th:text="#{form.product.select_category}">Select a category</option>
+                <!-- Lista de categorías -->
                 <option th:each="categoria : ${categorias}" th:value="${categoria.id}">
                     <th:block th:switch="${idioma}">
                         <span th:case="'es'" th:text="${categoria.tipo_es}">Español</span>

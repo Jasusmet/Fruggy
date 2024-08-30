@@ -34,6 +34,7 @@ public class Categoria implements Serializable {
     @OneToMany(mappedBy = "categoria")
     private Set<Subcategoria> subcategorias;
 
+         //Constructor de la categoría con nombre en ambos idiomas.
     public Categoria(String categorias_es, String categorias_en) {
         this.tipo_es = categorias_es;
         this.tipo_en = categorias_en;

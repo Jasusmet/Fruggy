@@ -53,11 +53,6 @@ public class ADMINSupermercadoCtrl {
         model.addAttribute("currentSortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
 
-        // para comprobar si carga páginas
-        log.info("Total de supermercados: {}", paginaSupermercados.getTotalElements());
-        log.info("Número total de páginas: {}", paginaSupermercados.getTotalPages());
-        log.info("Página actual: {}", page);
-
         return "admin/CRUD-Supermercados";
     }
 
