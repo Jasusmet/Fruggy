@@ -14,6 +14,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+
+/**
+ * Representa una subcategoría de productos en el sistema.
+ * Cada subcategoría está asociada a una categoría y puede tener múltiples productos.
+ */
 @Entity
 @Getter
 @Setter
@@ -24,7 +29,7 @@ import java.util.Set;
 public class Subcategoria implements Serializable {
 
     @Id
-    @Column(name ="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -43,6 +48,13 @@ public class Subcategoria implements Serializable {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
+
+    /**
+     * Constructor para crear una nueva subcategoría con descripciones en ambos idiomas y una categoría asociada.
+     * @param subcategorias_es Descripción en español.
+     * @param subcategorias_en Descripción en inglés.
+     * @param categoria Categoría asociada a la subcategoría.
+     */
     public Subcategoria(String subcategorias_es, String subcategorias_en, Categoria categoria) {
         this.tipo_es = subcategorias_es;
         this.tipo_en = subcategorias_en;

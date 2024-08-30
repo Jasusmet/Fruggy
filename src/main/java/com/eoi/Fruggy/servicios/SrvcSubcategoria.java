@@ -24,6 +24,10 @@ public class SrvcSubcategoria extends AbstractSrvc<Subcategoria, Long, RepoSubca
     public List<Subcategoria> buscarPorCategoriaId(Long categoriaId) {
         return repoSubcategoria.findByCategoriaId(categoriaId);
     }
+    /**
+     * Obtiene un "map" de subcategorías agrupadas por el ID de su categoría.
+     * @return "map" donde la clave es el ID de la categoría y el valor es la lista de subcategorías.
+     */
     public Map<Long, List<Subcategoria>> buscarEntidadesAgrupadasPorCategoria() {
         List<Subcategoria> subcategorias = repoSubcategoria.findAll();
         return subcategorias.stream().collect(Collectors.groupingBy(subcategoria -> subcategoria.getCategoria().getId()));

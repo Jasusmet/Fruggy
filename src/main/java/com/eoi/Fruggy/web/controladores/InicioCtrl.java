@@ -20,6 +20,7 @@ public class InicioCtrl {
     }
 
 
+    // Método para mostrar página de inicio
     @GetMapping
     public String mostrarInicio(Model model) {
         // Obtener los productos nuevos

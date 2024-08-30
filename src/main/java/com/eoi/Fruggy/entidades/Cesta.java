@@ -57,30 +57,39 @@ public class Cesta implements Serializable {
 
     // Método para agregar productos
     public void addProducto(Producto producto, Integer cantidad, String comentario) {
+        // Busca el producto en la cesta existente
         ProductoEnCesta productoEnCesta = productosEnCesta.stream()
                 .filter(p -> p.getProducto().equals(producto))
                 .findFirst()
                 .orElse(null);
 
         if (productoEnCesta != null) {
+            // Actualiza la cantidad si el producto ya está en la cesta
             productoEnCesta.setCantidad(productoEnCesta.getCantidad() + cantidad);
-            productoEnCesta.setComentario(comentario);
         } else {
+            // Añade el nuevo producto a la cesta
             productoEnCesta = new ProductoEnCesta();
             productoEnCesta.setProducto(producto);
             productoEnCesta.setCantidad(cantidad);
-            productoEnCesta.setComentario(comentario);
             productoEnCesta.setCesta(this);
             productosEnCesta.add(productoEnCesta);
         }
     }
 
+    /**
+     * Obtiene el conjunto de productos únicos en la cesta.
+     * @return Un conjunto de productos únicos.
+     */
     public Set<Producto> getProductos() {
         return productosEnCesta.stream()
                 .map(ProductoEnCesta::getProducto)
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Calcula el total de la cesta en función de los precios de los productos y sus cantidades.
+     * @return El total calculado de la cesta.
+     */
     @Transient // No se almacena en la base de datos
     public Double getTotal() {
         return productosEnCesta.stream()

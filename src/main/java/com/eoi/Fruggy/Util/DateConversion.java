@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 
+//  Utilidad para la conversión entre LocalDate y Date.
 public class DateConversion {
 
     public static Date convertToDate(LocalDate localDate) {

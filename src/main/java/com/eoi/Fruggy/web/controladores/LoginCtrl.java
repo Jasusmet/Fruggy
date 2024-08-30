@@ -26,32 +26,12 @@ public class LoginCtrl {
         this.repoUsuario = repoUsuario;
     }
 
+    // Método para mostrar formulario incio sesión
     @GetMapping("/login")
     public String showLoginForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
             model.addAttribute("error", "Invalid username or password.");
         }
         return "/login/login";
-    }
-
-    @GetMapping("/login/recuperar-contraseña")
-    public String showRecuperarContraseñaForm(Model model, @RequestParam(value = "error", required = false) String error) {
-        if (error != null) {
-            model.addAttribute("error", "An error occurred during password recovery.");
-        }
-        return "recuperar-contraseña";
-    }
-
-    @PostMapping("/login/recuperar-contraseña")
-    public String recuperarContraseña(@RequestParam String email, Model model) {
-        Optional<Optional<Usuario>> optionalUsuario = Optional.ofNullable(repoUsuario.findByEmail(email));
-        if (optionalUsuario.isPresent()) {
-            Optional<Usuario> usuario = optionalUsuario.get();
-            // Aquí debes implementar el proceso de recuperación de contraseña, por ejemplo, enviar un correo electrónico con un enlace para restablecer la contraseña.
-            model.addAttribute("message", "A password reset link has been sent to your email.");
-        } else {
-            model.addAttribute("error", "No user found with the given email address.");
-        }
-        return "recuperar-contraseña";
     }
 }

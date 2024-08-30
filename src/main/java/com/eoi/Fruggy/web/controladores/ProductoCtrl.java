@@ -35,11 +35,14 @@ public class ProductoCtrl {
         this.usuarioSrvc = usuarioSrvc;
         this.precioSrvc = precioSrvc;
     }
+
+    // Método para obtener el idioma actual del contexto
     private String obtenerIdiomaActual() {
         Locale locale = LocaleContextHolder.getLocale();
         return locale.getLanguage();
     }
 
+    // Método para mostrar el catálogo de productos con soporte para paginación, ordenación y filtrado
     @GetMapping
     public String mostrarCatalogo(@RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "9") int size,
@@ -51,7 +54,7 @@ public class ProductoCtrl {
 
 
         Page<Producto> paginaProductos;
-
+        // Filtrado y ordenación de productos
         if (search != null && !search.isEmpty()) {
             paginaProductos = productosSrvc.buscarProductosPorNombre(search, page, size);
         } else if (marca != null && !marca.isEmpty()) {
@@ -77,6 +80,7 @@ public class ProductoCtrl {
             }
         }
 
+        // Cálculo y asignación de la nota media de cada producto
         if (!paginaProductos.isEmpty()) {
             paginaProductos.forEach(producto -> {
                 Double notaMedia = valProductosSrvc.calcularNotaMedia(producto.getId());
@@ -97,6 +101,7 @@ public class ProductoCtrl {
         return "productos/productos";
     }
 
+    // Método para mostrar productos por categoría específica
     @GetMapping("/categoria/{id}")
     public String mostrarProductosPorCategoria(@PathVariable Long id,
                                                @RequestParam(defaultValue = "0") int page,
@@ -123,6 +128,7 @@ public class ProductoCtrl {
         return "/productos/productos";
     }
 
+    // Método para mostrar detalles de un producto específico
     @GetMapping("/detalles/{id}")
     public String verDetallesProducto(@PathVariable("id") Long productoId, Model model, @AuthenticationPrincipal Usuario usuario) throws Throwable {
         Producto producto = productosSrvc.encuentraPorId(productoId)
@@ -147,6 +153,7 @@ public class ProductoCtrl {
         return "productos/detalles-producto";
     }
 
+    // Método para guardar una valoración del producto
     @PostMapping("/valoraciones/{productoId}/guardar")
     public String guardarValoracion(@PathVariable Long productoId,
                                     @Valid @ModelAttribute("valoracion") ValoracionProducto valoracion,
@@ -174,8 +181,8 @@ public class ProductoCtrl {
             return "productos/detalles-producto";
         }
 
+        // Asignar el usuario y producto a la valoración
         valoracion.setUsuario(usuarioOptional.get());
-
         Producto producto = productosSrvc.encuentraPorId(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + productoId));
         valoracion.setProducto(producto);

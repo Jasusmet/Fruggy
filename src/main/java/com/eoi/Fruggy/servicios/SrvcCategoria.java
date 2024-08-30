@@ -19,6 +19,11 @@ public class SrvcCategoria extends AbstractSrvc<Categoria, Long, RepoCategoria> 
     protected SrvcCategoria(RepoCategoria repoCategoria) {
         super(repoCategoria);
     }
+    /**
+     * Obtiene todas las categorías disponibles.
+     * @param idioma El código del idioma para la localización.
+     * @return Lista de categorías.
+     */
     @Autowired
     private LocaleResolver localeResolver;
     public List<Categoria> getCategorias(String idioma) {

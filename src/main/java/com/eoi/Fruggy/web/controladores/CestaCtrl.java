@@ -48,7 +48,7 @@ public class CestaCtrl {
         this.precioSrvc = precioSrvc;
     }
 
-    //Listar cestas usuarios
+    // Método para listar cestas del usuario autenticado
     @GetMapping
     public String listarCestas(@AuthenticationPrincipal Usuario usuario, Model model) {
         List<Cesta> cestas = cestaSrvc.findByUsuario(usuario);
@@ -65,6 +65,7 @@ public class CestaCtrl {
         return "cestas/cesta-lista";
     }
 
+    // Método para mostrar el formulario de creación de cesta
     @GetMapping("/crear")
     public String mostrarFormularioCrearCesta(Model model) {
         Cesta cesta = new Cesta();
@@ -73,7 +74,7 @@ public class CestaCtrl {
         return "cestas/crear-cesta";
     }
 
-    //    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    // Método para guardar una nueva cesta
     @PostMapping("/guardar")
     public String guardarCesta(@Valid @ModelAttribute Cesta cesta,
                                BindingResult result,
@@ -85,6 +86,7 @@ public class CestaCtrl {
             return "redirect:/cestas/crear";
         }
 
+        // Verifica el límite de cestas por usuario
         List<Cesta> cestasUsuario = cestaSrvc.findByUsuario(usuario);
         if (cestasUsuario.size() >= 10) {
             redirectAttributes.addFlashAttribute("error", "No puedes tener más de 10 cestas.");
@@ -104,14 +106,14 @@ public class CestaCtrl {
         return "redirect:/cestas";
     }
 
-    // Obtener una cesta por ID
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+
+    // Método para obtener los detalles de una cesta por ID
     @GetMapping("/{id}")
     public String obtenerCesta(@PathVariable Long id, Model model) throws Throwable {
         Cesta cesta = cestaSrvc.encuentraPorId(id)
                 .orElseThrow(() -> new RuntimeException("Cesta no encontrada"));
 
-        // Calcular el total en el controlador
+        // Calcular el total cesta
         double total = cesta.getProductosEnCesta().stream()
                 .mapToDouble(pc -> {
                     double precioBase = pc.getProducto().getPrecios().stream()
@@ -132,12 +134,11 @@ public class CestaCtrl {
                 .sum();
 
         model.addAttribute("cesta", cesta);
-        model.addAttribute("total", total); // Agregar el total al modelo
+        model.addAttribute("total", total);
         return "cestas/cesta-detalle";
     }
 
-    // Actualizar una cesta (GET)
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    // Método para mostrar el formulario de edición de una cesta
     @GetMapping("/{id}/editar")
     public String mostrarFormularioEdicion(@PathVariable Long id, Model model) throws Throwable {
         Cesta cesta = (Cesta) cestaSrvc.encuentraPorId(id)
@@ -146,7 +147,7 @@ public class CestaCtrl {
         return "/cestas/cesta-editar";
     }
 
-    // Actualizar una cesta (POST)
+    // Método para actualizar una cesta
     @PostMapping("/{id}")
     public String actualizarCesta(@PathVariable Long id,
                                   @Valid @ModelAttribute Cesta cestaActualizada,
@@ -154,7 +155,7 @@ public class CestaCtrl {
                                   @AuthenticationPrincipal Usuario usuario) throws Throwable {
         // Validar el objeto Cesta
         if (bindingResult.hasErrors()) {
-            return "/cestas/cesta-editar"; // Volver al formulario si hay errores
+            return "/cestas/cesta-editar";
         }
 
         Cesta cestaExistente = (Cesta) cestaSrvc.encuentraPorId(id)
@@ -170,7 +171,7 @@ public class CestaCtrl {
         return "redirect:/cestas";
     }
 
-    // Eliminar una cesta (POST)
+    // Método para eliminar una cesta
     @PostMapping("/{id}/eliminar")
     public String eliminarCesta(@PathVariable Long id,
                                 RedirectAttributes redirectAttributes) {
@@ -187,6 +188,7 @@ public class CestaCtrl {
         return "redirect:/cestas";
     }
 
+    // Método para agregar un producto a una cesta
     @PostMapping("/agregarProducto")
     public String agregarProductoACesta(@RequestParam Long productoId,
                                         @RequestParam(required = false) Long cestaId,
@@ -225,6 +227,7 @@ public class CestaCtrl {
         return "redirect:/productos";
     }
 
+    // Método para eliminar un producto de una cesta
     @PostMapping("/{cestaId}/eliminarProducto")
     public String eliminarProductoDeCesta(@PathVariable Long cestaId,
                                           @RequestParam Long productoId,
@@ -244,6 +247,7 @@ public class CestaCtrl {
         return "redirect:/cestas/" + cestaId;
     }
 
+    // Método para incrementar la cantidad de un producto en una cesta
     @PostMapping("/{cestaId}/incrementarProducto")
     public String incrementarProductoEnCesta(@PathVariable Long cestaId,
                                              @RequestParam Long productoId,
@@ -257,6 +261,7 @@ public class CestaCtrl {
         return "redirect:/cestas/" + cestaId;
     }
 
+    // Método para decrementar la cantidad de un producto en una cesta
     @PostMapping("/{cestaId}/decrementarProducto")
     public String decrementarProductoEnCesta(@PathVariable Long cestaId,
                                              @RequestParam Long productoId,
@@ -270,6 +275,7 @@ public class CestaCtrl {
         return "redirect:/cestas/" + cestaId;
     }
 
+    // Método para actualizar la cantidad de un producto en una cesta
     @PostMapping("/{cestaId}/actualizarCantidad")
     public String actualizarCantidadProductoEnCesta(@PathVariable Long cestaId,
                                                     @RequestParam Long productoId,

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
+//Controlador para la gestión de descuentos de productos en la administración.
 @Controller
 @RequestMapping("/admin/productos/descuentos")
 public class ADMINDescuentoCtrl {
@@ -41,6 +42,7 @@ public class ADMINDescuentoCtrl {
         this.precioSrvc = precioSrvc;
     }
 
+    //Muestra los detalles del descuento para edición.
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/editar/{id}")
     public String verDescuento(@PathVariable("id") Long id, Model model) {

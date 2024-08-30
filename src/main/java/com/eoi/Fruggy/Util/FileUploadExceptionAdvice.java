@@ -10,6 +10,6 @@ public class FileUploadExceptionAdvice {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleMaxSizeException(MaxUploadSizeExceededException exc, Model model) {
         model.addAttribute("error", "El archivo es demasiado grande. El tamaño máximo permitido es 10MB.");
-        return "error"; // Editar `error.html` para mostrar el mensaje de error
+        return "/error/error";
     }
 }

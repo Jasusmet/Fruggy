@@ -22,8 +22,6 @@ import java.util.Set;
 @RequestMapping("/admin/supermercados")
 public class ADMINSupermercadoCtrl {
 
-    private static final Logger log = LoggerFactory.getLogger(ADMINSupermercadoCtrl.class);
-
     private final SrvcSupermercado supermercadoSrvc;
     private final SrvcUsuario usuarioSrvc;
     private final SrvcImagen imagenSrvc;
@@ -38,6 +36,7 @@ public class ADMINSupermercadoCtrl {
         this.valSupermercadoSrvc = valSupermercadoSrvc;
     }
 
+    // Método para listar los supermercados con paginación y ordenación
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping
     public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
@@ -56,6 +55,7 @@ public class ADMINSupermercadoCtrl {
         return "admin/CRUD-Supermercados";
     }
 
+    // Método para mostrar el formulario de creación de un nuevo supermercado
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/agregar")
     public String agregarSupermercado(Model model) {
@@ -63,12 +63,16 @@ public class ADMINSupermercadoCtrl {
         return "admin/crear-supermercado";
     }
 
+    // Método para guardar un nuevo supermercado en la base de datos
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/guardar")
     public String guardarSupermercado(@Valid @ModelAttribute Supermercado supermercado, BindingResult bindingResult, Model model) throws Exception {
+
+        // Verifica si hay errores en la validación
         if (bindingResult.hasErrors()) {
             return "admin/crear-supermercado";
         }
+        // Guarda el supermercado en la base de datos
         supermercadoSrvc.guardar(supermercado);
 
         // Procesa las imágenes
@@ -85,6 +89,7 @@ public class ADMINSupermercadoCtrl {
         return "redirect:/admin/supermercados";
     }
 
+    // Método para mostrar el formulario de edición de un supermercado existente
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/editar/{id}")
     public String editarSupermercado(@PathVariable("id") Long id, Model model) {
@@ -103,14 +108,19 @@ public class ADMINSupermercadoCtrl {
         }
     }
 
-    //IMAGENES
+                                     //IMAGENES
+
+    // Método para agregar una imagen a un supermercado
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/{id}/agregar-imagen")
     public String agregarImagen(@PathVariable("id") Long id, @RequestParam("imagen") MultipartFile file, Model model) {
+
+        // Busca el supermercado por ID
         try {
             Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
                     .orElseThrow(() -> new RuntimeException("Supermercado no encontrado"));
 
+            // Guarda la imagen si no está vacía
             if (!file.isEmpty()) {
                 Imagen imagen = imagenSrvc.guardarImagen(file, supermercado);
                 imagen.setSupermercado(supermercado);
@@ -124,7 +134,7 @@ public class ADMINSupermercadoCtrl {
         return "redirect:/admin/supermercados/editar/" + id;
     }
 
-
+    // Método para actualizar un supermercado existente
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/actualizar")
     public String actualizarSupermercado(@Valid @ModelAttribute Supermercado supermercado,
@@ -155,6 +165,7 @@ public class ADMINSupermercadoCtrl {
         return "redirect:/admin/supermercados";
     }
 
+    // Método para eliminar un supermercado
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/eliminar/{id}")
     public String eliminarSupermercado(@PathVariable("id") Long id, Model model) {

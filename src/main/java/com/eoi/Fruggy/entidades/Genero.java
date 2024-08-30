@@ -33,6 +33,11 @@ public class Genero implements Serializable {
     @OneToMany(mappedBy = "genero")
     private Set<Detalle> detalles;
 
+    /**
+     * Constructor para crear un nuevo género con descripciones en ambos idiomas.
+     * @param es Descripción en español.
+     * @param en Descripción en inglés.
+     */
     public Genero(String es, String en) {
         this.esDesc = es;
         this.enDesc = en;

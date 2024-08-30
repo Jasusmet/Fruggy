@@ -16,6 +16,7 @@ import java.util.Locale;
 public class LanguageCtrl {
 
 
+    // Método para cambiar de idiomas ES/EN
     @GetMapping("/language/{lang}")
     public RedirectView changeLanguage(@PathVariable String lang,
                                        @RequestParam(value = "redirect", defaultValue = "/") String redirectUrl,

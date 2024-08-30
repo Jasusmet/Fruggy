@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +43,8 @@ public class UsuarioCtrl {
         this.generoSrvc = generoSrvc;
     }
 
+
+    // Método para mostrar el formulario de registro de usuario
     @GetMapping("/registro")
     public String mostrarFormularioRegistro(Model model) {
         Usuario usuario = new Usuario();
@@ -51,6 +52,7 @@ public class UsuarioCtrl {
         detalle.setGenero(new Genero());
         usuario.setDetalle(detalle);
 
+        // Obtener el idioma actual del contexto
         Locale locale = LocaleContextHolder.getLocale();
         String idioma = locale.getLanguage();
 
@@ -61,6 +63,7 @@ public class UsuarioCtrl {
         return "usuarios/registroUsuario";
     }
 
+    // Método para guardar un nuevo usuario después de la validación del formulario
     @PostMapping("/registro/guardar")
     public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario,
                           BindingResult bindingResult, Model model) {
@@ -78,7 +81,7 @@ public class UsuarioCtrl {
             return "usuarios/registroUsuario";
         }
 
-        // Validaciones adicionales
+        // Validaciones adicionales detalle
         Detalle detalle = usuario.getDetalle();
         if (detalle != null) {
             if (detalle.getGenero() == null || detalle.getGenero().getId() == null) {
@@ -102,6 +105,7 @@ public class UsuarioCtrl {
         try {
             detalle = detalleSrvc.guardar(detalle);
 
+            // Asignar un rol de usuario por defecto = USER
             Set<Rol> roles = new HashSet<>();
             Optional<Rol> rolUser = rolSrvc.buscarRolPorNombre("ROLE_USER");
             if (rolUser.isPresent()) {
@@ -125,6 +129,7 @@ public class UsuarioCtrl {
         return "redirect:/login";
     }
 
+    // Método para mostrar la administración de la cuenta del usuario
     @GetMapping("usuario/administracion")
     public String administracionCuenta(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Optional<Usuario> usuarioOpt = usuarioSrvc.getRepo().findByEmail(userDetails.getUsername());
@@ -140,6 +145,7 @@ public class UsuarioCtrl {
         return "redirect:/login";
     }
 
+    // Método para mostrar el formulario de edición del usuario
     @GetMapping("usuario/administracion/editar/{id}")
     public String mostrarFormularioEditar(@PathVariable Long id, Model model, @AuthenticationPrincipal UserDetails userDetails) {
         Optional<Usuario> usuarioOpt = usuarioSrvc.encuentraPorId(id);
@@ -151,7 +157,7 @@ public class UsuarioCtrl {
 
             // Verificar si el usuario autenticado es el mismo que está intentando editar
             if (!usuario.getEmail().equals(userDetails.getUsername())) {
-                return "redirect:/login"; // Redirigir si no es el mismo usuario
+                return "redirect:/login";
             }
 
             model.addAttribute("usuario", usuario);
@@ -159,9 +165,10 @@ public class UsuarioCtrl {
             model.addAttribute("idioma", idioma);
             return "usuarios/editarUsuario";
         }
-        return "redirect:/login"; // Si el usuario no se encuentra, redirigir al login
+        return "redirect:/login";
     }
 
+    // Método para procesar la edición del usuario
     @PostMapping("usuario/administracion/editar/{id}")
     public String editarUsuario(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario,
                                 BindingResult bindingResult, @AuthenticationPrincipal UserDetails userDetails,
@@ -214,6 +221,8 @@ public class UsuarioCtrl {
         return "redirect:/usuario/administracion";
     }
 
+
+    // Método para dar de baja al usuario
     @PostMapping("usuario/administracion/baja")
     public String darDeBaja(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
         Optional<Usuario> usuarioOpt = usuarioSrvc.getRepo().findByEmail(userDetails.getUsername());
@@ -226,12 +235,13 @@ public class UsuarioCtrl {
         }
     }
 
+    // Método para manejar el logout del usuario
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/"; // Redirige a la página de inicio después del logout
+        return "redirect:/";
     }
 }

@@ -34,18 +34,30 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Busca un usuario por su correo electrónico.
+     *
+     * @param email Correo electrónico del usuario.
+     * @return Un Optional que contiene el usuario si se encuentra, o vacío en caso contrario.
+     */
     public Optional<Usuario> findByEmail(String email) {
         return repoUsuario.findByEmail(email);
     }
 
+    //Obtiene una lista de todos los usuarios.
     public List<Usuario> buscarEntidades() {
         return repoUsuario.findAll();
     }
 
+    // Encuentra un usuario por su ID.
     public Optional<Usuario> encuentraPorId(long id) {
         return repoUsuario.findById((Long) id);
     }
 
+    /*
+     Guarda un usuario en la base de datos.
+      Encripta la contraseña si no está vacía y establece los roles si están presentes.
+     */
     @Override
     public Usuario guardar(Usuario usuario) throws Exception {
         if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
@@ -57,6 +69,7 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         return super.guardar(usuario);
     }
 
+    //  Guarda un usuario con un conjunto de roles especificados.
     public Usuario guardar(Usuario usuario, Set<String> roles) throws Exception {
         Set<Rol> rolesSet = new HashSet<>();
         for (String rolNombre : roles) {
@@ -68,6 +81,7 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         usuario.setRoles(rolesSet);
         return guardar(usuario);
     }
+    //Guarda o actualiza un usuario, comprobando que el correo electrónico no esté en uso por otro usuario.
     public void guardarEdicion(Usuario usuario) throws Exception {
         Optional<Usuario> existingUser = repoUsuario.findByEmail(usuario.getEmail());
         if (existingUser.isPresent() && !existingUser.get().getId().equals(usuario.getId())) {
@@ -76,15 +90,16 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         repoUsuario.save(usuario);
     }
 
+    //Obtiene los roles de un usuario por su ID para ordenar lista
     public Set<Rol> obtenerRolesPorUsuario(Long usuarioId) {
         Optional<Usuario> usuario = encuentraPorId(usuarioId);
         return usuario.map(Usuario::getRoles).orElse(new HashSet<>());
     }
-
     public void eliminarPorId(long id) {
         repoUsuario.deleteById((long) id);
     }
 
+    // Paginación Usuarios y ordenamiento.
     public Page<Usuario> obtenerUsuariosPaginados(int page, int size, String sortField, String sortDirection, String email) {
         Sort sort;
         if ("roles".equals(sortField)) {

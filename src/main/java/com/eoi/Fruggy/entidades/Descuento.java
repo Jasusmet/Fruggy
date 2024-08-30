@@ -24,19 +24,19 @@ public class Descuento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name ="descuentos_id")
+    @Column(name = "descuentos_id")
     private Long id;
 
-    @Column (name ="porcentaje")
+    @Column(name = "porcentaje")
     private Double porcentaje;
 
-    @Column (name ="fechaInicio")
+    @Column(name = "fechaInicio")
     private LocalDate fechaInicio;
 
-    @Column (name ="fechaFin")
+    @Column(name = "fechaFin")
     private LocalDate fechaFin;
 
-    @Column (name ="activo", nullable = false)
+    @Column(name = "activo", nullable = false)
     private Boolean activo;
 
     @ManyToOne
@@ -47,6 +47,17 @@ public class Descuento implements Serializable {
     @JoinColumn(name = "tipodescuento_id")
     private TipoDescuento tipoDescuento;
 
+
+    /**
+     * Constructor para inicializar un descuento con parámetros específicos.
+     *
+     * @param porcentaje    El porcentaje de descuento.
+     * @param fechaInicio   La fecha de inicio del descuento.
+     * @param fechaFin      La fecha de fin del descuento.
+     * @param activo        Indica si el descuento está activo.
+     * @param producto      El producto al que se aplica el descuento.
+     * @param tipoDescuento El tipo de descuento.
+     */
     public Descuento(double porcentaje, LocalDate now, LocalDate localDate, boolean activo, Object o, TipoDescuento descuentoPorVolumen) {
         this.porcentaje = porcentaje;
         this.fechaInicio = now;

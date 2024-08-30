@@ -36,6 +36,12 @@ public class Rol implements Serializable {
     @ManyToMany(mappedBy = "roles")
     private Set<Usuario> usuarios = new HashSet<>();
 
+    /**
+     * Constructor para crear un nuevo rol con nombre y descripciones en ambos idiomas.
+     * @param rolNombre Nombre del rol.
+     * @param es Descripción en español.
+     * @param en Descripción en inglés.
+     */
     public Rol(String rolNombre , String es , String en) {
         this.rolNombre = rolNombre;
         this.esDesc = es;

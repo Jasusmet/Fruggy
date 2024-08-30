@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
+//Controlador para la gestión de productos en la administración.
 @Controller
 @RequestMapping("/admin/productos")
 public class ADMINProductoCtrl {
@@ -46,7 +47,7 @@ public class ADMINProductoCtrl {
     }
 
 
-    // Mostrar lista de productos
+    //  Muestra la lista de productos con paginación y ordenación.
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping
     public String listarProductos(@RequestParam(defaultValue = "0") int page,
@@ -56,35 +57,33 @@ public class ADMINProductoCtrl {
                                   @RequestParam(defaultValue = "") String search,
                                   Model model) {
 
-        // Ajustar el campo de ordenación y la dirección de acuerdo con los parámetros proporcionados
+        // Campo de ordenación y la dirección
         if ("precios.valor_desc".equals(sortField)) {
             sortField = "precios.valor";
             sortDirection = "desc";
         } else if ("precios.valor".equals(sortField)) {
             sortDirection = "asc";
         } else if ("id".equals(sortField)) {
-            // Asegúrate de que se ordene por ID por defecto si no se especifica otro campo
             sortField = "id";
         }
 
-        // Obtener la página de productos ordenada según el campo y la dirección especificados
+        // Obtener la página de productos ordenada
         Page<Producto> paginaProductos = productosSrvc.obtenerProductosPaginados(page, size, sortField, sortDirection);
         Locale locale = LocaleContextHolder.getLocale();
         String idioma = locale.getLanguage();
 
-        // Añadir atributos al modelo
         model.addAttribute("productos", paginaProductos);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaProductos.getTotalPages());
         model.addAttribute("currentSortField", sortField);
         model.addAttribute("currentSortDirection", sortDirection);
         model.addAttribute("reverseSortDirection", sortDirection.equalsIgnoreCase("asc") ? "desc" : "asc");
-        model.addAttribute("idioma",idioma);
+        model.addAttribute("idioma", idioma);
 
-        // Devolver la vista
         return "/admin/CRUD-Productos";
     }
 
+    //  Formulario de creación de producto
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/agregar")
     public String mostrarFormularioCreacion(Model model) {
@@ -103,7 +102,7 @@ public class ADMINProductoCtrl {
         return "/admin/crear-producto";
     }
 
-    //  formulario de creación de producto
+    // Guarda un nuevo producto.
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/guardar")
     public String guardarProducto(@Valid @ModelAttribute("producto") Producto producto,
@@ -116,18 +115,15 @@ public class ADMINProductoCtrl {
             return "/admin/crear-producto";
         }
 
-        // Set the 'activo' field to true if it is null
         if (producto.getActivo() == null) {
             producto.setActivo(true);
         }
 
-        // Set the subcategory for the product
         Optional<Subcategoria> subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId);
         if (subcategoria.isPresent()) {
             producto.setSubcategoria(subcategoria.get());
         }
 
-        // Save the product first to ensure it has an ID
         Producto productoGuardado = productosSrvc.guardar(producto);
 
         // Procesar imagenes
@@ -140,7 +136,7 @@ public class ADMINProductoCtrl {
                 }
             }
         }
-        // Save the price
+        // Guardar Precio
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
         Precio precio = new Precio();
         precio.setProducto(productoGuardado);
@@ -189,18 +185,15 @@ public class ADMINProductoCtrl {
             return "/admin/crear-producto";
         }
 
-        // Set the 'activo' field to true if it is null
         if (producto.getActivo() == null) {
             producto.setActivo(true);
         }
 
-        // Set the subcategory for the product
         Optional<Subcategoria> subcategoria = subcategoriasSrvc.encuentraPorId(subcategoriaId);
         if (subcategoria.isPresent()) {
             producto.setSubcategoria(subcategoria.get());
         }
 
-        // Save the product first to ensure it has an ID
         Producto productoGuardado = productosSrvc.guardar(producto);
 
         // Eliminar la imagen existente si la hay
@@ -208,7 +201,6 @@ public class ADMINProductoCtrl {
         for (Imagen imagen : imagenesExistentes) {
             imagenSrvc.eliminarPorId(imagen.getId());
         }
-
         // Procesa la nueva imagen subida
         if (imagenesArchivo != null && !imagenesArchivo.isEmpty()) {
             Imagen nuevaImagen = imagenSrvc.guardarImagenProducto(imagenesArchivo, productoGuardado);
@@ -216,7 +208,7 @@ public class ADMINProductoCtrl {
             imagenSrvc.guardar(nuevaImagen);
         }
 
-        // Update the price
+        // Actualiza precio
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId).orElse(null);
         Optional<Precio> precioExistenteOpt = precioSrvc.encuentraPorId(productoGuardado.getId());
         if (precioExistenteOpt.isPresent()) {
@@ -240,17 +232,18 @@ public class ADMINProductoCtrl {
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Long id) {
-        Set<Precio> precios = precioSrvc.buscarTodosSet(); // Asegúrate de que esto devuelve un Set<Precio>
+        Set<Precio> precios = precioSrvc.buscarTodosSet();
         Optional<Precio> precioExistenteOpt = precios.stream()
                 .filter(precio -> precio.getProducto() != null && precio.getProducto().getId() == id)
                 .findFirst();
         // Si hay un precio existente, eliminarlo
         precioExistenteOpt.ifPresent(precio -> precioSrvc.eliminarPorId(precio.getId()));
         productosSrvc.eliminarPorId(id);
-        return "redirect:/admin/productos"; // Redirige a la lista de productos
+        return "redirect:/admin/productos";
     }
 
-    // DESCUENTOS
+                                      // DESCUENTOS
+
     // Mostrar formulario para agregar descuento a un producto
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/descuento/{id}")

@@ -101,6 +101,10 @@ public class Usuario implements Serializable, UserDetails {
         return true;
     }
 
+    /**
+     * Obtiene la cesta principal del usuario.
+     * @return La cesta principal del usuario, o null si no existe.
+     */
     public Cesta getCesta() {
         return cestas.stream()
                 .filter(Cesta::getEsPrincipal) // Filtra la cesta que es principal
@@ -108,10 +112,19 @@ public class Usuario implements Serializable, UserDetails {
                 .orElse(null);
     }
 
+    /**
+     * Obtiene todas las cestas del usuario.
+     * @return Un conjunto de cestas del usuario.
+     */
     public Set<Cesta> getCestas() { // todas las cestas
         return cestas;
     }
 
+    /**
+     * Busca una cesta por su ID.
+     * @param cestaId El ID de la cesta a buscar.
+     * @return La cesta correspondiente al ID, o null si no se encuentra.
+     */
     public Cesta findCestaById(Long cestaId) {
         return cestas.stream()
                 .filter(c -> c.getId().equals(cestaId))
@@ -119,6 +132,11 @@ public class Usuario implements Serializable, UserDetails {
                 .orElse(null);
     }
 
+    /**
+     * Añade una cesta al usuario si no supera el límite de 10 cestas.
+     * @param cesta La cesta a añadir.
+     * @throws IllegalStateException Si el usuario ya tiene el máximo de 10 cestas.
+     */
     public void addCesta(Cesta cesta) {
         if (cestas.size() < 10) {
             cesta.setUsuario(this);

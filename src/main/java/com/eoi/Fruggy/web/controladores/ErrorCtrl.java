@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ErrorCtrl implements ErrorController {
     @RequestMapping("/error")
     public String handleError() {
-        return "/error/error"; // Nombre del archivo HTML sin la extensión
+        return "/error/error";
     }
 }

@@ -40,10 +40,12 @@ public class ADMINUsuarioCtrl {
         this.generoSrvc = generoSrvc;
     }
 
+    // Método para listar usuarios con paginación y ordenación
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping
     public String listarUsuarios(@RequestParam(value = "email", required = false, defaultValue = "") String email, @RequestParam(value = "activo", required = false) Boolean activo, @RequestParam(value = "sortField", defaultValue = "email") String sortField, @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection, @RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
 
+        // Determina la columna y dirección de ordenación
         String sortColumn;
         switch (sortField) {
             case "id_asc":
@@ -72,7 +74,7 @@ public class ADMINUsuarioCtrl {
         }
 
         Page<Usuario> usuarios = usuarioSrvc.obtenerUsuariosPaginados(page, size, sortColumn, sortDirection, email);
-
+        // Obtiene el idioma actual del contexto
         Locale locale = LocaleContextHolder.getLocale();
         String idioma = locale.getLanguage();
 
@@ -89,13 +91,14 @@ public class ADMINUsuarioCtrl {
         return "admin/CRUD-Usuarios";
     }
 
+    // Método para mostrar el formulario de creación de usuario
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/agregar")
     public String agregarUsuario(Model model) {
         Usuario usuario = new Usuario();
         Detalle detalle = new Detalle();
         detalle.setGenero(new Genero());
-        usuario.setDetalle(detalle); // Asegúrate de que el detalle está asociado al usuario
+        usuario.setDetalle(detalle);
         Locale locale = LocaleContextHolder.getLocale();
         String idioma = locale.getLanguage();
 
@@ -108,6 +111,7 @@ public class ADMINUsuarioCtrl {
         return "admin/crear-usuario";
     }
 
+    // Método para guardar un nuevo usuario
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) {
@@ -165,7 +169,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios";
     }
 
-
+    // Método para mostrar el formulario de edición de usuario
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable("id") Long id, Model model) {
@@ -185,6 +189,7 @@ public class ADMINUsuarioCtrl {
         }
     }
 
+    // Método para guardar los cambios de un usuario editado
     @PostMapping("/editar/{id}")
     public String guardarEdicion(@PathVariable Long id, @Valid @ModelAttribute("usuario") Usuario usuario, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -208,7 +213,7 @@ public class ADMINUsuarioCtrl {
                     return "admin/modificar-usuario";
                 }
 
-                // Si el nombre de usuario no ha cambiado, mantenlo igual
+                // Si el nombre de usuario no ha cambiado, mantenerlo igual
                 if (usuarioOriginal.getDetalle().getNombreUsuario().equals(detalle.getNombreUsuario())) {
                     detalle.setNombreUsuario(usuarioOriginal.getDetalle().getNombreUsuario());
                 }
@@ -237,6 +242,7 @@ public class ADMINUsuarioCtrl {
         return "redirect:/admin/usuarios";
     }
 
+    // Método para listar las cestas de un usuario
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @GetMapping("/{id}/cestas")
     public String listarCestas(@PathVariable Long id, Model model) {
@@ -244,15 +250,16 @@ public class ADMINUsuarioCtrl {
         if (usuarioOptional.isPresent()) {
             model.addAttribute("usuario", usuarioOptional.get());
             model.addAttribute("cestas", usuarioOptional.get().getCestas());
-            return "usuarios/cestas"; // Vista para mostrar las cestas, hay que crear
+            return "usuarios/cestas";
         }
         return "redirect:/usuarios";
     }
 
+    // Método para eliminar un usuario
     @PreAuthorize("hasRole('ROLE_Administrador')")
     @PostMapping("/eliminar/{id}")
     public String eliminarUsuario(@PathVariable Long id) {
         usuarioSrvc.eliminarPorId(id);
-        return "redirect:/admin/usuarios"; // Redirige de vuelta a la lista de usuarios
+        return "redirect:/admin/usuarios";
     }
 }

@@ -15,10 +15,13 @@ public class SrvcValProducto extends AbstractSrvc<ValoracionProducto, Long, Repo
         super(repoValProducto);
         this.repoValProducto = repoValProducto;
     }
+
+    // Obtiene una lista de valoraciones para un producto específico.
     public List<ValoracionProducto> obtenerValoracionesPorProducto(Long productoId) {
         return repoValProducto.findByProductoId(productoId);
     }
 
+    //Calcula la nota media de un producto basado en sus valoraciones.
     public double calcularNotaMedia(Long productoId) {
         List<ValoracionProducto> valoraciones = obtenerValoracionesPorProducto(productoId);
         return valoraciones.stream()
@@ -26,6 +29,8 @@ public class SrvcValProducto extends AbstractSrvc<ValoracionProducto, Long, Repo
                 .average()
                 .orElse(0);
     }
+
+    //Guarda una valoración de producto. Lanza una excepción si el usuario ya ha valorado el producto.
     public ValoracionProducto guardar(ValoracionProducto valoracion) {
         // Verificar si ya existe una valoración del usuario para el producto
         if (getRepo().existsByUsuarioAndProducto(valoracion.getUsuario(), valoracion.getProducto())) {

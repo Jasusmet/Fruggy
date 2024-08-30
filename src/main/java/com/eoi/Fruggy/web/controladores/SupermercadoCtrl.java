@@ -39,12 +39,15 @@ public class SupermercadoCtrl {
         this.imagenSrvc = imagenSrvc;
     }
 
+    // Método para listar supermercados con paginación y ordenación
     @GetMapping
     public String listarSupermercados(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "nombreSuper") String sortField,
                                       @RequestParam(defaultValue = "asc") String sortDirection,
                                       Model model) {
+
+        // Obtener la página de supermercados según los parámetros de paginación y ordenación
         Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size, sortField, sortDirection);
 
         // Crear una lista de números de página
@@ -69,11 +72,14 @@ public class SupermercadoCtrl {
         return "/supermercados/lista-supermercados";
     }
 
+
+    // Método para mostrar los detalles de un supermercado específico
     @GetMapping("/detalles/{id}")
     public String verDetallesSupermercado(@PathVariable("id") long id, Model model) throws Throwable {
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + id));
 
+        // Obtener las valoraciones y calcular la nota media
         List<ValoracionSupermercado> valoraciones = valSupermercadoSrvc.obtenerValoracionesPorSupermercado(id);
         Double notaMedia = valSupermercadoSrvc.calcularNotaMedia(id);
 
@@ -86,6 +92,7 @@ public class SupermercadoCtrl {
         return "supermercados/detalles-supermercado";
     }
 
+    // Método para guardar una valoración de supermercado
     @PostMapping("/detalles/{supermercadoId}/guardar")
     public String guardarValoracion(@PathVariable Long supermercadoId,
                                     @Valid @ModelAttribute("valoracion") ValoracionSupermercado valoracion,
@@ -102,6 +109,7 @@ public class SupermercadoCtrl {
             return "supermercados/detalles-supermercado";
         }
 
+        // Verificar si el usuario está autenticado
         Optional<Usuario> usuarioOptional = Optional.ofNullable(usuario);
         if (usuarioOptional.isEmpty()) {
             model.addAttribute("error", "Usuario no autenticado.");
@@ -113,8 +121,8 @@ public class SupermercadoCtrl {
             return "supermercados/detalles-supermercado";
         }
 
+        // Asignar el usuario y supermercado a la valoración
         valoracion.setUsuario(usuarioOptional.get());
-
         Supermercado supermercado = (Supermercado) supermercadoSrvc.encuentraPorId(supermercadoId)
                 .orElseThrow(() -> new IllegalArgumentException("ID de supermercado inválido: " + supermercadoId));
         valoracion.setSupermercado(supermercado);

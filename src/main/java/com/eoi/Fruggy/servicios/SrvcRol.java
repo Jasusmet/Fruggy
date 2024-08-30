@@ -26,7 +26,6 @@ public class SrvcRol extends AbstractSrvc<Rol, Long, RepoRol> {
     @Override
     public List<Rol> buscarEntidades() {
         List<Rol> roles = super.buscarEntidades();
-        System.out.println("Roles encontrados: " + roles.size());
         return roles;
     }
 

@@ -24,6 +24,12 @@ public class SrvcCesta extends AbstractSrvc<Cesta, Long, RepoCesta> {
         this.repoProductoEnCesta = repoProductoEnCesta;
     }
 
+
+    /**
+     * Encuentra todas las cestas asociadas con un usuario.
+     * @param usuario El usuario del cual se desean obtener las cestas.
+     * @return Lista de cestas asociadas con el usuario.
+     */
     public List<Cesta> findByUsuario(Usuario usuario) {
         return getRepo().findByUsuario(usuario);
     }

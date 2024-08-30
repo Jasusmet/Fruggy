@@ -14,6 +14,15 @@ public class SrvcSupermercado extends AbstractSrvc {
         super(repoSupermercado);
     }
 
+    /**
+     * Obtiene una página de supermercados con paginación y ordenamiento.
+     * @param page           Número de la página (0-indexado).
+     * @param size           Tamaño de la página.
+     * @param sortField      Campo por el cual se ordena la página.
+     * @param sortDirection  Dirección del ordenamiento (ascendente o descendente).
+     * @return Una página de supermercados.
+     * @throws IllegalArgumentException Si el campo de ordenamiento es nulo o vacío.
+     */
     public Page<Supermercado> obtenerSupermercadosPaginados(int page, int size, String sortField, String sortDirection) {
         Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortField) : Sort.Order.asc(sortField));
         Pageable pageable = PageRequest.of(page, size, sort);

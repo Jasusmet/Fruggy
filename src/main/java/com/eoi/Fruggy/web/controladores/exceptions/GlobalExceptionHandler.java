@@ -13,6 +13,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handleAccessDeniedException(AccessDeniedException ex, Model model) {
         model.addAttribute("error", "No tienes permiso para acceder a esta página.");
-        return "/error/error"; // hay que crear pagina de error
+        return "/error/error";
     }
 }
