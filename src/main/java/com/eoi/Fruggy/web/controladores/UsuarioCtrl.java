@@ -221,7 +221,6 @@ public class UsuarioCtrl {
         return "redirect:/usuario/administracion";
     }
 
-
     // Método para dar de baja al usuario
     @PostMapping("usuario/administracion/baja")
     public String darDeBaja(@AuthenticationPrincipal UserDetails userDetails) throws Exception {

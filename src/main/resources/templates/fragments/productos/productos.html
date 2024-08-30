@@ -80,7 +80,7 @@
                                                         </p>
                                                         <p><strong th:text="#{product.store}">Supermercado:</strong>
                                                             <span th:if="${producto.precios.size() > 0 && producto.precios[0].supermercado != null}"
-                                                                  th:text="${producto.precios[0].supermercado.nombreSuper}">Supermercado</span>
+                                                                  th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">Supermercado</span>
                                                             <span th:if="${producto.precios.size() == 0 || producto.precios[0].supermercado == null}">Sin supermercado asignado</span>
                                                         </p>
                                                         <p><strong th:text="#{product.averageRating}">Nota Media:</strong>
@@ -92,10 +92,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal"
-                                                                th:text="#{product.cancel}"></button>
-                                                        <button type="button" class="btn btn-primary"
-                                                                th:data-bs-target="'#selectBasketModal' + ${producto.id}"
-                                                                th:text="#{product.addToBasket}"></button>
+                                                                th:text="#{producto.details.backToCatalog}"></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -124,7 +121,7 @@
                                             <br>
                                             <strong th:text="#{product.store}">Supermercado:</strong>
                                             <span th:if="${producto.precios.size() > 0 && producto.precios[0].supermercado != null}"
-                                                  th:text="${producto.precios[0].supermercado.nombreSuper}">Supermercado</span>
+                                                  th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">Supermercado</span>
                                             <span th:if="${producto.precios.size() == 0 || producto.precios[0].supermercado == null}">Sin supermercado asignado</span>
                                             <br>
                                             <strong th:text="#{product.averageRating}"> Nota Media:</strong>

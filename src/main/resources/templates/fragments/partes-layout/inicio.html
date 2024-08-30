@@ -18,10 +18,10 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${productosNuevos[0].nombreProducto}"></h5>
                                 <p class="card-text">
-                                    <strong th:text="#{inicio.price_label}">Precio:</strong> <span
-                                        th:text="${#numbers.formatDecimal(productosNuevos[0].precios[0].valor, 1, 2) + ' €'}"></span><br>
-                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong> <span
-                                        th:text="${productosNuevos[0].precios[0].supermercado.nombreSuper}">Nombre del Supermercado</span>
+                                    <strong th:text="#{inicio.price_label}">Precio:</strong>
+                                    <span th:text="${#numbers.formatDecimal(productosNuevos[0].precios[0].valor, 1, 2) + ' €'}"></span><br>
+                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong>
+                                    <span th:text="${productosNuevos[0].precios[0].supermercado.nombreSuper + ' (' + productosNuevos[0].precios[0].supermercado.municipio + ')'}">Nombre del Supermercado (Municipio)</span>
                                 </p>
                             </div>
                         </a>
@@ -33,16 +33,11 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${productosNuevos[1].nombreProducto}"></h5>
                                 <p class="card-text">
-                                    <strong th:text="#{inicio.price_label}">Precio:</strong> <span
-                                        th:text="${#numbers.formatDecimal(productosNuevos[1].precios[0].valor, 1, 2) + ' €'}"></span><br>
-                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong> <span
-                                    <strong th:text="#{product.price}">Precio:</strong>
-                                    <span th:if="${producto.descuentos.size() > 0}">
-                                                <span th:each="descuento : ${producto.descuentos}">
-                                                    <span th:if="${descuento.activo}">
-                                                        <span th:text="${#numbers.formatDecimal(producto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% descuento)'}"></span>
-                                                    </span>
-                                                </span>
+                                    <strong th:text="#{inicio.price_label}">Precio:</strong>
+                                    <span th:text="${#numbers.formatDecimal(productosNuevos[1].precios[0].valor, 1, 2) + ' €'}"></span><br>
+                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong>
+                                    <span th:text="${productosNuevos[1].precios[0].supermercado.nombreSuper + ' (' + productosNuevos[1].precios[0].supermercado.municipio + ')'}">Nombre del Supermercado (Municipio)</span>
+                                </p>
                             </div>
                         </a>
                         <!-- Producto 3 -->
@@ -53,10 +48,10 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${productosNuevos[2].nombreProducto}"></h5>
                                 <p class="card-text">
-                                    <strong th:text="#{inicio.price_label}">Precio:</strong> <span
-                                        th:text="${#numbers.formatDecimal(productosNuevos[2].precios[0].valor, 1, 2) + ' €'}"></span><br>
-                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong> <span
-                                        th:text="${productosNuevos[2].precios[0].supermercado.nombreSuper}">Nombre del Supermercado</span>
+                                    <strong th:text="#{inicio.price_label}">Precio:</strong>
+                                    <span th:text="${#numbers.formatDecimal(productosNuevos[2].precios[0].valor, 1, 2) + ' €'}"></span><br>
+                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong>
+                                    <span th:text="${productosNuevos[2].precios[0].supermercado.nombreSuper + ' (' + productosNuevos[2].precios[0].supermercado.municipio + ')'}">Nombre del Supermercado (Municipio)</span>
                                 </p>
                             </div>
                         </a>

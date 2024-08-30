@@ -105,6 +105,14 @@ body {
     margin-bottom: 1rem;
     background-color: #ffffff;
     transition: transform 0.3s;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.similar-product-img {
+    height: 200px; /* Ajusta la altura de la imagen */
+    object-fit: cover; /* Asegura que la imagen no se distorsione */
 }
 
 .similar-product-card:hover {

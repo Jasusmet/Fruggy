@@ -40,7 +40,7 @@
 
                 <!-- Nombre del supermercado -->
                 <p><strong th:text="#{producto.details.supermarket}"></strong> <span
-                        th:text="${producto.precios[0].supermercado.nombreSuper}"></span></p>
+                        th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}"></span></p>
                 <!-- Botón para añadir a la cesta -->
                 <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal"
                         th:data-bs-target="'#selectBasketModal' + ${producto.id}"
@@ -129,6 +129,7 @@
                                     <span th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor * (1 - descuento.porcentaje / 100), 1, 2) + ' € (' + descuento.porcentaje + '% de descuento)'}"></span>
                                 </span>
                             </span>
+                                <span th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}"></span>
                         </span>
                             <span th:if="${similarProducto.descuentos.size() == 0}"
                                   th:text="${#numbers.formatDecimal(similarProducto.precios[0].valor, 1, 2) + ' €'}"></span>

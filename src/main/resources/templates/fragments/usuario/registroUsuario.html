@@ -111,6 +111,7 @@
                                                     th:value="${genero.id}"
                                                     th:text="${#fields.hasErrors('detalle.genero.id') ? 'error' : (idioma == 'es' ? genero.esDesc : genero.enDesc)}">
                                             </option>
+
                                         </select>
                                         <div th:if="${#fields.hasErrors('detalle.genero.id')}"
                                              class="alert alert-danger">
