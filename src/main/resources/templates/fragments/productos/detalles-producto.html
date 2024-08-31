@@ -195,19 +195,20 @@
         </div>
     </div>
 
-    <!-- Sección de valoraciones -->
     <div class="review-list mt-4">
         <h2 th:text="#{producto.details.reviews}"></h2>
         <ul class="list-unstyled">
             <li th:each="valoracion : ${valoraciones}">
                 <div class="review">
-                    <strong th:text="#{producto.details.comment}"></strong> <span
-                        th:text="${valoracion.usuario.email}"></span>
+                    <strong th:text="#{producto.details.comment}"></strong>
+                    <span th:if="${valoracion.usuario != null}" th:text="${valoracion.usuario.email}"></span>
+                    <span th:unless="${valoracion.usuario != null}" th:text="#{review.anonymous}"></span>
                     <br/>
-                    <strong th:text="#{producto.details.rating}"></strong> <span th:text="${valoracion.nota}"></span>
+                    <strong th:text="#{producto.details.rating}"></strong>
+                    <span th:text="${valoracion.nota}"></span>
                     <br/>
-                    <strong th:text="#{producto.details.comment}"></strong> <span
-                        th:text="${valoracion.comentario}"></span>
+                    <strong th:text="#{producto.details.comment}"></strong>
+                    <span th:text="${valoracion.comentario}"></span>
                 </div>
                 <hr/>
             </li>

@@ -28,16 +28,25 @@
             </div>
         </div>
     </div>
-
     <!-- Sección de valoraciones -->
     <div class="mt-4">
         <h2 th:text="#{supermarket.details.ratings}"></h2>
         <div th:if="${not #lists.isEmpty(valoraciones)}">
-            <ul class="list-group">
+            <ul class="list-unstyled">
                 <li th:each="valoracion : ${valoraciones}" class="list-group-item">
-                    <strong th:text="${valoracion.usuario.email}"></strong>:
-                    <span th:text="${valoracion.comentario}"></span> -
-                    <span th:text="${valoracion.nota}"></span>
+                    <div class="review">
+                        <!-- Mostrar como Anónimo si el usuario es null -->
+                        <strong th:text="#{producto.details.comment}"></strong>
+                        <span th:if="${valoracion.usuario != null}" th:text="${valoracion.usuario.email}"></span>
+                        <span th:unless="${valoracion.usuario != null}" th:text="#{supermarket.details.anonymous}"></span>
+                        <br/>
+                        <strong th:text="#{producto.details.rating}"></strong>
+                        <span th:text="${valoracion.nota}"></span>
+                        <br/>
+                        <strong th:text="#{producto.details.comment}"></strong>
+                        <span th:text="${valoracion.comentario}"></span>
+                    </div>
+                    <hr/>
                 </li>
             </ul>
         </div>

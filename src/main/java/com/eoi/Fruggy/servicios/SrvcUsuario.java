@@ -6,6 +6,9 @@ import com.eoi.Fruggy.entidades.Rol;
 import com.eoi.Fruggy.entidades.Usuario;
 import com.eoi.Fruggy.repositorios.RepoRol;
 import com.eoi.Fruggy.repositorios.RepoUsuario;
+import com.eoi.Fruggy.repositorios.RepoValProducto;
+import com.eoi.Fruggy.repositorios.RepoValSupermercado;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,15 +26,19 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
     private final RepoUsuario repoUsuario;
     private final RepoRol repoRol;
     private final PasswordEncoder passwordEncoder;
+    private final RepoValProducto repoValProducto;
+    private final RepoValSupermercado repoValSupermercado;
 
 
     // Se añaden estos métodos para agregar Bcrypt a contraseña cuando se cree nuevo usuario.
     @Autowired
-    public SrvcUsuario(RepoUsuario repoUsuario, RepoRol repoRol, PasswordEncoder passwordEncoder) {
+    public SrvcUsuario(RepoUsuario repoUsuario, RepoRol repoRol, PasswordEncoder passwordEncoder, RepoValProducto repoValProducto, RepoValSupermercado repoValSupermercado) {
         super(repoUsuario);
         this.repoUsuario = repoUsuario;
         this.repoRol = repoRol;
         this.passwordEncoder = passwordEncoder;
+        this.repoValProducto = repoValProducto;
+        this.repoValSupermercado = repoValSupermercado;
     }
 
     /**
@@ -114,6 +121,15 @@ public class SrvcUsuario extends AbstractSrvc<Usuario, Long, RepoUsuario> {
         } else {
             return repoUsuario.findAll(pageable);
         }
+    }
+    @Transactional
+    public void eliminarPorId(Long id) {
+        // Primero, actualizar las valoraciones para que ya no hagan referencia al usuario
+        repoValProducto.updateUsuarioIdToNull(id);
+        repoValSupermercado.updateUsuarioIdToNull(id);
+
+        // Luego, eliminar el usuario
+        repoUsuario.deleteById(id);
     }
 }
 
