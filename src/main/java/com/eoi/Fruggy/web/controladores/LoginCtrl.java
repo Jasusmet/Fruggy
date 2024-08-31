@@ -30,7 +30,7 @@ public class LoginCtrl {
     @GetMapping("/login")
     public String showLoginForm(Model model, @RequestParam(value = "error", required = false) String error) {
         if (error != null) {
-            model.addAttribute("error", "Invalid username or password.");
+            model.addAttribute("error", "Usuario o contraseña incorrectos. Inténtalo de nuevo.");
         }
         return "/login/login";
     }

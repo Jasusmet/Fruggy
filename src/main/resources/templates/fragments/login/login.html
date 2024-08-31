@@ -31,6 +31,8 @@
             <a th:href="@{/language/en(redirect=${currentUrl})}" th:text="#{language.english}"
                class="language-button"></a>
         </div>
+        <!-- Mensaje de error -->
+        <div class="error-message" th:if="${error}" th:text="${error}"></div>
 
     </form>
 </div>
