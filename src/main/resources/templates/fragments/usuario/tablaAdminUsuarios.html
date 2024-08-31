@@ -56,7 +56,7 @@
             </td>
             <td>
                 <form th:action="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" method="post"
-                      onsubmit="return confirm([[${'confirm_delete'}]])">
+                      onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')">
                     <input type="submit" class="btn btn-danger" th:value="#{delete}"/>
                 </form>
             </td>

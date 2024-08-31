@@ -289,6 +289,7 @@ body {
 }
 
 .card-text {
+    grid-row: 2; /* Texto en la segunda fila */
     font-size: 0.875rem;
     line-height: 1.4;
     margin-bottom: 1rem;
@@ -306,7 +307,10 @@ body {
 .btn-container {
     display: flex;
     justify-content: space-between;
-    margin-top: auto;
+    position: absolute; /* Posiciona el contenedor de botones de manera fija */
+    bottom: 1rem; /* Ajusta el espacio desde el fondo de la tarjeta */
+    left: 1rem; /* Ajusta el espacio desde el lado izquierdo */
+    right: 1rem; /* Ajusta el espacio desde el lado derecho */
 }
 
 .btn-icon {
@@ -423,8 +427,22 @@ body {
         font-size: 1.25rem;
     }
 
+    .rating-form {
+        margin-top: 2rem;
+        background-color: #ffffff;
+        padding: 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+    .rating-form .btn-primary {
+        position: absolute;
+        bottom: 1rem; /* Posiciona el botón en la parte inferior */
+        right: 1rem; /* Ajusta el espacio desde el lado derecho */
+    }
+
     .rating-form textarea {
-        height: 80px;
+        margin-bottom: 2.5rem; /* Asegura suficiente espacio para el botón */
     }
 
     .thumbnail.card {
