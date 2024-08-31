@@ -18,24 +18,36 @@
                 <td th:text="${cesta.fechaFormateada}"></td>
                 <td>
                     <a th:href="@{/cestas/{id}(id=${cesta.id})}" class="btn btn-info btn-sm"
-                       th:text="#{basket.view.details}">Ver Detalles</a>
-                    <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post" class="d-inline"
-                          onsubmit="confirmarEliminacion(event)">
-                        <button type="submit" class="btn btn-danger btn-sm" th:text="#{basket.delete}"></button>
-                    </form>
+                       th:text="#{basket.view.details}"></a>
+                    <!-- Botón para abrir el modal de confirmación -->
+                    <button type="button" class="btn btn-danger btn-sm"
+                            data-bs-toggle="modal"
+                            th:attr="data-bs-target='#modal_' + ${cesta.id}"
+                            th:text="#{basket.delete}"></button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+    <!-- Modal para cada cesta -->
+    <div th:each="cesta : ${cestas}" class="modal fade"
+         th:id="'modal_' + ${cesta.id}" tabindex="-1" role="dialog"
+         aria-labelledby="confirmarEliminarCestaLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:text="#{basket.delete.modal}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" th:text="#{basket.delete.confirm}"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{account.confirmation.cancel}"></button>
+                    <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post">
+                        <button type="submit" class="btn btn-danger" th:text="#{confirm.delete.basket}"></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<script>
-    const confirmMessage = /*[[${#messages['basket.delete.confirm']}]]*/ '¿Estás seguro de que quieres eliminar esta cesta?';
-
-    function confirmarEliminacion(event) {
-        if (!confirm(confirmMessage)) {
-            event.preventDefault();
-        }
-    }
-</script>
