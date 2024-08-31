@@ -6,15 +6,15 @@
             <h1 th:text="${supermercado.nombreSuper}">Nombre del Supermercado</h1>
             <p><strong th:text="#{supermarket.details.url}">URL:</strong> <a th:href="${supermercado.url}"
                                                                              th:text="${supermercado.url}"></a></p>
-            <p><strong th:text="#{supermarket.details.schedule}">Horario:</strong> <span
+            <p><strong th:text="#{supermarket.details.schedule}"></strong> <span
                     th:text="${supermercado.horario}"></span></p>
-            <p><strong th:text="#{supermarket.details.street}">Calle:</strong> <span
+            <p><strong th:text="#{supermarket.details.street}"></strong> <span
                     th:text="${supermercado.calle}"></span></p>
-            <p><strong th:text="#{supermarket.details.town}">Municipio:</strong> <span
+            <p><strong th:text="#{supermarket.details.town}"></strong> <span
                     th:text="${supermercado.municipio}"></span></p>
-            <p><strong th:text="#{supermarket.details.country}">País:</strong> <span
+            <p><strong th:text="#{supermarket.details.country}"></strong> <span
                     th:text="${supermercado.pais}"></span></p>
-            <p><strong th:text="#{supermarket.details.zipCode}">Código Postal:</strong> <span
+            <p><strong th:text="#{supermarket.details.zipCode}"></strong> <span
                     th:text="${supermercado.codigopostal}"></span></p>
         </div>
 
@@ -31,30 +31,30 @@
 
     <!-- Sección de valoraciones -->
     <div class="mt-4">
-        <h2 th:text="#{supermarket.details.ratings}">Valoraciones</h2>
+        <h2 th:text="#{supermarket.details.ratings}"></h2>
         <div th:if="${not #lists.isEmpty(valoraciones)}">
             <ul class="list-group">
                 <li th:each="valoracion : ${valoraciones}" class="list-group-item">
-                    <strong th:text="${valoracion.usuario.email}">Usuario</strong>:
-                    <span th:text="${valoracion.comentario}">Comentario</span> -
-                    <span th:text="${valoracion.nota}">Nota</span>
+                    <strong th:text="${valoracion.usuario.email}"></strong>:
+                    <span th:text="${valoracion.comentario}"></span> -
+                    <span th:text="${valoracion.nota}"></span>
                 </li>
             </ul>
         </div>
         <div th:if="${#lists.isEmpty(valoraciones)}">
-            <p th:text="#{supermarket.details.noRatings}">No hay valoraciones disponibles para este supermercado.</p>
+            <p th:text="#{supermarket.details.noRatings}"></p>
         </div>
     </div>
 
     <!-- Formulario para agregar una valoración -->
     <div class="mt-4">
-        <h2 th:text="#{supermarket.details.leaveReview}">Deja tu valoración</h2>
+        <h2 th:text="#{supermarket.details.leaveReview}"></h2>
         <form th:action="@{/supermercados/detalles/{supermercadoId}/guardar(supermercadoId=${supermercado.id})}"
               method="post"
               th:object="${valoracion}">
 
             <div class="form-group">
-                <label for="comentario" th:text="#{supermarket.details.comment}">Comentario:</label>
+                <label for="comentario" th:text="#{supermarket.details.comment}"></label>
                 <textarea id="comentario" th:field="*{comentario}" class="form-control" required></textarea>
             </div>
             <div class="form-group">
@@ -62,8 +62,7 @@
                 <input type="number" id="nota" th:field="*{nota}" class="form-control" min="0" max="5" step="0.1"
                        required/>
             </div>
-            <button type="submit" class="btn btn-primary" th:text="#{supermarket.details.submitReview}">Enviar
-                Valoración
+            <button type="submit" class="btn btn-primary" th:text="#{supermarket.details.submitReview}">
             </button>
         </form>
     </div>
@@ -74,6 +73,5 @@
     </div>
 
     <!-- Botón para volver a la lista de supermercados -->
-    <a th:href="@{/supermercados}" class="btn btn-secondary mt-3" th:text="#{supermarket.details.backToList}">Volver a
-        la lista de supermercados</a>
+    <a th:href="@{/supermercados}" class="btn btn-secondary mt-3" th:text="#{supermarket.details.backToList}"></a>
 </div>

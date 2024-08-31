@@ -42,8 +42,10 @@
                                     <div class="mb-3">
                                         <input type="text" th:field="*{detalle.nombreUsuario}" class="form-control"
                                                th:placeholder="#{username_placeholder}" required>
-                                        <div th:if="${#fields.hasErrors('detalle.nombreUsuario')}" class="alert alert-danger">
-                                            <p th:each="err : ${#fields.errors('detalle.nombreUsuario')}" th:text="${err}"></p>
+                                        <div th:if="${#fields.hasErrors('detalle.nombreUsuario')}"
+                                             class="alert alert-danger">
+                                            <p th:each="err : ${#fields.errors('detalle.nombreUsuario')}"
+                                               th:text="${err}"></p>
                                         </div>
                                     </div>
 
@@ -60,8 +62,10 @@
                                     <div class="mb-3">
                                         <input type="text" th:field="*{detalle.apellido}" class="form-control"
                                                th:placeholder="#{last_name_placeholder}" required>
-                                        <div th:if="${#fields.hasErrors('detalle.apellido')}" class="alert alert-danger">
-                                            <p th:each="err : ${#fields.errors('detalle.apellido')}" th:text="${err}"></p>
+                                        <div th:if="${#fields.hasErrors('detalle.apellido')}"
+                                             class="alert alert-danger">
+                                            <p th:each="err : ${#fields.errors('detalle.apellido')}"
+                                               th:text="${err}"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -93,8 +97,10 @@
                                     <div class="mb-3">
                                         <input type="text" th:field="*{detalle.codigopostal}" class="form-control"
                                                th:placeholder="#{postal_code_placeholder}">
-                                        <div th:if="${#fields.hasErrors('detalle.codigopostal')}" class="alert alert-danger">
-                                            <p th:each="err : ${#fields.errors('detalle.codigopostal')}" th:text="${err}"></p>
+                                        <div th:if="${#fields.hasErrors('detalle.codigopostal')}"
+                                             class="alert alert-danger">
+                                            <p th:each="err : ${#fields.errors('detalle.codigopostal')}"
+                                               th:text="${err}"></p>
                                         </div>
                                     </div>
 
@@ -104,8 +110,7 @@
                                                th:text="#{gender_label}">Gender</label>
                                         <select id="generoId" th:field="*{detalle.genero.id}" class="form-select"
                                                 required>
-                                            <option value="" disabled selected th:text="#{select_gender}">Select a
-                                                gender
+                                            <option value="" disabled selected th:text="#{select_gender}">
                                             </option>
                                             <option th:each="genero : ${generos}"
                                                     th:value="${genero.id}"
@@ -128,7 +133,7 @@
 
                             <!-- Botón de guardar -->
                             <div class="col-lg-12 text-center mt-4">
-                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="submit" class="btn btn-primary" th:text="#{save_button}"></button>
                             </div>
                         </form>
                         <div th:if="${error}" class="alert alert-danger mt-3" role="alert">

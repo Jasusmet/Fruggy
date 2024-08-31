@@ -223,11 +223,13 @@ public class UsuarioCtrl {
 
     // Método para dar de baja al usuario
     @PostMapping("usuario/administracion/baja")
-    public String darDeBaja(@AuthenticationPrincipal UserDetails userDetails) throws Exception {
+    public String darDeBaja(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) throws Exception {
         Optional<Usuario> usuarioOpt = usuarioSrvc.getRepo().findByEmail(userDetails.getUsername());
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
             usuarioSrvc.eliminarPorId(usuario.getId());
+            // Invalida la sesión actual
+            request.getSession().invalidate();
             return "redirect:/";
         } else {
             return "redirect:/login";

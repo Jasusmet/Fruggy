@@ -5,10 +5,10 @@
             <label for="sortField" class="mr-2" th:text="#{supermarket.sort.label}">Ordenar por:</label>
             <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
                 <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}"
-                        th:text="#{supermarket.sort.name}">Nombre (A-Z)
+                        th:text="#{supermarket.sort.name}">
                 </option>
                 <option value="id" th:selected="${currentSortField == 'id'}"
-                        th:text="#{supermarket.sort.id}">Más Nuevos
+                        th:text="#{supermarket.sort.id}">
                 </option>
             </select>
         </div>
@@ -23,19 +23,19 @@
     <table class="table table-striped mt-3">
         <thead>
         <tr>
-            <th th:text="#{supermarket.list.name}">Nombre</th>
-            <th th:text="#{supermarket.list.URL}">URL</th>
-            <th th:text="#{supermarket.details.schedule}">Horario</th>
-            <th th:text="#{supermarket.address}">Dirección</th>
-            <th th:text="#{supermarket.edit}">Editar</th>
-            <th th:text="#{supermarket.delete}">Eliminar</th>
+            <th th:text="#{supermarket.list.name}"></th>
+            <th th:text="#{supermarket.list.URL}"></th>
+            <th th:text="#{supermarket.details.schedule}"></th>
+            <th th:text="#{supermarket.address}"></th>
+            <th th:text="#{supermarket.edit}"></th>
+            <th th:text="#{supermarket.delete}"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="supermercado : ${supermercados.content}">
-            <td th:text="${supermercado.nombreSuper}">Nombre</td>
-            <td th:text="${supermercado.url}">URL</td>
-            <td th:text="${supermercado.horario}">Horario</td>
+            <td th:text="${supermercado.nombreSuper}"></td>
+            <td th:text="${supermercado.url}"></td>
+            <td th:text="${supermercado.horario}"></td>
             <td th:text="${supermercado.calle + ', ' + supermercado.municipio + ', ' + supermercado.pais + ', ' + supermercado.codigopostal}">
                 Dirección
             </td>
@@ -60,7 +60,7 @@
         <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
             <a class="page-link"
                th:href="@{/admin/supermercados(page=${currentPage - 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:text="#{supermarket.pagination.previous}" th:disabled="${currentPage == 0}">Anterior</a>
+               th:text="#{supermarket.pagination.previous}" th:disabled="${currentPage == 0}"></a>
         </li>
         <li class="page-item" th:each="i : ${#numbers.range(0, totalPages - 1)}">
             <a class="page-link"
@@ -70,11 +70,11 @@
         <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
             <a class="page-link"
                th:href="@{/admin/supermercados(page=${currentPage + 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:text="#{supermarket.pagination.next}" th:disabled="${currentPage == totalPages - 1}">Siguiente</a>
+               th:text="#{supermarket.pagination.next}" th:disabled="${currentPage == totalPages - 1}"></a>
         </li>
     </ul>
 </div>
 
 <div th:if="${supermercados.content == null or #lists.isEmpty(supermercados.content)}">
-    <p th:text="#{supermarket.emptyList}">La lista de supermercados está vacía</p>
+    <p th:text="#{supermarket.emptyList}"></p>
 </div>

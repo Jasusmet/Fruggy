@@ -7,9 +7,9 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th th:text="#{basket.name}">Nombre de la Cesta</th>
-                <th th:text="#{basket.creation.date}">Fecha de Creación</th>
-                <th th:text="#{basket.actions}">Acciones</th>
+                <th th:text="#{basket.name}"></th>
+                <th th:text="#{basket.creation.date}"></th>
+                <th th:text="#{basket.actions}"></th>
             </tr>
             </thead>
             <tbody>
@@ -21,7 +21,7 @@
                        th:text="#{basket.view.details}">Ver Detalles</a>
                     <form th:action="@{/cestas/{id}/eliminar(id=${cesta.id})}" method="post" class="d-inline"
                           onsubmit="confirmarEliminacion(event)">
-                        <button type="submit" class="btn btn-danger btn-sm" th:text="#{basket.delete}">Eliminar Cesta</button>
+                        <button type="submit" class="btn btn-danger btn-sm" th:text="#{basket.delete}"></button>
                     </form>
                 </td>
             </tr>

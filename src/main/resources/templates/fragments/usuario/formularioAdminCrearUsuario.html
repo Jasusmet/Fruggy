@@ -30,7 +30,7 @@
                             <div class="col-lg-6 col-md-6 mb-3">
                                 <div class="form-check">
                                     <input type="checkbox" th:field="*{active}" class="form-check-input">
-                                    <label class="form-check-label" th:text="#{active_label}">Active</label>
+                                    <label class="form-check-label" th:text="#{active_label}"></label>
                                 </div>
                             </div>
 
@@ -48,7 +48,7 @@
                                 <select class="form-control" th:field="*{roles}" multiple required>
                                     <option th:each="rol : ${roles}"
                                             th:value="${rol.id}"
-                                            th:text="${rol.rolNombre}">Select Role
+                                            th:text="${rol.rolNombre}">
                                     </option>
                                 </select>
                             </div>
@@ -103,9 +103,9 @@
 
                             <!-- Selección de Género -->
                             <div class="mb-3">
-                                <label for="generoId" class="form-label" th:text="#{gender_label}">Gender</label>
+                                <label for="generoId" class="form-label" th:text="#{gender_label}"></label>
                                 <select id="generoId" th:field="*{detalle.genero.id}" class="form-select" required>
-                                    <option value="" disabled selected th:text="#{select_gender}">Select a gender</option>
+                                    <option value="" disabled selected th:text="#{select_gender}"></option>
                                     <option th:each="genero : ${generos}"
                                             th:value="${genero.id}"
                                             th:text="${#fields.hasErrors('detalle.genero.id') ? 'error' : (idioma == 'es' ? genero.esDesc : genero.enDesc)}">
@@ -120,11 +120,11 @@
 
                         <!-- Botón de guardar -->
                         <div class="col-lg-12 mb-3">
-                            <button type="submit" class="btn btn-primary" th:text="#{save_button}">Save</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{save_button}"></button>
                         </div>
                     </form>
                     <div th:if="${error}" class="alert alert-danger" role="alert">
-                        <span th:text="${error}">Error creating user</span>
+                        <span th:text="${error}"></span>
                     </div>
                 </div>
             </div>

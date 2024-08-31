@@ -6,14 +6,14 @@
                 <div class="hero__categories">
                     <div class="hero__categories__all" onclick="toggleCategories()">
                         <i class="fa fa-bars"></i>
-                        <span th:text="#{category.all}">Categorías</span>
+                        <span th:text="#{category.all}"></span>
                     </div>
                     <ul id="categoryMenu">
                         <li th:each="categoria : ${categorias}">
                             <a th:href="@{/productos/categoria/{id}(id=${categoria.id})}">
                                 <th:block th:switch="${idioma}">
-                                    <span th:case="'es'" th:text="${categoria.tipo_es}">Category Name</span>
-                                    <span th:case="'en'" th:text="${categoria.tipo_en}">Category Name</span>
+                                    <span th:case="'es'" th:text="${categoria.tipo_es}"></span>
+                                    <span th:case="'en'" th:text="${categoria.tipo_en}"></span>
                                 </th:block>
                             </a>
                         </li>
@@ -28,7 +28,7 @@
                                    th:placeholder="#{search.placeholder}"
                                    th:value="${search}">
                             <button type="submit" class="site-btn"
-                                    th:text="#{search.button}">Search
+                                    th:text="#{search.button}">
                             </button>
                         </form>
                     </div>

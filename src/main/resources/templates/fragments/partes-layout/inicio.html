@@ -1,13 +1,13 @@
 <div class="container" th:fragment="inicio">
     <!-- Catchphrase -->
     <section id="catchphrase" class="container my-5 text-center catchphrase-section">
-        <h1 th:text="#{inicio.catchphrase}">Explora lo Mejor en Productos y Ofertas</h1>
+        <h1 th:text="#{inicio.catchphrase}"></h1>
     </section>
     <section id="recentProducts" class="container my-5">
-        <h2 th:text="#{inicio.recent_products}">Productos Más Recientes</h2>
+        <h2 th:text="#{inicio.recent_products}"></h2>
         <div id="recentProductsCarousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-                <!-- Aquí se generarán los items del carrusel mediante Thymeleaf -->
+                <!-- Carrusel con productos recientes -->
                 <div class="carousel-item active">
                     <div class="d-flex">
                         <!-- Producto 1 -->
@@ -18,9 +18,9 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${productosNuevos[0].nombreProducto}"></h5>
                                 <p class="card-text">
-                                    <strong th:text="#{inicio.price_label}">Precio:</strong>
+                                    <strong th:text="#{inicio.price_label}"></strong>
                                     <span th:text="${#numbers.formatDecimal(productosNuevos[0].precios[0].valor, 1, 2) + ' €'}"></span><br>
-                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong>
+                                    <strong th:text="#{inicio.supermarket_label}"></strong>
                                     <span th:text="${productosNuevos[0].precios[0].supermercado.nombreSuper + ' (' + productosNuevos[0].precios[0].supermercado.municipio + ')'}">Nombre del Supermercado (Municipio)</span>
                                 </p>
                             </div>
@@ -33,9 +33,9 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${productosNuevos[1].nombreProducto}"></h5>
                                 <p class="card-text">
-                                    <strong th:text="#{inicio.price_label}">Precio:</strong>
+                                    <strong th:text="#{inicio.price_label}"></strong>
                                     <span th:text="${#numbers.formatDecimal(productosNuevos[1].precios[0].valor, 1, 2) + ' €'}"></span><br>
-                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong>
+                                    <strong th:text="#{inicio.supermarket_label}"></strong>
                                     <span th:text="${productosNuevos[1].precios[0].supermercado.nombreSuper + ' (' + productosNuevos[1].precios[0].supermercado.municipio + ')'}">Nombre del Supermercado (Municipio)</span>
                                 </p>
                             </div>
@@ -48,9 +48,9 @@
                             <div class="card-body">
                                 <h5 class="card-title" th:text="${productosNuevos[2].nombreProducto}"></h5>
                                 <p class="card-text">
-                                    <strong th:text="#{inicio.price_label}">Precio:</strong>
+                                    <strong th:text="#{inicio.price_label}"></strong>
                                     <span th:text="${#numbers.formatDecimal(productosNuevos[2].precios[0].valor, 1, 2) + ' €'}"></span><br>
-                                    <strong th:text="#{inicio.supermarket_label}">Supermercado:</strong>
+                                    <strong th:text="#{inicio.supermarket_label}"></strong>
                                     <span th:text="${productosNuevos[2].precios[0].supermercado.nombreSuper + ' (' + productosNuevos[2].precios[0].supermercado.municipio + ')'}">Nombre del Supermercado (Municipio)</span>
                                 </p>
                             </div>
@@ -62,30 +62,23 @@
     </section>
     <!-- Sección de Descripción -->
     <section id="description" class="container my-5">
-        <h2 th:text="#{inicio.about_us}">Sobre Nosotros</h2>
-        <p th:text="#{inicio.description_part1}">Bienvenido a Fruggy, tu comparador de precios confiable. En Fruggy,
-            nuestro objetivo es ayudarte a encontrar
-            las mejores ofertas en productos que te interesan. Comparamos precios de diversos supermercados y tiendas
-            para que puedas hacer tus compras de manera más económica y eficiente. Nuestra plataforma te permite acceder
-            a información detallada sobre precios, promociones y disponibilidad de productos en tiempo real.</p>
-        <p th:text="#{inicio.description_part2}">Nos dedicamos a proporcionarte una experiencia de compra sencilla y
-            conveniente. Con Fruggy, puedes estar
-            seguro de que siempre obtendrás el mejor valor por tu dinero.</p>
+        <h2 th:text="#{inicio.about_us}"></h2>
+        <p th:text="#{inicio.description_part1}"></p>
+        <p th:text="#{inicio.description_part2}"></p>
     </section>
 
     <!-- Sección de Ubicación -->
     <section id="location" class="container my-5">
-        <h2 th:text="#{inicio.where_we_are}">¿Dónde Estamos?</h2>
+        <h2 th:text="#{inicio.where_we_are}"></h2>
         <div class="row">
             <div class="col-md-6">
-                <p th:text="#{inicio.location_description}">Estamos ubicados en el corazón de la ciudad. Puedes
-                    encontrarnos en:</p>
+                <p th:text="#{inicio.location_description}"></p>
                 <address>
-                    <strong th:text="#{inicio.company_name}">Nombre de la Empresa</strong><br>
-                    <span th:text="#{inicio.address}">Calle Ejemplo, 123</span><br>
-                    <span th:text="#{inicio.city_country}">Ciudad, País</span><br>
-                    <span th:text="#{inicio.email}">@infoempres</span><br>
-                    <span th:text="#{inicio.phone}">Tel: +123 456 789</span>
+                    <strong th:text="#{inicio.company_name}"></strong><br>
+                    <span th:text="#{inicio.address}"></span><br>
+                    <span th:text="#{inicio.city_country}"></span><br>
+                    <span th:text="#{inicio.email}"></span><br>
+                    <span th:text="#{inicio.phone}"></span>
                 </address>
             </div>
             <div class="col-md-6">

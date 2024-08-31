@@ -22,24 +22,24 @@
 
         <thead>
         <tr>
-            <th th:text="#{admin.product.id}">ID</th>
-            <th th:text="#{admin.product.name}">Name</th>
-            <th th:text="#{admin.product.description}">Description</th>
+            <th th:text="#{admin.product.id}"></th>
+            <th th:text="#{admin.product.name}"></th>
+            <th th:text="#{admin.product.description}"></th>
             <th th:text="#{admin.product.price}">Price</th>
-            <th th:text="#{admin.product.supermarket}">Supermarket</th>
-            <th th:text="#{admin.product.category}">Category</th>
-            <th th:text="#{admin.product.subcategory}">Subcategory</th>
-            <th th:text="#{admin.product.active}">Active</th>
-            <th th:text="#{admin.product.discounts}">Discounts</th>
-            <th th:text="#{admin.product.edit}">Edit</th>
-            <th th:text="#{admin.product.delete}">Delete</th>
+            <th th:text="#{admin.product.supermarket}"></th>
+            <th th:text="#{admin.product.category}"></th>
+            <th th:text="#{admin.product.subcategory}"></th>
+            <th th:text="#{admin.product.active}"></th>
+            <th th:text="#{admin.product.discounts}"></th>
+            <th th:text="#{admin.product.edit}"></th>
+            <th th:text="#{admin.product.delete}"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="producto : ${productos.content}">
-            <td th:text="${producto.id}">ID</td>
-            <td th:text="${producto.nombreProducto}">Name</td>
-            <td th:text="${producto.descripcion}">Description</td>
+            <td th:text="${producto.id}"></td>
+            <td th:text="${producto.nombreProducto}"></td>
+            <td th:text="${producto.descripcion}"></td>
             <td>
                 <span th:if="${producto.descuentos.size() > 0}">
                     <span th:each="descuento : ${producto.descuentos}">
@@ -52,23 +52,23 @@
                       th:text="${#numbers.formatDecimal(producto.precios[0].valor, 1, 2) + ' €'}"></span>
             </td>
             <td th:text="${producto.precios[0].supermercado.nombreSuper + ' (' + producto.precios[0].supermercado.municipio + ')'}">
-                Supermarket
+
             </td>
             </td>
             <td th:text="${producto.subcategoria != null ? (idioma == 'es' ? producto.subcategoria.categoria.tipo_es : producto.subcategoria.categoria.tipo_en) : 'No disponible'}">
-                Category
+
             </td>
             <td th:text="${producto.subcategoria != null ? (idioma == 'es' ? producto.subcategoria.tipo_es : producto.subcategoria.tipo_en) : 'No disponible'}">
-                Subcategory
+
             </td>
-            <td th:text="${producto.activo} ? 'Sí' : 'No'">Active</td>
+            <td th:text="${producto.activo} ? 'Sí' : 'No'"></td>
             <td>
                 <a th:href="@{'/admin/productos/descuento/' + ${producto.id}}" class="btn btn-outline-success"
-                   th:text="#{admin.product.discounts}">Discounts</a>
+                   th:text="#{admin.product.discounts}"></a>
             </td>
             <td>
                 <a th:href="@{/admin/productos/editar/{id}(id=${producto.id})}" class="btn btn-warning"
-                   th:text="#{admin.product.edit}">Edit</a>
+                   th:text="#{admin.product.edit}"></a>
             </td>
             <td>
                 <form th:action="@{/admin/productos/eliminar/{id}(id=${producto.id})}" method="post"
@@ -84,7 +84,7 @@
         <ul class="pagination justify-content-center mt-3">
             <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
                 <a class="page-link" th:href="@{/admin/productos(page=${currentPage - 1}, size=10)}"
-                   th:text="#{admin.product.previous}" tabindex="-1">Previous</a>
+                   th:text="#{admin.product.previous}" tabindex="-1"></a>
             </li>
 
             <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
@@ -94,7 +94,7 @@
 
             <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
                 <a class="page-link" th:href="@{/admin/productos(page=${currentPage + 1}, size=10)}"
-                   th:text="#{admin.product.next}">Next</a>
+                   th:text="#{admin.product.next}"></a>
             </li>
         </ul>
     </nav>

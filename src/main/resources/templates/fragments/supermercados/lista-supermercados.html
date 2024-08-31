@@ -3,7 +3,7 @@
     <!-- Filtros y ordenación -->
     <form action="#" method="get" class="form-inline mb-3">
         <div class="form-group mr-2">
-            <label for="sortField" class="mr-2" th:text="#{sort.field}">Ordenar por:</label>
+            <label for="sortField" class="mr-2" th:text="#{sort.field}"></label>
             <select name="sortField" id="sortField" class="form-control" onchange="this.form.submit()">
                 <option value="nombreSuper" th:selected="${currentSortField == 'nombreSuper'}"
                         th:text="#{sort.field.name}"></option>
