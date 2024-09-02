@@ -52,29 +52,36 @@
         </tr>
         </tbody>
     </table>
-</div>
 
-<!-- Controles de paginación -->
-<div>
-    <ul class="pagination">
-        <li class="page-item" th:class="${currentPage == 0} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{/admin/supermercados(page=${currentPage - 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:text="#{supermarket.pagination.previous}" th:disabled="${currentPage == 0}"></a>
-        </li>
-        <li class="page-item" th:each="i : ${#numbers.range(0, totalPages - 1)}">
-            <a class="page-link"
-               th:href="@{/admin/supermercados(page=${i}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:class="${i == currentPage} ? 'active'">[[${i + 1}]]</a>
-        </li>
-        <li class="page-item" th:class="${currentPage == totalPages - 1} ? 'disabled'">
-            <a class="page-link"
-               th:href="@{/admin/supermercados(page=${currentPage + 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
-               th:text="#{supermarket.pagination.next}" th:disabled="${currentPage == totalPages - 1}"></a>
-        </li>
-    </ul>
-</div>
 
-<div th:if="${supermercados.content == null or #lists.isEmpty(supermercados.content)}">
-    <p th:text="#{supermarket.emptyList}"></p>
+    <!-- Controles de paginación -->
+    <div>
+        <ul class="pagination">
+            <!-- Enlace a la página anterior -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/supermercados(page=${currentPage > 0 ? currentPage - 1 : 0}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+                   th:text="#{supermarket.pagination.previous}"></a>
+            </li>
+
+            <!-- Enlaces a cada página -->
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/admin/supermercados(page=${i}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+                   th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Enlace a la página siguiente -->
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/supermercados(page=${currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+                   th:text="#{supermarket.pagination.next}"></a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${supermercados.content == null or #lists.isEmpty(supermercados.content)}">
+        <p th:text="#{supermarket.emptyList}"></p>
+    </div>
 </div>

@@ -44,7 +44,9 @@ public class ADMINSupermercadoCtrl {
                                       @RequestParam(defaultValue = "nombreSuper") String sortField,
                                       @RequestParam(defaultValue = "asc") String sortDirection,
                                       Model model) {
+        // Obtiene la página de supermercados
         Page<Supermercado> paginaSupermercados = supermercadoSrvc.obtenerSupermercadosPaginados(page, size, sortField, sortDirection);
+
         model.addAttribute("supermercados", paginaSupermercados);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", paginaSupermercados.getTotalPages());
@@ -108,7 +110,7 @@ public class ADMINSupermercadoCtrl {
         }
     }
 
-                                     //IMAGENES
+    //IMAGENES
 
     // Método para agregar una imagen a un supermercado
     @PreAuthorize("hasRole('ROLE_Administrador')")

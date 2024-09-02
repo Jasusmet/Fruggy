@@ -43,21 +43,21 @@
     <!-- Controles de paginación -->
     <div>
         <ul class="pagination">
-            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <li class="page-item" th:classappend="${currentPage == 0} ? ' disabled'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${currentPage - 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
-                   th:text="#{pagination.previous}"></a>
+                   th:href="@{/supermercados(page=${currentPage - 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+                   th:text="#{supermarket.pagination.previous}"></a>
             </li>
-            <li class="page-item" th:each="pageNum : ${pageNumbers}">
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? ' active'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${pageNum} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
-                   th:classappend="${pageNum == currentPage} ? 'active'"
-                   th:text="${pageNum + 1}"></a>
+                   th:href="@{/supermercados(page=${i}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+                   th:text="${i + 1}"></a>
             </li>
-            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? ' disabled'">
                 <a class="page-link"
-                   th:href="@{'/supermercados?page=' + ${currentPage + 1} + '&size=' + ${size} + '&sortField=' + ${currentSortField} + '&sortDirection=' + ${currentSortDirection}}"
-                   th:text="#{pagination.next}"></a>
+                   th:href="@{/supermercados(page=${currentPage + 1}, size=${10}, sortField=${currentSortField}, sortDirection=${currentSortDirection})}"
+                   th:text="#{supermarket.pagination.next}"></a>
             </li>
         </ul>
     </div>
