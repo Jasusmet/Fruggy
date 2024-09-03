@@ -200,13 +200,23 @@
         <ul class="list-unstyled">
             <li th:each="valoracion : ${valoraciones}">
                 <div class="review">
-                    <strong th:text="#{producto.details.comment}"></strong>
-                    <span th:if="${valoracion.usuario != null}" th:text="${valoracion.usuario.email}"></span>
+                    <strong th:text="#{producto.details.user}"></strong>
+
+                    <!-- Mostrar nombre y email truncado -->
+                    <span th:if="${valoracion.usuario != null}">
+                    <span th:text="${valoracion.usuario.detalle.nombre}"></span>
+                        <!-- Email truncado: muestra la primera letra y el dominio -->
+                    (<span th:text="${#strings.concat(valoracion.usuario.email.substring(0, 1), '***@', valoracion.usuario.email.split('@')[1])}"></span>)
+                </span>
+
+                    <!-- Mostrar "anónimo" si no hay usuario -->
                     <span th:unless="${valoracion.usuario != null}" th:text="#{review.anonymous}"></span>
                     <br/>
+
                     <strong th:text="#{producto.details.rating}"></strong>
                     <span th:text="${valoracion.nota}"></span>
                     <br/>
+
                     <strong th:text="#{producto.details.comment}"></strong>
                     <span th:text="${valoracion.comentario}"></span>
                 </div>
