@@ -19,7 +19,9 @@
         <!-- Información del producto a la derecha -->
         <div class="col-md-6 product-details">
             <div class="product-details">
+
                 <p><strong th:text="#{producto.details.brand}"></strong> <span th:text="${producto.marca}"></span></p>
+                <p><strong th:text="#{producto.details.brand}"></strong> <span id="EAN" th:text="${producto.EAN}"></span></p>
                 <p><strong th:text="#{producto.details.description}"></strong> <span
                         th:text="${producto.descripcion}"></span></p>
 
@@ -104,6 +106,11 @@
                 <p th:text="${producto.notaMedia != null ? #numbers.formatDecimal(producto.notaMedia, 1, 1) : '#{producto.details.noRating}'}"></p>
             </div>
         </div>
+    </div>
+    <div class="container mt-4">
+        <canvas id="codigoBarras">
+
+        </canvas>
     </div>
 
     <!-- Sección de precios similares -->
@@ -238,4 +245,10 @@
 
     <!-- Botón para volver al catálogo -->
     <a th:href="@{/productos}" class="btn btn-secondary mt-3" th:text="#{producto.details.backToCatalog}"></a>
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+                $("#codigoBarras").JsBarcode($("#EAN").html());
+        });
+    </script>
 </div>

@@ -42,7 +42,7 @@ public class ImagenCtrl {
     @ResponseBody
     public ResponseEntity<org.springframework.core.io.Resource> obtenerImagen(@PathVariable String rutaImagen) throws MalformedURLException {
         System.out.println("Ruta de la imagen solicitada: " + rutaImagen);
-        Path path = Paths.get("D:/ficheros/" + rutaImagen);
+        Path path = Paths.get("C:/ficheros/" + rutaImagen);
 
         // Verifica si el archivo existe y es legible
         if (!Files.exists(path) || !Files.isReadable(path)) {
@@ -69,7 +69,7 @@ public class ImagenCtrl {
 
         // Genera un nombre único para la imagen
         String nombreArchivoUnico = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Path rutaArchivo = Paths.get("D:/ficheros/" + nombreArchivoUnico);
+        Path rutaArchivo = Paths.get("C:/ficheros/" + nombreArchivoUnico);
 
         try {
             Files.copy(file.getInputStream(), rutaArchivo);
@@ -92,7 +92,7 @@ public class ImagenCtrl {
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
         String nombreArchivoUnico = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        Path rutaArchivo = Paths.get("D:/ficheros/" + nombreArchivoUnico);
+        Path rutaArchivo = Paths.get("C:/ficheros/" + nombreArchivoUnico);
 
         try {
             Files.copy(file.getInputStream(), rutaArchivo);

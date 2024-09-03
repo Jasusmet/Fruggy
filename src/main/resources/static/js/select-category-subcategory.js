@@ -4,14 +4,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Función para obtener el idioma desde una fuente global o `localStorage`
     function getCurrentLanguage() {
-        // Supongamos que `window.currentLanguage` o `localStorage.getItem('language')` contiene el idioma actual
-        return window.currentLanguage || 'es'; // 'es' es el idioma por defecto
+        return navigator.language || navigator.userLanguage;       // 'es' es el idioma por defecto
     }
 
     function actualizarSubcategorias() {
+    alert("actualizando");
         let categoriaId = categoriaSelect.value;
         let idioma = getCurrentLanguage(); // Obtén el idioma actual
-
         if (!categoriaId) {
             subcategoriaSelect.innerHTML = '<option value="">Selecciona una subcategoría</option>';
             return;
@@ -19,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Define la URL de la API con el idioma actual
         const apiUrl = `/api/subcategorias?categoriaId=${categoriaId}&idioma=${idioma}`;
+        alert(apiUrl);
 
         // Realiza una solicitud GET
         fetch(apiUrl)
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     let option = document.createElement('option');
                     option.value = subcategoria.id;
                     // Usa el campo según el idioma seleccionado
-                    option.textContent = idioma === 'en' ? subcategoria.tipo_en : subcategoria.tipo_es;
+                    option.textContent = idioma === 'en-en' ? subcategoria.tipo_en : subcategoria.tipo_es;
                     subcategoriaSelect.appendChild(option);
                 });
             })

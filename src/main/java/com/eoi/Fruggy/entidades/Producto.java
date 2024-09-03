@@ -28,6 +28,9 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Utiliza Long en lugar de long
 
+    @Column(length = 13, unique=true, nullable = true)
+    private Long EAN;
+
     @NotBlank(message = "El nombre del producto es obligatorio.")
     @Size(max = 255, message = "El nombre del producto no puede tener más de 255 caracteres.")
     @Column(name = "nombreProducto", length = 255)

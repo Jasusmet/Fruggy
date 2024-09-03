@@ -12,6 +12,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="EAN" class="form-label" th:text="#{form.product.EAN}"></label>
+            <input min="0" max="9999999999999" type="number" class="form-control" id="EAN" th:field="*{EAN}" required>
+        </div>
+
+        <div class="mb-3">
             <label for="marca" class="form-label" th:text="#{form.product.brand}"></label>
             <input type="text" class="form-control" id="marca" th:field="*{marca}" required>
         </div>
@@ -45,8 +50,8 @@
                 <!-- Lista de categorías -->
                 <option th:each="categoria : ${categorias}" th:value="${categoria.id}">
                     <th:block th:switch="${idioma}">
-                        <span th:case="'es'" th:text="${categoria.tipo_es}"></span>
-                        <span th:case="'en'" th:text="${categoria.tipo_en}"></span>
+                        <span th:case="'es-es'" th:text="${categoria.tipo_es}"></span>
+                        <span th:case="'en-en'" th:text="${categoria.tipo_en}"></span>
                     </th:block>
                 </option>
             </select>

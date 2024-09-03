@@ -23,7 +23,7 @@ public class SrvcImagen extends AbstractSrvc<Imagen, Long, RepoImagen> {
         super(repoImagen);
     }
 
-    private final Path LOCATION = Paths.get("D:/ficheros");
+    private final Path LOCATION = Paths.get("C:/ficheros");
 
     public Imagen guardarImagen(MultipartFile file, Supermercado supermercado) throws Exception {
         // Genera un nombre único para la imagen
