@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let categoriaSelect = document.getElementById('categoria');
     let subcategoriaSelect = document.getElementById('subcategoria');
 
-    // Función para obtener el idioma desde una fuente global o `localStorage`
+    // Función para obtener el idioma actual del navegador
     function getCurrentLanguage() {
-        // Supongamos que `window.currentLanguage` o `localStorage.getItem('language')` contiene el idioma actual
-        return window.currentLanguage || 'es'; // 'es' es el idioma por defecto
+        // Usa `navigator.language` para obtener el idioma del navegador
+        let language = navigator.language || navigator.userLanguage || 'es';
+        // Usa solo el primer idioma si es una lista (ej. 'es-ES' o 'en-US')
+        return language.split('-')[0];
     }
 
     function actualizarSubcategorias() {
